@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import MapView, {Details, Region} from 'react-native-maps';
-import {ILocation} from '../../Types/map';
 import {EMapStyle, EMapType} from '../../Enums/map';
 import TerryMarker, {TerryMarkerProps} from './TerryMarker';
+import TerryCurPoint from './TerryCurPoint';
+import useCurrentLocation from '../../hooks/useCurrentLocation';
 
 interface TerryMapProps {
-  initialRegion: ILocation;
+  initialRegion: Region;
   mapViewStyle?: any;
   terryMapStyle?: any;
   onRegionChange?: (r: Region, d: Details) => void;
@@ -23,12 +24,18 @@ interface TerryMapProps {
 }
 
 const TerryMap = (props: TerryMapProps) => {
+  const currentLocation = useCurrentLocation();
+  const [locationCoordinate, setLocationCoordinate] = useState(currentLocation);
+  useEffect(() => {
+    setLocationCoordinate(currentLocation);
+  }, [currentLocation]);
+
   return (
     <View style={props.terryMapStyle}>
       <MapView
         style={props.mapViewStyle ? props.mapViewStyle : styles.mapView}
         initialRegion={props.initialRegion}
-        onRegionChange={(region, details) => console.log(region, details)}
+        onRegionChange={props.onRegionChange}
         mapType={props.mapType}
         userInterfaceStyle={props.mapStyle}
         showsUserLocation={props.showsUserLocation}
@@ -37,6 +44,13 @@ const TerryMap = (props: TerryMapProps) => {
         onRegionChangeComplete={props.onRegionChangeComplete}
         onPress={props.onPress}
         onMarkerPress={props.onMarkerPress}>
+        <TerryCurPoint
+          coordinate={{
+            latitude: locationCoordinate.latitude,
+            longitude: locationCoordinate.longitude,
+          }}
+          speed={locationCoordinate?.speed}
+        />
         {props.markers &&
           props.markers.map(marker => {
             const indentifier = `${marker.coordinate.longitude}-${marker.coordinate.latitude}`;
