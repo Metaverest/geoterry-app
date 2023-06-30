@@ -1,5 +1,5 @@
 import React from 'react';
-import {LatLng, Marker} from 'react-native-maps';
+import { LatLng, Marker } from 'react-native-maps';
 import TerryCallout from './TerryCallout';
 
 export interface TerryMarkerProps {
@@ -25,11 +25,7 @@ const TerryMarker = (props: TerryMarkerProps) => {
 
   return (
     <Marker key={props.identifier} coordinate={props.coordinate}>
-      <TerryCallout
-        title={props.title}
-        description={props.description}
-        imageUrls={props.imageUrls}
-      />
+      <TerryCallout title={props.title} description={props.description} imageUrls={props.imageUrls} />
     </Marker>
   );
 };

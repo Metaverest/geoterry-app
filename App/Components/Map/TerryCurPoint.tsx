@@ -1,7 +1,7 @@
-import {MOCK_AVATAR_URI} from '../../Mock/map';
+import { MOCK_AVATAR_URI } from '../../Mock/map';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {LatLng, Marker} from 'react-native-maps';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { LatLng, Marker } from 'react-native-maps';
 
 export interface TerryCurPointProps {
   coordinate: LatLng;
@@ -10,9 +10,7 @@ export interface TerryCurPointProps {
 
 const TerryCurPoint = (props: TerryCurPointProps) => {
   return (
-    <Marker
-      key={`${props.coordinate.latitude}-${props.coordinate.longitude}`}
-      coordinate={props.coordinate}>
+    <Marker key={`${props.coordinate.latitude}-${props.coordinate.longitude}`} coordinate={props.coordinate}>
       <View style={styles.markerContainer}>
         <View style={styles.markerContent}>
           <View style={styles.markerArrow} />
@@ -24,9 +22,7 @@ const TerryCurPoint = (props: TerryCurPointProps) => {
           />
           {props.speed != null && props.speed > 0 && (
             <View style={styles.speedIndicator}>
-              <Text style={styles.speedText}>
-                {Math.floor(props.speed).toString()}
-              </Text>
+              <Text style={styles.speedText}>{Math.floor(props.speed).toString()}</Text>
             </View>
           )}
         </View>

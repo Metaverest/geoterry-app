@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import MapView, {Details, Region} from 'react-native-maps';
-import {EMapStyle, EMapType} from '../../Enums/map';
-import TerryMarker, {TerryMarkerProps} from './TerryMarker';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import MapView, { Details, Region } from 'react-native-maps';
+import { EMapStyle, EMapType } from '../../Enums/map';
+import TerryMarker, { TerryMarkerProps } from './TerryMarker';
 import TerryCurPoint from './TerryCurPoint';
 import useCurrentLocation from '../../hooks/useCurrentLocation';
 

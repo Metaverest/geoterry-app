@@ -1,11 +1,8 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Callout} from 'react-native-maps';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Callout } from 'react-native-maps';
 import isEmpty from 'lodash/isEmpty';
-import {
-  responsiveByHeight as rh,
-  responsiveByWidth as rw,
-} from '../../helpers/common';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from '../../helpers/common';
 
 interface TerryCalloutProps {
   description?: string;
@@ -19,9 +16,7 @@ const TerryCallout = (props: TerryCalloutProps) => {
       <View>
         <Text>{props.title}</Text>
         <Text>{props.description}</Text>
-        {props.imageUrls && !isEmpty(props.imageUrls) && (
-          <Image source={{uri: props.imageUrls[0]}} />
-        )}
+        {props.imageUrls && !isEmpty(props.imageUrls) && <Image source={{ uri: props.imageUrls[0] }} />}
         <TouchableOpacity style={styles.viewBtn}>
           <Text>View</Text>
         </TouchableOpacity>

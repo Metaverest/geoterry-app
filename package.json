@@ -5,11 +5,14 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
     "prepare-ios": "cd ios && npx pod-install",
-    "permissions": "npx react-native setup-ios-permissions && npx pod-install"
+    "permissions": "npx react-native setup-ios-permissions && npx pod-install",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write \"App/**/*.+(ts|tsx|js|json|css|html|md)\"",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@react-native-community/geolocation": "^3.0.6",
@@ -26,7 +29,8 @@
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native/eslint-config": "^0.72.2",
+    "@commitlint/config-conventional": "^17.6.6",
+    "@react-native-community/eslint-config": "^3.2.0",
     "@react-native/metro-config": "^0.72.6",
     "@tsconfig/react-native": "^3.0.0",
     "@types/lodash": "^4.14.195",
@@ -34,11 +38,15 @@
     "@types/react": "^18.0.24",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
+    "commitlint": "^17.6.6",
     "eslint": "^8.19.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.3",
     "jest": "^29.2.1",
+    "lint-staged": "^13.2.3",
     "metro-react-native-babel-preset": "0.76.5",
     "pod-install": "^0.1.38",
-    "prettier": "^2.4.1",
+    "prettier": "^2.8.8",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   },
@@ -50,5 +58,11 @@
     "LocationWhenInUse",
     "LocationAlways",
     "LocationAccuracy"
-  ]
+  ],
+  "lint-staged": {
+    "*.{ts,tsx,css}": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
+  }
 }

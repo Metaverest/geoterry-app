@@ -32,5 +32,4 @@ export const MOCK_LOCATION = {
   longitudeDelta: 0.0421,
 };
 
-export const MOCK_AVATAR_URI =
-  'https://antimatter.vn/wp-content/uploads/2022/11/hinh-anh-avatar-cute.jpg';
+export const MOCK_AVATAR_URI = 'https://antimatter.vn/wp-content/uploads/2022/11/hinh-anh-avatar-cute.jpg';
