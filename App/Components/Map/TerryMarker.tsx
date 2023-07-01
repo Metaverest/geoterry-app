@@ -22,7 +22,6 @@ const TerryMarker = (props: TerryMarkerProps) => {
       />
     );
   }
-
   return (
     <Marker key={props.identifier} coordinate={props.coordinate}>
       <TerryCallout title={props.title} description={props.description} imageUrls={props.imageUrls} />
