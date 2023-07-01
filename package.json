@@ -8,11 +8,11 @@
     "start": "react-native start",
     "test": "jest",
     "prepare-ios": "cd ios && npx pod-install",
-    "permissions": "npx react-native setup-ios-permissions && npx pod-install",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write \"App/**/*.+(ts|tsx|js|json|css|html|md)\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "post-install": "react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
     "@react-native-community/geolocation": "^3.0.6",
@@ -50,15 +50,13 @@
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   },
+  "reactNativePermissionsIOS": [
+    "LocationAlways",
+    "LocationWhenInUse"
+  ],
   "engines": {
     "node": ">=16"
   },
-  "reactNativePermissionsIOS": [
-    "Camera",
-    "LocationWhenInUse",
-    "LocationAlways",
-    "LocationAccuracy"
-  ],
   "lint-staged": {
     "*.{ts,tsx,css}": [
       "eslint --cache --fix",
