@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import TerryMap from './App/Components/Map/TerryMap';
-import {TERRY_MARKER_LIST} from './App/Mock/map';
-import {LOCATION_DELTA} from './App/constants/common';
-import {getLocation} from './App/helpers/map';
-import {Region} from 'react-native-maps';
+import { TERRY_MARKER_LIST } from './App/Mock/map';
+import { LOCATION_DELTA } from './App/constants/common';
+import { getLocation } from './App/helpers/map';
+import { Region } from 'react-native-maps';
 
 function App(): JSX.Element {
   const [initialRegion, setInitialRegion] = useState<Region>({
@@ -17,7 +17,7 @@ function App(): JSX.Element {
     (async () => {
       try {
         const location = await getLocation();
-        const region = {...location, ...LOCATION_DELTA};
+        const region = { ...location, ...LOCATION_DELTA };
         setInitialRegion(region);
       } catch (error) {}
     })();
