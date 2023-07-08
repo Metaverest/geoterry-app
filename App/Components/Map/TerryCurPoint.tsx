@@ -1,16 +1,19 @@
+import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import { MOCK_AVATAR_URI } from '../../Mock/map';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { LatLng, Marker } from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 
-export interface TerryCurPointProps {
-  coordinate: LatLng;
-  speed: number | null;
-}
+const TerryCurPoint = () => {
+  const currentLocation = useCurrentLocation();
+  const [locationCoordinate, setLocationCoordinate] = useState(currentLocation);
+  useEffect(() => {
+    setLocationCoordinate(currentLocation);
+    console.log(currentLocation);
+  }, [currentLocation]);
 
-const TerryCurPoint = (props: TerryCurPointProps) => {
   return (
-    <Marker key={`${props.coordinate.latitude}-${props.coordinate.longitude}`} coordinate={props.coordinate}>
+    <Marker key={`${locationCoordinate.altitude}-${locationCoordinate.longitude}`} coordinate={locationCoordinate}>
       <View style={styles.markerContainer}>
         <View style={styles.markerContent}>
           <View style={styles.markerArrow} />
@@ -20,9 +23,9 @@ const TerryCurPoint = (props: TerryCurPointProps) => {
             }}
             style={styles.avatar}
           />
-          {props.speed != null && props.speed > 0 && (
+          {locationCoordinate.speed != null && locationCoordinate.speed > 0 && (
             <View style={styles.speedIndicator}>
-              <Text style={styles.speedText}>{Math.floor(props.speed).toString()}</Text>
+              <Text style={styles.speedText}>{Math.floor(locationCoordinate.speed).toString()}</Text>
             </View>
           )}
         </View>

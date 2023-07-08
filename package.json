@@ -2,6 +2,10 @@
   "name": "geoterry",
   "version": "0.0.1",
   "private": true,
+  "reactNativePermissionsIOS": [
+    "LocationAlways",
+    "LocationWhenInUse"
+  ],
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -12,18 +16,33 @@
     "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write \"App/**/*.+(ts|tsx|js|json|css|html|md)\"",
     "prepare": "husky install",
-    "post-install": "react-native setup-ios-permissions && pod-install"
+    "postinstall": "react-native setup-ios-permissions && pod-install"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/geolocation": "^3.0.6",
+    "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.1.7",
+    "@react-navigation/stack": "^6.3.17",
     "axios": "^1.4.0",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "i18next": "^23.2.8",
     "react": "18.2.0",
+    "react-i18next": "^13.0.1",
     "react-native": "0.72.0",
+    "react-native-config": "^1.5.1",
+    "react-native-gesture-handler": "^2.12.0",
     "react-native-maps": "^1.7.1",
-    "react-native-permissions": "^3.8.1",
+    "react-native-permissions": "^3.8.3",
+    "react-native-reanimated": "^3.3.0",
     "react-native-responsive-screen": "^1.4.2",
-    "react-native-safe-area-context": "^4.6.3"
+    "react-native-safe-area-context": "^4.6.4",
+    "react-native-screens": "^3.22.1",
+    "react-native-storage": "^1.0.1",
+    "react-redux": "^8.1.1",
+    "redux": "^4.2.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -44,16 +63,12 @@
     "husky": "^8.0.3",
     "jest": "^29.2.1",
     "lint-staged": "^13.2.3",
-    "metro-react-native-babel-preset": "0.76.5",
+    "metro-react-native-babel-preset": "^0.77.0",
     "pod-install": "^0.1.38",
     "prettier": "^2.8.8",
     "react-test-renderer": "18.2.0",
     "typescript": "4.8.4"
   },
-  "reactNativePermissionsIOS": [
-    "LocationAlways",
-    "LocationWhenInUse"
-  ],
   "engines": {
     "node": ">=16"
   },

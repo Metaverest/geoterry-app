@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import Navigation, { navigationRef } from './App/navigation';
+import React, { Suspense } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import TerryMap from './App/Components/Map/TerryMap';
-import { TERRY_MARKER_LIST } from './App/Mock/map';
-import { LOCATION_DELTA } from './App/constants/common';
-import { getLocation } from './App/helpers/map';
-import { Region } from 'react-native-maps';
+import { Provider } from 'react-redux';
+import configureStore from 'App/redux';
+import setupI18N from 'App/utils/i18n';
 
-function App(): JSX.Element {
-  const [initialRegion, setInitialRegion] = useState<Region>({
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0,
-    longitudeDelta: 0,
-  });
-  useEffect(() => {
-    (async () => {
-      try {
-        const location = await getLocation();
-        const region = { ...location, ...LOCATION_DELTA };
-        setInitialRegion(region);
-      } catch (error) {}
-    })();
-  }, []);
+setupI18N();
+
+const App = () => {
+  const store = configureStore();
 
   return (
     <SafeAreaProvider>
-      <TerryMap
-        initialRegion={initialRegion}
-        markers={TERRY_MARKER_LIST}
-        showsMyLocationButton={true}
-        showsCompass={true}
-        customCallout={true}
-      />
+      <Provider store={store}>
+        <NavigationContainer ref={navigationRef}>
+          <Suspense fallback={<></>}>
+            <Navigation />
+          </Suspense>
+        </NavigationContainer>
+      </Provider>
     </SafeAreaProvider>
   );
-}
+};
 
 export default App;

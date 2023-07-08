@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Details, Region } from 'react-native-maps';
 import { EMapStyle, EMapType } from '../../Enums/map';
 import TerryMarker, { TerryMarkerProps } from './TerryMarker';
 import TerryCurPoint from './TerryCurPoint';
-import useCurrentLocation from '../../hooks/useCurrentLocation';
 
 interface TerryMapProps {
   initialRegion: Region;
@@ -16,7 +15,8 @@ interface TerryMapProps {
   onMarkerPress?: () => void;
   mapType?: EMapType;
   mapStyle?: EMapStyle; // only works on iOS
-  showsUserLocation?: boolean;
+  showsUserLocation?: boolean; // only `showsUserLocation` or `showCustomedUserLocation` can be true at one time
+  showCustomedUserLocation?: boolean;
   showsMyLocationButton?: boolean;
   showsCompass?: boolean;
   markers?: Omit<TerryMarkerProps, 'identifier'>[];
@@ -24,12 +24,6 @@ interface TerryMapProps {
 }
 
 const TerryMap = (props: TerryMapProps) => {
-  const currentLocation = useCurrentLocation();
-  const [locationCoordinate, setLocationCoordinate] = useState(currentLocation);
-  useEffect(() => {
-    setLocationCoordinate(currentLocation);
-  }, [currentLocation]);
-
   return (
     <View style={props.terryMapStyle}>
       <MapView
@@ -44,13 +38,7 @@ const TerryMap = (props: TerryMapProps) => {
         onRegionChangeComplete={props.onRegionChangeComplete}
         onPress={props.onPress}
         onMarkerPress={props.onMarkerPress}>
-        <TerryCurPoint
-          coordinate={{
-            latitude: locationCoordinate.latitude,
-            longitude: locationCoordinate.longitude,
-          }}
-          speed={locationCoordinate?.speed}
-        />
+        {props.showCustomedUserLocation && <TerryCurPoint />}
         {props.markers &&
           props.markers.map(marker => {
             const indentifier = `${marker.coordinate.longitude}-${marker.coordinate.latitude}`;
