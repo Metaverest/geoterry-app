@@ -1,8 +1,7 @@
 import { ColorPalette } from 'App/styles';
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TextInput } from 'react-native';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-import { TextInput } from 'react-native-gesture-handler';
 import { EKeyboardType } from 'App/Enums';
 
 interface IInputProps {
