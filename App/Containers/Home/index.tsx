@@ -13,25 +13,31 @@ const HomeScreen = () => {
     latitudeDelta: 0,
     longitudeDelta: 0,
   });
+  const [loadingLocation, setLoadingLocation] = useState(false);
   useEffect(() => {
     (async () => {
       try {
         const location = await getLocation();
         const region = { ...location, ...LOCATION_DELTA };
         setInitialRegion(region);
+        setLoadingLocation(true);
       } catch (error) {}
     })();
   }, []);
 
   return (
     <SafeAreaProvider>
-      <TerryMap
-        initialRegion={initialRegion}
-        markers={TERRY_MARKER_LIST}
-        showsMyLocationButton={true}
-        showsCompass={true}
-        customCallout={true}
-      />
+      {loadingLocation && (
+        <TerryMap
+          initialRegion={initialRegion}
+          markers={TERRY_MARKER_LIST}
+          showsMyLocationButton={true}
+          showsCompass={true}
+          customCallout={true}
+          showsUserLocation={true}
+          // showCustomedUserLocation={true}
+        />
+      )}
     </SafeAreaProvider>
   );
 };
