@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationScreenEnum } from './types';
 import HomeScreenScreen from 'App/Containers/Home';
-import OnboardingScreenScreen from 'App/Containers/Onboarding';
+import OnboardingScreen from 'App/Containers/Onboarding';
 
 export const navigationRef = React.createRef<any>();
 
@@ -18,7 +18,7 @@ const Navigation = () => {
         />
         <Stack.Screen
           name={NavigationScreenEnum.OnboardingScreen}
-          component={OnboardingScreenScreen}
+          component={OnboardingScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
