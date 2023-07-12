@@ -22,11 +22,11 @@
 	<string>????</string>
 
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Geoterry uses this to show your current location on our map</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Geoterry uses this to show your current location on our map</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>YOUR TEXT</string>
+	<string>Geoterry uses this to show your current location on our map</string>
 
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
