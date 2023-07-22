@@ -22,6 +22,8 @@ const TerryCurPoint = () => {
         },
         DEFAULT_USER_MARK_POINT_ANIMATION_DURATION,
       );
+    } else {
+      // TODO: handle animation for iOS (animateMarkerToCoordinate is not supported on iOS yet)
     }
   };
 
@@ -34,10 +36,14 @@ const TerryCurPoint = () => {
     <Marker
       ref={markerRef}
       key="userLocationMarker"
-      coordinate={{
-        latitude: 0,
-        longitude: 0,
-      }}>
+      coordinate={
+        isIOSDevice()
+          ? currentLocation
+          : {
+              latitude: 0,
+              longitude: 0,
+            }
+      }>
       <View style={styles.markerContainer}>
         <View style={styles.markerContent}>
           <View style={styles.markerArrow} />

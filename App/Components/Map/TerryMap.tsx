@@ -7,6 +7,7 @@ import TerryCurPoint from './TerryCurPoint';
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
 import { isValidLocation } from 'App/helpers/map';
+import SpeedDisplay from './SpeedDisplay';
 
 interface TerryMapProps {
   initialRegion: Region;
@@ -25,6 +26,7 @@ interface TerryMapProps {
   markers?: Omit<TerryMarkerProps, 'identifier'>[];
   customCallout?: boolean;
   focusOnUserLocation?: boolean;
+  showSpeed?: boolean;
 }
 
 const TerryMap = (props: TerryMapProps) => {
@@ -87,6 +89,7 @@ const TerryMap = (props: TerryMapProps) => {
             );
           })}
       </MapView>
+      {props.showSpeed && <SpeedDisplay speed={currentLocation.speed || 0} />}
     </View>
   );
 };
