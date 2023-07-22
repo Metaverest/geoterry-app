@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Region } from 'react-native-maps';
 import TerryMap from 'App/Components/Map/TerryMap';
-import { LOCATION_DELTA } from 'App/constants/common';
-import { getLocation } from 'App/helpers/map';
+import { getDynamicLatLongDelta, getLocation } from 'App/helpers/map';
 import { TERRY_MARKER_LIST } from 'App/Mock/map';
+import { isIOSDevice } from 'App/helpers/common';
 
 const HomeScreen = () => {
   const [initialRegion, setInitialRegion] = useState<Region>({
@@ -18,7 +18,7 @@ const HomeScreen = () => {
     (async () => {
       try {
         const location = await getLocation();
-        const region = { ...location, ...LOCATION_DELTA };
+        const region = { ...location, ...getDynamicLatLongDelta() };
         setInitialRegion(region);
         setLoadingLocation(true);
       } catch (error) {}
@@ -34,8 +34,10 @@ const HomeScreen = () => {
           showsMyLocationButton={true}
           showsCompass={true}
           customCallout={true}
-          showsUserLocation={true}
-          // showCustomedUserLocation={true}
+          showsUserLocation={isIOSDevice()}
+          showCustomedUserLocation={!isIOSDevice()}
+          focusOnUserLocation={false}
+          showSpeed={isIOSDevice()}
         />
       )}
     </SafeAreaProvider>

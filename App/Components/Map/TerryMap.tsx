@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import MapView, { Details, Region } from 'react-native-maps';
 import { EMapStyle, EMapType } from '../../Enums/map';
 import TerryMarker, { TerryMarkerProps } from './TerryMarker';
 import TerryCurPoint from './TerryCurPoint';
+import useCurrentLocation from 'App/hooks/useCurrentLocation';
+import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
+import { isValidLocation } from 'App/helpers/map';
+import SpeedDisplay from './SpeedDisplay';
 
 interface TerryMapProps {
   initialRegion: Region;
@@ -21,12 +25,43 @@ interface TerryMapProps {
   showsCompass?: boolean;
   markers?: Omit<TerryMarkerProps, 'identifier'>[];
   customCallout?: boolean;
+  focusOnUserLocation?: boolean;
+  showSpeed?: boolean;
 }
 
 const TerryMap = (props: TerryMapProps) => {
+  const mapViewRef = useRef<MapView>(null);
+  const [centered, setCentered] = useState(false);
+  const currentLocation = useCurrentLocation();
+  const setMapCenter = () => {
+    if (!mapViewRef.current) {
+      return;
+    }
+
+    mapViewRef.current.animateToRegion(
+      {
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        latitudeDelta: props.initialRegion.latitudeDelta,
+        longitudeDelta: props.initialRegion.longitudeDelta,
+      },
+      DEFAULT_USER_MARK_POINT_ANIMATION_DURATION,
+    );
+    setCentered(true);
+  };
+  useEffect(() => {
+    if (isValidLocation(currentLocation)) {
+      if (props.focusOnUserLocation || !centered) {
+        setMapCenter();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLocation]);
+
   return (
     <View style={props.terryMapStyle}>
       <MapView
+        ref={mapViewRef}
         style={props.mapViewStyle ? props.mapViewStyle : styles.mapView}
         initialRegion={props.initialRegion}
         onRegionChange={props.onRegionChange}
@@ -54,6 +89,7 @@ const TerryMap = (props: TerryMapProps) => {
             );
           })}
       </MapView>
+      {props.showSpeed && <SpeedDisplay speed={currentLocation.speed || 0} />}
     </View>
   );
 };
