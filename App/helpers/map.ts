@@ -1,4 +1,5 @@
 import Geolocation from '@react-native-community/geolocation';
+import { IRealtimeLocation } from 'App/hooks/useCurrentLocation';
 
 export const getLocation = (): Promise<{
   latitude: number;
@@ -17,4 +18,8 @@ export const getLocation = (): Promise<{
       },
     );
   });
+};
+
+export const isValidLocation = (location: IRealtimeLocation) => {
+  return location.latitude !== 0 && location.longitude !== 0;
 };

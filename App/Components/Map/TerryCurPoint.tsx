@@ -1,19 +1,43 @@
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import { MOCK_AVATAR_URI } from '../../Mock/map';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { Marker } from 'react-native-maps';
+import { MapMarker, Marker } from 'react-native-maps';
+import { isIOSDevice } from 'App/helpers/common';
+import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
 
 const TerryCurPoint = () => {
+  const markerRef = useRef<MapMarker>(null);
   const currentLocation = useCurrentLocation();
-  const [locationCoordinate, setLocationCoordinate] = useState(currentLocation);
+
+  const markerAnimated = () => {
+    if (!markerRef.current) {
+      return;
+    }
+    if (!isIOSDevice()) {
+      markerRef.current.animateMarkerToCoordinate(
+        {
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+        },
+        DEFAULT_USER_MARK_POINT_ANIMATION_DURATION,
+      );
+    }
+  };
+
   useEffect(() => {
-    setLocationCoordinate(currentLocation);
-    console.log(currentLocation);
+    markerAnimated();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLocation]);
 
   return (
-    <Marker key={`${locationCoordinate.altitude}-${locationCoordinate.longitude}`} coordinate={locationCoordinate}>
+    <Marker
+      ref={markerRef}
+      key="userLocationMarker"
+      coordinate={{
+        latitude: 0,
+        longitude: 0,
+      }}>
       <View style={styles.markerContainer}>
         <View style={styles.markerContent}>
           <View style={styles.markerArrow} />
@@ -23,9 +47,9 @@ const TerryCurPoint = () => {
             }}
             style={styles.avatar}
           />
-          {locationCoordinate.speed != null && locationCoordinate.speed > 0 && (
+          {currentLocation.speed != null && currentLocation.speed > 0 && (
             <View style={styles.speedIndicator}>
-              <Text style={styles.speedText}>{Math.floor(locationCoordinate.speed).toString()}</Text>
+              <Text style={styles.speedText}>{Math.floor(currentLocation.speed).toString()}</Text>
             </View>
           )}
         </View>

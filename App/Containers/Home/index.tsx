@@ -34,8 +34,9 @@ const HomeScreen = () => {
           showsMyLocationButton={true}
           showsCompass={true}
           customCallout={true}
-          showsUserLocation={true}
-          // showCustomedUserLocation={true}
+          showsUserLocation={false}
+          showCustomedUserLocation={true}
+          focusOnUserLocation={false}
         />
       )}
     </SafeAreaProvider>
