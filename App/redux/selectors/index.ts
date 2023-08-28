@@ -1,4 +1,9 @@
-import { RootStateType as IStore } from 'App/Types/redux/store';
+import { IAppState, IReduxRootState } from 'App/types/redux';
+import { IUser } from 'App/types/user';
 
-// AppReducer
-export const TaskStatus = (key: string) => (store: IStore) => store.asyncTaskReducer.status[key];
+export const reduxSelector = {
+  getUser: (state: IReduxRootState): IUser => state.user,
+  getApp: (state: IReduxRootState): IAppState => state.app,
+  getAppLanguage: (state: IReduxRootState) => state.app.language,
+  getAppRegisterData: (state: IReduxRootState) => state.app.registerData,
+};
