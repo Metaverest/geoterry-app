@@ -4,10 +4,12 @@ import { useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from './styles';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
-const Header = ({ navigation, title }: { navigation: any; title?: string }) => {
+const Header = ({ title }: { title?: string }) => {
+  const navigation = useNavigation();
   const handlePressBackButton = useCallback(() => {
-    navigation.goBack();
+    navigation.dispatch(CommonActions.goBack());
   }, [navigation]);
   return (
     <View style={styles.container}>

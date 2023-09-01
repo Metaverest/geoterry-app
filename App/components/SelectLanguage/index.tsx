@@ -41,23 +41,29 @@ const SelectLanguage = ({
   );
   const RenderSelectedLanguage = useCallback(() => {
     return (
-      <View style={styles.selectedLanguageContainer}>
-        <LanguageIcon languageParam={language as ELanguageCode} />
-        <ArrowDown />
-      </View>
+      <TouchableOpacity onPress={() => setIsOpen(_isOpen => !_isOpen)}>
+        <View style={styles.selectedLanguageContainer}>
+          <LanguageIcon languageParam={language as ELanguageCode} />
+          <ArrowDown />
+        </View>
+      </TouchableOpacity>
     );
   }, [language, LanguageIcon]);
+
   return (
-    <TouchableOpacity style={styles.container} onPress={() => setIsOpen(_isOpen => !_isOpen)}>
+    <View style={styles.container}>
       <RenderSelectedLanguage />
       {isOpen && (
         <View style={styles.dropdownContainer}>
+          <View style={styles.triangleContainer}>
+            <View style={styles.triangle} />
+          </View>
           {Object.values(ELanguageCode).map(item => {
             return <RenderItem key={item} languageParam={item} />;
           })}
         </View>
       )}
-    </TouchableOpacity>
+    </View>
   );
 };
 

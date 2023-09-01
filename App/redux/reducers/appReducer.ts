@@ -18,7 +18,7 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
         ...state,
         registerData: {
           ...state.registerData,
-          ...action.payload,
+          ...action.payload?.registerData,
         },
       };
     default:

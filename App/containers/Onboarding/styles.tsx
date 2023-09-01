@@ -20,11 +20,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    height: 24,
-  },
-  selectLanguageContainer: {
-    width: 40,
-    backgroundColor: EColor.color_00000080,
   },
   onBoardingTitle: {
     fontWeight: '700',
@@ -53,13 +48,5 @@ export const styles = StyleSheet.create({
   loginButton: {
     marginTop: 16,
     width: '100%',
-  },
-  customItemContainerStyle: {
-    backgroundColor: 'transparent',
-    elevation: 999,
-  },
-  customItemLabelStyle: {
-    backgroundColor: 'red',
-    elevation: 999,
   },
 });

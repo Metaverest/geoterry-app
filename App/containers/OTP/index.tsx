@@ -10,11 +10,11 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPTextInput from 'react-native-otp-textinput';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
-const OTPScreen = ({ navigation }) => {
+const OTPScreen = () => {
   const dispatch = useDispatch();
   const [seconds, setSeconds] = useState(60);
   useEffect(() => {
@@ -47,38 +47,36 @@ const OTPScreen = ({ navigation }) => {
   }, [otp]);
 
   return (
-    <SafeAreaProvider>
-      <View style={styles.container}>
-        <Header title="Xác thực OTP" navigation={navigation} />
-        <Text style={styles.otpNotificationText}>Mã OTP đã được gửi về số điện thoại của bạn</Text>
-        <View style={styles.otpContainer}>
-          <OTPTextInput
-            handleTextChange={setOtp}
-            tintColor={EColor.color_FAFAFA}
-            offTintColor={'transparent'}
-            textInputStyle={styles.otpCell}
-          />
-        </View>
-        {isEmpty(error) && seconds === 0 && (
-          <TouchableOpacity style={styles.otpResendButtonContainer}>
-            <Text style={styles.otpResendButtonText}>Gửi lại mã OTP</Text>
-          </TouchableOpacity>
-        )}
-        {isEmpty(error) && seconds !== 0 && (
-          <Text style={styles.otpResendAfterButtonText}>{`Gửi lại sau ${seconds}s`}</Text>
-        )}
-        {!isEmpty(error) && <Text style={styles.otpErrorText}>{error}</Text>}
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            onPress={submit}
-            disabled={shouldDisableButton}
-            linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-            buttonType={EButtonType.SOLID}
-            title="Xác nhận"
-          />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <Header title="Xác thực OTP" />
+      <Text style={styles.otpNotificationText}>Mã OTP đã được gửi về số điện thoại của bạn</Text>
+      <View style={styles.otpContainer}>
+        <OTPTextInput
+          handleTextChange={setOtp}
+          tintColor={EColor.color_FAFAFA}
+          offTintColor={'transparent'}
+          textInputStyle={styles.otpCell}
+        />
       </View>
-    </SafeAreaProvider>
+      {isEmpty(error) && seconds === 0 && (
+        <TouchableOpacity style={styles.otpResendButtonContainer}>
+          <Text style={styles.otpResendButtonText}>Gửi lại mã OTP</Text>
+        </TouchableOpacity>
+      )}
+      {isEmpty(error) && seconds !== 0 && (
+        <Text style={styles.otpResendAfterButtonText}>{`Gửi lại sau ${seconds}s`}</Text>
+      )}
+      {!isEmpty(error) && <Text style={styles.otpErrorText}>{error}</Text>}
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          onPress={submit}
+          disabled={shouldDisableButton}
+          linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+          buttonType={EButtonType.SOLID}
+          title="Xác nhận"
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

@@ -29,6 +29,7 @@
     "@types/react-native-button": "^3.0.1",
     "axios": "^1.4.0",
     "babel-plugin-module-resolver": "^5.0.0",
+    "formik": "^2.4.3",
     "i18next": "^23.2.8",
     "immer": "^10.0.2",
     "react": "18.2.0",
@@ -54,7 +55,8 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-saga": "^1.2.3",
     "redux-thunk": "^2.4.2",
-    "saga": "^4.0.0-alpha"
+    "saga": "^4.0.0-alpha",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

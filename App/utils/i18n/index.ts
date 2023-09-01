@@ -29,7 +29,7 @@ const setupI18N = () => {
       compatibilityJSON: 'v3',
       fallbackLng: ELanguageCode.VIETNAMESE,
       resources: {
-        [ELanguageCode.ENGLISH]: {
+        [ELanguageCode.US]: {
           common: require('./locales/en.json'),
         },
         [ELanguageCode.VIETNAMESE]: {
