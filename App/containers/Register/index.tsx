@@ -51,6 +51,7 @@ const RegisterScreen = () => {
           identifier: values.phone,
           namespace: ENamespace.GEOTERRY_HUNTERS,
           identifierType: EIdentifierType.PHONE_NUMBER,
+          password: values.password,
         };
         await requestGetOTP({
           ...submitData,

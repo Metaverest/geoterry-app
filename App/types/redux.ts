@@ -1,6 +1,7 @@
 import { ELanguageCode } from 'App/enums';
 import { IUser } from './user';
 import { EIdentifierType, ENamespace } from 'App/enums';
+import { IError } from './error';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -14,6 +15,8 @@ export interface IReduxRootState {
 export interface IAppState {
   language?: ELanguageCode;
   registerData?: Partial<ICreateAccountDto>;
+  isLoading?: boolean;
+  error?: Partial<IError>[];
 }
 
 export interface IRootState {

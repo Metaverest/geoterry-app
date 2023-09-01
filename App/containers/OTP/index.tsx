@@ -39,7 +39,6 @@ const OTPScreen = () => {
       identifierType: EIdentifierType.PHONE_NUMBER,
       namespace: ENamespace.GEOTERRY_HUNTERS,
     };
-    console.log(submitData);
     dispatch(sagaUserAction.createAccountAsync(submitData as ICreateAccountDto));
   }, [dispatch, otp, registerData]);
   const shouldDisableButton = useMemo(() => {

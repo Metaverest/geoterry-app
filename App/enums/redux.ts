@@ -4,6 +4,8 @@ export enum EReduxUserAction {
 export enum EReduxAppAction {
   SET_LANGUAGE_CODE = 'SET_LANGUAGE_CODE',
   SET_REGISTER_DATA = 'SET_REGISTER_DATA',
+  SET_IS_LOADING = 'SET_IS_LOADING',
+  MERGE_ERROR = 'MERGE_ERROR',
 }
 export enum ESagaUserAction {
   CREATE_ACCOUNT = 'CREATE_ACCOUNT',

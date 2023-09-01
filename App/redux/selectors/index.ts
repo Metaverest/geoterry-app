@@ -6,4 +6,6 @@ export const reduxSelector = {
   getApp: (state: IReduxRootState): IAppState => state.app,
   getAppLanguage: (state: IReduxRootState) => state.app.language,
   getAppRegisterData: (state: IReduxRootState) => state.app.registerData,
+  getAppIsLoading: (state: IReduxRootState) => state.app.isLoading,
+  getAppError: (state: IReduxRootState) => state.app.error,
 };

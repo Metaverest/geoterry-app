@@ -7,15 +7,16 @@ import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { sagaUserAction } from 'App/redux/actions/userAction';
+import { reduxSelector } from 'App/redux/selectors';
 import { Formik } from 'formik';
-import { isEmpty } from 'lodash';
-import React, { useCallback } from 'react';
+import { isArray, isEmpty, isString, last } from 'lodash';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
-import { styles } from './styles';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch, useSelector } from 'react-redux';
+import { styles } from './styles';
 
 interface IFormValues {
   phone: string;
@@ -28,7 +29,15 @@ const initialValues: IFormValues = {
 };
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
-
+  const error = useSelector(reduxSelector.getAppError);
+  const errorText = useMemo(() => {
+    const lastError = last(error);
+    if (isString(lastError?.message)) {
+      return lastError?.message;
+    } else if (isArray(lastError?.message)) {
+      return last(lastError?.message);
+    }
+  }, [error]);
   const onSubmit = useCallback(
     async (values: IFormValues) => {
       if (isEmpty(values?.phone) || isEmpty(values?.password)) {
@@ -71,14 +80,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                 <CustomInput
                   error={shouldDisplayError ? errors.phone : ''}
                   onChangeText={text => setFieldValue('phone', text, true)}
-                  placeholder="Số điện thoại"
+                  placeholder={t('Số điện thoại')}
                 />
               </View>
               <View style={styles.passwordInputContainer}>
                 <CustomInputPassword
-                  error={shouldDisplayError ? errors.password : ''}
+                  error={shouldDisplayError ? errors.password || errorText : ''}
                   onChangeText={text => setFieldValue('password', text, true)}
-                  placeholder="Mật khẩu"
+                  placeholder={t('Mật khẩu')}
                 />
               </View>
               <TouchableOpacity style={styles.forgotPasswordContainer}>
@@ -90,7 +99,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                   disabled={getShouldDisableButton(values)}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   buttonType={EButtonType.SOLID}
-                  title="Login"
+                  title={t('Login')}
                 />
               </View>
             </>
@@ -100,7 +109,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       <View style={styles.footerContainer}>
         <Text style={styles.hasAccountText}>Bạn chưa có tài khoản?</Text>
         <Text style={styles.loginText} onPress={goToRegister}>
-          Đăng ký.
+          {t('Đăng ký.')}
         </Text>
       </View>
     </SafeAreaView>

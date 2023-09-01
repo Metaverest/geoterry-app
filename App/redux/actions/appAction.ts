@@ -1,5 +1,6 @@
 import { ELanguageCode } from 'App/enums';
 import { EReduxAppAction } from 'App/enums/redux';
+import { IError } from 'App/types/error';
 import { ICreateAccountDto } from 'App/types/redux';
 
 const reduxAppAction = {
@@ -13,6 +14,18 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_REGISTER_DATA,
       payload: { registerData: data },
+    };
+  },
+  setIsLoading: (isLoading: boolean) => {
+    return {
+      type: EReduxAppAction.SET_IS_LOADING,
+      payload: { isLoading },
+    };
+  },
+  mergeError: (error: IError) => {
+    return {
+      type: EReduxAppAction.MERGE_ERROR,
+      payload: { error: [error] },
     };
   },
 };
