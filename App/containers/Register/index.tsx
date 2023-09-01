@@ -7,17 +7,19 @@ import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
+import useClearError from 'App/hooks/useClearError';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { requestGetOTP } from 'App/utils/axios';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import CustomText from 'App/components/CustomText';
 
 interface IFormValues {
   password: string;
@@ -82,14 +84,15 @@ const RegisterScreen = () => {
   }, [navigation]);
 
   const { t } = useTranslation();
+  const clearError = useClearError();
   return (
     <SafeAreaView style={styles.container}>
       <Header />
       <Image style={styles.image} source={EarthIcon} />
-      <Text style={styles.createAccountTitle}>Tạo tài khoản</Text>
-      <Text style={styles.createAccountSubTitle}>
+      <CustomText style={styles.createAccountTitle}>Tạo tài khoản</CustomText>
+      <CustomText style={styles.createAccountSubTitle}>
         {t('Gia nhập cộng đồng Terriana để khám phá và thu thập kho báu của riêng bạn!')}
-      </Text>
+      </CustomText>
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ handleSubmit, values, setFieldValue, errors, submitCount }) => {
           const shouldDisplayError = submitCount > 0;
@@ -99,7 +102,7 @@ const RegisterScreen = () => {
                 <CustomInput
                   error={shouldDisplayError ? errors.phone : ''}
                   onChangeText={text => setFieldValue('phone', text, true)}
-                  placeholder={t('Số điện thoại')}
+                  placeholder={t('+84  | Số điện thoại')}
                 />
               </View>
               <View style={styles.passwordInputContainer}>
@@ -120,7 +123,10 @@ const RegisterScreen = () => {
               </View>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={handleSubmit}
+                  onPress={() => {
+                    clearError();
+                    handleSubmit();
+                  }}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   buttonType={EButtonType.SOLID}
                   title={t('Login')}
@@ -132,10 +138,10 @@ const RegisterScreen = () => {
         }}
       </Formik>
       <View style={styles.footerContainer}>
-        <Text style={styles.hasAccountText}>Bạn đã có tài khoản?</Text>
-        <Text style={styles.loginText} onPress={goToLogin}>
+        <CustomText style={styles.hasAccountText}>Bạn đã có tài khoản?</CustomText>
+        <CustomText style={styles.loginText} onPress={goToLogin}>
           {t('Đăng nhập.')}
-        </Text>
+        </CustomText>
       </View>
     </SafeAreaView>
   );

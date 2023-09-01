@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     lineHeight: 18,
     padding: 16,
     color: EColor.color_CCCCCC,
+    fontFamily: 'Montserrat-Regular',
   },
   iconContainer: {
     width: '20%',

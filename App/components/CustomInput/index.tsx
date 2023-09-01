@@ -2,16 +2,17 @@
 import { EColor } from 'App/enums/color';
 import { IInputProps } from 'App/types/input';
 import { useCallback } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
+import CustomText from '../CustomText';
 import { styles } from './styles';
 
 const CustomInput = (props: IInputProps) => {
   const Subtext = useCallback(() => {
     if (props.error) {
-      return <Text style={styles.errorText}>{props.error}</Text>;
+      return <CustomText style={styles.errorText}>{props.error}</CustomText>;
     }
     if (props.helperText) {
-      return <Text style={styles.helperText}>{props.helperText}</Text>;
+      return <CustomText style={styles.helperText}>{props.helperText}</CustomText>;
     }
     return <></>;
   }, [props.error, props.helperText]);
@@ -24,12 +25,7 @@ const CustomInput = (props: IInputProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.textInputContainer}>
-        <TextInput
-          onChangeText={props.handleChange && props.handleChange(props.name || props.type)}
-          placeholderTextColor={EColor.color_CCCCCC}
-          style={styles.input}
-          {...props}
-        />
+        <TextInput placeholderTextColor={EColor.color_CCCCCC} style={styles.input} {...props} />
         <ButtonIcon />
       </View>
       <Subtext />

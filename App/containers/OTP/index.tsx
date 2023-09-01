@@ -1,4 +1,5 @@
 import CustomButton from 'App/components/Button';
+import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
@@ -7,7 +8,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { ICreateAccountDto } from 'App/types/redux';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPTextInput from 'react-native-otp-textinput';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -48,7 +49,7 @@ const OTPScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Header title="Xác thực OTP" />
-      <Text style={styles.otpNotificationText}>Mã OTP đã được gửi về số điện thoại của bạn</Text>
+      <CustomText style={styles.otpNotificationText}>Mã OTP đã được gửi về số điện thoại của bạn</CustomText>
       <View style={styles.otpContainer}>
         <OTPTextInput
           handleTextChange={setOtp}
@@ -59,13 +60,13 @@ const OTPScreen = () => {
       </View>
       {isEmpty(error) && seconds === 0 && (
         <TouchableOpacity style={styles.otpResendButtonContainer}>
-          <Text style={styles.otpResendButtonText}>Gửi lại mã OTP</Text>
+          <CustomText style={styles.otpResendButtonText}>Gửi lại mã OTP</CustomText>
         </TouchableOpacity>
       )}
       {isEmpty(error) && seconds !== 0 && (
-        <Text style={styles.otpResendAfterButtonText}>{`Gửi lại sau ${seconds}s`}</Text>
+        <CustomText style={styles.otpResendAfterButtonText}>{`Gửi lại sau ${seconds}s`}</CustomText>
       )}
-      {!isEmpty(error) && <Text style={styles.otpErrorText}>{error}</Text>}
+      {!isEmpty(error) && <CustomText style={styles.otpErrorText}>{error}</CustomText>}
       <View style={styles.buttonContainer}>
         <CustomButton
           onPress={submit}

@@ -6,6 +6,7 @@ export enum EReduxAppAction {
   SET_REGISTER_DATA = 'SET_REGISTER_DATA',
   SET_IS_LOADING = 'SET_IS_LOADING',
   MERGE_ERROR = 'MERGE_ERROR',
+  CLEAR_ERROR = 'CLEAR_ERROR',
 }
 export enum ESagaUserAction {
   CREATE_ACCOUNT = 'CREATE_ACCOUNT',

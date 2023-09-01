@@ -1,18 +1,20 @@
 import CustomButton from 'App/components/Button';
 import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword';
 import CustomInput from 'App/components/CustomInput/index';
+import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
+import useClearError from 'App/hooks/useClearError';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { Formik } from 'formik';
 import { isArray, isEmpty, isString, last } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,14 +65,15 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     return isEmpty(values.phone) || isEmpty(values.password);
   }, []);
   const { t } = useTranslation();
+  const clearError = useClearError();
   return (
     <SafeAreaView style={styles.container}>
       <Header />
       <Image style={styles.image} source={EarthIcon} />
-      <Text style={styles.createAccountTitle}>{t('Xin chào')}</Text>
-      <Text style={styles.createAccountSubTitle}>
+      <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
+      <CustomText style={styles.createAccountSubTitle}>
         {t('Chào mừng bạn đã quay trở lại, Terriana đã nhớ bạn rất nhiều.')}
-      </Text>
+      </CustomText>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ handleSubmit, values, submitCount, setFieldValue, errors }) => {
           const shouldDisplayError = submitCount > 0;
@@ -80,7 +83,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                 <CustomInput
                   error={shouldDisplayError ? errors.phone : ''}
                   onChangeText={text => setFieldValue('phone', text, true)}
-                  placeholder={t('Số điện thoại')}
+                  placeholder={t('+84  | Số điện thoại')}
                 />
               </View>
               <View style={styles.passwordInputContainer}>
@@ -91,11 +94,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                 />
               </View>
               <TouchableOpacity style={styles.forgotPasswordContainer}>
-                <Text style={styles.forgotPasswordText}>Quên mật khẩu?</Text>
+                <CustomText style={styles.forgotPasswordText}>{t('Quên mật khẩu?')}</CustomText>
               </TouchableOpacity>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={handleSubmit}
+                  onPress={() => {
+                    clearError();
+                    handleSubmit();
+                  }}
                   disabled={getShouldDisableButton(values)}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   buttonType={EButtonType.SOLID}
@@ -107,10 +113,10 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         }}
       </Formik>
       <View style={styles.footerContainer}>
-        <Text style={styles.hasAccountText}>Bạn chưa có tài khoản?</Text>
-        <Text style={styles.loginText} onPress={goToRegister}>
+        <CustomText style={styles.hasAccountText}>{t('Bạn chưa có tài khoản?')}</CustomText>
+        <CustomText style={styles.loginText} onPress={goToRegister}>
           {t('Đăng ký.')}
-        </Text>
+        </CustomText>
       </View>
     </SafeAreaView>
   );

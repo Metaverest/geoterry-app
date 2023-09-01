@@ -49,4 +49,5 @@ export const styles = StyleSheet.create({
     marginTop: 16,
     width: '100%',
   },
+  loginButtonCustomContainerStyle: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 },
 });

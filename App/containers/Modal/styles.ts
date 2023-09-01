@@ -3,7 +3,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#00000080',
     height: hp('100'),
     width: wp('100'),
     justifyContent: 'center',

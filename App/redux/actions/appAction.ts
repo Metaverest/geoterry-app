@@ -28,6 +28,12 @@ const reduxAppAction = {
       payload: { error: [error] },
     };
   },
+  clearError: () => {
+    return {
+      type: EReduxAppAction.CLEAR_ERROR,
+      payload: { error: [] },
+    };
+  },
 };
 
 export { reduxAppAction };

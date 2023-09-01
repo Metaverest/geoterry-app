@@ -33,6 +33,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
         ...state,
         error: [...(state.error || []), ...(action.payload?.error || [])],
       };
+    case EReduxAppAction.CLEAR_ERROR:
+      return {
+        ...state,
+        error: [],
+      };
     default:
       return state;
   }

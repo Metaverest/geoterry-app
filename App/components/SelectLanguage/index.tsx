@@ -3,8 +3,9 @@ import ArrowDown from 'App/media/ArrowDown';
 import UsaFlag from 'App/media/UsaFlag';
 import VietnamFlag from 'App/media/VietnamFlag';
 import React, { useCallback, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import CustomText from '../CustomText';
 import { styles } from './styles';
 
 const SelectLanguage = ({
@@ -33,7 +34,7 @@ const SelectLanguage = ({
           }}
           style={styles.itemContainer}>
           <LanguageIcon languageParam={languageParam} />
-          <Text style={styles.itemText}>{languageParam}</Text>
+          <CustomText style={styles.itemText}>{languageParam}</CustomText>
         </TouchableOpacity>
       );
     },

@@ -6,14 +6,15 @@ import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxSelector } from 'App/redux/selectors';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import CustomText from 'App/components/CustomText';
 import SelectLanguage from 'App/components/SelectLanguage';
 import { ENavigationScreen } from 'App/enums/navigation';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const OnboardingScreen = () => {
   const currentLanguageCode = useSelector(reduxSelector.getAppLanguage);
@@ -42,8 +43,10 @@ const OnboardingScreen = () => {
       </View>
       <View style={styles.main}>
         <Image style={styles.image} source={EarthIcon} />
-        <Text style={styles.onBoardingTitle}>Terriana</Text>
-        <Text style={styles.onBoardingSubTitle}>{t('Ready to Explore? Hunt for Treasures in the \n Real World.')}</Text>
+        <CustomText style={styles.onBoardingTitle}>Terriana</CustomText>
+        <CustomText style={styles.onBoardingSubTitle}>
+          {t('Ready to Explore? Hunt for Treasures in the \n Real World.')}
+        </CustomText>
         <View style={styles.createAccountButton}>
           <CustomButton
             buttonType={EButtonType.SOLID}
@@ -56,7 +59,7 @@ const OnboardingScreen = () => {
         <View style={styles.loginButton}>
           <CustomButton
             buttonType={EButtonType.OUTLINE}
-            customStyleContainer={{ borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 }}
+            customStyleContainer={styles.loginButtonCustomContainerStyle}
             title={t('Đăng nhập')}
             onPress={handlePressLogin}
           />

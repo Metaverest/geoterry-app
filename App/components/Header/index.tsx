@@ -1,10 +1,11 @@
 /* eslint-disable react/react-in-jsx-scope */
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import BackIcon from 'App/media/BackIcon';
 import { useCallback } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import CustomText from '../CustomText';
 import { styles } from './styles';
-import { CommonActions, useNavigation } from '@react-navigation/native';
 
 const Header = ({ title }: { title?: string }) => {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ const Header = ({ title }: { title?: string }) => {
       <TouchableOpacity style={styles.backButtonContainer} onPress={handlePressBackButton}>
         <BackIcon />
       </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
+      <CustomText style={styles.title}>{title}</CustomText>
       <TouchableOpacity style={styles.rightButtonContainer} onPress={handlePressBackButton}>
         <></>
       </TouchableOpacity>
