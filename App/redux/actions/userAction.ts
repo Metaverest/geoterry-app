@@ -25,6 +25,12 @@ const sagaUserAction = {
       payload: data,
     };
   },
+  getOTPAsync: (data: ICreateAccountDto, onFailCallback: () => void, onSuccessCallback: () => void) => {
+    return {
+      type: ESagaUserAction.GET_OTP,
+      payload: { data, onFailCallback, onSuccessCallback },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };

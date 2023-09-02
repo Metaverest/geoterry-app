@@ -80,7 +80,7 @@ const OTPScreen = () => {
           disabled={shouldDisableButton}
           linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
           buttonType={EButtonType.SOLID}
-          title="Xác nhận"
+          title={t('Xác nhận')}
         />
       </View>
     </CustomSafeArea>

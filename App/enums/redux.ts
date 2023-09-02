@@ -11,4 +11,5 @@ export enum EReduxAppAction {
 export enum ESagaUserAction {
   CREATE_ACCOUNT = 'CREATE_ACCOUNT',
   LOGIN_ACCOUNT = 'LOGIN_ACCOUNT',
+  GET_OTP = 'GET_OTP',
 }

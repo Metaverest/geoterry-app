@@ -7,6 +7,14 @@ export interface IReduxAction<T, P = undefined> {
   type: T;
   payload?: P;
 }
+export interface IReduxActionWithCallback<T, P = undefined> {
+  type: T;
+  payload?: {
+    data?: P;
+    onFailCallback?: () => void;
+    onSuccessCallback?: () => void;
+  };
+}
 export interface IReduxRootState {
   user: IUser;
   app: IAppState;

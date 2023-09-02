@@ -1,4 +1,4 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from 'App/containers/Login';
 import LoadingModal from 'App/containers/Modal/LoadingModal';
@@ -17,12 +17,13 @@ const Navigation = () => {
   const isLoading = useSelector(reduxSelector.getAppIsLoading);
   useEffect(() => {
     const currentScreen = last(navigation?.getState()?.routes || [])?.name;
+    console.log(isLoading, currentScreen);
     if (isLoading && currentScreen !== ENavigationScreen.LOADING_MODAL) {
-      navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.LOADING_MODAL }));
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     } else if (!isLoading && currentScreen === ENavigationScreen.LOADING_MODAL) {
-      navigation.dispatch(CommonActions.goBack());
+      navigation.dispatch(StackActions.pop());
     }
-  }, [navigation, isLoading]);
+  });
   return (
     <>
       <Stack.Navigator initialRouteName={ENavigationScreen.ONBOARDING_SCREEN}>

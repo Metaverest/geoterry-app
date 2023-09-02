@@ -13,15 +13,15 @@ const AXIOS = axios.create({
   timeout: 60000,
 });
 
-export const requestCreateAccount = (data: ICreateAccountDto) => {
+export const requestCreateAccount = async (data: ICreateAccountDto) => {
   return AXIOS.post('/auth/otp/register', data).then(result => result.data);
 };
 
-export const requestLogin = (data: IAccountLoginDto) => {
+export const requestLogin = async (data: IAccountLoginDto) => {
   return AXIOS.post('/auth/login', data).then(result => result.data);
 };
 
-export const requestGetOTP = (data: ISendAccountVerifyCode) => {
+export const requestGetOTP = async (data: ISendAccountVerifyCode) => {
   return AXIOS.post('/auth/otp/send', data).then(result => result.data);
 };
 

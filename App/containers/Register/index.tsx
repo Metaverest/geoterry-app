@@ -12,8 +12,8 @@ import { ENavigationScreen } from 'App/enums/navigation';
 import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
-import { reduxAppAction } from 'App/redux/actions/appAction';
-import { requestGetOTP } from 'App/utils/axios';
+import { sagaUserAction } from 'App/redux/actions/userAction';
+import { ICreateAccountDto } from 'App/types/redux';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
@@ -53,34 +53,20 @@ const RegisterScreen = () => {
   const navigation = useNavigation();
   const onSubmit = useCallback(
     async (values: IFormValues) => {
-      try {
-        const submitData = {
-          identifier: values.phone,
-          namespace: ENamespace.GEOTERRY_HUNTERS,
-          identifierType: EIdentifierType.PHONE_NUMBER,
-          password: values.password,
-        };
-        dispatch(reduxAppAction.setIsLoading(true));
-        await requestGetOTP({
-          ...submitData,
-          isRecoverPassword: false,
-        });
-        dispatch(reduxAppAction.setIsLoading(false));
-        dispatch(
-          reduxAppAction.setRegisterData({
-            ...submitData,
-          }),
-        );
+      const submitData: Partial<ICreateAccountDto> = {
+        identifier: values.phone,
+        namespace: ENamespace.GEOTERRY_HUNTERS,
+        identifierType: EIdentifierType.PHONE_NUMBER,
+        password: values.password,
+      };
+      const onSuccessCallback = () => {
         navigation.dispatch(
           CommonActions.navigate({
             name: ENavigationScreen.OTP_SCREEN,
           }),
         );
-      } catch (error) {
-        console.log(error);
-        dispatch(reduxAppAction.setIsLoading(false));
-        dispatch(reduxAppAction.mergeError(error?.data));
-      }
+      };
+      dispatch(sagaUserAction.getOTPAsync(submitData as ICreateAccountDto, () => {}, onSuccessCallback));
     },
     [navigation, dispatch],
   );
