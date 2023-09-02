@@ -19,6 +19,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    zIndex: 999,
   },
   onBoardingTitle: {
     fontWeight: '700',

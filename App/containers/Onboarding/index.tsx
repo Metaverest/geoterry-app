@@ -1,5 +1,5 @@
 import CustomButton from 'App/components/Button';
-import { EarthIcon } from 'App/components/image';
+import { EarthIcon, OnboardingBackgroundImage } from 'App/components/image';
 import { EButtonType, ELanguageCode } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { reduxAppAction } from 'App/redux/actions/appAction';
@@ -12,7 +12,7 @@ import SelectLanguage from 'App/components/SelectLanguage';
 import { ENavigationScreen } from 'App/enums/navigation';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
+import { Image, ImageBackground, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
@@ -37,34 +37,36 @@ const OnboardingScreen = () => {
   );
   const { t } = useTranslation();
   return (
-    <CustomSafeArea style={styles.container}>
-      <View style={styles.header}>
-        <SelectLanguage language={currentLanguageCode as ELanguageCode} setLanguage={setLanguage} />
-      </View>
-      <View style={styles.main}>
-        <Image style={styles.image} source={EarthIcon} />
-        <CustomText style={styles.onBoardingTitle}>Terriana</CustomText>
-        <CustomText style={styles.onBoardingSubTitle}>
-          {t('Ready to Explore? Hunt for Treasures in the \n Real World.')}
-        </CustomText>
-        <View style={styles.createAccountButton}>
-          <CustomButton
-            buttonType={EButtonType.SOLID}
-            title={t('Tạo tài khoản')}
-            linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-            onPress={handlePressCreateAccount}
-          />
+    <CustomSafeArea style={styles.container} isOnboardingScreen>
+      <ImageBackground source={OnboardingBackgroundImage}>
+        <View style={styles.header}>
+          <SelectLanguage language={currentLanguageCode as ELanguageCode} setLanguage={setLanguage} />
         </View>
+        <View style={styles.main}>
+          <Image style={styles.image} source={EarthIcon} />
+          <CustomText style={styles.onBoardingTitle}>Terriana</CustomText>
+          <CustomText style={styles.onBoardingSubTitle}>
+            {t('Ready to Explore? Hunt for Treasures in the \n Real World.')}
+          </CustomText>
+          <View style={styles.createAccountButton}>
+            <CustomButton
+              buttonType={EButtonType.SOLID}
+              title={t('Tạo tài khoản')}
+              linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+              onPress={handlePressCreateAccount}
+            />
+          </View>
 
-        <View style={styles.loginButton}>
-          <CustomButton
-            buttonType={EButtonType.OUTLINE}
-            customStyleContainer={styles.loginButtonCustomContainerStyle}
-            title={t('Đăng nhập')}
-            onPress={handlePressLogin}
-          />
+          <View style={styles.loginButton}>
+            <CustomButton
+              buttonType={EButtonType.OUTLINE}
+              customStyleContainer={styles.loginButtonCustomContainerStyle}
+              title={t('Đăng nhập')}
+              onPress={handlePressLogin}
+            />
+          </View>
         </View>
-      </View>
+      </ImageBackground>
     </CustomSafeArea>
   );
 };

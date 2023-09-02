@@ -6,12 +6,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 4,
     backgroundColor: EColor.color_00000080,
+    borderRadius: 2,
   },
   selectedLanguageContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 2,
   },
   dropdownContainer: {
     position: 'absolute',

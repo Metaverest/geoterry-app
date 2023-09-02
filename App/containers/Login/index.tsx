@@ -1,6 +1,6 @@
 import CustomButton from 'App/components/Button';
 import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword';
-import CustomInput from 'App/components/CustomInput/index';
+import CustomInputPhoneNumber from 'App/components/CustomInput/CustomInputPhoneNumber';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
@@ -9,8 +9,10 @@ import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
 import useClearError from 'App/hooks/useClearError';
+import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
+import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isArray, isEmpty, isString, last } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
@@ -33,7 +35,9 @@ const initialValues: IFormValues = {
 
 const getValidateSchema = (t: (e: string) => string) => {
   return Yup.object().shape({
-    phone: Yup.string().required(t('Số điện thoại không được để trống')),
+    phone: Yup.string()
+      .required(t('Số điện thoại không được để trống'))
+      .test('is-valid-phone', t('Số điện thoại không hợp lệ'), value => isValidPhoneNumber(value)),
     password: Yup.string().required(t('Mật khẩu không được để trống')),
   });
 };
@@ -75,6 +79,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   }, []);
   const { t } = useTranslation();
   const clearError = useClearError();
+  const defaultPhonePrefix = useGetPrefixPhone();
   return (
     <CustomSafeArea style={styles.container}>
       <Header />
@@ -89,10 +94,11 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           return (
             <>
               <View style={styles.phoneInputContainer}>
-                <CustomInput
+                <CustomInputPhoneNumber
                   error={shouldDisplayError ? errors.phone : ''}
                   onChangeText={text => setFieldValue('phone', text, true)}
-                  placeholder={t('+84  | Số điện thoại')}
+                  defaultPrefix={defaultPhonePrefix}
+                  placeholder={t('Số điện thoại')}
                 />
               </View>
               <View style={styles.passwordInputContainer}>
@@ -114,7 +120,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                   disabled={getShouldDisableButton(values)}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   buttonType={EButtonType.SOLID}
-                  title={t('Login')}
+                  title={t('Đăng nhập')}
                 />
               </View>
             </>

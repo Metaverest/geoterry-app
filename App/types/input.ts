@@ -2,6 +2,7 @@ import { KeyboardTypeOptions } from 'react-native';
 import { ReturnKeyTypeOptions } from 'react-native';
 
 export interface IInputProps {
+  defaultPrefix?: string;
   placeholder?: string;
   value?: string;
   helperText?: string;

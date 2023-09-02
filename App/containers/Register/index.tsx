@@ -1,7 +1,8 @@
+/* eslint-disable no-catch-shadow */
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword';
-import CustomInput from 'App/components/CustomInput/index';
+import CustomInputPhoneNumber from 'App/components/CustomInput/CustomInputPhoneNumber';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
@@ -10,17 +11,19 @@ import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
 import useClearError from 'App/hooks/useClearError';
+import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { requestGetOTP } from 'App/utils/axios';
+import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
-import { isEmpty } from 'lodash';
-import React, { useCallback } from 'react';
+import { isArray, isEmpty, isString, last } from 'lodash';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import { reduxSelector } from 'App/redux/selectors';
 
 interface IFormValues {
   password: string;
@@ -36,7 +39,9 @@ const initialValues: IFormValues = {
 
 const getValidateSchema = (t: (e: string) => string) => {
   return Yup.object().shape({
-    phone: Yup.string().required(t('Số điện thoại không được để trống')),
+    phone: Yup.string()
+      .required(t('Số điện thoại không được để trống'))
+      .test('is-valid-phone', t('Số điện thoại không hợp lệ'), value => isValidPhoneNumber(value)),
     password: Yup.string().required(t('Mật khẩu không được để trống')).min(8, 'Mật khẩu quá ngắn!'),
     confirmPassword: Yup.string()
       .required(t('Nhập lại mật khẩu không được để trống'))
@@ -56,6 +61,7 @@ const RegisterScreen = () => {
           identifierType: EIdentifierType.PHONE_NUMBER,
           password: values.password,
         };
+        dispatch(reduxAppAction.setIsLoading(true));
         await requestGetOTP({
           ...submitData,
           isRecoverPassword: false,
@@ -70,8 +76,11 @@ const RegisterScreen = () => {
             name: ENavigationScreen.OTP_SCREEN,
           }),
         );
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        console.log(error);
+        dispatch(reduxAppAction.mergeError(error?.data));
+      } finally {
+        dispatch(reduxAppAction.setIsLoading(false));
       }
     },
     [navigation, dispatch],
@@ -86,8 +95,18 @@ const RegisterScreen = () => {
 
   const { t } = useTranslation();
   const clearError = useClearError();
-  const insets = useSafeAreaInsets();
-  console.log(insets);
+
+  const error = useSelector(reduxSelector.getAppError);
+  const errorText = useMemo(() => {
+    const lastError = last(error);
+    if (isString(lastError?.message)) {
+      return lastError?.message;
+    } else if (isArray(lastError?.message)) {
+      return last(lastError?.message);
+    }
+  }, [error]);
+
+  const defaultPhonePrefix = useGetPrefixPhone();
   return (
     <CustomSafeArea style={styles.container}>
       <Header />
@@ -102,10 +121,11 @@ const RegisterScreen = () => {
           return (
             <>
               <View style={styles.phoneInputContainer}>
-                <CustomInput
+                <CustomInputPhoneNumber
+                  defaultPrefix={defaultPhonePrefix}
                   error={shouldDisplayError ? errors.phone : ''}
                   onChangeText={text => setFieldValue('phone', text, true)}
-                  placeholder={t('+84  | Số điện thoại')}
+                  placeholder={t('Số điện thoại')}
                 />
               </View>
               <View style={styles.passwordInputContainer}>
@@ -119,7 +139,7 @@ const RegisterScreen = () => {
               </View>
               <View style={styles.passwordInputContainer}>
                 <CustomInputPassword
-                  error={shouldDisplayError ? errors.confirmPassword : ''}
+                  error={shouldDisplayError ? errors.confirmPassword || errorText : ''}
                   onChangeText={text => setFieldValue('confirmPassword', text, true)}
                   placeholder={t('Nhập lại mật khẩu')}
                 />
