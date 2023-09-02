@@ -1,25 +1,48 @@
-import React from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationScreenEnum } from './types';
-import HomeScreenScreen from 'App/Containers/Home';
-import OnboardingScreen from 'App/Containers/Onboarding';
-
+import LoginScreen from 'App/containers/Login';
+import LoadingModal from 'App/containers/Modal/LoadingModal';
+import OTPScreen from 'App/containers/OTP';
+import OnboardingScreen from 'App/containers/Onboarding';
+import RegisterScreen from 'App/containers/Register';
+import { ENavigationScreen } from 'App/enums/navigation';
+import { reduxSelector } from 'App/redux/selectors';
+import { last } from 'lodash';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 export const navigationRef = React.createRef<any>();
-
 const Stack = createStackNavigator();
 const Navigation = () => {
+  const navigation = useNavigation();
+  const isLoading = useSelector(reduxSelector.getAppIsLoading);
+  useEffect(() => {
+    const currentScreen = last(navigation?.getState()?.routes || [])?.name;
+    console.log(isLoading, currentScreen);
+    if (isLoading && currentScreen !== ENavigationScreen.LOADING_MODAL) {
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    } else if (!isLoading && currentScreen === ENavigationScreen.LOADING_MODAL) {
+      navigation.dispatch(StackActions.pop());
+    }
+  });
   return (
     <>
-      <Stack.Navigator initialRouteName={NavigationScreenEnum.HomeScreen}>
+      <Stack.Navigator initialRouteName={ENavigationScreen.ONBOARDING_SCREEN}>
         <Stack.Screen
-          name={NavigationScreenEnum.HomeScreen}
-          component={HomeScreenScreen}
+          name={ENavigationScreen.ONBOARDING_SCREEN}
+          component={OnboardingScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={NavigationScreenEnum.OnboardingScreen}
-          component={OnboardingScreen}
+          name={ENavigationScreen.REGISTER_SCREEN}
+          component={RegisterScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen name={ENavigationScreen.LOGIN_SCREEN} component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name={ENavigationScreen.OTP_SCREEN} component={OTPScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name={ENavigationScreen.LOADING_MODAL}
+          component={LoadingModal}
+          options={{ headerShown: false, presentation: 'transparentModal' }}
         />
       </Stack.Navigator>
     </>

@@ -1,0 +1,15 @@
+export enum EReduxUserAction {
+  SET_USER = 'SET_USER',
+}
+export enum EReduxAppAction {
+  SET_LANGUAGE_CODE = 'SET_LANGUAGE_CODE',
+  SET_REGISTER_DATA = 'SET_REGISTER_DATA',
+  SET_IS_LOADING = 'SET_IS_LOADING',
+  MERGE_ERROR = 'MERGE_ERROR',
+  CLEAR_ERROR = 'CLEAR_ERROR',
+}
+export enum ESagaUserAction {
+  CREATE_ACCOUNT = 'CREATE_ACCOUNT',
+  LOGIN_ACCOUNT = 'LOGIN_ACCOUNT',
+  GET_OTP = 'GET_OTP',
+}

@@ -3,8 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import Config from 'react-native-config';
 import { getDefaultLanguageCode } from './localize';
 import { getStoredProperty } from '../storage/storage';
-import { EDataStorageKey } from '../storage/keys';
-import { ELanguageCode } from '../../Types/common';
+import { EDataStorageKey, ELanguageCode } from 'App/enums';
 
 const languageDetector: any = {
   type: 'languageDetector',
@@ -30,7 +29,7 @@ const setupI18N = () => {
       compatibilityJSON: 'v3',
       fallbackLng: ELanguageCode.VIETNAMESE,
       resources: {
-        [ELanguageCode.ENGLISH]: {
+        [ELanguageCode.US]: {
           common: require('./locales/en.json'),
         },
         [ELanguageCode.VIETNAMESE]: {

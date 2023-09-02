@@ -1,32 +1,20 @@
-import { EActionType } from 'App/Types/redux/enums';
-import { AnyAction, applyMiddleware, combineReducers, legacy_createStore as createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import { RootStateType } from 'App/Types/redux/store';
-import { asyncTaskReducer, initialAsyncTaskState } from './reducers/asyncTaskReducer';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import rootSaga from 'App/saga';
+import createSagaMiddleware from 'redux-saga';
+import { appReducer } from './reducers/appReducer';
+import { userReducer } from './reducers/userReducer';
 
-export const initialRootState: RootStateType = {
-  asyncTaskReducer: initialAsyncTaskState,
-};
+const rootReducer = combineReducers({
+  user: userReducer,
+  app: appReducer,
+});
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [sagaMiddleware];
+const store = configureStore({
+  reducer: rootReducer,
+  middleware,
+});
+sagaMiddleware.run(rootSaga);
+// then run the saga
 
-export default function configureStore(preloadedState: RootStateType = initialRootState) {
-  const middlewares = [thunk];
-  const middlewareEnhancer = applyMiddleware(...middlewares);
-
-  const enhancers = [middlewareEnhancer];
-
-  // TODO: configure to turn off redux dev tools in production env
-  const composedEnhancers = composeWithDevTools(...enhancers);
-
-  const appReducer = combineReducers<RootStateType>({
-    asyncTaskReducer,
-  });
-
-  // Reset state after logout
-  const rootReducer = (state: RootStateType, action: AnyAction) => {
-    return action.type === EActionType.LOGOUT ? initialRootState : appReducer(state, action);
-  };
-
-  // @ts-ignore
-  return createStore(rootReducer, preloadedState, composedEnhancers);
-}
+export default store;
