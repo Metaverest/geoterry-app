@@ -9,17 +9,17 @@ import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
 import useClearError from 'App/hooks/useClearError';
+import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
 import { sagaUserAction } from 'App/redux/actions/userAction';
-import { reduxSelector } from 'App/redux/selectors';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
-import { isArray, isEmpty, isString, last } from 'lodash';
-import React, { useCallback, useMemo } from 'react';
+import { isEmpty } from 'lodash';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
 
@@ -44,15 +44,7 @@ const getValidateSchema = (t: (e: string) => string) => {
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
-  const error = useSelector(reduxSelector.getAppError);
-  const errorText = useMemo(() => {
-    const lastError = last(error);
-    if (isString(lastError?.message)) {
-      return lastError?.message;
-    } else if (isArray(lastError?.message)) {
-      return last(lastError?.message);
-    }
-  }, [error]);
+  const errorText = useGetErrorText();
   const onSubmit = useCallback(
     async (values: IFormValues) => {
       if (isEmpty(values?.phone) || isEmpty(values?.password)) {

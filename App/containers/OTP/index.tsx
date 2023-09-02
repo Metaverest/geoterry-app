@@ -4,11 +4,14 @@ import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
+import useClearError from 'App/hooks/useClearError';
+import useGetErrorText from 'App/hooks/useGetErrorText';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { ICreateAccountDto } from 'App/types/redux';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPTextInput from 'react-native-otp-textinput';
@@ -30,7 +33,6 @@ const OTPScreen = () => {
     };
   }, [seconds]);
   const [otp, setOtp] = useState('');
-  const [error] = useState('');
   const registerData = useSelector(reduxSelector.getAppRegisterData);
 
   const submit = useCallback(() => {
@@ -45,28 +47,33 @@ const OTPScreen = () => {
   const shouldDisableButton = useMemo(() => {
     return isEmpty(otp) || otp.length !== 4;
   }, [otp]);
-
+  const { t } = useTranslation();
+  const errorText = useGetErrorText();
+  const clearError = useClearError();
   return (
     <CustomSafeArea style={styles.container}>
       <Header title="Xác thực OTP" />
-      <CustomText style={styles.otpNotificationText}>Mã OTP đã được gửi về số điện thoại của bạn</CustomText>
+      <CustomText style={styles.otpNotificationText}>{t('Mã OTP đã được gửi về số điện thoại của bạn')}</CustomText>
       <View style={styles.otpContainer}>
         <OTPTextInput
-          handleTextChange={setOtp}
+          handleTextChange={text => {
+            clearError();
+            setOtp(text);
+          }}
           tintColor={EColor.color_FAFAFA}
           offTintColor={'transparent'}
           textInputStyle={styles.otpCell}
         />
       </View>
-      {isEmpty(error) && seconds === 0 && (
+      {isEmpty(errorText) && seconds === 0 && (
         <TouchableOpacity style={styles.otpResendButtonContainer}>
           <CustomText style={styles.otpResendButtonText}>Gửi lại mã OTP</CustomText>
         </TouchableOpacity>
       )}
-      {isEmpty(error) && seconds !== 0 && (
+      {isEmpty(errorText) && seconds !== 0 && (
         <CustomText style={styles.otpResendAfterButtonText}>{`Gửi lại sau ${seconds}s`}</CustomText>
       )}
-      {!isEmpty(error) && <CustomText style={styles.otpErrorText}>{error}</CustomText>}
+      {!isEmpty(errorText) && <CustomText style={styles.otpErrorText}>{errorText}</CustomText>}
       <View style={styles.buttonContainer}>
         <CustomButton
           onPress={submit}
