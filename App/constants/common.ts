@@ -6,6 +6,6 @@ export const LOCATION_DELTA = {
   longitudeDelta: 0.0203,
 };
 
-export const DEFAULT_PREFIX = '+84';
+export const DEFAULT_PHONE_NUM_PREFIX = '+84';
 
 export const DEFAULT_USER_MARK_POINT_ANIMATION_DURATION = 1000;

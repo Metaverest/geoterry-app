@@ -1,4 +1,4 @@
-import { DEFAULT_PREFIX } from 'App/constants/common';
+import { DEFAULT_PHONE_NUM_PREFIX } from 'App/constants/common';
 import countryTelephoneData from 'country-telephone-data';
 import { lowerCase } from 'lodash';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ const useGetPrefixPhone = () => {
     const countryData = countryTelephoneData.allCountries.find(country => country.iso2 === lowerCase(countryCode));
 
     // Get the default phone prefix based on the user's country
-    const defaultPhonePrefix = countryData?.dialCode || DEFAULT_PREFIX; // Replace XX with a default prefix
+    const defaultPhonePrefix = countryData?.dialCode || DEFAULT_PHONE_NUM_PREFIX; // Replace XX with a default prefix
 
     setDefaultPrefix(`+${defaultPhonePrefix}`);
   }, []);
