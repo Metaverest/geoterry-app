@@ -6,13 +6,13 @@ import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxSelector } from 'App/redux/selectors';
 
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import SelectLanguage from 'App/components/SelectLanguage';
 import { ENavigationScreen } from 'App/enums/navigation';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
@@ -37,7 +37,7 @@ const OnboardingScreen = () => {
   );
   const { t } = useTranslation();
   return (
-    <SafeAreaView style={styles.container}>
+    <CustomSafeArea style={styles.container}>
       <View style={styles.header}>
         <SelectLanguage language={currentLanguageCode as ELanguageCode} setLanguage={setLanguage} />
       </View>
@@ -65,7 +65,7 @@ const OnboardingScreen = () => {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 

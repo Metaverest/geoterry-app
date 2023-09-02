@@ -2,6 +2,8 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword';
 import CustomInput from 'App/components/CustomInput/index';
+import CustomSafeArea from 'App/components/CustomSafeArea';
+import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
@@ -15,11 +17,10 @@ import { isEmpty } from 'lodash';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
-import CustomText from 'App/components/CustomText';
 
 interface IFormValues {
   password: string;
@@ -34,7 +35,7 @@ const initialValues: IFormValues = {
 };
 
 const getValidateSchema = (t: (e: string) => string) => {
-  Yup.object().shape({
+  return Yup.object().shape({
     phone: Yup.string().required(t('Số điện thoại không được để trống')),
     password: Yup.string().required(t('Mật khẩu không được để trống')).min(8, 'Mật khẩu quá ngắn!'),
     confirmPassword: Yup.string()
@@ -85,8 +86,10 @@ const RegisterScreen = () => {
 
   const { t } = useTranslation();
   const clearError = useClearError();
+  const insets = useSafeAreaInsets();
+  console.log(insets);
   return (
-    <SafeAreaView style={styles.container}>
+    <CustomSafeArea style={styles.container}>
       <Header />
       <Image style={styles.image} source={EarthIcon} />
       <CustomText style={styles.createAccountTitle}>Tạo tài khoản</CustomText>
@@ -129,7 +132,7 @@ const RegisterScreen = () => {
                   }}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   buttonType={EButtonType.SOLID}
-                  title={t('Login')}
+                  title={t('Tạo tài khoản')}
                   disabled={getShouldDisableButton(values)}
                 />
               </View>
@@ -143,7 +146,7 @@ const RegisterScreen = () => {
           {t('Đăng nhập.')}
         </CustomText>
       </View>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 

@@ -1,6 +1,7 @@
 import CustomButton from 'App/components/Button';
 import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword';
 import CustomInput from 'App/components/CustomInput/index';
+import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { EarthIcon } from 'App/components/image';
@@ -16,8 +17,8 @@ import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
 import { styles } from './styles';
 
 interface IFormValues {
@@ -29,6 +30,14 @@ const initialValues: IFormValues = {
   phone: '',
   password: '',
 };
+
+const getValidateSchema = (t: (e: string) => string) => {
+  return Yup.object().shape({
+    phone: Yup.string().required(t('Số điện thoại không được để trống')),
+    password: Yup.string().required(t('Mật khẩu không được để trống')),
+  });
+};
+
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
   const error = useSelector(reduxSelector.getAppError);
@@ -67,14 +76,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
   const clearError = useClearError();
   return (
-    <SafeAreaView style={styles.container}>
+    <CustomSafeArea style={styles.container}>
       <Header />
       <Image style={styles.image} source={EarthIcon} />
       <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
       <CustomText style={styles.createAccountSubTitle}>
         {t('Chào mừng bạn đã quay trở lại, Terriana đã nhớ bạn rất nhiều.')}
       </CustomText>
-      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+      <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ handleSubmit, values, submitCount, setFieldValue, errors }) => {
           const shouldDisplayError = submitCount > 0;
           return (
@@ -118,7 +127,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           {t('Đăng ký.')}
         </CustomText>
       </View>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 

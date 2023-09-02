@@ -1,13 +1,10 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: EColor.color_171717,
-    height: hp('100'),
-    width: wp('100'),
-
+    flex: 1,
     paddingHorizontal: 16,
   },
   image: {

@@ -1,4 +1,5 @@
 import CustomButton from 'App/components/Button';
+import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
@@ -11,7 +12,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPTextInput from 'react-native-otp-textinput';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
@@ -47,7 +47,7 @@ const OTPScreen = () => {
   }, [otp]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <CustomSafeArea style={styles.container}>
       <Header title="Xác thực OTP" />
       <CustomText style={styles.otpNotificationText}>Mã OTP đã được gửi về số điện thoại của bạn</CustomText>
       <View style={styles.otpContainer}>
@@ -76,7 +76,7 @@ const OTPScreen = () => {
           title="Xác nhận"
         />
       </View>
-    </SafeAreaView>
+    </CustomSafeArea>
   );
 };
 
