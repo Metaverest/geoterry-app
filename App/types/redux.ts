@@ -7,12 +7,11 @@ export interface IReduxAction<T, P = undefined> {
   type: T;
   payload?: P;
 }
-export interface IReduxActionWithCallback<T, P = undefined> {
+export interface IReduxActionWithNavigation<T, P = undefined> {
   type: T;
   payload?: {
     data?: P;
-    onFailCallback?: () => void;
-    onSuccessCallback?: () => void;
+    navigation: any;
   };
 }
 export interface IReduxRootState {

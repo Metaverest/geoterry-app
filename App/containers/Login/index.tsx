@@ -51,15 +51,18 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         return;
       }
       dispatch(
-        sagaUserAction.loginAsync({
-          identifier: values?.phone as string,
-          password: values?.password as string,
-          namespace: ENamespace.GEOTERRY_HUNTERS,
-          identifierType: EIdentifierType.PHONE_NUMBER,
-        }),
+        sagaUserAction.loginAsync(
+          {
+            identifier: values?.phone as string,
+            password: values?.password as string,
+            namespace: ENamespace.GEOTERRY_HUNTERS,
+            identifierType: EIdentifierType.PHONE_NUMBER,
+          },
+          navigation,
+        ),
       );
     },
-    [dispatch],
+    [dispatch, navigation],
   );
 
   const goToRegister = useCallback(() => {

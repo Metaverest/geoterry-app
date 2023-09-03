@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core';
 import CustomButton from 'App/components/Button';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
@@ -21,6 +22,7 @@ import { styles } from './styles';
 const OTPScreen = () => {
   const dispatch = useDispatch();
   const [seconds, setSeconds] = useState(60);
+  const navigation = useNavigation();
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
@@ -42,8 +44,8 @@ const OTPScreen = () => {
       identifierType: EIdentifierType.PHONE_NUMBER,
       namespace: ENamespace.GEOTERRY_HUNTERS,
     };
-    dispatch(sagaUserAction.createAccountAsync(submitData as ICreateAccountDto));
-  }, [dispatch, otp, registerData]);
+    dispatch(sagaUserAction.createAccountAsync(submitData as ICreateAccountDto, navigation));
+  }, [dispatch, otp, registerData, navigation]);
   const shouldDisableButton = useMemo(() => {
     return isEmpty(otp) || otp.length !== 4;
   }, [otp]);

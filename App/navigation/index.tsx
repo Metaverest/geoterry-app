@@ -1,4 +1,3 @@
-import { StackActions, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from 'App/containers/Login';
 import LoadingModal from 'App/containers/Modal/LoadingModal';
@@ -6,24 +5,10 @@ import OTPScreen from 'App/containers/OTP';
 import OnboardingScreen from 'App/containers/Onboarding';
 import RegisterScreen from 'App/containers/Register';
 import { ENavigationScreen } from 'App/enums/navigation';
-import { reduxSelector } from 'App/redux/selectors';
-import { last } from 'lodash';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 export const navigationRef = React.createRef<any>();
 const Stack = createStackNavigator();
 const Navigation = () => {
-  const navigation = useNavigation();
-  const isLoading = useSelector(reduxSelector.getAppIsLoading);
-  useEffect(() => {
-    const currentScreen = last(navigation?.getState()?.routes || [])?.name;
-    console.log(isLoading, currentScreen);
-    if (isLoading && currentScreen !== ENavigationScreen.LOADING_MODAL) {
-      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    } else if (!isLoading && currentScreen === ENavigationScreen.LOADING_MODAL) {
-      navigation.dispatch(StackActions.pop());
-    }
-  });
   return (
     <>
       <Stack.Navigator initialRouteName={ENavigationScreen.ONBOARDING_SCREEN}>

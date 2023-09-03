@@ -13,22 +13,22 @@ const reduxUserAction = {
 };
 
 const sagaUserAction = {
-  createAccountAsync: (data: ICreateAccountDto): PayloadAction<ICreateAccountDto> => {
+  createAccountAsync: (data: ICreateAccountDto, navigation: any) => {
     return {
       type: ESagaUserAction.CREATE_ACCOUNT,
-      payload: data,
+      payload: { data, navigation },
     };
   },
-  loginAsync: (data: IAccountLoginDto): PayloadAction<IAccountLoginDto> => {
+  loginAsync: (data: IAccountLoginDto, navigation: any) => {
     return {
       type: ESagaUserAction.LOGIN_ACCOUNT,
-      payload: data,
+      payload: { data, navigation },
     };
   },
-  getOTPAsync: (data: ICreateAccountDto, onFailCallback: () => void, onSuccessCallback: () => void) => {
+  getOTPAsync: (data: ICreateAccountDto, navigation: any) => {
     return {
       type: ESagaUserAction.GET_OTP,
-      payload: { data, onFailCallback, onSuccessCallback },
+      payload: { data, navigation },
     };
   },
 };
