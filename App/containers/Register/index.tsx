@@ -59,14 +59,8 @@ const RegisterScreen = () => {
         identifierType: EIdentifierType.PHONE_NUMBER,
         password: values.password,
       };
-      const onSuccessCallback = () => {
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: ENavigationScreen.OTP_SCREEN,
-          }),
-        );
-      };
-      dispatch(sagaUserAction.getOTPAsync(submitData as ICreateAccountDto, () => {}, onSuccessCallback));
+
+      dispatch(sagaUserAction.getOTPAsync(submitData as ICreateAccountDto, navigation));
     },
     [navigation, dispatch],
   );
