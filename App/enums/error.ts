@@ -16,3 +16,7 @@ export enum EErrorCode {
   INVALID_TERRY = 'GEO_TERRY_ERROR_0014',
   OUT_OF_DISTANCE = 'GEO_TERRY_ERROR_0015',
 }
+
+export enum EStatusCode {
+  FORBIDEN = 403,
+}

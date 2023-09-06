@@ -1,11 +1,19 @@
 import { StackActions } from '@react-navigation/routers';
-import { EIdentifierType, ENamespace } from 'App/enums';
+import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { IError } from 'App/types/error';
 import { IAccountLoginDto, ICreateAccountDto, IReduxActionWithNavigation } from 'App/types/redux';
-import { requestCreateAccount, requestGetOTP, requestLogin } from 'App/utils/axios';
+import { CommonActions } from '@react-navigation/native';
+import { IAccountResponseDto } from 'App/types/user';
+import AXIOS, {
+  requestCreateAccount,
+  requestGetOTP,
+  requestLogin,
+  setAuthorizationRequestHeader,
+} from 'App/utils/axios';
+import { setPropertyInDevice } from 'App/utils/storage/storage';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
@@ -34,15 +42,20 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     yield put(reduxAppAction.setIsLoading(true));
-    const response = yield call(requestLogin, data as IAccountLoginDto);
-    console.log('Login successfull');
+    const response: IAccountResponseDto = yield call(requestLogin, data as IAccountLoginDto);
     console.log(response);
-  } catch (error) {
-    console.log(error?.data);
-    yield put(reduxAppAction.mergeError(error?.data as IError));
-  } finally {
+    yield call(setPropertyInDevice, EDataStorageKey.ACCESS_TOKEN, response?.credentials?.token);
+    yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
+    yield call(setAuthorizationRequestHeader, AXIOS);
+    console.log('Login successfull');
     yield put(reduxAppAction.setIsLoading(false));
     navigation.dispatch(StackActions.pop());
+    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.HOME_SCREEN }));
+  } catch (error) {
+    console.log(error?.data);
+    yield put(reduxAppAction.setIsLoading(false));
+    navigation.dispatch(StackActions.pop());
+    yield put(reduxAppAction.mergeError(error?.data as IError));
   }
 }
 
