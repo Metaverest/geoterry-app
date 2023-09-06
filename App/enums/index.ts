@@ -6,6 +6,7 @@ export enum ELanguageCode {
 export enum EDataStorageKey {
   LANGUAGE = 'LOCAL LANGUAGE',
   ACCESS_TOKEN = 'ACCESS TOKEN',
+  REFRESH_TOKEN = 'REFRESH TOKEN',
 }
 
 export enum ENamespace {
