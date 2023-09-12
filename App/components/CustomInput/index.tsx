@@ -25,7 +25,7 @@ const CustomInput = (props: IInputProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.textInputContainer}>
-        <TextInput placeholderTextColor={EColor.color_CCCCCC} style={styles.input} {...props} />
+        <TextInput placeholderTextColor={EColor.color_666666} style={styles.input} {...props} />
         <ButtonIcon />
       </View>
       <Subtext />

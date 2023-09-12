@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
     width: wp('100'),
     height: 52,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
     top: 0,
@@ -15,7 +15,8 @@ export const styles = StyleSheet.create({
     elevation: 9999,
   },
   backButtonContainer: {
-    width: wp('10'),
+    zIndex: 10,
+    elevation: 10,
   },
   title: {
     flexGrow: 1,
@@ -23,10 +24,16 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 24,
     color: EColor.white,
-
     textAlign: 'center',
+    width: '100%',
+    position: 'absolute',
+    left: 16,
+    zIndex: -1,
+    elevation: -1,
   },
   rightButtonContainer: {
-    width: wp('10'),
+    alignSelf: 'center',
+    zIndex: 10,
+    elevation: 10,
   },
 });

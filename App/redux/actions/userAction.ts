@@ -31,6 +31,24 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
+  createProfileAsync: (navigation: any) => {
+    return {
+      type: ESagaUserAction.CREATE_PROFILE,
+      payload: { navigation },
+    };
+  },
+  handleSubmitDisplayNameAsync: (data: string, navigation: any) => {
+    return {
+      type: ESagaUserAction.HANDLE_SUBMIT_DISPLAY_NAME,
+      payload: { data, navigation },
+    };
+  },
+  uploadAvatarProfileAsync: (data: any, navigation: any) => {
+    return {
+      type: ESagaUserAction.UPLOAD_AVATAR_PROFILE,
+      payload: { data, navigation },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };

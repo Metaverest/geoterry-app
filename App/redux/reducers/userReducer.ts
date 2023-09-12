@@ -3,7 +3,7 @@ import { IReduxAction } from 'App/types/redux';
 import { IUser } from 'App/types/user';
 
 const defaultUserState: IUser = {
-  displayName: 'trung',
+  displayName: '',
 };
 const userReducer = (state = defaultUserState, action: IReduxAction<EReduxUserAction, IUser>) => {
   switch (action.type) {
