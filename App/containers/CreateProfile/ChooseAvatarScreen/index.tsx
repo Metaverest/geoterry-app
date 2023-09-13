@@ -7,19 +7,24 @@ import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import AvatarIcon from 'App/media/AvatarIcon';
 import { sagaUserAction } from 'App/redux/actions/userAction';
-import { head } from 'lodash';
-import React, { useCallback } from 'react';
+import { reduxSelector } from 'App/redux/selectors';
+import { head, isEmpty } from 'lodash';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
 const ChooseAvatarScreen = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const user = useSelector(reduxSelector.getUser);
+  const userAvatar = useMemo(() => {
+    return user.logoUrl;
+  }, [user?.logoUrl]);
   const handlePressSkip = useCallback(async () => {
     dispatch(sagaUserAction.createProfileAsync(navigation));
   }, [dispatch, navigation]);
@@ -27,11 +32,11 @@ const ChooseAvatarScreen = () => {
     return (
       <TouchableOpacity onPress={handlePressSkip}>
         <CustomText numberOfLines={1} style={styles.skipText}>
-          {t('Bỏ qua')}
+          {isEmpty(userAvatar) ? t('Bỏ qua') : t('Tiếp tục')}
         </CustomText>
       </TouchableOpacity>
     );
-  }, [t, handlePressSkip]);
+  }, [t, handlePressSkip, userAvatar]);
   const openCamera = useCallback(async () => {
     const response: ImagePickerResponse = await launchCamera({});
     if (response.assets) {
@@ -45,12 +50,13 @@ const ChooseAvatarScreen = () => {
       dispatch(sagaUserAction.uploadAvatarProfileAsync(head(response.assets), navigation));
     }
   }, [dispatch, navigation]);
+
   return (
     <CustomSafeArea style={styles.container}>
       <Header rightButton={<RightButton />} />
       <CustomText style={styles.uploadAvatarTitle}>{t('Tải lên ảnh đại diện')}</CustomText>
       <View style={styles.avatarIconContainer}>
-        <AvatarIcon />
+        {userAvatar ? <Image resizeMode="contain" source={{ uri: userAvatar }} style={styles.image} /> : <AvatarIcon />}
       </View>
       <View style={styles.groupButtonContainer}>
         <View style={styles.buttonContainer}>

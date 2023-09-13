@@ -4,7 +4,7 @@ import { IAccountLoginDto, ICreateAccountDto } from 'App/types/redux';
 import { IUser } from 'App/types/user';
 
 const reduxUserAction = {
-  setUser: (user: IUser): PayloadAction<IUser> => {
+  setUser: (user: Partial<IUser>): PayloadAction<Partial<IUser>> => {
     return {
       type: EReduxUserAction.SET_USER,
       payload: user,

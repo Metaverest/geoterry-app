@@ -45,5 +45,10 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 24,
   },
+  image: {
+    width: 148,
+    height: 148,
+    borderRadius: 74,
+  },
   customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 },
 });

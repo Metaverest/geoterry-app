@@ -119,6 +119,7 @@ function* handleSubmitDisplayName(action: IReduxActionWithNavigation<ESagaUserAc
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     yield setPropertyInDevice(EDataStorageKey.DISPLAY_NAME_TO_CREATE_PROFILE, data);
+    yield put(reduxUserAction.setUser({ displayName: data }));
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
@@ -145,11 +146,14 @@ function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction
     const response: IUploadProfileResDto = yield call(requestUploadProfileImage, data);
 
     yield setPropertyInDevice(EDataStorageKey.AVATAR_TO_CREATE_PROFILE, response?.photoUrl);
+    yield put(reduxUserAction.setUser({ logoUrl: response?.photoUrl }));
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
     }
   } catch (error) {
+    console.log('***************');
+    console.log(error.response);
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
     const navigator = navigation.getParent();
