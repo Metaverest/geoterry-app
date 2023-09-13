@@ -26,6 +26,10 @@
 	<string>Geoterry uses this to show your current location on our map</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Geoterry uses this to show your current location on our map</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Your description for camera access</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your description for photo library access</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -76,9 +80,5 @@
 		<string>Montserrat-Thin.ttf</string>
 		<string>Montserrat-ThinItalic.ttf</string>
 	</array>
-	<key>NSCameraUsageDescription</key>
-	<string>Your description for camera access</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Your description for photo library access</string>
 </dict>
 </plist>
