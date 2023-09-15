@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from 'App/containers/Home';
+import CreateProfileNavigator from 'App/containers/CreateProfile';
 import LoginScreen from 'App/containers/Login';
 import LoadingModal from 'App/containers/Modal/LoadingModal';
 import OTPScreen from 'App/containers/OTP';
@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const Navigation = () => {
   return (
     <>
-      <Stack.Navigator initialRouteName={ENavigationScreen.ONBOARDING_SCREEN}>
+      <Stack.Navigator initialRouteName={ENavigationScreen.CREATE_PROFILE_NAVIGATOR}>
         <Stack.Screen
           name={ENavigationScreen.ONBOARDING_SCREEN}
           component={OnboardingScreen}
@@ -25,7 +25,11 @@ const Navigation = () => {
         />
         <Stack.Screen name={ENavigationScreen.LOGIN_SCREEN} component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name={ENavigationScreen.OTP_SCREEN} component={OTPScreen} options={{ headerShown: false }} />
-        <Stack.Screen name={ENavigationScreen.HOME_SCREEN} component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name={ENavigationScreen.CREATE_PROFILE_NAVIGATOR}
+          component={CreateProfileNavigator}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={ENavigationScreen.LOADING_MODAL}
           component={LoadingModal}

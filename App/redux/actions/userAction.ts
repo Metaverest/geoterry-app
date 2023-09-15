@@ -4,7 +4,7 @@ import { IAccountLoginDto, ICreateAccountDto } from 'App/types/redux';
 import { IUser } from 'App/types/user';
 
 const reduxUserAction = {
-  setUser: (user: IUser): PayloadAction<IUser> => {
+  setUser: (user: Partial<IUser>): PayloadAction<Partial<IUser>> => {
     return {
       type: EReduxUserAction.SET_USER,
       payload: user,
@@ -28,6 +28,24 @@ const sagaUserAction = {
   getOTPAsync: (data: ICreateAccountDto, navigation: any) => {
     return {
       type: ESagaUserAction.GET_OTP,
+      payload: { data, navigation },
+    };
+  },
+  createProfileAsync: (navigation: any) => {
+    return {
+      type: ESagaUserAction.CREATE_PROFILE,
+      payload: { navigation },
+    };
+  },
+  handleSubmitDisplayNameAsync: (data: string, navigation: any) => {
+    return {
+      type: ESagaUserAction.HANDLE_SUBMIT_DISPLAY_NAME,
+      payload: { data, navigation },
+    };
+  },
+  uploadAvatarProfileAsync: (data: any, navigation: any) => {
+    return {
+      type: ESagaUserAction.UPLOAD_AVATAR_PROFILE,
       payload: { data, navigation },
     };
   },

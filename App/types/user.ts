@@ -1,7 +1,7 @@
 import { EIdentifierType, ELanguageCode, ENamespace } from 'App/enums';
 
 export interface IUser {
-  displayName?: string;
+  displayName: string;
   email?: string;
   phoneNumber?: string;
   bio?: string;
@@ -38,4 +38,22 @@ export interface IProfileResDto {
   userId: string;
   logoUrl?: string;
   languageCode?: ELanguageCode;
+}
+
+export interface ICreateProfileReqDto {
+  displayName: string;
+  email?: string;
+  phoneNumber?: string;
+  bio?: string;
+  logoUrl?: string;
+  languageCode?: ELanguageCode;
+}
+
+export interface IUploadProfileResDto {
+  photoUrl: string;
+}
+
+export interface IRequestRefreshTokenResDto {
+  token: string;
+  refreshToken: string;
 }

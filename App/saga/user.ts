@@ -1,35 +1,33 @@
+import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
+import { reduxUserAction } from 'App/redux/actions/userAction';
 import { IError } from 'App/types/error';
 import { IAccountLoginDto, ICreateAccountDto, IReduxActionWithNavigation } from 'App/types/redux';
-import { CommonActions } from '@react-navigation/native';
-import { IAccountResponseDto } from 'App/types/user';
+import { IAccountResponseDto, ICreateProfileReqDto, IProfileResDto, IUploadProfileResDto, IUser } from 'App/types/user';
 import AXIOS, {
   requestCreateAccount,
+  requestCreateProfile,
   requestGetOTP,
   requestLogin,
+  requestUploadProfileImage,
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
-import { setPropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
   try {
-    console.log(data);
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    yield put(reduxAppAction.setIsLoading(true));
-    const response = yield call(requestCreateAccount, data as ICreateAccountDto);
-    console.log('Create account successfull');
-    console.log(response);
+    yield call(requestCreateAccount, data as ICreateAccountDto);
   } catch (error) {
-    console.log(error.data);
-    yield put(reduxAppAction.mergeError(error?.data as IError));
+    console.log(error?.response?.data);
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
   } finally {
     navigation.dispatch(StackActions.pop());
-    yield put(reduxAppAction.setIsLoading(false));
   }
 }
 
@@ -41,21 +39,16 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
   const { data, navigation } = action.payload;
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    yield put(reduxAppAction.setIsLoading(true));
     const response: IAccountResponseDto = yield call(requestLogin, data as IAccountLoginDto);
-    console.log(response);
     yield call(setPropertyInDevice, EDataStorageKey.ACCESS_TOKEN, response?.credentials?.token);
     yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
     yield call(setAuthorizationRequestHeader, AXIOS);
-    console.log('Login successfull');
-    yield put(reduxAppAction.setIsLoading(false));
     navigation.dispatch(StackActions.pop());
-    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.HOME_SCREEN }));
+    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.CREATE_PROFILE_NAVIGATOR }));
   } catch (error) {
-    console.log(error?.data);
-    yield put(reduxAppAction.setIsLoading(false));
+    console.log(error?.response?.data);
     navigation.dispatch(StackActions.pop());
-    yield put(reduxAppAction.mergeError(error?.data as IError));
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
   }
 }
 
@@ -67,7 +60,6 @@ function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAcco
   const { data, navigation } = action.payload;
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    yield put(reduxAppAction.setIsLoading(true));
     yield put(reduxAppAction.setRegisterData(data as ICreateAccountDto));
     yield call(requestGetOTP, {
       identifier: data?.identifier as string,
@@ -78,16 +70,108 @@ function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAcco
     navigation.dispatch(StackActions.pop());
     navigation.dispatch(StackActions.push(ENavigationScreen.OTP_SCREEN));
   } catch (error) {
-    console.log(error?.data);
-    yield put(reduxAppAction.mergeError(error?.data as IError));
+    console.log(error?.response?.data);
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
     navigation.dispatch(StackActions.pop());
-    yield put(reduxAppAction.setIsLoading(false));
   }
 }
 
 export function* watchGetOTPAsync() {
   yield takeLatest(ESagaUserAction.GET_OTP, getOTP);
 }
+
+function* createProfile(action: IReduxActionWithNavigation<ESagaUserAction>) {
+  const { navigation } = action.payload;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+
+    const displayName: string = yield call(getStoredProperty, EDataStorageKey.DISPLAY_NAME_TO_CREATE_PROFILE);
+    const avatarUrl: string = yield call(getStoredProperty, EDataStorageKey.AVATAR_TO_CREATE_PROFILE);
+    const data: ICreateProfileReqDto = {
+      displayName,
+      logoUrl: avatarUrl,
+    };
+    const createProfileResponse: IProfileResDto = yield call(requestCreateProfile, data);
+    yield put(reduxUserAction.setUser(createProfileResponse as IUser));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+    navigation.dispatch(StackActions.push(ENavigationScreen.CREATE_PROFILE_SUCCESS_SCREEN));
+    setTimeout(() => {
+      navigation.dispatch(StackActions.push(ENavigationScreen.PERMISSION_LOCATION_SCREEN));
+    }, 5000);
+  } catch (error) {
+    console.log(error?.response?.data);
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+  }
+}
+
+export function* watchCreateProfileAsync() {
+  yield takeLatest(ESagaUserAction.CREATE_PROFILE, createProfile);
+}
+
+function* handleSubmitDisplayName(action: IReduxActionWithNavigation<ESagaUserAction, string>) {
+  const { data, navigation } = action.payload;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    yield setPropertyInDevice(EDataStorageKey.DISPLAY_NAME_TO_CREATE_PROFILE, data);
+    yield put(reduxUserAction.setUser({ displayName: data }));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+    navigation.dispatch(StackActions.push(ENavigationScreen.CHOOSE_AVATAR_SCREEN));
+  } catch (error) {
+    console.log(error?.response?.data);
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+  }
+}
+
+export function* watchHandleSubmitDisplayNameAsync() {
+  yield takeLatest(ESagaUserAction.HANDLE_SUBMIT_DISPLAY_NAME, handleSubmitDisplayName);
+}
+
+function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction, any>) {
+  const { data, navigation } = action.payload;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const response: IUploadProfileResDto = yield call(requestUploadProfileImage, data);
+
+    yield setPropertyInDevice(EDataStorageKey.AVATAR_TO_CREATE_PROFILE, response?.photoUrl);
+    yield put(reduxUserAction.setUser({ logoUrl: response?.photoUrl }));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+  } catch (error) {
+    console.log('***************');
+    console.log(error.response);
+    console.log(error?.response?.data);
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+  }
+}
+export function* watchUploadAvatarProfileAsync() {
+  yield takeLatest(ESagaUserAction.UPLOAD_AVATAR_PROFILE, uploadAvatarProfile);
+}
 export default function* userSaga() {
-  yield all([watchCreateAccountAsync(), watchLoginAccountAsync(), watchGetOTPAsync()]);
+  yield all([
+    watchCreateAccountAsync(),
+    watchLoginAccountAsync(),
+    watchGetOTPAsync(),
+    watchCreateProfileAsync(),
+    watchHandleSubmitDisplayNameAsync(),
+    watchUploadAvatarProfileAsync(),
+  ]);
 }

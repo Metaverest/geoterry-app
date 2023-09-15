@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import CustomText from '../CustomText';
 import { styles } from './styles';
 
-const Header = ({ title }: { title?: string }) => {
+const Header = ({ title, rightButton }: { title?: string; rightButton?: any }) => {
   const navigation = useNavigation();
   const handlePressBackButton = useCallback(() => {
     navigation.dispatch(CommonActions.goBack());
@@ -19,7 +19,7 @@ const Header = ({ title }: { title?: string }) => {
       </TouchableOpacity>
       <CustomText style={styles.title}>{title}</CustomText>
       <TouchableOpacity style={styles.rightButtonContainer} onPress={handlePressBackButton}>
-        <></>
+        {rightButton && rightButton}
       </TouchableOpacity>
     </View>
   );
