@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 const Navigation = () => {
   return (
     <>
-      <Stack.Navigator initialRouteName={ENavigationScreen.ONBOARDING_SCREEN}>
+      <Stack.Navigator initialRouteName={ENavigationScreen.CREATE_PROFILE_NAVIGATOR}>
         <Stack.Screen
           name={ENavigationScreen.ONBOARDING_SCREEN}
           component={OnboardingScreen}
