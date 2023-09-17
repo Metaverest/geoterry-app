@@ -12,7 +12,7 @@ import SelectLanguage from 'App/components/SelectLanguage';
 import { ENavigationScreen } from 'App/enums/navigation';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ImageBackground, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
@@ -37,36 +37,34 @@ const OnboardingScreen = () => {
   );
   const { t } = useTranslation();
   return (
-    <CustomSafeArea style={styles.container} isOnboardingScreen>
-      <ImageBackground source={OnboardingBackgroundImage}>
-        <View style={styles.header}>
-          <SelectLanguage language={currentLanguageCode as ELanguageCode} setLanguage={setLanguage} />
+    <CustomSafeArea style={styles.container} backgroundImageSource={OnboardingBackgroundImage}>
+      <View style={styles.header}>
+        <SelectLanguage language={currentLanguageCode as ELanguageCode} setLanguage={setLanguage} />
+      </View>
+      <View style={styles.main}>
+        <Image style={styles.image} source={EarthIcon} />
+        <CustomText style={styles.onBoardingTitle}>Terriana</CustomText>
+        <CustomText style={styles.onBoardingSubTitle}>
+          {t('Ready to Explore? Hunt for Treasures in the \n Real World.')}
+        </CustomText>
+        <View style={styles.createAccountButton}>
+          <CustomButton
+            buttonType={EButtonType.SOLID}
+            title={t('Tạo tài khoản')}
+            linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+            onPress={handlePressCreateAccount}
+          />
         </View>
-        <View style={styles.main}>
-          <Image style={styles.image} source={EarthIcon} />
-          <CustomText style={styles.onBoardingTitle}>Terriana</CustomText>
-          <CustomText style={styles.onBoardingSubTitle}>
-            {t('Ready to Explore? Hunt for Treasures in the \n Real World.')}
-          </CustomText>
-          <View style={styles.createAccountButton}>
-            <CustomButton
-              buttonType={EButtonType.SOLID}
-              title={t('Tạo tài khoản')}
-              linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-              onPress={handlePressCreateAccount}
-            />
-          </View>
 
-          <View style={styles.loginButton}>
-            <CustomButton
-              buttonType={EButtonType.OUTLINE}
-              customStyleContainer={styles.loginButtonCustomContainerStyle}
-              title={t('Đăng nhập')}
-              onPress={handlePressLogin}
-            />
-          </View>
+        <View style={styles.loginButton}>
+          <CustomButton
+            buttonType={EButtonType.OUTLINE}
+            customStyleContainer={styles.loginButtonCustomContainerStyle}
+            title={t('Đăng nhập')}
+            onPress={handlePressLogin}
+          />
         </View>
-      </ImageBackground>
+      </View>
     </CustomSafeArea>
   );
 };

@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { EReduxUserAction, ESagaUserAction } from 'App/enums/redux';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
 
-import { IAccountLoginDto, ICreateAccountDto, IUser, IVerifyAccountRecoverOTPDto } from 'App/types/user';
+import { IAccountLoginDto, ICreateAccountDto, IUser } from 'App/types/user';
 
 const reduxUserAction = {
   setUser: (user: Partial<IUser>): PayloadAction<Partial<IUser>> => {
@@ -50,7 +50,7 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
-  verifyRecoveyOTPAsync: (data: IVerifyAccountRecoverOTPDto, navigation: any) => {
+  verifyRecoveyOTPAsync: (data: string, navigation: any) => {
     return {
       type: ESagaUserAction.VERIFY_RECOVER_OTP,
       payload: { data, navigation },
