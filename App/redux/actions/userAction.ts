@@ -1,7 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { EReduxUserAction, ESagaUserAction } from 'App/enums/redux';
-import { IAccountLoginDto, ICreateAccountDto } from 'App/types/redux';
-import { IUser } from 'App/types/user';
+import { ISagaAsyncActionOptions } from 'App/types/redux';
+
+import { IAccountLoginDto, ICreateAccountDto, IUser, IVerifyAccountRecoverOTPDto } from 'App/types/user';
 
 const reduxUserAction = {
   setUser: (user: Partial<IUser>): PayloadAction<Partial<IUser>> => {
@@ -25,10 +26,10 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
-  getOTPAsync: (data: ICreateAccountDto, navigation: any) => {
+  getOTPAsync: (data: ICreateAccountDto, navigation: any, options?: ISagaAsyncActionOptions) => {
     return {
       type: ESagaUserAction.GET_OTP,
-      payload: { data, navigation },
+      payload: { data, navigation, options },
     };
   },
   createProfileAsync: (navigation: any) => {
@@ -46,6 +47,18 @@ const sagaUserAction = {
   uploadAvatarProfileAsync: (data: any, navigation: any) => {
     return {
       type: ESagaUserAction.UPLOAD_AVATAR_PROFILE,
+      payload: { data, navigation },
+    };
+  },
+  verifyRecoveyOTPAsync: (data: IVerifyAccountRecoverOTPDto, navigation: any) => {
+    return {
+      type: ESagaUserAction.VERIFY_RECOVER_OTP,
+      payload: { data, navigation },
+    };
+  },
+  accountRecoverAsync: (data: string, navigation: any) => {
+    return {
+      type: ESagaUserAction.ACCOUNT_RECOVER,
       payload: { data, navigation },
     };
   },

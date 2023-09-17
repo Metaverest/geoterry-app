@@ -5,19 +5,34 @@ import { ENavigationScreen } from 'App/enums/navigation';
 import { ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxUserAction } from 'App/redux/actions/userAction';
+import { reduxSelector } from 'App/redux/selectors';
 import { IError } from 'App/types/error';
-import { IAccountLoginDto, ICreateAccountDto, IReduxActionWithNavigation } from 'App/types/redux';
-import { IAccountResponseDto, ICreateProfileReqDto, IProfileResDto, IUploadProfileResDto, IUser } from 'App/types/user';
+import { IReduxActionWithNavigation } from 'App/types/redux';
+
+import {
+  IAccountLoginDto,
+  IAccountResponseDto,
+  ICreateAccountDto,
+  ICreateProfileReqDto,
+  IProfileResDto,
+  IRecoveryAccountDto,
+  IUploadProfileResDto,
+  IUser,
+  IVerifyAccountRecoverOTPDto,
+  IVerifyAccountRecoverOTPResDto,
+} from 'App/types/user';
 import AXIOS, {
+  requestAccountRecover,
   requestCreateAccount,
   requestCreateProfile,
   requestGetOTP,
   requestLogin,
   requestUploadProfileImage,
+  requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
   try {
@@ -57,22 +72,35 @@ export function* watchLoginAccountAsync() {
 }
 
 function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
-  const { data, navigation } = action.payload;
+  const { data, navigation, options } = action.payload;
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     yield put(reduxAppAction.setRegisterData(data as ICreateAccountDto));
     yield call(requestGetOTP, {
       identifier: data?.identifier as string,
       identifierType: data?.identifierType as EIdentifierType,
-      isRecoverPassword: false as boolean,
+      isRecoverPassword: options?.isRecoverPassword as boolean,
       namespace: data?.namespace as ENamespace,
     });
-    navigation.dispatch(StackActions.pop());
-    navigation.dispatch(StackActions.push(ENavigationScreen.OTP_SCREEN));
+    console.log('otp sended');
+    console.log(options?.isRecoverPassword);
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: ENavigationScreen.OTP_SCREEN,
+        params: { isRecoverPassword: options?.isRecoverPassword },
+      }),
+    );
   } catch (error) {
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
-    navigation.dispatch(StackActions.pop());
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
   }
 }
 
@@ -152,8 +180,6 @@ function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction
       navigator.dispatch(StackActions.pop());
     }
   } catch (error) {
-    console.log('***************');
-    console.log(error.response);
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
     const navigator = navigation.getParent();
@@ -165,6 +191,79 @@ function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction
 export function* watchUploadAvatarProfileAsync() {
   yield takeLatest(ESagaUserAction.UPLOAD_AVATAR_PROFILE, uploadAvatarProfile);
 }
+
+function* verifyAccountRecoverOTP(action: IReduxActionWithNavigation<ESagaUserAction, string>) {
+  const { data, navigation } = action.payload;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const otp = data;
+    const registerData: ICreateAccountDto = yield select(reduxSelector.getAppRegisterData);
+    const requestVerifyAccountRecoveryPayload: IVerifyAccountRecoverOTPDto = {
+      identifier: registerData?.identifier as string,
+      identifierType: registerData?.identifierType as EIdentifierType,
+      namespace: registerData?.namespace as ENamespace,
+      otp,
+    };
+    const response: IVerifyAccountRecoverOTPResDto = yield call(
+      requestVerifyAccountRecoveryOTP,
+      requestVerifyAccountRecoveryPayload,
+    );
+    console.log('code', response);
+    const code = response?.recoveryCode;
+    yield put(reduxAppAction.setRecoveryCode(code));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+    navigation.dispatch(StackActions.push(ENavigationScreen.INPUT_NEW_PASSWORD_SCREEN));
+  } catch (error) {
+    console.log(error?.response?.data);
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+  }
+}
+
+export function* watchVerifyAccountRecoverOTP() {
+  yield takeLatest(ESagaUserAction.VERIFY_RECOVER_OTP, verifyAccountRecoverOTP);
+}
+
+function* accountRecover(action: IReduxActionWithNavigation<ESagaUserAction, string>) {
+  const { data, navigation } = action.payload;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+
+    const user: Partial<ICreateAccountDto> = yield select(reduxSelector.getAppRegisterData);
+    const code: string = yield select(reduxSelector.getAppRecoveryCode);
+    const recoverAccountPayload: IRecoveryAccountDto = {
+      code: code,
+      password: data,
+      namespace: user?.namespace as ENamespace,
+      identifier: user?.identifier as string,
+      identifierType: user?.identifierType as EIdentifierType,
+    };
+    yield call(requestAccountRecover, recoverAccountPayload);
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOGIN_SCREEN));
+  } catch (error) {
+    console.log(error?.response?.data);
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
+  }
+}
+
+export function* watchAccountRecoverAsync() {
+  yield takeLatest(ESagaUserAction.ACCOUNT_RECOVER, accountRecover);
+}
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -173,5 +272,7 @@ export default function* userSaga() {
     watchCreateProfileAsync(),
     watchHandleSubmitDisplayNameAsync(),
     watchUploadAvatarProfileAsync(),
+    watchVerifyAccountRecoverOTP(),
+    watchAccountRecoverAsync(),
   ]);
 }

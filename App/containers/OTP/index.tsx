@@ -9,7 +9,7 @@ import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
-import { ICreateAccountDto } from 'App/types/redux';
+import { ICreateAccountDto } from 'App/types/user';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ import OTPTextInput from 'react-native-otp-textinput';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 
-const OTPScreen = () => {
+const OTPScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
   const [seconds, setSeconds] = useState(60);
   const navigation = useNavigation();
@@ -44,8 +44,12 @@ const OTPScreen = () => {
       identifierType: EIdentifierType.PHONE_NUMBER,
       namespace: ENamespace.GEOTERRY_HUNTERS,
     };
-    dispatch(sagaUserAction.createAccountAsync(submitData as ICreateAccountDto, navigation));
-  }, [dispatch, otp, registerData, navigation]);
+    if (route?.params?.isRecoverPassword) {
+      dispatch(sagaUserAction.verifyRecoveyOTPAsync(otp, navigation));
+    } else {
+      dispatch(sagaUserAction.createAccountAsync(submitData as ICreateAccountDto, navigation));
+    }
+  }, [dispatch, otp, registerData, navigation, route]);
   const shouldDisableButton = useMemo(() => {
     return isEmpty(otp) || otp.length !== 4;
   }, [otp]);
