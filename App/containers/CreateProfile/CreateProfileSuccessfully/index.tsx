@@ -1,6 +1,6 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
-import { CreateProfileSuccessfullyAnimation } from 'App/components/image';
+import { AppBackgroundImage, CreateProfileSuccessfullyAnimation } from 'App/components/image';
 import LottieView from 'lottie-react-native';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,7 @@ const CreateProfileSuccessScreen = () => {
   const animationRef = useRef(null);
 
   return (
-    <CustomSafeArea style={styles.container}>
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <LottieView
         style={styles.image}
         ref={animationRef}

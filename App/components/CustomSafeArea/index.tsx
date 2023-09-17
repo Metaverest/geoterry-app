@@ -7,6 +7,7 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface IProps {
   backgroundImageSource?: any;
+  isModal?: boolean;
   style?: any;
   children?: any;
 }
@@ -14,7 +15,12 @@ export const CustomSafeArea = (props: IProps) => {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ width: wp('100'), height: hp('100'), backgroundColor: EColor.color_171717 }}>
+    <View
+      style={{
+        width: wp('100'),
+        height: hp('100'),
+        backgroundColor: props.isModal ? 'transparent' : EColor.color_171717,
+      }}>
       {props.backgroundImageSource ? (
         <ImageBackground
           style={{ marginTop: insets.top, marginBottom: insets.bottom, flex: 1 }}

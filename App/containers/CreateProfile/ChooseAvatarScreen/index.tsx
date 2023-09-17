@@ -16,6 +16,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
+import { AppBackgroundImage } from 'App/components/image';
 
 const ChooseAvatarScreen = () => {
   const { t } = useTranslation();
@@ -52,7 +53,7 @@ const ChooseAvatarScreen = () => {
   }, [dispatch, navigation]);
 
   return (
-    <CustomSafeArea style={styles.container}>
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header rightButton={<RightButton />} />
       <CustomText style={styles.uploadAvatarTitle}>{t('Tải lên ảnh đại diện')}</CustomText>
       <View style={styles.avatarIconContainer}>
