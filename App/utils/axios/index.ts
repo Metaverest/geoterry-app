@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { EDataStorageKey } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
-import { IAccountLoginDto, ICreateAccountDto, ISendAccountVerifyCode } from 'App/types/redux';
+
 import {
+  IAccountLoginDto,
   IAccountResponseDto,
+  ICreateAccountDto,
   ICreateProfileReqDto,
   IProfileResDto,
+  IRecoveryAccountDto,
   IRequestRefreshTokenResDto,
+  ISendVerificationDto,
   IUploadProfileResDto,
+  IVerifyAccountRecoverOTPDto,
+  IVerifyAccountRecoverOTPResDto,
 } from 'App/types/user';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import axios, { AxiosInstance } from 'axios';
@@ -30,7 +36,7 @@ export const requestLogin = async (data: IAccountLoginDto) => {
   return AXIOS.post<IAccountResponseDto>('/auth/login', data).then(result => result.data);
 };
 
-export const requestGetOTP = async (data: ISendAccountVerifyCode) => {
+export const requestGetOTP = async (data: ISendVerificationDto) => {
   return AXIOS.post('/auth/otp/send', data).then(result => result.data);
 };
 
@@ -44,7 +50,6 @@ export const requestUserReadProfile = async () => {
 
 export const setAuthorizationRequestHeader = async (axios: AxiosInstance) => {
   const latestAccessToken = await getStoredProperty<string>(EDataStorageKey.ACCESS_TOKEN);
-  console.log('latestAccessToken', latestAccessToken);
   axios.interceptors.request.use(async config => {
     config.headers.Authorization = `Bearer ${latestAccessToken}`;
     return config;
@@ -73,13 +78,10 @@ export const requestRefreshToken = async (token: string, refreshToken: string) =
 AXIOS.interceptors.response.use(
   response => response,
   async error => {
-    console.log(error?.response?.data?.errorCode);
-    console.log(error?.response?.data?.statusCode);
     if (
       error?.response?.data?.errorCode === EErrorCode.UNKNOWN_ERROR &&
       error?.response?.data?.statusCode === EStatusCode.FORBIDEN
     ) {
-      console.log('************************');
       const originalRequest = error.config;
       const currentToken = await getStoredProperty<string>(EDataStorageKey.ACCESS_TOKEN);
       const currentRefreshToken = await getStoredProperty<string>(EDataStorageKey.REFRESH_TOKEN);
@@ -87,7 +89,6 @@ AXIOS.interceptors.response.use(
         currentToken as string,
         currentRefreshToken as string,
       );
-      console.log('requestRefreshTokenResponse', requestRefreshTokenResponse);
       const { refreshToken, token } = requestRefreshTokenResponse;
       await setPropertyInDevice(EDataStorageKey.ACCESS_TOKEN, token);
       await setPropertyInDevice(EDataStorageKey.REFRESH_TOKEN, refreshToken);
@@ -98,4 +99,11 @@ AXIOS.interceptors.response.use(
   },
 );
 
+export const requestVerifyAccountRecoveryOTP = async (dto: IVerifyAccountRecoverOTPDto) => {
+  return AXIOS.put<IVerifyAccountRecoverOTPResDto>('/auth/otp/verify', dto).then(result => result.data);
+};
+
+export const requestAccountRecover = async (data: IRecoveryAccountDto) => {
+  return AXIOS.put<IAccountResponseDto>('/auth/otp/recover', data).then(result => result.data);
+};
 export default AXIOS;

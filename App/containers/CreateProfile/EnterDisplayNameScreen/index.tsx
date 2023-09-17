@@ -34,7 +34,6 @@ const EnterDisplayNameScreen = () => {
   const navigation = useNavigation();
   const onSubmit = useCallback(
     (values: IFormValues) => {
-      console.log('values', values);
       dispatch(sagaUserAction.handleSubmitDisplayNameAsync(values.displayName, navigation));
     },
     [dispatch, navigation],

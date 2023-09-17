@@ -1,7 +1,7 @@
 import { ELanguageCode } from 'App/enums';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IError } from 'App/types/error';
-import { ICreateAccountDto } from 'App/types/redux';
+import { ICreateAccountDto } from 'App/types/user';
 
 const reduxAppAction = {
   setLanguage: (language: ELanguageCode) => {
@@ -32,6 +32,12 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.CLEAR_ERROR,
       payload: { error: [] },
+    };
+  },
+  setRecoveryCode: (recoveryCode: string) => {
+    return {
+      type: EReduxAppAction.SET_RECOVERY_CODE,
+      payload: { recoveryCode },
     };
   },
 };

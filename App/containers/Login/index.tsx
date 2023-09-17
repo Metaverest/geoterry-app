@@ -22,6 +22,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import { CommonActions } from '@react-navigation/native';
 
 interface IFormValues {
   phone: string;
@@ -75,6 +76,9 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
   const clearError = useClearError();
   const defaultPhonePrefix = useGetPrefixPhone();
+  const goToForgotPassword = useCallback(() => {
+    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.FORGOT_PASSWORD_NAVIGATOR }));
+  }, [navigation]);
   return (
     <CustomSafeArea style={styles.container}>
       <Header />
@@ -103,7 +107,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                   placeholder={t('Mật khẩu')}
                 />
               </View>
-              <TouchableOpacity style={styles.forgotPasswordContainer}>
+              <TouchableOpacity onPress={goToForgotPassword} style={styles.forgotPasswordContainer}>
                 <CustomText style={styles.forgotPasswordText}>{t('Quên mật khẩu?')}</CustomText>
               </TouchableOpacity>
               <View style={styles.buttonContainer}>

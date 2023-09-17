@@ -57,3 +57,43 @@ export interface IRequestRefreshTokenResDto {
   token: string;
   refreshToken: string;
 }
+
+export interface ICreateAccountDto {
+  code: string;
+  password: string;
+  namespace: ENamespace;
+  identifier: string;
+  identifierType: EIdentifierType;
+}
+
+export interface IAccountLoginDto {
+  password: string;
+  identifier: string;
+  identifierType: EIdentifierType;
+  namespace: ENamespace;
+}
+export interface ISendVerificationDto {
+  namespace: ENamespace;
+  identifierType: EIdentifierType;
+  identifier: string;
+  isRecoverPassword: boolean;
+}
+
+export interface IVerifyAccountRecoverOTPDto {
+  namespace: ENamespace;
+  identifierType: EIdentifierType;
+  identifier: string;
+  otp: string;
+}
+
+export interface IVerifyAccountRecoverOTPResDto {
+  recoveryCode: string;
+}
+
+export interface IRecoveryAccountDto {
+  code: string;
+  password: string;
+  namespace: ENamespace;
+  identifier: string;
+  identifierType: EIdentifierType;
+}

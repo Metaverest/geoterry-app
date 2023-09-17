@@ -7,6 +7,7 @@ const defaultAppState: IAppState = {
   registerData: {},
   isLoading: false,
   error: [],
+  recoveryCode: '',
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -37,6 +38,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         error: [],
+      };
+    case EReduxAppAction.SET_RECOVERY_CODE:
+      return {
+        ...state,
+        recoveryCode: action.payload?.recoveryCode,
       };
     default:
       return state;

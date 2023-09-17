@@ -1,17 +1,21 @@
 import { ELanguageCode } from 'App/enums';
-import { IUser } from './user';
-import { EIdentifierType, ENamespace } from 'App/enums';
 import { IError } from './error';
+import { ICreateAccountDto, IUser } from './user';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
   payload?: P;
+}
+
+export interface ISagaAsyncActionOptions {
+  isRecoverPassword?: boolean;
 }
 export interface IReduxActionWithNavigation<T, P = undefined> {
   type: T;
   payload?: {
     data?: P;
     navigation: any;
+    options?: ISagaAsyncActionOptions;
   };
 }
 export interface IReduxRootState {
@@ -22,31 +26,14 @@ export interface IReduxRootState {
 export interface IAppState {
   language?: ELanguageCode;
   registerData?: Partial<ICreateAccountDto>;
+  // Indicate that whether the app is loading or not
   isLoading?: boolean;
   error?: Partial<IError>[];
+  // In case of recover password, verifyAccountRecoveryOTP will return a code that used to change password.
+  recoveryCode?: string;
 }
 
 export interface IRootState {
   user: IUser;
   app: IAppState;
-}
-export interface ICreateAccountDto {
-  code: string;
-  password: string;
-  namespace: ENamespace;
-  identifier: string;
-  identifierType: EIdentifierType;
-}
-
-export interface IAccountLoginDto {
-  password: string;
-  identifier: string;
-  identifierType: EIdentifierType;
-  namespace: ENamespace;
-}
-export interface ISendAccountVerifyCode {
-  namespace: ENamespace;
-  identifierType: EIdentifierType;
-  identifier: string;
-  isRecoverPassword: boolean;
 }
