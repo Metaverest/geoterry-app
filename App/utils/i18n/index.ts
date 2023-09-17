@@ -27,15 +27,16 @@ const setupI18N = () => {
     .use(initReactI18next)
     .init({
       compatibilityJSON: 'v3',
-      fallbackLng: ELanguageCode.VIETNAMESE,
+      fallbackLng: ELanguageCode.VN,
       resources: {
-        [ELanguageCode.US]: {
+        [ELanguageCode.EN]: {
           common: require('./locales/en.json'),
         },
-        [ELanguageCode.VIETNAMESE]: {
+        [ELanguageCode.VN]: {
           common: require('./locales/vn.json'),
         },
       },
+      lng: ELanguageCode.VN,
       ns: ['common'],
       defaultNS: 'common',
       debug: !!Config.LOCAL,

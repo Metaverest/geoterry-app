@@ -44,7 +44,7 @@ const EnterDisplayNameScreen = () => {
       <Header />
       <CustomText style={styles.createProfileTitle}>{t('Tạo hồ sơ của bạn')}</CustomText>
       <CustomText style={styles.createProfileSubTitle}>
-        {t('Đừng lo, bạn vẫn có thể thay đổi các thông tin này sau đó. ')}
+        {t('Đừng lo, bạn vẫn có thể thay đổi các thông tin này sau đó.')}
       </CustomText>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ handleSubmit, values, setFieldValue, errors, submitCount }) => {

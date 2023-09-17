@@ -3,7 +3,7 @@ import { EReduxAppAction } from 'App/enums/redux';
 import { IAppState, IReduxAction } from 'App/types/redux';
 
 const defaultAppState: IAppState = {
-  language: ELanguageCode.VIETNAMESE,
+  language: ELanguageCode.VN,
   registerData: {},
   isLoading: false,
   error: [],

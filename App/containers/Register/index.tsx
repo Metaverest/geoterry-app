@@ -13,7 +13,6 @@ import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
 import { sagaUserAction } from 'App/redux/actions/userAction';
-import { ICreateAccountDto } from 'App/types/redux';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
@@ -23,6 +22,7 @@ import { Image, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import { ICreateAccountDto } from 'App/types/user';
 
 interface IFormValues {
   password: string;

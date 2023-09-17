@@ -18,9 +18,9 @@ const SelectLanguage = ({
   const [isOpen, setIsOpen] = useState(false);
   const LanguageIcon = useCallback(({ languageParam }: { languageParam: ELanguageCode }) => {
     switch (languageParam) {
-      case ELanguageCode.US:
+      case ELanguageCode.EN:
         return <UsaFlag />;
-      case ELanguageCode.VIETNAMESE:
+      case ELanguageCode.VN:
         return <VietnamFlag />;
     }
   }, []);

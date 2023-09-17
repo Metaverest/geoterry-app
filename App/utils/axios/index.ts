@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import { EDataStorageKey } from 'App/enums';
+import { EDataStorageKey, ELanguageCode } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 
 import {
@@ -52,6 +52,13 @@ export const setAuthorizationRequestHeader = async (axios: AxiosInstance) => {
   const latestAccessToken = await getStoredProperty<string>(EDataStorageKey.ACCESS_TOKEN);
   axios.interceptors.request.use(async config => {
     config.headers.Authorization = `Bearer ${latestAccessToken}`;
+    return config;
+  });
+};
+
+export const setLanguageRequestHeader = async (axios: AxiosInstance, language: ELanguageCode) => {
+  axios.interceptors.request.use(async config => {
+    config.headers['language-code'] = language;
     return config;
   });
 };

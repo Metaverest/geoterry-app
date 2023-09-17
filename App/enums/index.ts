@@ -1,6 +1,6 @@
 export enum ELanguageCode {
-  US = 'us',
-  VIETNAMESE = 'vn',
+  EN = 'en',
+  VN = 'vn',
 }
 
 export enum EDataStorageKey {
