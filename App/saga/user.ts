@@ -82,8 +82,6 @@ function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAcco
       isRecoverPassword: options?.isRecoverPassword as boolean,
       namespace: data?.namespace as ENamespace,
     });
-    console.log('otp sended');
-    console.log(options?.isRecoverPassword);
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
@@ -208,7 +206,6 @@ function* verifyAccountRecoverOTP(action: IReduxActionWithNavigation<ESagaUserAc
       requestVerifyAccountRecoveryOTP,
       requestVerifyAccountRecoveryPayload,
     );
-    console.log('code', response);
     const code = response?.recoveryCode;
     yield put(reduxAppAction.setRecoveryCode(code));
     const navigator = navigation.getParent();

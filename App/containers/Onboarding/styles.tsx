@@ -4,14 +4,13 @@ import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: EColor.color_171717,
+    backgroundColor: 'transparent',
     flex: 1,
   },
   main: {
     width: wp('100'),
     paddingHorizontal: 16,
     alignItems: 'center',
-    backgroundColor: 'transparent',
   },
   header: {
     width: '100%',

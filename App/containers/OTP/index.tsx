@@ -18,6 +18,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import OTPTextInput from 'react-native-otp-textinput';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
+import { AppBackgroundImage } from 'App/components/image';
 
 const OTPScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const OTPScreen = ({ route }: { route: any }) => {
   const errorText = useGetErrorText();
   const clearError = useClearError();
   return (
-    <CustomSafeArea style={styles.container}>
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title="Xác thực OTP" />
       <CustomText style={styles.otpNotificationText}>{t('Mã OTP đã được gửi về số điện thoại của bạn')}</CustomText>
       <View style={styles.otpContainer}>
