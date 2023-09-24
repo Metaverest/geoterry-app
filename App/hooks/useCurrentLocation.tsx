@@ -1,44 +1,40 @@
 import { useEffect, useState } from 'react';
 import Geolocation from '@react-native-community/geolocation';
-
-export interface IRealtimeLocation {
-  latitude: number;
-  longitude: number;
-  altitude: number | null;
-  heading: number | null;
-  speed: number | null;
-}
+import { IRealtimeLocation } from 'App/types';
+import useRequestLocationPermission from './useRequestLocationPermission';
 
 const useCurrentLocation = (): IRealtimeLocation => {
+  const { hasLocationPermission } = useRequestLocationPermission();
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>({
-    latitude: 0,
-    longitude: 0,
+    latitude: 37.78825, // Latitude of the marker
+    longitude: -122.4324, // Longitude of the marker
     altitude: 0,
     heading: 0,
     speed: 0,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
   });
-
   useEffect(() => {
-    const watchId = Geolocation.watchPosition(
-      position => {
-        setCurrentLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          altitude: position.coords.altitude,
-          heading: position.coords.heading,
-          speed: position.coords.speed,
-        });
-      },
-      undefined,
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-        distanceFilter: 1,
-      },
-    );
-    return () => Geolocation.clearWatch(watchId);
-  }, []);
+    if (hasLocationPermission) {
+      Geolocation &&
+        Geolocation?.watchPosition(
+          position => {
+            console.log(position);
+            setCurrentLocation(currentPositionDraft => ({
+              ...currentPositionDraft,
+              altitude: position.coords.altitude,
+              heading: position.coords.heading,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              speed: position.coords.speed,
+            }));
+          },
+          error => {
+            console.log(error);
+          },
+        );
+    }
+  }, [hasLocationPermission]);
 
   return currentLocation;
 };

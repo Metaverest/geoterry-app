@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CreateProfileNavigator from 'App/containers/CreateProfile';
 import ForgotPasswordNavigator from 'App/containers/ForgotPassword';
 import LoginScreen from 'App/containers/Login';
+import MainGameNavigator from 'App/containers/MainGameNavigator';
 import LoadingModal from 'App/containers/Modal/LoadingModal';
 import OTPScreen from 'App/containers/OTP';
 import OnboardingScreen from 'App/containers/Onboarding';
@@ -46,6 +47,11 @@ const Navigation = () => {
         <Stack.Screen
           name={ENavigationScreen.FORGOT_PASSWORD_NAVIGATOR}
           component={ForgotPasswordNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={ENavigationScreen.MAIN_GAME_NAVIGATOR}
+          component={MainGameNavigator}
           options={{ headerShown: false }}
         />
         <Stack.Screen
