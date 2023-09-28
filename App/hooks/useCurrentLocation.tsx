@@ -15,8 +15,10 @@ const useCurrentLocation = (): IRealtimeLocation => {
     longitudeDelta: 0.0421,
   });
   useEffect(() => {
+    let watchID: number;
     if (hasLocationPermission) {
-      Geolocation &&
+      watchID =
+        !!Geolocation &&
         Geolocation?.watchPosition(
           position => {
             console.log(position);
@@ -34,6 +36,9 @@ const useCurrentLocation = (): IRealtimeLocation => {
           },
         );
     }
+    return () => {
+      !!Geolocation && watchID && Geolocation.clearWatch(watchID);
+    };
   }, [hasLocationPermission]);
 
   return currentLocation;

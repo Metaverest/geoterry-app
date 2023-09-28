@@ -14,27 +14,37 @@ import SettingIcon from 'App/media/SettingIcon';
 import TargetIcon from 'App/media/TargetIcon';
 import TypeMapIcon from 'App/media/TypeMapIcon';
 import UserProfileIcon from 'App/media/UserProfileIcon';
+import { reduxSelector } from 'App/redux/selectors';
+import { IRealtimeLocation } from 'App/types';
 import { MOCK_TERRY } from 'App/types/terry';
-import React, { useCallback, useEffect } from 'react';
+import { isEmpty } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { useSelector } from 'react-redux';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
 
 const MapScreen = () => {
   const currentLocation = useCurrentLocation();
+  const [region, setRegion] = useState(currentLocation);
+  useEffect(() => {
+    if (!isEmpty(currentLocation)) {
+      setRegion(currentLocation);
+    }
+  }, [currentLocation]);
   const navigation = useNavigation();
   useEffect(() => {}, []);
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(ENavigationScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
+  const mapType = useSelector(reduxSelector.getAppMapType);
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
-        onRegionChange={e => {
-          console.log(e);
-        }}
+        mapType={mapType}
         style={styles.mapContainer}
-        region={currentLocation}>
+        onRegionChangeComplete={e => setRegion(e as IRealtimeLocation)}
+        region={region}>
         <UserMarker userPosition={currentLocation} />
         {MOCK_TERRY.map(treasure => (
           <TreasureMarker key={treasure.id} treasure={treasure} />
@@ -56,6 +66,7 @@ const MapScreen = () => {
           renderIcon={<FilterMapIcon />}
         />
         <CustomButtonIcon
+          onPress={() => setRegion(currentLocation)}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonContainer}
           buttonType={EButtonType.SOLID}

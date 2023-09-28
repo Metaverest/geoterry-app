@@ -1,4 +1,5 @@
 import { ELanguageCode } from 'App/enums';
+import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IAppState, IReduxAction } from 'App/types/redux';
 
@@ -8,6 +9,7 @@ const defaultAppState: IAppState = {
   isLoading: false,
   error: [],
   recoveryCode: '',
+  mapType: EMapType.STANDARD,
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -43,6 +45,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         recoveryCode: action.payload?.recoveryCode,
+      };
+    case EReduxAppAction.SET_MAP_TYPE:
+      return {
+        ...state,
+        mapType: action.payload?.mapType,
       };
     default:
       return state;

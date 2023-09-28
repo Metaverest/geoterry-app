@@ -1,4 +1,5 @@
 import { ELanguageCode } from 'App/enums';
+import { EMapType } from 'App/enums/map';
 import { IError } from './error';
 import { ICreateAccountDto, IUser } from './user';
 
@@ -31,6 +32,7 @@ export interface IAppState {
   error?: Partial<IError>[];
   // In case of recover password, verifyAccountRecoveryOTP will return a code that used to change password.
   recoveryCode?: string;
+  mapType?: EMapType;
 }
 
 export interface IRootState {

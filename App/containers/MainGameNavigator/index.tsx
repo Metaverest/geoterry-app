@@ -14,6 +14,20 @@ const MainGameNavigator = () => {
         options={{
           headerShown: false,
           presentation: 'transparentModal',
+          transitionSpec: {
+            close: {
+              animation: 'timing',
+              config: {
+                duration: 200,
+              },
+            },
+            open: {
+              animation: 'timing',
+              config: {
+                duration: 200,
+              },
+            },
+          },
         }}
         name={ENavigationScreen.MAP_TYPE_SCREEN}
         component={MapTypeScreen}
