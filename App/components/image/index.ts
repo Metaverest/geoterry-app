@@ -4,3 +4,5 @@ export const EarthBottomIcon = require('../../media/EarthBottom.png');
 export const PermissionLocationIcon = require('../../media/PermissionLocationIcon.png');
 export const CreateProfileSuccessfullyAnimation = require('../../media/CreateProfileSuccessfully.json');
 export const AppBackgroundImage = require('../../media/AppBackgroundImage.png');
+export const DefaultMap = require('../../media/DefaultMap.png');
+export const SatelliteMap = require('../../media/SatelliteMap.png');

@@ -11,6 +11,7 @@ const Stack = createStackNavigator();
 const CreateProfileNavigator = () => {
   return (
     <Stack.Navigator initialRouteName={ENavigationScreen.ENTER_DISPLAY_NAME_SCREEN}>
+      a
       <Stack.Screen
         options={{ headerShown: false }}
         name={ENavigationScreen.ENTER_DISPLAY_NAME_SCREEN}

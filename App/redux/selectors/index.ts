@@ -9,4 +9,5 @@ export const reduxSelector = {
   getAppIsLoading: (state: IReduxRootState) => state.app.isLoading,
   getAppError: (state: IReduxRootState) => state.app.error,
   getAppRecoveryCode: (state: IReduxRootState) => state.app.recoveryCode,
+  getAppMapType: (state: IReduxRootState) => state.app.mapType,
 };

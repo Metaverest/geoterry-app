@@ -59,7 +59,7 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
     yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
     yield call(setAuthorizationRequestHeader, AXIOS);
     navigation.dispatch(StackActions.pop());
-    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.CREATE_PROFILE_NAVIGATOR }));
+    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.MAIN_GAME_NAVIGATOR }));
   } catch (error) {
     console.log(error?.response?.data);
     navigation.dispatch(StackActions.pop());

@@ -8,6 +8,7 @@ export enum EReduxAppAction {
   MERGE_ERROR = 'MERGE_ERROR',
   CLEAR_ERROR = 'CLEAR_ERROR',
   SET_RECOVERY_CODE = 'SET_RECOVERY_CODE',
+  SET_MAP_TYPE = 'SET_MAP_TYPE',
 }
 export enum ESagaUserAction {
   CREATE_ACCOUNT = 'CREATE_ACCOUNT',

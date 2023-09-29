@@ -97,3 +97,9 @@ export interface IRecoveryAccountDto {
   identifier: string;
   identifierType: EIdentifierType;
 }
+
+export interface IProfileDto {
+  id: string;
+  displayName: string;
+  photoUrl?: string;
+}
