@@ -62,6 +62,12 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
+  getProfileAndGoToMainAppAsync: (navigation: any) => {
+    return {
+      type: ESagaUserAction.GET_PROFILE_AND_GO_TO_MAIN_APP,
+      payload: { navigation },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };

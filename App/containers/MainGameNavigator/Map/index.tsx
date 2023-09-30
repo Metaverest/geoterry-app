@@ -4,9 +4,9 @@ import { styles } from './styles';
 
 import { StackActions, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { ENavigationScreen } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
@@ -23,6 +23,7 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
+import { removePropertyInDevice } from 'App/utils/storage/storage';
 
 const MapScreen = () => {
   const currentLocation = useCurrentLocation();
@@ -35,7 +36,7 @@ const MapScreen = () => {
   const navigation = useNavigation();
   useEffect(() => {}, []);
   const handlePressTypeMap = useCallback(() => {
-    navigation.dispatch(StackActions.push(ENavigationScreen.MAP_TYPE_SCREEN));
+    navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
   const mapType = useSelector(reduxSelector.getAppMapType);
   return (
@@ -87,6 +88,11 @@ const MapScreen = () => {
           renderIcon={<SettingIcon />}
         />
         <CustomButtonIcon
+          onPress={async () => {
+            await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
+            await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
+            navigation.dispatch(StackActions.replace(ENavigationScreen.LOGIN_SCREEN));
+          }}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}

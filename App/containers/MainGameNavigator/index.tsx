@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createStackNavigator } from '@react-navigation/stack';
-import { ENavigationScreen } from 'App/enums/navigation';
+import { EMainGameScreen } from 'App/enums/navigation';
 import MapScreen from './Map';
 import MapTypeScreen from './MapTypeScreen';
 
@@ -8,8 +8,8 @@ const Stack = createStackNavigator();
 
 const MainGameNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName={ENavigationScreen.MAP_SCREEN}>
-      <Stack.Screen options={{ headerShown: false }} name={ENavigationScreen.MAP_SCREEN} component={MapScreen} />
+    <Stack.Navigator initialRouteName={EMainGameScreen.MAP_SCREEN}>
+      <Stack.Screen options={{ headerShown: false }} name={EMainGameScreen.MAP_SCREEN} component={MapScreen} />
       <Stack.Screen
         options={{
           headerShown: false,
@@ -29,7 +29,7 @@ const MainGameNavigator = () => {
             },
           },
         }}
-        name={ENavigationScreen.MAP_TYPE_SCREEN}
+        name={EMainGameScreen.MAP_TYPE_SCREEN}
         component={MapTypeScreen}
       />
     </Stack.Navigator>
