@@ -1,10 +1,10 @@
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
-import { ENavigationScreen } from 'App/enums/navigation';
+import { ECreateProfileScreen, EForgotPasswordScreen, ENavigationScreen } from 'App/enums/navigation';
 import { ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
-import { reduxUserAction } from 'App/redux/actions/userAction';
+import { reduxUserAction, sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IError } from 'App/types/error';
 import { IReduxActionWithNavigation } from 'App/types/redux';
@@ -28,6 +28,7 @@ import AXIOS, {
   requestGetOTP,
   requestLogin,
   requestUploadProfileImage,
+  requestUserReadProfile,
   requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
@@ -59,7 +60,7 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
     yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
     yield call(setAuthorizationRequestHeader, AXIOS);
     navigation.dispatch(StackActions.pop());
-    navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.MAIN_GAME_NAVIGATOR }));
+    yield put(sagaUserAction.getProfileAndGoToMainAppAsync(navigation));
   } catch (error) {
     console.log(error?.response?.data);
     navigation.dispatch(StackActions.pop());
@@ -123,9 +124,9 @@ function* createProfile(action: IReduxActionWithNavigation<ESagaUserAction>) {
     if (navigator) {
       navigator.dispatch(StackActions.pop());
     }
-    navigation.dispatch(StackActions.push(ENavigationScreen.CREATE_PROFILE_SUCCESS_SCREEN));
+    navigation.dispatch(StackActions.push(ECreateProfileScreen.CREATE_PROFILE_SUCCESS_SCREEN));
     setTimeout(() => {
-      navigation.dispatch(StackActions.push(ENavigationScreen.PERMISSION_LOCATION_SCREEN));
+      navigation.dispatch(StackActions.push(ECreateProfileScreen.PERMISSION_LOCATION_SCREEN));
     }, 5000);
   } catch (error) {
     console.log(error?.response?.data);
@@ -150,7 +151,7 @@ function* handleSubmitDisplayName(action: IReduxActionWithNavigation<ESagaUserAc
     if (navigator) {
       navigator.dispatch(StackActions.pop());
     }
-    navigation.dispatch(StackActions.push(ENavigationScreen.CHOOSE_AVATAR_SCREEN));
+    navigation.dispatch(StackActions.push(ECreateProfileScreen.CHOOSE_AVATAR_SCREEN));
   } catch (error) {
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
@@ -212,7 +213,7 @@ function* verifyAccountRecoverOTP(action: IReduxActionWithNavigation<ESagaUserAc
     if (navigator) {
       navigator.dispatch(StackActions.pop());
     }
-    navigation.dispatch(StackActions.push(ENavigationScreen.INPUT_NEW_PASSWORD_SCREEN));
+    navigation.dispatch(StackActions.push(EForgotPasswordScreen.INPUT_NEW_PASSWORD_SCREEN));
   } catch (error) {
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
@@ -261,6 +262,22 @@ function* accountRecover(action: IReduxActionWithNavigation<ESagaUserAction, str
 export function* watchAccountRecoverAsync() {
   yield takeLatest(ESagaUserAction.ACCOUNT_RECOVER, accountRecover);
 }
+
+function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUserAction, any>) {
+  try {
+    const navigation = action?.payload?.navigation;
+    const profile: IProfileResDto = yield call(requestUserReadProfile);
+    yield put(reduxUserAction.setUser(profile as IUser));
+    navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
+  } catch (error) {
+    console.log(error?.response?.data);
+  }
+}
+
+export function* watchReadProfileAndGoToMainAppAsync() {
+  yield takeLatest(ESagaUserAction.GET_PROFILE_AND_GO_TO_MAIN_APP, readProfileAndGoToMainApp);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -271,5 +288,6 @@ export default function* userSaga() {
     watchUploadAvatarProfileAsync(),
     watchVerifyAccountRecoverOTP(),
     watchAccountRecoverAsync(),
+    watchReadProfileAndGoToMainAppAsync(),
   ]);
 }

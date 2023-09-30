@@ -7,6 +7,7 @@ import LoadingModal from 'App/containers/Modal/LoadingModal';
 import OTPScreen from 'App/containers/OTP';
 import OnboardingScreen from 'App/containers/Onboarding';
 import RegisterScreen from 'App/containers/Register';
+import SplashScreen from 'App/containers/SplashScreen';
 import { ELanguageCode } from 'App/enums';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
@@ -26,7 +27,12 @@ const Navigation = () => {
   }, [language]);
   return (
     <>
-      <Stack.Navigator initialRouteName={ENavigationScreen.ONBOARDING_SCREEN}>
+      <Stack.Navigator initialRouteName={ENavigationScreen.SPLASH_SCREEN}>
+        <Stack.Screen
+          name={ENavigationScreen.SPLASH_SCREEN}
+          component={SplashScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={ENavigationScreen.ONBOARDING_SCREEN}
           component={OnboardingScreen}
