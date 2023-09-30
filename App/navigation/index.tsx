@@ -4,6 +4,7 @@ import ForgotPasswordNavigator from 'App/containers/ForgotPassword';
 import LoginScreen from 'App/containers/Login';
 import MainGameNavigator from 'App/containers/MainGameNavigator';
 import LoadingModal from 'App/containers/Modal/LoadingModal';
+import NetworkLogger from 'App/containers/NetworkLogger';
 import OTPScreen from 'App/containers/OTP';
 import OnboardingScreen from 'App/containers/Onboarding';
 import RegisterScreen from 'App/containers/Register';
@@ -13,8 +14,10 @@ import { ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import AXIOS, { setLanguageRequestHeader } from 'App/utils/axios';
 import i18next from 'i18next';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { Pressable, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { styles } from './styles';
 export const navigationRef = React.createRef<any>();
 const Stack = createStackNavigator();
 const Navigation = () => {
@@ -25,6 +28,9 @@ const Navigation = () => {
       await setLanguageRequestHeader(AXIOS, language || ELanguageCode.VN);
     })();
   }, [language]);
+  const openNetworkLoggerScreen = useCallback(() => {
+    navigationRef.current?.navigate(ENavigationScreen.NETWORK_LOGGER_SCREEN);
+  }, []);
   return (
     <>
       <Stack.Navigator initialRouteName={ENavigationScreen.SPLASH_SCREEN}>
@@ -65,7 +71,15 @@ const Navigation = () => {
           component={LoadingModal}
           options={{ headerShown: false, presentation: 'transparentModal' }}
         />
+        <Stack.Screen name={ENavigationScreen.NETWORK_LOGGER_SCREEN} component={NetworkLogger} />
       </Stack.Navigator>
+      {
+        <View style={styles.floatingButtonContainer}>
+          <Pressable onPress={openNetworkLoggerScreen}>
+            <Text>🌐</Text>
+          </Pressable>
+        </View>
+      }
     </>
   );
 };
