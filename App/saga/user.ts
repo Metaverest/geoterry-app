@@ -39,6 +39,7 @@ function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICre
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     yield call(requestCreateAccount, data as ICreateAccountDto);
+    navigation.dispatch(CommonActions.navigate(ENavigationScreen.CREATE_PROFILE_NAVIGATOR));
   } catch (error) {
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
