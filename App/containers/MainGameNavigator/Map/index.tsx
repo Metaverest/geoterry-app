@@ -7,7 +7,7 @@ import CustomButtonIcon from 'App/components/ButtonIcon';
 import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
-import useCurrentLocation from 'App/hooks/useCurrentLocation';
+import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
 import SettingIcon from 'App/media/SettingIcon';
@@ -34,8 +34,8 @@ const MapScreen = () => {
   const [region, setRegion] = useState(currentLocation);
 
   useEffect(() => {
-    // If the current location is not empty and the region is empty, set the region to the current location
-    if (!isEmpty(currentLocation) && isEmpty(region)) {
+    // If the current location is not empty and the region is empty or default location, set the region to the current location
+    if (!isEmpty(currentLocation) && (isEmpty(region) || region === defaultLocation)) {
       setRegion(currentLocation);
     }
   }, [currentLocation, region]);

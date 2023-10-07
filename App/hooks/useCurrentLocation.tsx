@@ -3,17 +3,19 @@ import Geolocation from '@react-native-community/geolocation';
 import { IRealtimeLocation } from 'App/types';
 import useRequestLocationPermission from './useRequestLocationPermission';
 
+export const defaultLocation = {
+  latitude: 37.78825,
+  longitude: -122.4324,
+  altitude: 0,
+  heading: 0,
+  speed: 0,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+};
+
 const useCurrentLocation = (): IRealtimeLocation => {
   const { hasLocationPermission } = useRequestLocationPermission();
-  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>({
-    latitude: 37.78825,
-    longitude: -122.4324,
-    altitude: 0,
-    heading: 0,
-    speed: 0,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
+  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(defaultLocation);
   useEffect(() => {
     let watchID: number;
     if (hasLocationPermission) {
