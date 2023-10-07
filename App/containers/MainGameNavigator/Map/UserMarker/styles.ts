@@ -9,6 +9,8 @@ export const styles = StyleSheet.create({
   markerContainer: {
     padding: 12,
     backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageContainer: {
     width: 50,
@@ -20,7 +22,8 @@ export const styles = StyleSheet.create({
   },
   polygonContainer: {
     position: 'absolute',
-    bottom: -10,
+    bottom: 5,
     elevation: -1,
+    zIndex: -1,
   },
 });

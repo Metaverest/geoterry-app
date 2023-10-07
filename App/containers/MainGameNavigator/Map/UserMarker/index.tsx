@@ -43,10 +43,10 @@ const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
               <MapMarkerUserDefault />
             </View>
           )}
-          <View style={styles.polygonContainer}>
-            <MapMarkerPolygonIcon />
-          </View>
         </LinearGradient>
+        <View style={styles.polygonContainer}>
+          <MapMarkerPolygonIcon />
+        </View>
       </View>
     </AnimatedMarker>
   );
