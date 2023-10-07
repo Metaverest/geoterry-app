@@ -19,7 +19,7 @@ import { IRealtimeLocation } from 'App/types';
 import { MOCK_TERRY } from 'App/types/terry';
 import { removePropertyInDevice } from 'App/utils/storage/storage';
 import { isEmpty } from 'lodash';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TreasureMarker from './TreasureMarker';
@@ -28,6 +28,7 @@ import UserMarker from './UserMarker';
 const MapScreen = () => {
   // The current user`s location
   const currentLocation = useCurrentLocation();
+  const mapRef = useRef<MapView>(null);
 
   //The current region of the map view
   const [region, setRegion] = useState(currentLocation);
@@ -39,7 +40,6 @@ const MapScreen = () => {
     }
   }, [currentLocation, region]);
   const navigation = useNavigation();
-  useEffect(() => {}, []);
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
@@ -47,14 +47,15 @@ const MapScreen = () => {
   const handlePressFilterMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
   }, [navigation]);
-  useEffect(() => {
-    console.log('currentLocation: ', region);
-  }, [region]);
+  const onCenter = () => {
+    mapRef?.current?.animateToRegion(currentLocation);
+  };
   const mapType = useSelector(reduxSelector.getAppMapType);
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
         mapType={mapType}
+        ref={mapRef}
         style={styles.mapContainer}
         onRegionChangeComplete={e => {
           console.log('set region');
@@ -83,9 +84,7 @@ const MapScreen = () => {
           renderIcon={<FilterMapIcon />}
         />
         <CustomButtonIcon
-          onPress={() => {
-            setRegion(currentLocation);
-          }}
+          onPress={onCenter}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonContainer}
           buttonType={EButtonType.SOLID}
