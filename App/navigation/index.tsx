@@ -18,6 +18,8 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import NetworkLoggerButton from './NetworkLoggerButton';
 
+export const navigationRef = React.createRef<any>();
+
 const Stack = createStackNavigator();
 const Navigation = () => {
   const language = useSelector(reduxSelector.getAppLanguage);

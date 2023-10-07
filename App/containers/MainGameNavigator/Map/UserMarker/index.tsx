@@ -2,21 +2,34 @@ import { EColor } from 'App/enums/color';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Image, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Marker } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { styles } from './styles';
 import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
+import { useAnimatedRegion, AnimatedMarker } from 'App/hooks/useAnimatedRegion';
+import { Easing } from 'react-native-reanimated';
 
 const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
   const user = useSelector(reduxSelector.getUser);
+  const animatedRegion = useAnimatedRegion(userPosition);
+
   const userAvatar = useMemo(() => {
     return user.logoUrl;
   }, [user?.logoUrl]);
+
+  useEffect(() => {
+    animatedRegion.animate({
+      latitude: userPosition.latitude,
+      longitude: userPosition.longitude,
+      duration: 1000,
+      easing: Easing.linear,
+    });
+  }, [animatedRegion, userPosition]);
+
   return (
-    <Marker coordinate={userPosition}>
+    <AnimatedMarker animatedProps={animatedRegion.props} coordinate={userPosition}>
       <View style={styles.markerContainer}>
         <LinearGradient
           style={styles.imageContainer}
@@ -35,7 +48,7 @@ const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
           </View>
         </LinearGradient>
       </View>
-    </Marker>
+    </AnimatedMarker>
   );
 };
 export default UserMarker;
