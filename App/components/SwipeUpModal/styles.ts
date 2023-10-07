@@ -2,9 +2,20 @@ import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   modalContainer: {
     flex: 1,
-    backgroundColor: EColor.color_00000080,
+
+    margin: 0,
+  },
+  imageBackground: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
   },
   mainContainer: {
     position: 'absolute',
@@ -12,11 +23,15 @@ export const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     alignItems: 'center',
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
+  main: {
+    width: '100%',
+    alignItems: 'center',
     paddingHorizontal: 16,
     paddingTop: 16,
     paddingBottom: 32,
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
   },
   headerLine: {
     width: 48,

@@ -17,34 +17,49 @@ import UserProfileIcon from 'App/media/UserProfileIcon';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { MOCK_TERRY } from 'App/types/terry';
+import { removePropertyInDevice } from 'App/utils/storage/storage';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
-import { removePropertyInDevice } from 'App/utils/storage/storage';
 
 const MapScreen = () => {
+  // The current user`s location
   const currentLocation = useCurrentLocation();
+
+  //The current region of the map view
   const [region, setRegion] = useState(currentLocation);
+
   useEffect(() => {
-    if (!isEmpty(currentLocation)) {
+    // If the current location is not empty and the region is empty, set the region to the current location
+    if (!isEmpty(currentLocation) && isEmpty(region)) {
       setRegion(currentLocation);
     }
-  }, [currentLocation]);
+  }, [currentLocation, region]);
   const navigation = useNavigation();
   useEffect(() => {}, []);
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
+
+  const handlePressFilterMap = useCallback(() => {
+    navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
+  }, [navigation]);
+  useEffect(() => {
+    console.log('currentLocation: ', region);
+  }, [region]);
   const mapType = useSelector(reduxSelector.getAppMapType);
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
         mapType={mapType}
         style={styles.mapContainer}
-        onRegionChangeComplete={e => setRegion(e as IRealtimeLocation)}
+        onRegionChangeComplete={e => {
+          console.log('set region');
+          setRegion(e as IRealtimeLocation);
+        }}
         region={region}>
         <UserMarker userPosition={currentLocation} />
         {MOCK_TERRY.map(treasure => (
@@ -61,13 +76,16 @@ const MapScreen = () => {
           renderIcon={<TypeMapIcon />}
         />
         <CustomButtonIcon
+          onPress={handlePressFilterMap}
           buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
           customStyleContainer={styles.buttonContainer}
           buttonType={EButtonType.SOLID}
           renderIcon={<FilterMapIcon />}
         />
         <CustomButtonIcon
-          onPress={() => setRegion(currentLocation)}
+          onPress={() => {
+            setRegion(currentLocation);
+          }}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonContainer}
           buttonType={EButtonType.SOLID}

@@ -1,28 +1,39 @@
-/* eslint-disable react-native/no-inline-styles */
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { EColor } from 'App/enums/color';
 import HeaderLineSwipeModalIcon from 'App/media/HeaderLineSwipeModalIcon';
 import { ISwipeUpModalProps } from 'App/types/modal';
-import React, { useCallback } from 'react';
-import { View } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import React, { useCallback, useState } from 'react';
+import { Image, View } from 'react-native';
+import Modal from 'react-native-modal';
 import CustomText from '../CustomText';
+import { ModalSwipeUpBackgroundImage } from '../image';
 import { styles } from './styles';
 
 const CustomSwipeUpModal = (props: ISwipeUpModalProps) => {
   const navigation = useNavigation();
+  const [isModalVisible, setModalVisible] = useState(true);
   const closeModal = useCallback(() => {
+    setModalVisible(false);
     navigation.dispatch(CommonActions.goBack());
   }, [navigation]);
   return (
-    <View style={styles.modalContainer}>
-      <TouchableWithoutFeedback style={{ height: '100%', width: '100%' }} onPress={closeModal}>
-        <View style={styles.mainContainer}>
+    <Modal
+      swipeThreshold={150}
+      onSwipeComplete={closeModal}
+      backdropColor={EColor.color_00000080}
+      style={styles.modalContainer}
+      swipeDirection={'down'}
+      onBackdropPress={closeModal}
+      isVisible={isModalVisible}>
+      <View style={styles.mainContainer}>
+        <Image source={ModalSwipeUpBackgroundImage} style={styles.imageBackground} />
+        <View style={styles.main}>
           <HeaderLineSwipeModalIcon />
           <CustomText style={styles.headerTitle}>{props.title}</CustomText>
           <View>{props.children}</View>
         </View>
-      </TouchableWithoutFeedback>
-    </View>
+      </View>
+    </Modal>
   );
 };
 export default CustomSwipeUpModal;

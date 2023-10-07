@@ -7,8 +7,8 @@ import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxSelector } from 'App/redux/selectors';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
-import { FlatList, TouchableHighlight } from 'react-native-gesture-handler';
+import { Image, Pressable, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { MAP_TYPES } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
@@ -26,7 +26,7 @@ const MapTypeScreen = () => {
   const renderItem = useCallback(
     ({ item }: { item: EMapType }) => {
       return (
-        <TouchableHighlight underlayColor={'transparent'} onPress={() => onChange(item)} style={styles.itemContainer}>
+        <Pressable onPress={() => onChange(item)} style={styles.itemContainer}>
           <>
             <View style={styles.itemImageTitleContainer}>
               <Image
@@ -40,7 +40,7 @@ const MapTypeScreen = () => {
             </View>
             {item === mapType && <CheckMark />}
           </>
-        </TouchableHighlight>
+        </Pressable>
       );
     },
     [t, onChange, mapType],

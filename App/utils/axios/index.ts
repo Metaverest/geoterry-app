@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
+import { CommonActions } from '@react-navigation/native';
 import { EDataStorageKey, ELanguageCode } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
+import { ENavigationScreen } from 'App/enums/navigation';
+import { navigationRef } from 'App/navigation';
 
 import {
   IAccountLoginDto,
@@ -101,6 +104,17 @@ AXIOS.interceptors.response.use(
       await setPropertyInDevice(EDataStorageKey.REFRESH_TOKEN, refreshToken);
       await setAuthorizationRequestHeader(AXIOS);
       return AXIOS(originalRequest);
+    }
+    // There is the case we cannot refresh token, we need to logout user.
+    else if (
+      error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
+      error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
+    ) {
+      navigationRef.current.dispatch(
+        CommonActions.navigate({
+          name: ENavigationScreen.LOGIN_SCREEN,
+        }),
+      );
     }
     return Promise.reject(error);
   },

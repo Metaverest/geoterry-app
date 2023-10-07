@@ -14,11 +14,10 @@ import { ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import AXIOS, { setLanguageRequestHeader } from 'App/utils/axios';
 import i18next from 'i18next';
-import React, { useCallback, useEffect } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { styles } from './styles';
-export const navigationRef = React.createRef<any>();
+import NetworkLoggerButton from './NetworkLoggerButton';
+
 const Stack = createStackNavigator();
 const Navigation = () => {
   const language = useSelector(reduxSelector.getAppLanguage);
@@ -28,9 +27,7 @@ const Navigation = () => {
       await setLanguageRequestHeader(AXIOS, language || ELanguageCode.VN);
     })();
   }, [language]);
-  const openNetworkLoggerScreen = useCallback(() => {
-    navigationRef.current?.navigate(ENavigationScreen.NETWORK_LOGGER_SCREEN);
-  }, []);
+
   return (
     <>
       <Stack.Navigator initialRouteName={ENavigationScreen.SPLASH_SCREEN}>
@@ -73,13 +70,7 @@ const Navigation = () => {
         />
         <Stack.Screen name={ENavigationScreen.NETWORK_LOGGER_SCREEN} component={NetworkLogger} />
       </Stack.Navigator>
-      {
-        <View style={styles.floatingButtonContainer}>
-          <Pressable onPress={openNetworkLoggerScreen}>
-            <Text>🌐</Text>
-          </Pressable>
-        </View>
-      }
+      <NetworkLoggerButton />
     </>
   );
 };
