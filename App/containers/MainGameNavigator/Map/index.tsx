@@ -35,7 +35,7 @@ const MapScreen = () => {
 
   useEffect(() => {
     // If the current location is not empty and the region is empty or default location, set the region to the current location
-    if (!isEmpty(currentLocation) && (isEmpty(region) || region === defaultLocation)) {
+    if (!isEmpty(currentLocation) && (isEmpty(region) || currentLocation !== defaultLocation)) {
       setRegion(currentLocation);
     }
   }, [currentLocation, region]);
