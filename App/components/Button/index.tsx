@@ -3,7 +3,7 @@ import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { IButtonProps } from 'App/types/button';
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Pressable } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomText from '../CustomText';
 import { styles } from './styles';
@@ -31,18 +31,18 @@ const CustomButton = (props: IButtonProps) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           colors={solidButtonColorStyle}>
-          <TouchableOpacity onPress={props.onPress}>
+          <Pressable onPress={props.onPress}>
             <CustomText style={buttonTitleStyle}>{props.title}</CustomText>
-          </TouchableOpacity>
+          </Pressable>
         </LinearGradient>
       );
     case EButtonType.OUTLINE:
       return (
-        <TouchableOpacity
+        <Pressable
           onPress={props.onPress}
           style={[styles.buttonContainer, props.customStyleContainer, { backgroundColor: 'transparent' }]}>
           <CustomText style={[styles.buttonText, props.customStyleText]}>{props.title}</CustomText>
-        </TouchableOpacity>
+        </Pressable>
       );
   }
 };

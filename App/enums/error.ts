@@ -18,5 +18,7 @@ export enum EErrorCode {
 }
 
 export enum EStatusCode {
+  SUCCESS = 200,
+  BAD_REQUEST = 400,
   FORBIDEN = 403,
 }

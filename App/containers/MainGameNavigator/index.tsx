@@ -3,6 +3,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { EMainGameScreen } from 'App/enums/navigation';
 import MapScreen from './Map';
 import MapTypeScreen from './MapTypeScreen';
+import FilterScreen from './FilterScreen';
+import { EColor } from 'App/enums/color';
 
 const Stack = createStackNavigator();
 
@@ -31,6 +33,17 @@ const MainGameNavigator = () => {
         }}
         name={EMainGameScreen.MAP_TYPE_SCREEN}
         component={MapTypeScreen}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.FILTER_SCREEN}
+        component={FilterScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardStyle: {
+            backgroundColor: EColor.color_00000080,
+          },
+        }}
       />
     </Stack.Navigator>
   );

@@ -27,4 +27,5 @@ export enum EForgotPasswordScreen {
 export enum EMainGameScreen {
   MAP_SCREEN = 'MAP_SCREEN',
   MAP_TYPE_SCREEN = 'MAP_TYPE_SCREEN',
+  FILTER_SCREEN = 'FILTER_SCREEN',
 }

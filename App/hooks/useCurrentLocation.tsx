@@ -6,8 +6,8 @@ import useRequestLocationPermission from './useRequestLocationPermission';
 const useCurrentLocation = (): IRealtimeLocation => {
   const { hasLocationPermission } = useRequestLocationPermission();
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>({
-    latitude: 37.78825, // Latitude of the marker
-    longitude: -122.4324, // Longitude of the marker
+    latitude: 37.78825,
+    longitude: -122.4324,
     altitude: 0,
     heading: 0,
     speed: 0,
