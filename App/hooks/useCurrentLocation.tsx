@@ -34,6 +34,9 @@ const useCurrentLocation = (): IRealtimeLocation => {
           error => {
             console.log(error);
           },
+          {
+            enableHighAccuracy: true, // to use GPS location, if false it will be use WIFI based location
+          },
         );
     }
     return () => {

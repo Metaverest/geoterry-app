@@ -94,12 +94,14 @@ const MapScreen = () => {
       </View>
       <View style={styles.listButtonRHNContainer}>
         <CustomButtonIcon
+          onPress={() => {}}
           buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}
           renderIcon={<UserProfileIcon />}
         />
         <CustomButtonIcon
+          onPress={() => {}}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}
