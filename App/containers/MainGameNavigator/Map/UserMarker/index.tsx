@@ -5,55 +5,33 @@ import { IRealtimeLocation } from 'App/types';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Image, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Marker, MapMarker } from 'react-native-maps';
+import { MapMarker } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { styles } from './styles';
 import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
-import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
-import usePlatform from 'App/hooks/usePlatform';
+import { useAnimatedRegion, AnimatedMarker } from 'App/hooks/useAnimatedRegion';
+import { Easing } from 'react-native-reanimated';
 
 const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
   const user = useSelector(reduxSelector.getUser);
   const markerRef = useRef<MapMarker>(null);
-  const { isAndroid } = usePlatform();
+  const animatedRegion = useAnimatedRegion(userPosition);
 
   const userAvatar = useMemo(() => {
     return user.logoUrl;
   }, [user?.logoUrl]);
 
-  const markerAnimated = () => {
-    if (!markerRef.current) {
-      return;
-    }
-    if (isAndroid) {
-      markerRef.current.animateMarkerToCoordinate(
-        {
-          latitude: userPosition.latitude,
-          longitude: userPosition.longitude,
-        },
-        DEFAULT_USER_MARK_POINT_ANIMATION_DURATION,
-      );
-    } else {
-      // TODO: handle animation for iOS (animateMarkerToCoordinate is not supported on iOS yet)
-    }
-  };
-
   useEffect(() => {
-    markerAnimated();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userPosition]);
+    animatedRegion.animate({
+      latitude: userPosition.latitude,
+      longitude: userPosition.longitude,
+      duration: 1000,
+      easing: Easing.linear,
+    });
+  }, [animatedRegion, userPosition]);
 
   return (
-    <Marker
-      ref={markerRef}
-      coordinate={
-        isAndroid
-          ? {
-              latitude: 0,
-              longitude: 0,
-            }
-          : userPosition
-      }>
+    <AnimatedMarker ref={markerRef} animatedProps={animatedRegion.props} coordinate={userPosition}>
       <View style={styles.markerContainer}>
         <LinearGradient
           style={styles.imageContainer}
@@ -72,7 +50,7 @@ const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
           </View>
         </LinearGradient>
       </View>
-    </Marker>
+    </AnimatedMarker>
   );
 };
 export default UserMarker;
