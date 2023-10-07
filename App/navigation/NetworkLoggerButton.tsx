@@ -5,6 +5,7 @@ import { ENavigationScreen } from 'App/enums/navigation';
 import { Pressable } from 'react-native';
 import { styles } from './styles';
 import React from 'react';
+import { navigationRef } from 'App/navigation';
 
 const NetworkLoggerButton = () => {
   const pan = useRef(new Animated.ValueXY()).current;
