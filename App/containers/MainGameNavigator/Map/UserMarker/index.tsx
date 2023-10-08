@@ -10,6 +10,7 @@ import { styles } from './styles';
 import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
 import { useAnimatedRegion, AnimatedMarker } from 'App/hooks/useAnimatedRegion';
 import { Easing } from 'react-native-reanimated';
+import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
 
 const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
   const user = useSelector(reduxSelector.getUser);
@@ -23,7 +24,7 @@ const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
     animatedRegion.animate({
       latitude: userPosition.latitude,
       longitude: userPosition.longitude,
-      duration: 1000,
+      duration: DEFAULT_USER_MARK_POINT_ANIMATION_DURATION,
       easing: Easing.linear,
     });
   }, [animatedRegion, userPosition]);
