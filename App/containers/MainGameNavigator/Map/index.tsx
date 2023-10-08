@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
 import SpeedBoard from './SpeedBoard/SpeedDisplay';
+import CityNameBoard from './CityNameBoard/CityNameBoard';
 
 const MapScreen = () => {
   // The current user`s location
@@ -56,6 +57,7 @@ const MapScreen = () => {
     mapRef?.current?.animateToRegion(currentLocation);
   };
   const mapType = useSelector(reduxSelector.getAppMapType);
+
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
@@ -99,6 +101,8 @@ const MapScreen = () => {
 
       {/* TODO: Need to fix to not show speed board when user is not moving - currently there is no event to indicate that user is not moving */}
       {currentLocation.speed ? <SpeedBoard speed={currentLocation.speed} /> : null}
+
+      <CityNameBoard region={region} mapRef={mapRef} />
 
       <View style={styles.listButtonRHNContainer}>
         <CustomButtonIcon
