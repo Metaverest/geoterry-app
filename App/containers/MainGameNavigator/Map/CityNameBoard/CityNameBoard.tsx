@@ -22,11 +22,7 @@ const CityNameBoard = ({ region, mapRef }: CityNameProps) => {
             longitude: region.longitude,
           });
           console.log(address);
-          setCityName(
-            address.locality === '(null)' || !address.locality
-              ? address.subAdministrativeArea || address.name
-              : address.locality,
-          );
+          setCityName(!address.locality ? address.subAdministrativeArea || address.name : address.locality);
         } catch (error) {
           console.error(error);
         }

@@ -1,3 +1,4 @@
+import { isIOSDevice } from 'App/helpers/common';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -11,6 +12,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: isIOSDevice() ? 55 : 0,
   },
   imageContainer: {
     width: 50,

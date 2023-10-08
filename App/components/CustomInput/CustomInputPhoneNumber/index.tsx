@@ -32,6 +32,7 @@ const CustomInputPhoneNumber = (props: IInputProps) => {
           style={styles.prefixInput}
           {...props}
           placeholder=""
+          keyboardType="number-pad"
           onChangeText={text => {
             setPrefix(text);
             props.onChangeText && props.onChangeText(`${text}${phone}`);
@@ -44,6 +45,7 @@ const CustomInputPhoneNumber = (props: IInputProps) => {
           style={styles.phoneInput}
           {...props}
           value={phone}
+          keyboardType="number-pad"
           onChangeText={text => {
             setPhone(text);
             props.onChangeText && props.onChangeText(`${prefix}${text}`);
