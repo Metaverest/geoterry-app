@@ -24,6 +24,7 @@ import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
+import SpeedBoard from './SpeedBoard/SpeedDisplay';
 
 const MapScreen = () => {
   // The current user`s location
@@ -61,8 +62,8 @@ const MapScreen = () => {
         mapType={mapType}
         ref={mapRef}
         style={styles.mapContainer}
+        compassOffset={{ x: -10, y: 208 }}
         onRegionChangeComplete={e => {
-          console.log('set region');
           setRegion(e as IRealtimeLocation);
         }}
         region={region}>
@@ -95,6 +96,10 @@ const MapScreen = () => {
           renderIcon={<TargetIcon />}
         />
       </View>
+
+      {/* TODO: Need to fix to not show speed board when user is not moving - currently there is no event to indicate that user is not moving */}
+      {currentLocation.speed ? <SpeedBoard speed={currentLocation.speed} /> : null}
+
       <View style={styles.listButtonRHNContainer}>
         <CustomButtonIcon
           onPress={() => {}}
