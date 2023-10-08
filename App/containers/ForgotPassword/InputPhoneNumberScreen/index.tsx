@@ -10,7 +10,7 @@ import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
 import { sagaUserAction } from 'App/redux/actions/userAction';
-import { ICreateAccountDto } from 'App/types/redux';
+import { ICreateAccountDto } from 'App/types/user';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';

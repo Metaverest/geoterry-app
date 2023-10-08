@@ -13,5 +13,6 @@ export const styles = StyleSheet.create({
     color: EColor.black,
     fontWeight: '700',
     width: '100%',
+    textDecorationLine: 'underline',
   },
 });
