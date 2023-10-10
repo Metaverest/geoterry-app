@@ -1,13 +1,15 @@
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
-import { ECreateProfileScreen, EForgotPasswordScreen, ENavigationScreen } from 'App/enums/navigation';
-import { ESagaUserAction } from 'App/enums/redux';
+import { ECreateProfileScreen, EForgotPasswordScreen, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxUserAction, sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
+import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import { IError } from 'App/types/error';
 import { IReduxActionWithNavigation } from 'App/types/redux';
+import { ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -27,12 +29,15 @@ import AXIOS, {
   requestCreateProfile,
   requestGetOTP,
   requestLogin,
+  requestPublicFilterTerryCategories,
+  requestPublicGetTerries,
   requestUploadProfileImage,
   requestUserReadProfile,
   requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
+import { isEmpty, last } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
@@ -279,6 +284,52 @@ export function* watchReadProfileAndGoToMainAppAsync() {
   yield takeLatest(ESagaUserAction.GET_PROFILE_AND_GO_TO_MAIN_APP, readProfileAndGoToMainApp);
 }
 
+function* getPublicFilterTerryCategories(
+  action: IReduxActionWithNavigation<ESagaUserAction, IFilterTerryCategoryInputDto>,
+) {
+  const { data } = action.payload;
+  try {
+    const response: ITerryCategoryResDto = yield call(requestPublicFilterTerryCategories, data);
+
+    yield put(reduxAppAction.setPublicCategories(response));
+  } catch (error) {
+    console.log(error?.response?.data);
+  }
+}
+
+export function* watchGetPublicFilterTerryCategories() {
+  yield takeLatest(ESagaAppAction.GET_PUBLIC_FILTER_CATEGORIES, getPublicFilterTerryCategories);
+}
+
+function* getPublicTerries(action: IReduxActionWithNavigation<ESagaAppAction, ITerryFilterParams>) {
+  try {
+    const navigation = action?.payload?.navigation;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user?.id;
+    const terryFilterData: ITerryFilterInputDto = yield select(reduxSelector.getAppPublicTerryFilter);
+    const terryFilterParams: ITerryFilterParams = action.payload?.data as ITerryFilterParams;
+    const response: ITerryCategoryResDto = yield call(
+      requestPublicGetTerries,
+      terryFilterData,
+      terryFilterParams,
+      profileId,
+    );
+    if (!isEmpty(response)) {
+      yield put(reduxAppAction.setPublicTerries(response));
+    }
+
+    if (last(navigation.getState().routes)?.name === EMainGameScreen.FILTER_SCREEN) {
+      navigation.dispatch(CommonActions.goBack());
+    }
+  } catch (error) {
+    console.log(error?.response?.data);
+  }
+}
+
+export function* watchGetPublicTerries() {
+  yield takeLatest(ESagaAppAction.GET_PUBLIC_TERRIES, getPublicTerries);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -290,5 +341,7 @@ export default function* userSaga() {
     watchVerifyAccountRecoverOTP(),
     watchAccountRecoverAsync(),
     watchReadProfileAndGoToMainAppAsync(),
+    watchGetPublicFilterTerryCategories(),
+    watchGetPublicTerries(),
   ]);
 }

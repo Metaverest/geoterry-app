@@ -1,6 +1,7 @@
 import { EIdentifierType, ELanguageCode, ENamespace } from 'App/enums';
 
 export interface IUser {
+  id: string;
   displayName: string;
   email?: string;
   phoneNumber?: string;

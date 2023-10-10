@@ -39,11 +39,26 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
+    marginBottom: 2,
   },
   value: {
     fontSize: 14,
     fontWeight: '500',
     lineHeight: 20,
     color: EColor.color_FAFAFA,
+  },
+  sliderContainer: {
+    width: '100%',
+    height: 12,
+  },
+  track: {
+    backgroundColor: EColor.color_999999,
+    height: 3,
+  },
+  marker: {
+    backgroundColor: EColor.color_FAFAFA,
+  },
+  selectedStyle: {
+    backgroundColor: EColor.color_FAFAFA,
   },
 });

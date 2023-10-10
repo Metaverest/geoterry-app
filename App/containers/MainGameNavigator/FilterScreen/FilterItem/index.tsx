@@ -1,27 +1,37 @@
-import Slider from '@react-native-community/slider';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import CustomText from 'App/components/CustomText';
-import { EColor } from 'App/enums/color';
 import ChevronDown from 'App/media/ChevronDown';
 import ChevronUp from 'App/media/ChevronUp';
+import { head, last } from 'lodash';
 import React, { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { styles } from './styles';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 export interface IFilterItemProps {
   title?: string;
-  id?: string;
-  value?: number;
-  onValueChange?: (value: number) => void;
-  min?: number;
-  max?: number;
+  id: string;
+  onValueChange: (id: string, low: number, high: number, min: number, max: number) => void;
+  low: number;
+  high: number;
+  min: number;
+  max: number;
   shouldShowDivider?: boolean;
 }
 
-const FilterItem = ({ value, title, min, max, shouldShowDivider = true }: IFilterItemProps) => {
+const FilterItem = ({ title, min, max, shouldShowDivider = true, onValueChange, low, high, id }: IFilterItemProps) => {
   const [isShowOption, setIsShowOption] = useState(false);
   const toggleShowOption = useCallback(() => {
     setIsShowOption(currentState => !currentState);
   }, []);
+
+  const onValuesChangeFinish = useCallback(
+    (values: number[]) => {
+      onValueChange(id, head(values) as number, last(values) as number, min as number, max as number);
+    },
+    [onValueChange, id, min, max],
+  );
+
   return (
     <View>
       <Pressable
@@ -35,16 +45,17 @@ const FilterItem = ({ value, title, min, max, shouldShowDivider = true }: IFilte
       {isShowOption && (
         <View style={[styles.optionContainer, shouldShowDivider && styles.borderBottom]}>
           <View style={styles.valueContainer}>
-            <CustomText style={styles.value}>{value}</CustomText>
+            <CustomText style={styles.value}>{min}</CustomText>
             <CustomText style={styles.value}>{max}</CustomText>
           </View>
-          <Slider
-            thumbTintColor={EColor.color_FAFAFA}
-            style={styles.slider}
-            minimumValue={min}
-            maximumValue={max}
-            minimumTrackTintColor={EColor.color_FAFAFA}
-            maximumTrackTintColor={EColor.color_FAFAFA}
+          <MultiSlider
+            sliderLength={widthPercentageToDP('100%') - 32}
+            containerStyle={styles.sliderContainer}
+            selectedStyle={styles.selectedStyle}
+            markerStyle={styles.marker}
+            trackStyle={styles.track}
+            values={[((low * 10) / (max - min)) as number, ((high * 10) / (max - min)) as number]}
+            onValuesChangeFinish={onValuesChangeFinish}
           />
         </View>
       )}
