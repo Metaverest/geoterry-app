@@ -107,3 +107,35 @@ export const MOCK_TERRY: ITerryResponseDto[] = [
     },
   },
 ];
+
+export interface IMinMaxQueryDto {
+  min: number;
+  max: number;
+}
+
+export interface ILocationDto {
+  longitude: number;
+  latitude: number;
+}
+
+export interface IDistanceQueryDto {
+  max: number;
+  min: number;
+}
+export interface ITerryFilterInputDto {
+  textSearch?: string;
+  size?: IMinMaxQueryDto;
+  difficulty?: IMinMaxQueryDto;
+  rate?: IMinMaxQueryDto;
+  terrain?: IMinMaxQueryDto;
+  categoryIds?: string[];
+  location?: ILocationDto;
+  distance?: IDistanceQueryDto;
+}
+
+export interface ITerryFilterParams {
+  page?: number;
+  pageSize?: number;
+  includeCategoryData?: boolean;
+  includeProfileData?: boolean;
+}

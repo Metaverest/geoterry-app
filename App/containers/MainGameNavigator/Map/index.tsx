@@ -4,6 +4,7 @@ import { styles } from './styles';
 
 import { StackActions, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
+import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -14,26 +15,52 @@ import SettingIcon from 'App/media/SettingIcon';
 import TargetIcon from 'App/media/TargetIcon';
 import TypeMapIcon from 'App/media/TypeMapIcon';
 import UserProfileIcon from 'App/media/UserProfileIcon';
+import { reduxAppAction } from 'App/redux/actions/appAction';
+import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
-import { MOCK_TERRY } from 'App/types/terry';
+import { ITerryFilterParams } from 'App/types/terry';
+import { calculateDistance } from 'App/utils/convert';
 import { removePropertyInDevice } from 'App/utils/storage/storage';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import CityNameBoard from './CityNameBoard/CityNameBoard';
+import SpeedBoard from './SpeedBoard/SpeedDisplay';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
-import SpeedBoard from './SpeedBoard/SpeedDisplay';
-import CityNameBoard from './CityNameBoard/CityNameBoard';
 
 const MapScreen = () => {
   // The current user`s location
   const currentLocation = useCurrentLocation();
   const mapRef = useRef<MapView>(null);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   //The current region of the map view
   const [region, setRegion] = useState(currentLocation);
+  const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
+  const changeRegion = useCallback(
+    (updatedRegion: IRealtimeLocation) => {
+      dispatch(
+        reduxAppAction.setPublicFilterTerries({
+          location: { latitude: updatedRegion.latitude, longitude: updatedRegion.longitude },
+        }),
+      );
+
+      setRegion(updatedRegion);
+      if (
+        !isEmpty(regionToGetTerry) &&
+        !isEmpty(updatedRegion) &&
+        calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY
+      ) {
+        setRegionToGetTerry(updatedRegion);
+        dispatch(sagaUserAction.getPublicTerriesAsync({} as ITerryFilterParams, navigation));
+      }
+    },
+    [dispatch, navigation, regionToGetTerry],
+  );
 
   useEffect(() => {
     // If the current location is not empty and the region is empty or default location, set the region to the current location
@@ -42,10 +69,9 @@ const MapScreen = () => {
       (isEmpty(region) ||
         (region.latitude === defaultLocation.latitude && region.longitude === defaultLocation.longitude))
     ) {
-      setRegion(currentLocation);
+      changeRegion(currentLocation);
     }
-  }, [currentLocation, region]);
-  const navigation = useNavigation();
+  }, [currentLocation, region, changeRegion]);
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
@@ -57,7 +83,7 @@ const MapScreen = () => {
     mapRef?.current?.animateToRegion(currentLocation);
   };
   const mapType = useSelector(reduxSelector.getAppMapType);
-
+  const publicTerries = useSelector(reduxSelector.getAppPublicTerries);
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
@@ -66,11 +92,11 @@ const MapScreen = () => {
         style={styles.mapContainer}
         compassOffset={{ x: -10, y: 208 }}
         onRegionChangeComplete={e => {
-          setRegion(e as IRealtimeLocation);
+          changeRegion(e as IRealtimeLocation);
         }}
         region={region}>
         <UserMarker userPosition={currentLocation} />
-        {MOCK_TERRY.map(treasure => (
+        {publicTerries?.map(treasure => (
           <TreasureMarker key={treasure.id} treasure={treasure} />
         ))}
       </MapView>

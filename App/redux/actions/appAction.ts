@@ -2,6 +2,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IError } from 'App/types/error';
+import { ITerryFilterInputDto } from 'App/types/terry';
 import { ICreateAccountDto } from 'App/types/user';
 
 const reduxAppAction = {
@@ -45,6 +46,24 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_MAP_TYPE,
       payload: { mapType },
+    };
+  },
+  setPublicCategories: (publicCategories: any) => {
+    return {
+      type: EReduxAppAction.SET_PUBLIC_CATEGORIES,
+      payload: { publicCategories },
+    };
+  },
+  setPublicTerries: (publicTerries: any) => {
+    return {
+      type: EReduxAppAction.SET_PUBLIC_TERRIES,
+      payload: { publicTerries },
+    };
+  },
+  setPublicFilterTerries: (publicTerryFilter: ITerryFilterInputDto) => {
+    return {
+      type: EReduxAppAction.SET_PUBLIC_FILTER_TERRIES,
+      payload: { publicTerryFilter },
     };
   },
 };

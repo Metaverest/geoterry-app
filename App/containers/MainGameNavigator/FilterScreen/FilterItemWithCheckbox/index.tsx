@@ -3,7 +3,7 @@ import CheckboxChecked from 'App/media/CheckboxChecked';
 import CheckboxUncheck from 'App/media/CheckboxUncheck';
 import ChevronDown from 'App/media/ChevronDown';
 import ChevronUp from 'App/media/ChevronUp';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { styles } from './styles';
 export interface IOption {
@@ -14,7 +14,7 @@ export interface IOption {
 export interface IFilterItemWithCheckboxProps {
   title?: string;
   id?: string;
-  options?: IOption[];
+  options: IOption[];
   selectedOptions?: IOption[];
   setSelectedOptions?: (options: IOption[]) => void;
   shouldShowDivider?: boolean;
@@ -31,19 +31,22 @@ const FilterItemWithCheckbox = ({
     setIsShowOption(currentState => !currentState);
   }, []);
 
+  const selectedOptionIds = useMemo(() => {
+    return selectedOptions?.map(item => item.id);
+  }, [selectedOptions]);
   const isSelectedOption = useCallback(
     (option: IOption) => {
-      return selectedOptions.includes(option);
+      return selectedOptionIds?.includes(option.id);
     },
-    [selectedOptions],
+    [selectedOptionIds],
   );
 
   const toggleOption = useCallback(
     (option: IOption) => {
       if (isSelectedOption(option)) {
-        setSelectedOptions(selectedOptions.filter(item => item.id !== option.id));
+        setSelectedOptions && setSelectedOptions(selectedOptions?.filter(item => item.id !== option.id) as IOption[]);
       } else {
-        setSelectedOptions([...selectedOptions, option]);
+        setSelectedOptions && setSelectedOptions([...(selectedOptions || []), option]);
       }
     },
     [selectedOptions, setSelectedOptions, isSelectedOption],

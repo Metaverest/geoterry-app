@@ -1,3 +1,4 @@
+import { RADIUS_TO_GET_NEARBY_TERRY } from 'App/constants/common';
 import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
@@ -10,6 +11,16 @@ const defaultAppState: IAppState = {
   error: [],
   recoveryCode: '',
   mapType: EMapType.STANDARD,
+  publicCategories: [],
+  publicTerries: [],
+  publicTerryFilter: {
+    categoryIds: [],
+    size: { min: 1, max: 5 },
+    difficulty: { min: 1, max: 5 },
+    rate: { min: 1, max: 5 },
+    terrain: { min: 1, max: 5 },
+    distance: { min: 1, max: RADIUS_TO_GET_NEARBY_TERRY },
+  },
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -50,6 +61,24 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         mapType: action.payload?.mapType,
+      };
+    case EReduxAppAction.SET_PUBLIC_CATEGORIES:
+      return {
+        ...state,
+        publicCategories: action.payload?.publicCategories,
+      };
+    case EReduxAppAction.SET_PUBLIC_TERRIES:
+      return {
+        ...state,
+        publicTerries: action.payload?.publicTerries,
+      };
+    case EReduxAppAction.SET_PUBLIC_FILTER_TERRIES:
+      return {
+        ...state,
+        publicTerryFilter: {
+          ...state.publicTerryFilter,
+          ...action.payload?.publicTerryFilter,
+        },
       };
     default:
       return state;

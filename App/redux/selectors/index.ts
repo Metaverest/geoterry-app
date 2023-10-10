@@ -10,4 +10,7 @@ export const reduxSelector = {
   getAppError: (state: IReduxRootState) => state.app.error,
   getAppRecoveryCode: (state: IReduxRootState) => state.app.recoveryCode,
   getAppMapType: (state: IReduxRootState) => state.app.mapType,
+  getAppPublicCategories: (state: IReduxRootState) => state.app.publicCategories,
+  getAppPublicTerries: (state: IReduxRootState) => state.app.publicTerries,
+  getAppPublicTerryFilter: (state: IReduxRootState) => state.app.publicTerryFilter,
 };

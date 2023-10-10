@@ -4,6 +4,8 @@ import { EDataStorageKey, ELanguageCode } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
+import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
+import { ITerryFilterInputDto, ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -127,4 +129,19 @@ export const requestVerifyAccountRecoveryOTP = async (dto: IVerifyAccountRecover
 export const requestAccountRecover = async (data: IRecoveryAccountDto) => {
   return AXIOS.put<IAccountResponseDto>('/auth/otp/recover', data).then(result => result.data);
 };
+
+export const requestPublicFilterTerryCategories = async (data: IFilterTerryCategoryInputDto) => {
+  return AXIOS.post<ITerryCategoryResDto[]>('/public/terry-category/filter', data).then(result => result.data);
+};
+
+export const requestPublicGetTerries = async (
+  data: ITerryFilterInputDto,
+  params: ITerryFilterParams,
+  profileId: string,
+) => {
+  return AXIOS.post<ITerryResponseDto[]>(`/hunter/${profileId}/terry/filter`, data, {
+    params,
+  }).then(result => result.data);
+};
+
 export default AXIOS;

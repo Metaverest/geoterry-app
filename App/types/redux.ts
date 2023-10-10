@@ -2,6 +2,8 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { IError } from './error';
 import { ICreateAccountDto, IUser } from './user';
+import { ITerryCategoryResDto } from './category';
+import { ITerryFilterInputDto, ITerryResponseDto } from './terry';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -10,6 +12,7 @@ export interface IReduxAction<T, P = undefined> {
 
 export interface ISagaAsyncActionOptions {
   isRecoverPassword?: boolean;
+  profileId?: string;
 }
 export interface IReduxActionWithNavigation<T, P = undefined> {
   type: T;
@@ -33,6 +36,9 @@ export interface IAppState {
   // In case of recover password, verifyAccountRecoveryOTP will return a code that used to change password.
   recoveryCode?: string;
   mapType?: EMapType;
+  publicCategories?: ITerryCategoryResDto[];
+  publicTerries?: ITerryResponseDto[];
+  publicTerryFilter?: ITerryFilterInputDto;
 }
 
 export interface IRootState {
