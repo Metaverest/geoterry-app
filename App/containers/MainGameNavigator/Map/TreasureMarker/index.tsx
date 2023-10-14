@@ -12,10 +12,12 @@ const TreasureMarker = ({ treasure }: { treasure: ITerryResponseDto }) => {
     <Marker style={styles.container} coordinate={treasure.location}>
       <View style={styles.container}>
         {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
-        <View style={styles.subIconContainer}>
-          {treasure?.saved && <Image style={styles.subIcon} source={TerrySavedIcon} />}
-          {treasure?.favorite && <Image style={styles.subIcon} source={TerryHeartIcon} />}
-        </View>
+        {!treasure.checkedIn ? (
+          <View style={styles.subIconContainer}>
+            {treasure?.saved && <Image style={styles.subIcon} source={TerrySavedIcon} />}
+            {treasure?.favourite && !treasure?.saved && <Image style={styles.subIcon} source={TerryHeartIcon} />}
+          </View>
+        ) : null}
       </View>
     </Marker>
   ) : null;
