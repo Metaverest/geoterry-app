@@ -301,22 +301,28 @@ export function* watchGetPublicFilterTerryCategories() {
   yield takeLatest(ESagaAppAction.GET_PUBLIC_FILTER_CATEGORIES, getPublicFilterTerryCategories);
 }
 
-function* getPublicTerries(action: IReduxActionWithNavigation<ESagaAppAction, ITerryFilterParams>) {
+function* getPublicTerries(
+  action: IReduxActionWithNavigation<
+    ESagaAppAction,
+    { filterParams: ITerryFilterParams; filterData: ITerryFilterInputDto }
+  >,
+) {
   try {
     const navigation = action?.payload?.navigation;
+    if (!isEmpty(action?.payload?.data?.filterData)) {
+      yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
+    }
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
     const terryFilterData: ITerryFilterInputDto = yield select(reduxSelector.getAppPublicTerryFilter);
-    const terryFilterParams: ITerryFilterParams = action.payload?.data as ITerryFilterParams;
+    const terryFilterParams: ITerryFilterParams = action.payload?.data?.filterParams as ITerryFilterParams;
     const response: ITerryCategoryResDto = yield call(
       requestPublicGetTerries,
       terryFilterData,
       terryFilterParams,
       profileId,
     );
-    if (!isEmpty(response)) {
-      yield put(reduxAppAction.setPublicTerries(response));
-    }
+    yield put(reduxAppAction.setPublicTerries(response));
 
     if (last(navigation.getState().routes)?.name === EMainGameScreen.FILTER_SCREEN) {
       navigation.dispatch(CommonActions.goBack());

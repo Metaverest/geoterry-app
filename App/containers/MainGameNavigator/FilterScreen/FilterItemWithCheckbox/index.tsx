@@ -4,7 +4,7 @@ import CheckboxUncheck from 'App/media/CheckboxUncheck';
 import ChevronDown from 'App/media/ChevronDown';
 import ChevronUp from 'App/media/ChevronUp';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 export interface IOption {
   id: string;
@@ -54,24 +54,24 @@ const FilterItemWithCheckbox = ({
 
   return (
     <View>
-      <Pressable
+      <TouchableOpacity
         onPress={toggleShowOption}
         style={[styles.openedContainer, !isShowOption && shouldShowDivider && styles.borderBottom]}>
         <>
           <CustomText style={styles.title}>{title}</CustomText>
           {isShowOption ? <ChevronUp /> : <ChevronDown />}
         </>
-      </Pressable>
+      </TouchableOpacity>
       {isShowOption && (
         <View style={[styles.optionContainer, shouldShowDivider && styles.borderBottom]}>
           {options?.map(option => {
             return (
-              <Pressable onPress={() => toggleOption(option)}>
+              <TouchableOpacity key={option.id} onPress={() => toggleOption(option)}>
                 <View style={styles.optionItemContainer}>
                   {isSelectedOption(option) ? <CheckboxChecked /> : <CheckboxUncheck />}
                   <CustomText style={styles.optionItemTitle}> {option.title || option.id}</CustomText>
                 </View>
-              </Pressable>
+              </TouchableOpacity>
             );
           })}
         </View>

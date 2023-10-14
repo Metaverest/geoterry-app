@@ -21,7 +21,6 @@ const CityNameBoard = ({ region, mapRef }: CityNameProps) => {
             latitude: region.latitude,
             longitude: region.longitude,
           });
-          console.log(address);
           setCityName(!address.locality ? address.subAdministrativeArea || address.name : address.locality);
         } catch (error) {
           console.error(error);

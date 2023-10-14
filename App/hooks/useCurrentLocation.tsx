@@ -4,8 +4,8 @@ import { IRealtimeLocation } from 'App/types';
 import useRequestLocationPermission from './useRequestLocationPermission';
 
 export const defaultLocation = {
-  latitude: 37.78825,
-  longitude: -122.4324,
+  latitude: 21.0479597522,
+  longitude: 105.85170291,
   altitude: 0,
   heading: 0,
   speed: 0,
@@ -23,7 +23,6 @@ const useCurrentLocation = (): IRealtimeLocation => {
         !!Geolocation &&
         Geolocation?.watchPosition(
           position => {
-            console.log(position);
             setCurrentLocation(currentPositionDraft => ({
               ...currentPositionDraft,
               altitude: position.coords.altitude,

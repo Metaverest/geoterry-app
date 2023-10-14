@@ -48,17 +48,25 @@ export const styles = StyleSheet.create({
     color: EColor.color_FAFAFA,
   },
   sliderContainer: {
-    width: '100%',
     height: 12,
   },
   track: {
     backgroundColor: EColor.color_999999,
     height: 3,
+    borderRadius: 12,
   },
   marker: {
     backgroundColor: EColor.color_FAFAFA,
+    borderRadius: 12,
+    width: 12,
+    height: 12,
   },
   selectedStyle: {
     backgroundColor: EColor.color_FAFAFA,
+  },
+  multiSliderContainer: {
+    width: '100%',
+    height: 12,
+    paddingHorizontal: 10,
   },
 });
