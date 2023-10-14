@@ -23,7 +23,7 @@ const CityNameBoard = ({ region, mapRef }: CityNameProps) => {
           });
           setCityName(!address.locality ? address.subAdministrativeArea || address.name : address.locality);
         } catch (error) {
-          console.error(error);
+          console.log(error);
         }
       }
     })();

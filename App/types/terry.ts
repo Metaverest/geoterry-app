@@ -27,7 +27,7 @@ export interface ITerryResponseDto {
   profile?: IProfileDto;
   checkedIn?: boolean;
   saved?: boolean;
-  favorite?: boolean;
+  favourite?: boolean;
 }
 
 export const MOCK_TERRY: ITerryResponseDto[] = [

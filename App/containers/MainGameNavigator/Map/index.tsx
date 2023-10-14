@@ -26,7 +26,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import CityNameBoard from './CityNameBoard/CityNameBoard';
-import SpeedBoard from './SpeedBoard/SpeedDisplay';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
 
@@ -121,9 +120,6 @@ const MapScreen = () => {
           renderIcon={<TargetIcon />}
         />
       </View>
-
-      {/* TODO: Need to fix to not show speed board when user is not moving - currently there is no event to indicate that user is not moving */}
-      {currentLocation.speed ? <SpeedBoard speed={currentLocation.speed} /> : null}
 
       <CityNameBoard region={region} mapRef={mapRef} />
 
