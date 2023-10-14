@@ -31,7 +31,6 @@ const FilterItem = ({ title, min, max, shouldShowDivider = true, onValueChange, 
     },
     [onValueChange, id, min, max],
   );
-
   return (
     <View>
       <Pressable
@@ -48,15 +47,20 @@ const FilterItem = ({ title, min, max, shouldShowDivider = true, onValueChange, 
             <CustomText style={styles.value}>{min}</CustomText>
             <CustomText style={styles.value}>{max}</CustomText>
           </View>
-          <MultiSlider
-            sliderLength={widthPercentageToDP('100%') - 32}
-            containerStyle={styles.sliderContainer}
-            selectedStyle={styles.selectedStyle}
-            markerStyle={styles.marker}
-            trackStyle={styles.track}
-            values={[((low * 10) / (max - min)) as number, ((high * 10) / (max - min)) as number]}
-            onValuesChangeFinish={onValuesChangeFinish}
-          />
+          <View style={styles.multiSliderContainer}>
+            <MultiSlider
+              sliderLength={widthPercentageToDP('100%') - 52}
+              containerStyle={styles.sliderContainer}
+              selectedStyle={styles.selectedStyle}
+              markerStyle={styles.marker}
+              pressedMarkerStyle={styles.marker}
+              trackStyle={styles.track}
+              values={[low, high]}
+              min={min}
+              max={max}
+              onValuesChangeFinish={onValuesChangeFinish}
+            />
+          </View>
         </View>
       )}
     </View>

@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
-import { ITerryFilterParams } from 'App/types/terry';
+import { ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
 
 import { IAccountLoginDto, ICreateAccountDto, IUser } from 'App/types/user';
 
@@ -75,10 +75,10 @@ const sagaUserAction = {
       payload: { categoryIds },
     };
   },
-  getPublicTerriesAsync: (params: ITerryFilterParams, navigation: any) => {
+  getPublicTerriesAsync: (filterParams: ITerryFilterParams, navigation: any, filterData?: ITerryFilterInputDto) => {
     return {
       type: ESagaAppAction.GET_PUBLIC_TERRIES,
-      payload: { params, navigation },
+      payload: { navigation: navigation, data: { filterParams, filterData } },
     };
   },
 };

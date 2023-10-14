@@ -15,7 +15,6 @@ import SettingIcon from 'App/media/SettingIcon';
 import TargetIcon from 'App/media/TargetIcon';
 import TypeMapIcon from 'App/media/TypeMapIcon';
 import UserProfileIcon from 'App/media/UserProfileIcon';
-import { reduxAppAction } from 'App/redux/actions/appAction';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
@@ -43,12 +42,6 @@ const MapScreen = () => {
   const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
   const changeRegion = useCallback(
     (updatedRegion: IRealtimeLocation) => {
-      dispatch(
-        reduxAppAction.setPublicFilterTerries({
-          location: { latitude: updatedRegion.latitude, longitude: updatedRegion.longitude },
-        }),
-      );
-
       setRegion(updatedRegion);
       if (
         !isEmpty(regionToGetTerry) &&
@@ -56,7 +49,11 @@ const MapScreen = () => {
         calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY
       ) {
         setRegionToGetTerry(updatedRegion);
-        dispatch(sagaUserAction.getPublicTerriesAsync({} as ITerryFilterParams, navigation));
+        dispatch(
+          sagaUserAction.getPublicTerriesAsync({} as ITerryFilterParams, navigation, {
+            location: { latitude: updatedRegion.latitude, longitude: updatedRegion.longitude },
+          }),
+        );
       }
     },
     [dispatch, navigation, regionToGetTerry],

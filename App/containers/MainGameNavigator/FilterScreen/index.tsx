@@ -9,7 +9,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { ITerryCategoryResDto } from 'App/types/category';
 import { ITerryFilterParams } from 'App/types/terry';
 import { filter, map } from 'lodash';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -26,7 +26,16 @@ const FilterScreen = () => {
     dispatch(sagaUserAction.getPublicTerriesAsync({} as ITerryFilterParams, navigation));
   }, [dispatch, navigation]);
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
-  const resetFilter = useCallback(() => {}, []);
+  const resetFilter = useCallback(() => {
+    dispatch(
+      reduxAppAction.setPublicFilterTerries({
+        difficulty: { min: 1, max: 5 },
+        rate: { min: 1, max: 5 },
+        size: { min: 1, max: 5 },
+        categoryIds: [],
+      }),
+    );
+  }, [dispatch]);
   const publicTerryCategories = useSelector(reduxSelector.getAppPublicCategories);
   const selectedCategoryIds = useMemo(() => {
     return publicTerryFilter?.categoryIds;
@@ -66,57 +75,46 @@ const FilterScreen = () => {
   );
 
   const onRangeChange = useCallback(
-    (id: string, low: number, high: number, min: number, max: number) => {
+    (id: string, low: number, high: number) => {
       dispatch(
         reduxAppAction.setPublicFilterTerries({
-          [id]: { min: (low * (max - min)) / 10, max: (high * (max - min)) / 10 },
+          [id]: { min: low, max: high },
         }),
       );
     },
     [dispatch],
   );
-  useEffect(() => {
-    console.log('******', publicTerryCategoryOptions, selectedCategoryOptions);
-  });
+
   return (
     <CustomSwipeUpModal title={t('Bộ lọc')}>
       <View style={styles.container}>
         <ScrollView>
           <FilterItem
-            low={publicTerryFilter?.size?.min}
-            high={publicTerryFilter?.size?.max}
+            low={publicTerryFilter?.size?.min || 1}
+            high={publicTerryFilter?.size?.max || 5}
             onValueChange={onRangeChange}
             id="size"
             title={t('Kích thước')}
             max={5}
-            min={0}
+            min={1}
           />
           <FilterItem
-            low={publicTerryFilter?.distance?.min || 0}
-            high={publicTerryFilter?.distance?.max || 0}
-            onValueChange={onRangeChange}
-            id="distance"
-            title={t('Khoảng cách')}
-            max={5}
-            min={0}
-          />
-          <FilterItem
-            low={publicTerryFilter?.difficulty?.min || 0}
-            high={publicTerryFilter?.difficulty?.max || 0}
+            low={publicTerryFilter?.difficulty?.min || 1}
+            high={publicTerryFilter?.difficulty?.max || 5}
             onValueChange={onRangeChange}
             id="difficulty"
             title={t('Độ khó')}
             max={5}
-            min={0}
+            min={1}
           />
           <FilterItem
-            low={publicTerryFilter?.rate?.min || 0}
-            high={publicTerryFilter?.rate?.max || 0}
+            low={publicTerryFilter?.rate?.min || 1}
+            high={publicTerryFilter?.rate?.max || 5}
             onValueChange={onRangeChange}
             id="rate"
             title={t('Đánh giá')}
             max={5}
-            min={0}
+            min={1}
           />
 
           <FilterItemWithCheckbox

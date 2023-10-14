@@ -25,6 +25,9 @@ export interface ITerryResponseDto {
   location: ITerryLocationresDto;
   metadata: ITerryMetadataResDto;
   profile?: IProfileDto;
+  checkedIn?: boolean;
+  saved?: boolean;
+  favorite?: boolean;
 }
 
 export const MOCK_TERRY: ITerryResponseDto[] = [

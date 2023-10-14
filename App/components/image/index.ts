@@ -7,3 +7,5 @@ export const AppBackgroundImage = require('../../media/AppBackgroundImage.png');
 export const DefaultMap = require('../../media/DefaultMap.png');
 export const SatelliteMap = require('../../media/SatelliteMap.png');
 export const ModalSwipeUpBackgroundImage = require('../../media/ModalSwipeUpBackgroundImage.png');
+export const TerryHeartIcon = require('../../media/TerryHeart.png');
+export const TerrySavedIcon = require('../../media/TerrySaved.png');

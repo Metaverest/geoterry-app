@@ -14,12 +14,12 @@ const defaultAppState: IAppState = {
   publicCategories: [],
   publicTerries: [],
   publicTerryFilter: {
-    categoryIds: [],
+    categoryIds: undefined,
     size: { min: 1, max: 5 },
     difficulty: { min: 1, max: 5 },
     rate: { min: 1, max: 5 },
     terrain: { min: 1, max: 5 },
-    distance: { min: 1, max: RADIUS_TO_GET_NEARBY_TERRY },
+    distance: { min: 0, max: RADIUS_TO_GET_NEARBY_TERRY },
   },
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {

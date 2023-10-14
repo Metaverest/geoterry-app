@@ -55,10 +55,14 @@ export const requestUserReadProfile = async () => {
 
 export const setAuthorizationRequestHeader = async (axios: AxiosInstance) => {
   const latestAccessToken = await getStoredProperty<string>(EDataStorageKey.ACCESS_TOKEN);
-  axios.interceptors.request.use(async config => {
-    config.headers.Authorization = `Bearer ${latestAccessToken}`;
-    return config;
-  });
+  axios.interceptors.request.use(
+    async config => {
+      config.headers.Authorization = `Bearer ${latestAccessToken}`;
+      return config;
+    },
+    undefined,
+    { synchronous: true },
+  );
 };
 
 export const setLanguageRequestHeader = async (axios: AxiosInstance, language: ELanguageCode) => {
