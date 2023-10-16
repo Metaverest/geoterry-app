@@ -12,7 +12,7 @@ import { useAnimatedRegion, AnimatedMarker } from 'App/hooks/useAnimatedRegion';
 import { Easing } from 'react-native-reanimated';
 import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
 
-const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
+const UserMarker = ({ userPosition, centerMap }: { userPosition: IRealtimeLocation; centerMap: () => void }) => {
   const user = useSelector(reduxSelector.getUser);
   const animatedRegion = useAnimatedRegion(userPosition);
 
@@ -30,7 +30,7 @@ const UserMarker = ({ userPosition }: { userPosition: IRealtimeLocation }) => {
   }, [animatedRegion, userPosition]);
 
   return (
-    <AnimatedMarker animatedProps={animatedRegion.props} coordinate={userPosition}>
+    <AnimatedMarker animatedProps={animatedRegion.props} coordinate={userPosition} onPress={centerMap}>
       <View style={styles.markerContainer}>
         <LinearGradient
           style={styles.imageContainer}

@@ -91,7 +91,7 @@ const MapScreen = () => {
           changeRegion(e as IRealtimeLocation);
         }}
         region={region}>
-        <UserMarker userPosition={currentLocation} />
+        <UserMarker userPosition={currentLocation} centerMap={onCenter} />
         {publicTerries?.map(treasure => (
           <TreasureMarker key={treasure.id} treasure={treasure} />
         ))}
