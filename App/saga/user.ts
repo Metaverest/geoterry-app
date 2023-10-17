@@ -33,6 +33,7 @@ import AXIOS, {
   requestPublicGetTerries,
   requestUploadProfileImage,
   requestUserReadProfile,
+  requestUserUpdateProfile,
   requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
@@ -336,6 +337,30 @@ export function* watchGetPublicTerries() {
   yield takeLatest(ESagaAppAction.GET_PUBLIC_TERRIES, getPublicTerries);
 }
 
+function* userUpdateProfile(action: IReduxActionWithNavigation<ESagaUserAction, ICreateProfileReqDto>) {
+  const navigation = action?.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const profileToUpdate = action?.payload?.data;
+    const updatedProfile: IProfileResDto = yield call(
+      requestUserUpdateProfile,
+      profileToUpdate as ICreateProfileReqDto,
+    );
+    yield put(reduxUserAction.setUser(updatedProfile as IUser));
+    navigation.dispatch(StackActions.pop());
+    if (action?.payload?.options?.onSuccess) {
+      action?.payload?.options?.onSuccess();
+    }
+  } catch (error) {
+    console.log(error?.response?.data);
+    navigation.dispatch(StackActions.pop());
+  }
+}
+
+export function* watchUpdateProfile() {
+  yield takeLatest(ESagaUserAction.UPDATE_PROFILE, userUpdateProfile);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -349,5 +374,6 @@ export default function* userSaga() {
     watchReadProfileAndGoToMainAppAsync(),
     watchGetPublicFilterTerryCategories(),
     watchGetPublicTerries(),
+    watchUpdateProfile(),
   ]);
 }

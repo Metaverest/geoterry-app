@@ -22,7 +22,7 @@ export const navigationRef = React.createRef<any>();
 
 const Stack = createStackNavigator();
 const Navigation = () => {
-  const language = useSelector(reduxSelector.getAppLanguage);
+  const language = useSelector(reduxSelector.getUserLanguageCode);
   useEffect(() => {
     (async () => {
       await i18next.changeLanguage(language);

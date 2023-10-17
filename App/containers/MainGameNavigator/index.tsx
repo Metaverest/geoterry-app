@@ -10,6 +10,7 @@ import FilterScreen from './FilterScreen';
 import MapScreen from './Map';
 import MapTypeScreen from './MapTypeScreen';
 import { sagaUserAction } from 'App/redux/actions/userAction';
+import SettingNavigator from '../Setting';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,11 @@ const MainGameNavigator = () => {
             backgroundColor: EColor.color_00000080,
           },
         }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.SETTING_NAVIGATOR}
+        component={SettingNavigator}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
