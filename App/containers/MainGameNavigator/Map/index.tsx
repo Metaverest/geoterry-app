@@ -1,5 +1,5 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { styles } from './styles';
 
 import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -93,12 +93,13 @@ const MapScreen = () => {
         mapType={mapType}
         ref={mapRef}
         style={styles.mapContainer}
+        showsUserLocation={isSaveBatterryMode}
         compassOffset={{ x: -10, y: 208 }}
         onRegionChangeComplete={e => {
           changeRegion(e as IRealtimeLocation);
         }}
         region={region}>
-        {isSaveBatterryMode ? <Marker coordinate={currentLocation} /> : <UserMarker userPosition={currentLocation} centerMap={onCenter} />}
+        {isSaveBatterryMode ? null : <UserMarker userPosition={currentLocation} centerMap={onCenter} />}
         {publicTerries?.map(treasure => (
           <TreasureMarker key={treasure.id} treasure={treasure} />
         ))}
