@@ -98,7 +98,7 @@ const MapScreen = () => {
           changeRegion(e as IRealtimeLocation);
         }}
         region={region}>
-        {isSaveBatterryMode ? <Marker coordinate={currentLocation} /> : <UserMarker userPosition={currentLocation} />}
+        {isSaveBatterryMode ? <Marker coordinate={currentLocation} /> : <UserMarker userPosition={currentLocation} centerMap={onCenter} />}
         {publicTerries?.map(treasure => (
           <TreasureMarker key={treasure.id} treasure={treasure} />
         ))}
