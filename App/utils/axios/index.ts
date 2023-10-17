@@ -148,4 +148,8 @@ export const requestPublicGetTerries = async (
   }).then(result => result.data);
 };
 
+export const requestUserUpdateProfile = async (data: ICreateProfileReqDto) => {
+  return AXIOS.put<IProfileResDto>('/profile', data).then(result => result.data);
+};
+
 export default AXIOS;

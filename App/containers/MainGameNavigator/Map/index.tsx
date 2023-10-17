@@ -1,8 +1,8 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { styles } from './styles';
 
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey } from 'App/enums';
@@ -20,7 +20,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { ITerryFilterParams } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
-import { removePropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty, removePropertyInDevice } from 'App/utils/storage/storage';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -35,6 +35,13 @@ const MapScreen = () => {
   const mapRef = useRef<MapView>(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [isSaveBatterryMode, setIsSaveBatterryMode] = useState(false);
+  useFocusEffect(() => {
+    (async () => {
+      const isSaveBatterry = await getStoredProperty(EDataStorageKey.IS_SAVE_BATTERY_MODE);
+      setIsSaveBatterryMode(isSaveBatterry as boolean);
+    })();
+  });
 
   //The current region of the map view
   const [region, setRegion] = useState(currentLocation);
@@ -91,7 +98,7 @@ const MapScreen = () => {
           changeRegion(e as IRealtimeLocation);
         }}
         region={region}>
-        <UserMarker userPosition={currentLocation} />
+        {isSaveBatterryMode ? <Marker coordinate={currentLocation} /> : <UserMarker userPosition={currentLocation} />}
         {publicTerries?.map(treasure => (
           <TreasureMarker key={treasure.id} treasure={treasure} />
         ))}
@@ -132,7 +139,9 @@ const MapScreen = () => {
           renderIcon={<UserProfileIcon />}
         />
         <CustomButtonIcon
-          onPress={() => {}}
+          onPress={() => {
+            navigation.dispatch(CommonActions.navigate(EMainGameScreen.SETTING_NAVIGATOR));
+          }}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}
@@ -142,7 +151,7 @@ const MapScreen = () => {
           onPress={async () => {
             await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
             await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
-            navigation.dispatch(StackActions.replace(ENavigationScreen.LOGIN_SCREEN));
+            navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
           }}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonRHNContainer}

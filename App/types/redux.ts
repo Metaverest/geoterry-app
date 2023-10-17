@@ -13,6 +13,8 @@ export interface IReduxAction<T, P = undefined> {
 export interface ISagaAsyncActionOptions {
   isRecoverPassword?: boolean;
   profileId?: string;
+  onSuccess?: () => void;
+  onError?: () => void;
 }
 export interface IReduxActionWithNavigation<T, P = undefined> {
   type: T;
