@@ -15,7 +15,6 @@ export const styles = StyleSheet.create({
     fontSize: 12,
   },
   policyContainer: {
-    height: 500,
     marginTop: 68,
   },
 });
