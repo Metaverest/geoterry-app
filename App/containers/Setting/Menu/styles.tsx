@@ -1,28 +1,29 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
   },
   listItemContainer: {
-    marginTop: 68,
+    marginTop: rh(68),
     flex: 1,
     width: '100%',
   },
   menuItemMainAndActionButtonContainer: {
     flex: 1,
-    borderBottomWidth: 1,
+    borderBottomWidth: rw(1),
     borderBottomColor: EColor.color_999999,
-    paddingVertical: 14,
+    paddingVertical: rh(14),
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: 24,
+    marginLeft: rw(24),
     alignItems: 'center',
-    minHeight: 72,
+    minHeight: rh(72),
   },
   menuItemContainer: {
     flexDirection: 'row',
@@ -33,25 +34,25 @@ export const styles = StyleSheet.create({
   menuItemMain: {
     alignItems: 'flex-start',
     justifyContent: 'center',
-    rowGap: 4,
+    rowGap: rh(4),
   },
   menuItemTitle: {
     color: EColor.color_FAFAFA,
-    fontSize: 16,
+    fontSize: rh(15),
     fontWeight: '600',
-    lineHeight: 24,
+    lineHeight: rh(24),
   },
   menuItemSubtitle: {
     color: EColor.color_999999,
-    fontSize: 10,
+    fontSize: rh(10),
     fontWeight: '400',
-    lineHeight: 16,
+    lineHeight: rh(16),
   },
   menuItemIcon: {},
   menuItemActionButton: {},
   switchButtonContainer: {
     backgroundColor: 'red',
-    borderRadius: 16,
+    borderRadius: rh(16),
     borderWidth: 1,
   },
   swithButtonContainerEnable: {

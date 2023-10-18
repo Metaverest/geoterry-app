@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
@@ -12,25 +13,24 @@ export const styles = StyleSheet.create({
   },
   listButtonFooterContainer: {
     position: 'absolute',
-    bottom: 16,
+    bottom: rw(16),
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
   },
   buttonContainer: {
     padding: 12,
-    borderRadius: 8,
-    marginHorizontal: 8,
+    borderRadius: rh(8),
+    marginHorizontal: rw(8),
   },
   buttonRHNContainer: {
     padding: 8,
-    borderRadius: 8,
-    marginVertical: 8,
+    borderRadius: rh(8),
+    marginVertical: rh(8),
   },
-
   listButtonRHNContainer: {
     position: 'absolute',
-    top: 36,
-    right: 16,
+    top: rh(36),
+    right: rw(16),
   },
 });

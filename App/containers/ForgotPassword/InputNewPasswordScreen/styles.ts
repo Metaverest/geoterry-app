@@ -1,30 +1,31 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
   },
   image: {
-    marginTop: -171,
+    marginTop: -rh(171),
   },
   inputPhoneNumberSubTitle: {
     color: EColor.color_F2F2F2,
-    fontSize: 12,
+    fontSize: rh(12),
     fontWeight: '400',
-    lineHeight: 18,
-    marginTop: 68,
+    lineHeight: rh(18),
+    marginTop: rh(68),
     alignSelf: 'flex-start',
   },
   passwordInputContainer: {
     width: '100%',
-    marginTop: 16,
+    marginTop: rh(16),
   },
   buttonContainer: {
     width: '100%',
-    marginTop: 32,
+    marginTop: rh(32),
   },
 });
