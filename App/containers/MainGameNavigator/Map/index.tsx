@@ -133,7 +133,9 @@ const MapScreen = () => {
 
       <View style={styles.listButtonRHNContainer}>
         <CustomButtonIcon
-          onPress={() => {}}
+          onPress={() => {
+            navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN));
+          }}
           buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}

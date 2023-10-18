@@ -23,7 +23,7 @@ export const CustomSafeArea = (props: IProps) => {
       }}>
       {props.backgroundImageSource ? (
         <ImageBackground
-          style={{ marginTop: insets.top, marginBottom: insets.bottom, flex: 1 }}
+          style={{ paddingTop: insets.top, marginBottom: insets.bottom, flex: 1 }}
           source={props.backgroundImageSource}>
           <View
             style={{

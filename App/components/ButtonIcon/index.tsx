@@ -4,6 +4,8 @@ import { isArray } from 'lodash';
 import React, { useMemo } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
+import CustomText from '../CustomText';
+import { styles } from './styles';
 
 const CustomButtonIcon = (props: IButtonIconProps) => {
   const isLinearGradient = useMemo(() => {
@@ -30,7 +32,14 @@ const CustomButtonIcon = (props: IButtonIconProps) => {
         </TouchableOpacity>
       );
     case EButtonType.OUTLINE:
-      return <></>;
+      return (
+        <TouchableOpacity
+          style={[props.customStyleContainer, { backgroundColor: props.buttonColor }]}
+          onPress={props.onPress}>
+          {props.renderIcon}
+          {props.title && <CustomText style={styles.buttonText}>{props.title}</CustomText>}
+        </TouchableOpacity>
+      );
   }
 };
 

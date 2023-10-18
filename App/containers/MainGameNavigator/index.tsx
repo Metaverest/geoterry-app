@@ -11,6 +11,9 @@ import MapScreen from './Map';
 import MapTypeScreen from './MapTypeScreen';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import SettingNavigator from '../Setting';
+import ProfileScreen from '../Profile';
+import EditProfileScreen from '../EditProfile';
+import QRScreen from '../QRScreen';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +66,13 @@ const MainGameNavigator = () => {
         component={SettingNavigator}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name={EMainGameScreen.PROFILE_SCREEN} component={ProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.EDIT_PROFILE_SCREEN}
+        component={EditProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name={EMainGameScreen.QR_SCREEN} component={QRScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
