@@ -1,11 +1,12 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: EColor.color_171717,
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
     justifyContent: 'center',
     alignItems: 'center',
   },

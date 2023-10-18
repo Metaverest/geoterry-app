@@ -1,5 +1,6 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,8 +15,8 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
+    borderTopLeftRadius: rw(32),
+    borderTopRightRadius: rw(32),
   },
   mainContainer: {
     position: 'absolute',
@@ -23,28 +24,28 @@ export const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     alignItems: 'center',
-    borderTopLeftRadius: 32,
-    borderTopRightRadius: 32,
+    borderTopLeftRadius: rw(32),
+    borderTopRightRadius: rw(32),
   },
   main: {
     width: '100%',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 32,
+    paddingHorizontal: rw(16),
+    paddingTop: rh(16),
+    paddingBottom: rh(32),
   },
   headerLine: {
-    width: 48,
-    height: 1,
-    marginVertical: 8,
+    width: rw(48),
+    height: rh(1),
+    marginVertical: rh(8),
     backgroundColor: EColor.color_FAFAFA,
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: rh(20),
     fontWeight: '700',
-    lineHeight: 30,
+    lineHeight: rh(30),
     color: EColor.color_FAFAFA,
-    marginTop: 16,
+    marginTop: rh(16),
     textAlign: 'center',
   },
 });

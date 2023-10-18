@@ -1,5 +1,6 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,39 +11,38 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: EColor.color_333333,
-    borderRadius: 12,
+    borderRadius: rh(12),
   },
   input: {
     width: '80%',
-    height: 50,
-    fontSize: 12,
+    height: rh(50),
+    fontSize: rh(12),
     fontWeight: '500',
-    lineHeight: 18,
-    padding: 16,
+    lineHeight: rh(18),
+    padding: rh(16),
     color: EColor.color_FAFAFA,
     fontFamily: 'Montserrat-Regular',
   },
   iconContainer: {
     width: '20%',
-
-    paddingRight: 16,
+    paddingRight: rw(16),
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
   helperText: {
-    fontSize: 10,
+    fontSize: rh(10),
     fontWeight: '400',
-    lineHeight: 16,
+    lineHeight: rh(16),
     color: EColor.color_F2F2F2,
-    marginLeft: 16,
-    marginTop: 2,
+    marginLeft: rw(16),
+    marginTop: rh(2),
   },
   errorText: {
-    fontSize: 10,
+    fontSize: rh(10),
     fontWeight: '400',
-    lineHeight: 16,
+    lineHeight: rh(16),
     color: EColor.color_FF0B0B,
-    marginLeft: 16,
-    marginTop: 2,
+    marginLeft: rw(16),
+    marginTop: rh(2),
   },
 });

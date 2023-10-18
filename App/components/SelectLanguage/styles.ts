@@ -1,12 +1,13 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    padding: 4,
+    padding: rh(4),
     backgroundColor: EColor.color_00000080,
-    borderRadius: 2,
+    borderRadius: rh(2),
   },
   selectedLanguageContainer: {
     flexDirection: 'row',
@@ -15,40 +16,40 @@ export const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: 'absolute',
-    top: 28,
+    top: rh(28),
     right: 0,
-    borderRadius: 2,
-    gap: 4,
-    paddingVertical: 4,
-    paddingHorizontal: 4,
+    borderRadius: rh(2),
+    gap: rh(4),
+    paddingVertical: rh(4),
+    paddingHorizontal: rw(4),
     backgroundColor: EColor.color_00000080,
   },
   itemContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingRight: 17,
-    height: 16,
+    paddingRight: rw(17),
+    height: rh(16),
   },
   itemText: {
-    fontSize: 8,
-    marginLeft: 4,
+    fontSize: rh(8),
+    marginLeft: rw(4),
     fontWeight: '500',
     color: EColor.color_FAFAFA,
-    lineHeight: 10,
+    lineHeight: rh(10),
   },
   triangleContainer: {
     width: 0,
     height: 0,
-    borderLeftWidth: 5,
-    borderRightWidth: 5,
-    borderBottomWidth: 4,
+    borderLeftWidth: rw(5),
+    borderRightWidth: rw(5),
+    borderBottomWidth: rh(4),
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
     borderBottomColor: EColor.color_00000080, // Change the color as desired
     position: 'absolute',
-    top: -4,
-    right: 6,
+    top: -rh(4),
+    right: rw(6),
   },
   triangle: {},
 });

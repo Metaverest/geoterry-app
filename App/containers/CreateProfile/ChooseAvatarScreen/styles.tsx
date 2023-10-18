@@ -1,28 +1,29 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
   },
   uploadAvatarTitle: {
     color: EColor.color_FAFAFA,
-    fontSize: 24,
+    fontSize: rh(24),
     fontWeight: '600',
-    lineHeight: 32,
-    marginTop: 190,
+    lineHeight: rh(32),
+    marginTop: rh(190),
     textAlign: 'center',
   },
   avatarIconContainer: {
-    marginTop: 38,
+    marginTop: rh(38),
   },
 
   skipText: {
     color: EColor.white,
-    fontSize: 16,
+    fontSize: rh(16),
     fontWeight: '600',
     textAlign: 'center',
     alignSelf: 'center',
@@ -30,7 +31,7 @@ export const styles = StyleSheet.create({
   groupButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 70,
+    marginTop: rh(70),
     width: '100%',
     zIndex: 999,
     elevation: 999,
@@ -40,15 +41,15 @@ export const styles = StyleSheet.create({
   },
   customOutlineButtonText: {
     color: EColor.color_FAFAFA,
-    fontSize: 16,
+    fontSize: rh(16),
     fontWeight: '600',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: rh(24),
   },
   image: {
-    width: 148,
-    height: 148,
-    borderRadius: 74,
+    width: rw(148),
+    height: rh(148),
+    borderRadius: rh(74),
   },
   customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 },
 });

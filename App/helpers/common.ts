@@ -13,5 +13,3 @@ export const responsiveByHeight = (value: number, referenceScreenHeight: number 
 export const isIOSDevice = () => {
   return Platform.OS === 'ios';
 };
-
-export const keyExtractor = (item: any, index: number) => 'item_' + item.id + '_' + index;

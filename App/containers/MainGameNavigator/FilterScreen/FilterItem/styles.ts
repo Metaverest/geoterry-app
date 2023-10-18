@@ -1,10 +1,11 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   openedContainer: {
     backgroundColor: 'transparent',
-    paddingVertical: 16,
+    paddingVertical: rh(16),
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
@@ -16,17 +17,17 @@ export const styles = StyleSheet.create({
   },
   closedContainer: {
     backgroundColor: 'transparent',
-    paddingVertical: 16,
+    paddingVertical: rh(16),
     width: '100%',
   },
   title: {
-    fontSize: 14,
+    fontSize: rh(14),
     fontWeight: '600',
-    lineHeight: 20,
+    lineHeight: rh(20),
     color: EColor.color_FAFAFA,
   },
   optionContainer: {
-    paddingBottom: 16,
+    paddingBottom: rh(16),
   },
   slider: {
     width: '100%',
@@ -39,34 +40,34 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginBottom: 2,
+    marginBottom: rh(2),
   },
   value: {
-    fontSize: 14,
+    fontSize: rh(14),
     fontWeight: '500',
-    lineHeight: 20,
+    lineHeight: rh(20),
     color: EColor.color_FAFAFA,
   },
   sliderContainer: {
-    height: 12,
+    height: rh(12),
   },
   track: {
     backgroundColor: EColor.color_999999,
-    height: 3,
-    borderRadius: 12,
+    height: rh(3),
+    borderRadius: rh(12),
   },
   marker: {
     backgroundColor: EColor.color_FAFAFA,
-    borderRadius: 12,
-    width: 12,
-    height: 12,
+    borderRadius: rh(12),
+    width: rw(12),
+    height: rh(12),
   },
   selectedStyle: {
     backgroundColor: EColor.color_FAFAFA,
   },
   multiSliderContainer: {
     width: '100%',
-    height: 12,
-    paddingHorizontal: 10,
+    height: rh(12),
+    paddingHorizontal: rw(10),
   },
 });
