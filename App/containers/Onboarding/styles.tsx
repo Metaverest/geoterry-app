@@ -1,6 +1,7 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,43 +10,42 @@ export const styles = StyleSheet.create({
   },
   main: {
     width: wp('100'),
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
     alignItems: 'center',
   },
   header: {
     width: '100%',
-    marginTop: 12,
-    paddingHorizontal: 16,
+    marginTop: rh(12),
+    paddingHorizontal: rw(16),
     flexDirection: 'row',
     justifyContent: 'flex-end',
     zIndex: 999,
   },
   onBoardingTitle: {
     fontWeight: '700',
-    fontSize: 28,
+    fontSize: rh(28),
     color: EColor.white,
     textAlign: 'center',
     width: '100%',
-
-    marginTop: 67.58,
+    marginTop: rh(67.58),
   },
   image: {
     backgroundColor: 'transparent',
   },
   onBoardingSubTitle: {
     fontWeight: '400',
-    fontSize: 14,
+    fontSize: rh(14),
     color: EColor.color_CCCCCC,
     textAlign: 'center',
     width: '100%',
-    marginTop: 9,
+    marginTop: rh(9),
   },
   createAccountButton: {
     width: '100%',
-    marginTop: 36,
+    marginTop: rh(36),
   },
   loginButton: {
-    marginTop: 16,
+    marginTop: rh(16),
     width: '100%',
   },
   loginButtonCustomContainerStyle: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 },

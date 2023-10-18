@@ -1,30 +1,31 @@
 import { isIOSDevice } from 'App/helpers/common';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   image: {
-    width: 44,
-    height: 44,
-    borderRadius: 11,
+    width: rw(44),
+    height: rh(44),
+    borderRadius: rh(11),
   },
   markerContainer: {
-    padding: 12,
+    padding: rh(12),
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: isIOSDevice() ? 55 : 0,
+    marginBottom: isIOSDevice() ? rh(55) : 0,
   },
   imageContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 11,
+    width: rw(50),
+    height: rh(50),
+    borderRadius: rh(11),
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
   polygonContainer: {
     position: 'absolute',
-    bottom: 5,
+    bottom: rh(5),
     elevation: -1,
     zIndex: -1,
   },

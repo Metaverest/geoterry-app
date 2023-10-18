@@ -1,30 +1,31 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
   },
   title: {
     color: EColor.color_FAFAFA,
-    fontSize: 24,
+    fontSize: rh(24),
     fontWeight: '700',
-    lineHeight: 32,
-    marginTop: 7,
+    lineHeight: rh(32),
+    marginTop: rh(7),
   },
   subTitle: {
     color: EColor.color_F2F2F2,
-    fontSize: 12,
+    fontSize: rh(12),
     fontWeight: '400',
-    lineHeight: 18,
-    marginTop: 9,
+    lineHeight: rh(18),
+    marginTop: rh(9),
   },
   image: {
-    marginTop: 42,
-    height: 285,
+    marginTop: rh(42),
+    height: rh(285),
     width: '100%',
   },
 });

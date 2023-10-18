@@ -11,7 +11,7 @@
     "lint:check": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write \"App/**/*.+(ts|tsx|js|json|css|html|md)\"",
     "prepare": "husky install",
-    "postinstall": "cd ios && npx pod-install"
+    "postinstall": "patch-package && cd ios && npx pod-install"
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
@@ -33,6 +33,7 @@
     "i18next": "^23.2.8",
     "immer": "^10.0.2",
     "lottie-react-native": "^6.2.0",
+    "patch-package": "^8.0.0",
     "react": "18.2.0",
     "react-i18next": "^13.0.1",
     "react-native": "0.72.0",

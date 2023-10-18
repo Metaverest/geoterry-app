@@ -1,13 +1,14 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: 32,
+    marginTop: rh(32),
     width: '100%',
   },
   itemContainer: {
-    paddingVertical: 12,
+    paddingVertical: rh(12),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -19,21 +20,20 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   itemTitle: {
-    fontSize: 14,
+    fontSize: rh(14),
     fontWeight: '600',
-    lineHeight: 20,
+    lineHeight: rh(20),
     color: EColor.color_FAFAFA,
-    marginLeft: 16,
+    marginLeft: rw(16),
   },
-
   itemImage: {
-    width: 68,
-    height: 68,
+    width: rw(68),
+    height: rh(68),
     backgroundColor: EColor.color_171717,
   },
   separator: {
     backgroundColor: EColor.color_FAFAFA,
-    height: 0.5,
+    height: rh(0.5),
     width: '100%',
   },
   buttonsContainer: {
@@ -46,10 +46,10 @@ export const styles = StyleSheet.create({
   },
   customOutlineButtonText: {
     color: EColor.color_FAFAFA,
-    fontSize: 16,
+    fontSize: rh(16),
     fontWeight: '600',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: rh(24),
   },
-  customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 },
+  customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: rw(1) },
 });

@@ -1,24 +1,25 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
   },
 
   saveText: {
     color: EColor.white,
-    fontSize: 16,
+    fontSize: rh(16),
     fontWeight: '600',
     textAlign: 'center',
     alignSelf: 'center',
   },
   listItemContainer: {
-    marginTop: 68,
-    rowGap: 4,
+    marginTop: rh(68),
+    rowGap: rh(4),
     width: '100%',
   },
   itemSelectorContainer: {},
