@@ -508,6 +508,8 @@ PODS:
     - React-perflogger (= 0.72.0)
   - RNCAsyncStorage (1.12.1):
     - React-Core
+  - RNCClipboard (1.12.1):
+    - React-Core
   - RNCMaskedView (0.1.11):
     - React
   - RNGestureHandler (2.12.1):
@@ -551,6 +553,8 @@ PODS:
   - RNScreens (3.25.0):
     - React-Core
     - React-RCTImage
+  - RNShare (9.4.1):
+    - React-Core
   - RNSVG (13.13.0):
     - React-Core
   - SocketRocket (0.6.0)
@@ -634,6 +638,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
+  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
@@ -641,6 +646,7 @@ DEPENDENCIES:
   - RNQrGenerator (from `../node_modules/rn-qr-generator`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -761,6 +767,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
+  RNCClipboard:
+    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
@@ -775,6 +783,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   Yoga:
@@ -842,6 +852,7 @@ SPEC CHECKSUMS:
   React-utils: c12d2e75c8bbc727939ddc4319ed95493395ed5a
   ReactCommon: 517b45ed311ba9146aa8b55a8ef6617425f7448e
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNCClipboard: d77213bfa269013bf4b857b7a9ca37ee062d8ef1
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
@@ -849,6 +860,7 @@ SPEC CHECKSUMS:
   RNQrGenerator: 90461ba3ca88c1d38ef73da50fade35d9648215d
   RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
   RNScreens: 85d3880b52d34db7b8eeebe2f1a0e807c05e69fa
+  RNShare: 32e97adc8d8c97d4a26bcdd3c45516882184f8b6
   RNSVG: ed492aaf3af9ca01bc945f7a149d76d62e73ec82
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 1d6727ed193122f6adaf435c3de1a768326ff83b

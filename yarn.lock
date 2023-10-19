@@ -1763,6 +1763,11 @@
   resolved "https://registry.yarnpkg.com/@ptomasroos/react-native-multi-slider/-/react-native-multi-slider-2.2.2.tgz#35a97fb8c355627c6a2ded010b360ac5728b44ad"
   integrity sha512-HWyCnRD3Z3SbHK2FLWYmBBqd1B4iXipeKv1+AK0FoY/CElEDTEixHE8hN60TsqxalPrznn798LE2Q4tHuCiyaA==
 
+"@react-native-clipboard/clipboard@^1.12.1":
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.12.1.tgz#a23f9defb732077afa860d0598baa95f5ee9f54b"
+  integrity sha512-+PNk8kflpGte0W1Nz61/Dp8gHTxyuRjkVyRYBawymSIGTDHCC/zOJSbig6kGIkD8MeaGHC2vGYQJyUyCrgVPBQ==
+
 "@react-native-community/async-storage@^1.12.1":
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.12.1.tgz#25f821b4f6b13abe005ad67e47c6f1cee9f27b24"
@@ -7741,6 +7746,11 @@ react-native-screens@^3.22.1:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-share@^9.4.1:
+  version "9.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-9.4.1.tgz#1b6d96015009e3878bfc4346940602c1cffff525"
+  integrity sha512-jm4qA5J5+ytWA8UFg6s8iEfdZYGPW+t5oreSuzrPt0assjvBUlFaoqYGGwGR5RJ8BIpjzOJYvx/c9MjXB4ApUg==
 
 react-native-storage@^1.0.1:
   version "1.0.1"

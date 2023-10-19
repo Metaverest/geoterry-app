@@ -2,7 +2,7 @@ import { View, Image } from 'react-native';
 import React from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { styles } from './styles';
-import { AppBackgroundImage, AvatarUser } from 'App/components/image';
+import { AppBackgroundImage } from 'App/components/image';
 import Header from 'App/components/Header';
 import { useTranslation } from 'react-i18next';
 import CustomText from 'App/components/CustomText';
@@ -15,17 +15,25 @@ import CustomButtonIcon from 'App/components/ButtonIcon';
 import LogOutIcon from 'App/media/LogOutIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameScreen } from 'App/enums/navigation';
+import { useSelector } from 'react-redux';
+import { reduxSelector } from 'App/redux/selectors';
+import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
+  const user = useSelector(reduxSelector.getUser);
   const navigation = useNavigation();
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trang cá nhân')} />
       <View style={styles.content}>
-        <Image source={AvatarUser} style={styles.avatarUser} resizeMode="contain" />
-        <CustomText style={styles.nameUser}>Nguyễn Hải</CustomText>
-        <CustomText style={styles.biography}>{t('Bio')}</CustomText>
+        {user.logoUrl ? (
+          <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="contain" />
+        ) : (
+          <MapMarkerUserDefault width={72} height={72} />
+        )}
+        <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
+        <CustomText style={styles.biography}>{user.bio || 'Bio'}</CustomText>
         <View style={styles.contentRewardPoints}>
           <RewardPointsIcon width={20} height={20} />
           <CustomText style={styles.textRewardPoints}>{t('Reward Points')}:</CustomText>
@@ -36,11 +44,11 @@ const ProfileScreen = () => {
         <CustomInputInformation
           title="Số điện thoại"
           placeholder={'Thêm số điện thoại'}
-          value="0123456789"
+          value={user.phoneNumber}
           editable={false}
           underline
         />
-        <CustomInputInformation title="Email" placeholder={'Thêm email'} editable={false} />
+        <CustomInputInformation title="Email" placeholder={'Thêm email'} value={user.email} editable={false} />
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <CustomButton
@@ -51,7 +59,7 @@ const ProfileScreen = () => {
               buttonType={EButtonType.SOLID}
               customStyleText={styles.customOutlineButtonText}
               customStyleContainer={styles.customOutlineButtonContainer}
-              linearGradient={[EColor.transparent]}
+              linearGradient={[EColor.transparent, EColor.transparent]}
             />
           </View>
           <View style={styles.buttonContainer}>

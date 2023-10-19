@@ -1,55 +1,63 @@
 import { EColor } from 'App/enums/color';
 import { StyleSheet } from 'react-native';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
+    paddingHorizontal: rw(16),
   },
   header: {
     flexDirection: 'row',
-    paddingVertical: 14,
+    paddingVertical: rh(14),
   },
   imgQR: {
-    width: 178,
-    height: 178,
+    width: rw(178),
+    height: rh(178),
   },
   boxImageQR: {
-    padding: 25,
+    paddingHorizontal: rw(25),
+    paddingVertical: rh(25),
     backgroundColor: EColor.color_FAFAFA,
-    borderRadius: 17,
-    marginTop: 91,
+    borderRadius: rh(17),
+    marginTop: rh(91),
   },
   content: {
     alignItems: 'center',
   },
   title: {
-    fontSize: 16,
+    fontSize: rh(16),
     fontWeight: '600',
-    lineHeight: 24,
+    lineHeight: rh(24),
     color: EColor.color_FAFAFA,
-    marginTop: 32,
+    marginTop: rh(32),
   },
   nameUser: {
     color: EColor.color_FAFAFA,
-    fontSize: 24,
+    fontSize: rh(24),
     fontWeight: '700',
-    lineHeight: 32,
-    marginTop: 4,
+    lineHeight: rh(32),
+    marginTop: rh(4),
   },
   button: {
-    borderRadius: 8,
-    padding: 8,
+    borderRadius: rh(8),
+    paddingHorizontal: rw(8),
+    paddingVertical: rh(8),
     alignItems: 'center',
-    width: 168,
+    width: rw(168),
   },
   iconBtn: {
-    marginBottom: 10,
+    marginBottom: rh(10),
   },
   buttonsContainer: {
     flexDirection: 'row',
     width: '100%',
-    marginTop: 32,
+    marginTop: rh(32),
     justifyContent: 'space-between',
+  },
+  image: {
+    position: 'absolute',
+    right: 0,
+    transform: [{ rotate: '-90deg' }],
   },
 });

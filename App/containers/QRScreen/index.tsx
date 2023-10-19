@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { BackgroundQRScreen } from 'App/components/image';
+import { EarthBottomIcon } from 'App/components/image';
 import { styles } from './styles';
 import CloseIcon from 'App/media/CloseIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
@@ -13,16 +13,23 @@ import { EButtonType } from 'App/enums';
 import ShareIcon from 'App/media/ShareIcon';
 import { EColor } from 'App/enums/color';
 import LinkIcon from 'App/media/LinkIcon';
+import Share from 'react-native-share';
+import Clipboard from '@react-native-clipboard/clipboard';
+import { reduxSelector } from 'App/redux/selectors';
+import { useSelector } from 'react-redux';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const QRScreen = () => {
+  const { top } = useSafeAreaInsets();
   const navigation = useNavigation();
   const { t } = useTranslation();
+  const user = useSelector(reduxSelector.getUser);
 
   const [uriQR, setUriQR] = useState('');
 
   const generateQRCode = () => {
     RNQRGenerator.generate({
-      value: 'https://github.com/gevgasparyan/rn-qr-generator',
+      value: user.id,
       height: 100,
       width: 100,
       correctionLevel: 'H',
@@ -33,13 +40,27 @@ const QRScreen = () => {
       })
       .catch(error => console.log('Cannot create QR code', error));
   };
+  const handleShareQR = async () => {
+    Share.open({ url: 'https://github.com/gevgasparyan/rn-qr-generator' })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        err && console.log(err);
+      });
+  };
+  const handleCopyToClipboard = () => {
+    Clipboard.setString(user.id);
+  };
 
   useEffect(() => {
     generateQRCode();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={BackgroundQRScreen}>
+    <CustomSafeArea style={styles.container}>
+      <Image style={[styles.image, { marginTop: -(top + 10) }]} source={EarthBottomIcon} />
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {
@@ -57,7 +78,7 @@ const QRScreen = () => {
         <View style={styles.buttonsContainer}>
           <CustomButtonIcon
             renderIcon={<ShareIcon style={styles.iconBtn} />}
-            onPress={() => {}}
+            onPress={handleShareQR}
             buttonType={EButtonType.OUTLINE}
             title={t('Chia sẻ')}
             customStyleContainer={styles.button}
@@ -65,7 +86,7 @@ const QRScreen = () => {
           />
           <CustomButtonIcon
             renderIcon={<LinkIcon style={styles.iconBtn} />}
-            onPress={() => {}}
+            onPress={handleCopyToClipboard}
             buttonType={EButtonType.OUTLINE}
             title={t('Sao chép liên kết')}
             customStyleContainer={styles.button}
