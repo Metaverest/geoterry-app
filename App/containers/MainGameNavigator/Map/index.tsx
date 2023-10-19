@@ -113,6 +113,23 @@ const MapScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTerryId]);
 
+  const updateTerryUserCustomData = (payload: { markAsFavourited?: boolean; markAsSaved?: boolean }) => {
+    if (selectedTerryId) {
+      dispatch(
+        sagaUserAction.getPublicTerryByIdAsync(
+          {
+            terryId: selectedTerryId,
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            markAsSaved: payload.markAsSaved,
+            markAsFavourited: payload.markAsFavourited,
+          },
+          navigation,
+        ),
+      );
+    }
+  };
+
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
@@ -169,12 +186,14 @@ const MapScreen = () => {
       {selectedTerry && selectedTerryId ? (
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
+            onPress={() => updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite })}
             buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<HeartIcon focus={selectedTerry.favourite} />}
           />
           <CustomButtonIcon
+            onPress={() => updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved })}
             buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}

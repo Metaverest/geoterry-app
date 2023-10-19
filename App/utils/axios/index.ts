@@ -159,6 +159,8 @@ export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, pro
       longitude: params.longitude,
       includeCategoryData: params.includeCategoryData,
       includeProfileData: params.includeProfileData,
+      markAsFavourited: params.markAsFavourited,
+      markAsSaved: params.markAsSaved,
     },
   });
   return data;

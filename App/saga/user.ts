@@ -39,7 +39,7 @@ import AXIOS, {
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
-import { isEmpty, last } from 'lodash';
+import { isEmpty, isNil, last } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
@@ -374,6 +374,16 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
       terryParams as IGetTerryByIdParams,
       profileId,
     );
+    if (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) {
+      const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+      const updatedTerries = terries.map((terry: ITerryResponseDto) => {
+        if (terry?.id === terryData?.id) {
+          return terryData;
+        }
+        return terry;
+      });
+      yield put(reduxAppAction.setPublicTerries(updatedTerries));
+    }
     yield put(reduxAppAction.setPublicTerry(terryData));
     navigation.dispatch(StackActions.pop());
     if (action?.payload?.options?.onSuccess) {

@@ -150,4 +150,6 @@ export interface IGetTerryByIdParams {
   longitude?: number;
   includeCategoryData?: boolean;
   includeProfileData?: boolean;
+  markAsFavourited?: boolean;
+  markAsSaved?: boolean;
 }
