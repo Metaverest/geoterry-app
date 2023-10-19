@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
-import { ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
+import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
 
 import { IAccountLoginDto, ICreateAccountDto, ICreateProfileReqDto, IUser } from 'App/types/user';
 
@@ -85,6 +85,12 @@ const sagaUserAction = {
     return {
       type: ESagaUserAction.UPDATE_PROFILE,
       payload: { data, navigation, options },
+    };
+  },
+  getPublicTerryByIdAsync: (data: IGetTerryByIdParams, navigation: any) => {
+    return {
+      type: ESagaAppAction.GET_PUBLIC_TERRY_BY_ID,
+      payload: { navigation: navigation, data },
     };
   },
 };

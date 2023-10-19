@@ -28,6 +28,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import CityNameBoard from './CityNameBoard/CityNameBoard';
 import TreasureMarker from './TreasureMarker';
 import UserMarker from './UserMarker';
+import TerryPreviewBoard from './TerryPreviewBoard/TerryPreviewBoard';
+import HeartIcon from 'App/media/HeartIcon';
+import SavedIcon from 'App/media/SavedIcon';
 
 const MapScreen = () => {
   // The current user`s location
@@ -87,6 +90,29 @@ const MapScreen = () => {
   };
   const mapType = useSelector(reduxSelector.getAppMapType);
   const publicTerries = useSelector(reduxSelector.getAppPublicTerries);
+
+  const [selectedTerryId, setSelectedTerryId] = useState<string | null>(null);
+  const centerToRegion = (targetLocation: IRealtimeLocation) => {
+    mapRef?.current?.animateToRegion(targetLocation);
+  };
+  const selectedTerry = useSelector(reduxSelector.getAppPublicTerry);
+
+  useEffect(() => {
+    if (selectedTerryId && selectedTerryId !== selectedTerry?.id) {
+      dispatch(
+        sagaUserAction.getPublicTerryByIdAsync(
+          {
+            terryId: selectedTerryId,
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+          },
+          navigation,
+        ),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTerryId]);
+
   return (
     <CustomSafeArea style={styles.container}>
       <MapView
@@ -98,38 +124,66 @@ const MapScreen = () => {
         onRegionChangeComplete={e => {
           changeRegion(e as IRealtimeLocation);
         }}
+        onLongPress={() => setSelectedTerryId(null)}
         region={region}>
         {isSaveBatterryMode ? null : <UserMarker userPosition={currentLocation} centerMap={onCenter} />}
         {publicTerries?.map(treasure => (
-          <TreasureMarker key={treasure.id} treasure={treasure} />
+          <TreasureMarker
+            key={treasure.id}
+            treasure={treasure}
+            isSelect={treasure.id === selectedTerryId}
+            setSelectedTerry={setSelectedTerryId}
+            centerToRegion={centerToRegion}
+          />
         ))}
       </MapView>
 
-      <View style={styles.listButtonFooterContainer}>
-        <CustomButtonIcon
-          onPress={handlePressTypeMap}
-          buttonColor={EColor.color_171717}
-          customStyleContainer={styles.buttonContainer}
-          buttonType={EButtonType.SOLID}
-          renderIcon={<TypeMapIcon />}
-        />
-        <CustomButtonIcon
-          onPress={handlePressFilterMap}
-          buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
-          customStyleContainer={styles.buttonContainer}
-          buttonType={EButtonType.SOLID}
-          renderIcon={<FilterMapIcon />}
-        />
-        <CustomButtonIcon
-          onPress={onCenter}
-          buttonColor={EColor.color_171717}
-          customStyleContainer={styles.buttonContainer}
-          buttonType={EButtonType.SOLID}
-          renderIcon={<TargetIcon />}
-        />
-      </View>
+      {!(selectedTerry && selectedTerryId) ? (
+        <View style={styles.listButtonFooterContainer}>
+          <CustomButtonIcon
+            onPress={handlePressTypeMap}
+            buttonColor={EColor.color_171717}
+            customStyleContainer={styles.buttonContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<TypeMapIcon />}
+          />
+          <CustomButtonIcon
+            onPress={handlePressFilterMap}
+            buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
+            customStyleContainer={styles.buttonContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<FilterMapIcon />}
+          />
+          <CustomButtonIcon
+            onPress={onCenter}
+            buttonColor={EColor.color_171717}
+            customStyleContainer={styles.buttonContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<TargetIcon />}
+          />
+        </View>
+      ) : null}
 
       <CityNameBoard region={region} mapRef={mapRef} />
+
+      {selectedTerry && selectedTerryId ? (
+        <View style={styles.listButtonFooterContainer}>
+          <CustomButtonIcon
+            buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+            customStyleContainer={styles.buttonContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<HeartIcon focus={selectedTerry.favourite} />}
+          />
+          <CustomButtonIcon
+            buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+            customStyleContainer={styles.buttonContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<SavedIcon focus={selectedTerry.saved} />}
+          />
+        </View>
+      ) : null}
+
+      {selectedTerry && selectedTerryId ? <TerryPreviewBoard terry={selectedTerry} /> : null}
 
       <View style={styles.listButtonRHNContainer}>
         <CustomButtonIcon

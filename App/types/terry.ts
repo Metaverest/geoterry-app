@@ -28,6 +28,7 @@ export interface ITerryResponseDto {
   checkedIn?: boolean;
   saved?: boolean;
   favourite?: boolean;
+  distance?: number;
 }
 
 export const MOCK_TERRY: ITerryResponseDto[] = [

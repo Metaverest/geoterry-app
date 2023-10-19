@@ -152,15 +152,16 @@ export const requestUserUpdateProfile = async (data: ICreateProfileReqDto) => {
   return AXIOS.put<IProfileResDto>('/profile', data).then(result => result.data);
 };
 
-export const requestHunterGetTerryById = async (data: IGetTerryByIdParams, profileId: string) => {
-  return AXIOS.get<ITerryResponseDto>(`/hunter/${profileId}/terry/${data.terryId}`, {
+export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, profileId: string) => {
+  const { data } = await AXIOS.get<ITerryResponseDto>(`/hunter/${profileId}/terry/${params.terryId}`, {
     params: {
-      latitude: data.latitude,
-      longitude: data.longitude,
-      includeCategoryData: data.includeCategoryData,
-      includeProfileData: data.includeProfileData,
+      latitude: params.latitude,
+      longitude: params.longitude,
+      includeCategoryData: params.includeCategoryData,
+      includeProfileData: params.includeProfileData,
     },
   });
+  return data;
 };
 
 export default AXIOS;
