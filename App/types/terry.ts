@@ -142,3 +142,11 @@ export interface ITerryFilterParams {
   includeCategoryData?: boolean;
   includeProfileData?: boolean;
 }
+
+export interface IGetTerryByIdParams {
+  terryId: string;
+  latitude?: number;
+  longitude?: number;
+  includeCategoryData?: boolean;
+  includeProfileData?: boolean;
+}

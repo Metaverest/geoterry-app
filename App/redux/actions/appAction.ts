@@ -66,6 +66,12 @@ const reduxAppAction = {
       payload: { publicTerryFilter },
     };
   },
+  setPublicTerry: (publicTerry: any) => {
+    return {
+      type: EReduxAppAction.SET_PUBLIC_TERRY,
+      payload: { publicTerry },
+    };
+  },
 };
 
 export { reduxAppAction };

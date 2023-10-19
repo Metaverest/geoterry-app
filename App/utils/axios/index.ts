@@ -5,7 +5,7 @@ import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
-import { ITerryFilterInputDto, ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
+import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -150,6 +150,17 @@ export const requestPublicGetTerries = async (
 
 export const requestUserUpdateProfile = async (data: ICreateProfileReqDto) => {
   return AXIOS.put<IProfileResDto>('/profile', data).then(result => result.data);
+};
+
+export const requestHunterGetTerryById = async (data: IGetTerryByIdParams, profileId: string) => {
+  return AXIOS.get<ITerryResponseDto>(`/hunter/${profileId}/terry/${data.terryId}`, {
+    params: {
+      latitude: data.latitude,
+      longitude: data.longitude,
+      includeCategoryData: data.includeCategoryData,
+      includeProfileData: data.includeProfileData,
+    },
+  });
 };
 
 export default AXIOS;

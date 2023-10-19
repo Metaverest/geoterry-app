@@ -41,6 +41,7 @@ export interface IAppState {
   publicCategories?: ITerryCategoryResDto[];
   publicTerries?: ITerryResponseDto[];
   publicTerryFilter?: ITerryFilterInputDto;
+  publicTerry?: ITerryResponseDto;
 }
 
 export interface IRootState {
