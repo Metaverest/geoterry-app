@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { sagaUserAction } from 'App/redux/actions/userAction';
-import { head, isEmpty } from 'lodash';
+import { head, isEmpty, isString } from 'lodash';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
@@ -32,10 +32,18 @@ interface IFormValues {
 
 const getValidateSchema = (t: (e: string) => string) => {
   return Yup.object().shape({
-    phone: Yup.string().test('is-valid-phone', t('Số điện thoại không hợp lệ. Ví dụ +84*********'), value =>
-      isValidPhoneNumber(value!),
-    ),
-    email: Yup.string().test('is-valid-email', t('Định dạng email không đúng'), value => validateEmail(value!)),
+    phone: Yup.string().test('is-valid-phone', t('Số điện thoại không hợp lệ. Ví dụ +84*********'), value => {
+      if (isString(value)) {
+        return isValidPhoneNumber(value!);
+      }
+      return true;
+    }),
+    email: Yup.string().test('is-valid-email', t('Định dạng email không đúng'), value => {
+      if (isString(value)) {
+        return validateEmail(value!);
+      }
+      return true;
+    }),
   });
 };
 const EditProfileScreen = () => {
