@@ -16,14 +16,10 @@ import useCoordinateToAddress from 'App/hooks/useCoordinateToAddress';
 const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef: React.RefObject<MapView> }) => {
   const { t } = useTranslation();
 
-  const address = useCoordinateToAddress(
-    mapRef,
-    {
-      latitude: terry.location.latitude,
-      longitude: terry.location.longitude,
-    },
-    true,
-  );
+  const address = useCoordinateToAddress(mapRef, {
+    latitude: terry.location.latitude,
+    longitude: terry.location.longitude,
+  });
 
   return (
     <View style={styles.container}>
