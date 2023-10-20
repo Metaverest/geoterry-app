@@ -10,9 +10,20 @@ import { ITerryResponseDto } from 'App/types/terry';
 import { useTranslation } from 'react-i18next';
 import { meterToKilometer } from 'App/utils/convert';
 import { makeTextShortToDisplay } from 'App/helpers/text';
+import MapView from 'react-native-maps';
+import useCoordinateToAddress from 'App/hooks/useCoordinateToAddress';
 
-const TerryPreviewBoard = ({ terry }: { terry: ITerryResponseDto }) => {
+const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef: React.RefObject<MapView> }) => {
   const { t } = useTranslation();
+
+  const address = useCoordinateToAddress(
+    mapRef,
+    {
+      latitude: terry.location.latitude,
+      longitude: terry.location.longitude,
+    },
+    true,
+  );
 
   return (
     <View style={styles.container}>
@@ -20,9 +31,9 @@ const TerryPreviewBoard = ({ terry }: { terry: ITerryResponseDto }) => {
         <CustomText style={styles.terryName}>{makeTextShortToDisplay(terry.name, 30)}</CustomText>
         <View style={styles.terryDetailContainer}>
           <LocationIcon />
-          <CustomText style={styles.terryDetailText}>{`${meterToKilometer(terry.distance || 0)} ${t(
-            'km',
-          )}`}</CustomText>
+          <CustomText style={styles.terryDetailText}>{`${meterToKilometer(terry.distance || 0)} ${t('km')} ${
+            address?.locality || address?.subAdministrativeArea || address?.name || ''
+          }`}</CustomText>
           <DifficultyIcon />
           <CustomText style={styles.terryDetailText}>{terry.metadata.difficulty}</CustomText>
           <SizingIcon />
