@@ -1,8 +1,8 @@
-import { Defs, Image, Pattern, Rect, Svg, Use } from 'react-native-svg';
+import { Defs, Image, Pattern, Rect, Svg, SvgProps, Use } from 'react-native-svg';
 import React from 'react';
-const MapMarkerUserDefault = (props: any) => {
+const MapMarkerUserDefault = (props: SvgProps) => {
   return (
-    <Svg width={props.width || '44'} height={props.width || '44'} viewBox="0 0 44 44" fill="none">
+    <Svg width={props.width || '44'} height={props.height || '44'} viewBox="0 0 44 44" fill="none">
       <Rect x="0.49707" y="0.475586" width="44" height="44" rx="11" fill="url(#pattern0)" />
       <Defs>
         <Pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">

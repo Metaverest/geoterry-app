@@ -21,8 +21,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const QRScreen = () => {
   const { top } = useSafeAreaInsets();
-  const navigation = useNavigation();
   const { t } = useTranslation();
+  const navigation = useNavigation();
+
   const user = useSelector(reduxSelector.getUser);
 
   const [uriQR, setUriQR] = useState('');
@@ -71,7 +72,7 @@ const QRScreen = () => {
       </View>
       <View style={styles.content}>
         <View style={styles.boxImageQR}>
-          <Image source={{ uri: uriQR }} style={styles.imgQR} resizeMode="contain" />
+          {uriQR && <Image source={{ uri: uriQR }} style={styles.imgQR} resizeMode="contain" />}
         </View>
         <CustomText style={styles.title}>{t('Terriana')}</CustomText>
         <CustomText style={styles.nameUser}>Nguyễn Hải</CustomText>

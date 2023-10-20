@@ -28,7 +28,7 @@ const ProfileScreen = () => {
       <Header title={t('Trang cá nhân')} />
       <View style={styles.content}>
         {user.logoUrl ? (
-          <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="contain" />
+          <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
         ) : (
           <MapMarkerUserDefault width={72} height={72} />
         )}

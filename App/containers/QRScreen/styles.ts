@@ -12,10 +12,11 @@ export const styles = StyleSheet.create({
     paddingVertical: rh(14),
   },
   imgQR: {
-    width: rw(178),
-    height: rh(178),
+    flex: 1,
   },
   boxImageQR: {
+    width: rw(238),
+    height: rh(238),
     paddingHorizontal: rw(25),
     paddingVertical: rh(25),
     backgroundColor: EColor.color_FAFAFA,

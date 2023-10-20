@@ -26,7 +26,6 @@ export const styles = StyleSheet.create({
   contentInfor: {
     marginTop: rh(16),
     width: '100%',
-    marginBottom: rh(24),
   },
   countCharacters: {
     color: EColor.color_666666,
@@ -41,5 +40,8 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     lineHeight: rh(16),
     color: EColor.color_FF0B0B,
+  },
+  btn: {
+    marginTop: rh(24),
   },
 });
