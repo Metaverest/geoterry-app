@@ -9,15 +9,16 @@ import CustomText from 'App/components/CustomText';
 import RewardPointsIcon from 'App/media/RewardPointsIcon';
 import CustomInputInformation from 'App/components/CustomInput/CustomInputInformation';
 import CustomButton from 'App/components/Button';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import LogOutIcon from 'App/media/LogOutIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
+import { removePropertyInDevice } from 'App/utils/storage/storage';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
@@ -27,17 +28,21 @@ const ProfileScreen = () => {
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trang cá nhân')} />
       <View style={styles.content}>
-        {user.logoUrl ? (
-          <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
-        ) : (
-          <MapMarkerUserDefault width={72} height={72} />
-        )}
-        <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
-        <CustomText style={styles.biography}>{user.bio || 'Bio'}</CustomText>
-        <View style={styles.contentRewardPoints}>
-          <RewardPointsIcon width={20} height={20} />
-          <CustomText style={styles.textRewardPoints}>{t('Reward Points')}:</CustomText>
-          <CustomText style={styles.points}>1098</CustomText>
+        <View style={styles.row}>
+          {user.logoUrl ? (
+            <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
+          ) : (
+            <MapMarkerUserDefault width={72} height={72} />
+          )}
+          <View style={styles.ml16}>
+            <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
+            <CustomText style={styles.biography}>{user.bio || 'Bio'}</CustomText>
+            <View style={styles.contentRewardPoints}>
+              <RewardPointsIcon width={20} height={20} />
+              <CustomText style={styles.textRewardPoints}>{t('Reward Points')}:</CustomText>
+              <CustomText style={styles.points}>1098</CustomText>
+            </View>
+          </View>
         </View>
         <CustomText style={styles.title}>{t('Thông tin liên hệ')}</CustomText>
 
@@ -77,7 +82,11 @@ const ProfileScreen = () => {
       <View style={styles.flexEnd}>
         <CustomButtonIcon
           renderIcon={<LogOutIcon style={styles.iconLogOut} />}
-          onPress={() => {}}
+          onPress={async () => {
+            await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
+            await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
+            navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
+          }}
           buttonType={EButtonType.OUTLINE}
           title={t('Đăng xuất')}
           customStyleContainer={styles.buttonLogOut}

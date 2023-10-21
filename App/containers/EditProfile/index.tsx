@@ -21,7 +21,7 @@ import { Formik } from 'formik';
 import { isValidPhoneNumber } from 'App/utils/string';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-// import useClearError from 'App/hooks/useClearError';
+import useClearError from 'App/hooks/useClearError';
 
 interface IFormValues {
   name: string;
@@ -51,7 +51,7 @@ const EditProfileScreen = () => {
   const user = useSelector(reduxSelector.getUser);
   const navigation = useNavigation();
   const { t } = useTranslation();
-  // const clearError = useClearError();
+  const clearError = useClearError();
 
   const initialValues: IFormValues = {
     name: user.displayName,
@@ -60,7 +60,7 @@ const EditProfileScreen = () => {
     phone: user.phoneNumber,
   };
   const openLibrary = useCallback(async () => {
-    const response: ImagePickerResponse = await launchImageLibrary({});
+    const response: ImagePickerResponse = await launchImageLibrary({ mediaType: 'photo' });
     if (response.assets) {
       dispatch(sagaUserAction.uploadAvatarProfileAsync(head(response.assets), navigation));
     }
@@ -68,27 +68,29 @@ const EditProfileScreen = () => {
   const getShouldDisableButton = useCallback((values: IFormValues) => {
     return isEmpty(values.name);
   }, []);
-  // const onSubmit = useCallback(
-  //   async (values: IFormValues) => {
-  //     console.log('user.logoUrl');
-  //     if (isEmpty(values.name)) {
-  //       return;
-  //     }
-  //     dispatch(
-  //       sagaUserAction.updateProfileAsync(
-  //         {
-  //           displayName: values?.phone as string,
-  //           bio: values?.bio as string,
-  //           phoneNumber: values.phone as string,
-  //           email: values.email as string,
-  //           // logoUrl: user.logoUrl,
-  //         },
-  //         navigation,
-  //       ),
-  //     );
-  //   },
-  //   [dispatch, navigation],
-  // );
+  const onSubmit = useCallback(
+    async (values: IFormValues) => {
+      if (isEmpty(values.name)) {
+        return;
+      }
+      dispatch(
+        sagaUserAction.updateProfileAsync(
+          {
+            displayName: values?.phone as string,
+            bio: values?.bio as string,
+            phoneNumber: values.phone as string,
+            email: values.email as string,
+            logoUrl: user.logoUrl,
+          },
+          navigation,
+          // {
+          //   onSuccess: () => navigation.dispatch(CommonActions.goBack()),
+          // },
+        ),
+      );
+    },
+    [dispatch, navigation, user.logoUrl],
+  );
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -103,10 +105,7 @@ const EditProfileScreen = () => {
           <CustomText style={styles.textUploadAvatar}>{t('Tải lên ảnh đại diện')}</CustomText>
         </TouchableOpacity>
         <View style={styles.contentInfor}>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={getValidateSchema(t)}
-            onSubmit={() => console.log('te')}>
+          <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
             {({ handleSubmit, values, setFieldValue, errors }) => {
               return (
                 <>
@@ -145,7 +144,10 @@ const EditProfileScreen = () => {
                   <CustomButton
                     customStyleContainer={styles.btn}
                     disabled={getShouldDisableButton(values)}
-                    onPress={() => handleSubmit()}
+                    onPress={() => {
+                      clearError();
+                      handleSubmit();
+                    }}
                     title={t('Lưu thay đổi')}
                     buttonType={EButtonType.SOLID}
                     linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}

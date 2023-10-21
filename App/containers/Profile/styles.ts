@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
     borderRadius: rh(11),
   },
   nameUser: {
-    marginTop: rh(16),
     color: EColor.color_FAFAFA,
     fontSize: rh(16),
     fontWeight: '600',
@@ -84,5 +83,11 @@ export const styles = StyleSheet.create({
   },
   iconLogOut: {
     marginRight: rw(16),
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  ml16: {
+    marginLeft: rw(16),
   },
 });
