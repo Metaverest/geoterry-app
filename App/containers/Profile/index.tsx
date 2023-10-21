@@ -1,5 +1,5 @@
 import { View, Image } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { styles } from './styles';
 import { AppBackgroundImage } from 'App/components/image';
@@ -24,6 +24,12 @@ const ProfileScreen = () => {
   const { t } = useTranslation();
   const user = useSelector(reduxSelector.getUser);
   const navigation = useNavigation();
+
+  const handleLogOut = useCallback(async () => {
+    await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
+    await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
+    navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
+  }, [navigation]);
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trang cá nhân')} />
@@ -82,11 +88,7 @@ const ProfileScreen = () => {
       <View style={styles.flexEnd}>
         <CustomButtonIcon
           renderIcon={<LogOutIcon style={styles.iconLogOut} />}
-          onPress={async () => {
-            await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
-            await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
-            navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
-          }}
+          onPress={handleLogOut}
           buttonType={EButtonType.OUTLINE}
           title={t('Đăng xuất')}
           customStyleContainer={styles.buttonLogOut}

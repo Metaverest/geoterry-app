@@ -22,6 +22,7 @@ import { isValidPhoneNumber } from 'App/utils/string';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import useClearError from 'App/hooks/useClearError';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 interface IFormValues {
   name: string;
@@ -99,7 +100,7 @@ const EditProfileScreen = () => {
         {user.logoUrl ? (
           <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
         ) : (
-          <MapMarkerUserDefault width={72} height={72} />
+          <MapMarkerUserDefault width={rw(72)} height={rh(72)} />
         )}
         <TouchableOpacity onPress={openLibrary}>
           <CustomText style={styles.textUploadAvatar}>{t('Tải lên ảnh đại diện')}</CustomText>
