@@ -10,6 +10,7 @@ import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams, ITerryRe
 import {
   IAccountLoginDto,
   IAccountResponseDto,
+  IAccountUpdateCredentialsDto,
   ICreateAccountDto,
   ICreateProfileReqDto,
   IProfileResDto,
@@ -166,6 +167,10 @@ export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, pro
     },
   });
   return data;
+};
+
+export const requestUpdateCredentials = async (data: IAccountUpdateCredentialsDto) => {
+  return AXIOS.put<IAccountResponseDto>('/auth/update-credentials', data).then(result => result.data);
 };
 
 export default AXIOS;

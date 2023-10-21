@@ -7,6 +7,7 @@ import LanguageScreen from './Language';
 import PolicyScreen from './Policy';
 import AboutScreen from './About';
 import LoadingModal from '../Modal/LoadingModal';
+import ChangePasswordScreen from './ChangePassword';
 const Stack = createStackNavigator();
 
 const SettingNavigator = () => {
@@ -21,6 +22,11 @@ const SettingNavigator = () => {
       />
       <Stack.Screen options={{ headerShown: false }} name={ESettingNavigator.POLICY_SCREEN} component={PolicyScreen} />
       <Stack.Screen options={{ headerShown: false }} name={ESettingNavigator.ABOUT_SCREEN} component={AboutScreen} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name={ESettingNavigator.PASSWORD_SCREEN}
+        component={ChangePasswordScreen}
+      />
       <Stack.Screen
         name={ENavigationScreen.LOADING_MODAL}
         component={LoadingModal}

@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
@@ -15,6 +16,7 @@ import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams, ITerryRe
 import {
   IAccountLoginDto,
   IAccountResponseDto,
+  IAccountUpdateCredentialsDto,
   ICreateAccountDto,
   ICreateProfileReqDto,
   IProfileResDto,
@@ -33,6 +35,7 @@ import AXIOS, {
   requestLogin,
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
+  requestUpdateCredentials,
   requestUploadProfileImage,
   requestUserReadProfile,
   requestUserUpdateProfile,
@@ -408,6 +411,32 @@ export function* watchGetPublicTerryById() {
   yield takeLatest(ESagaAppAction.GET_PUBLIC_TERRY_BY_ID, getPublicTerryById);
 }
 
+function* updateCredentials(action: IReduxActionWithNavigation<ESagaUserAction, IAccountUpdateCredentialsDto>) {
+  const navigation = action?.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const credentials = action?.payload?.data;
+    const response: IAccountResponseDto = yield call(
+      requestUpdateCredentials,
+      credentials as IAccountUpdateCredentialsDto,
+    );
+    yield call(setPropertyInDevice, EDataStorageKey.ACCESS_TOKEN, response?.credentials?.token);
+    yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
+    navigation.dispatch(StackActions.pop());
+    if (action?.payload?.options?.onSuccess) {
+      action?.payload?.options?.onSuccess();
+    }
+  } catch (error) {
+    console.log(error?.response?.data);
+    navigation.dispatch(StackActions.pop());
+    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+  }
+}
+
+export function* watchUpdateCredentials() {
+  yield takeLatest(ESagaUserAction.UPDATE_CREDENTIALS, updateCredentials);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -423,5 +452,6 @@ export default function* userSaga() {
     watchGetPublicTerries(),
     watchUpdateProfile(),
     watchGetPublicTerryById(),
+    watchUpdateCredentials(),
   ]);
 }

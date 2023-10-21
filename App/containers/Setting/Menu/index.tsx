@@ -106,7 +106,9 @@ const MenuScreen = () => {
       {
         title: t('Mật khẩu'),
         subtitle: t('Thay đổi mật khẩu'),
-        onPress: () => {},
+        onPress: () => {
+          navigation.dispatch(CommonActions.navigate(ESettingNavigator.PASSWORD_SCREEN));
+        },
         RenderIcon: () => <KeyIcon />,
       },
       {
