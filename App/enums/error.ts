@@ -21,4 +21,5 @@ export enum EStatusCode {
   SUCCESS = 200,
   BAD_REQUEST = 400,
   FORBIDEN = 403,
+  NOT_FOUND = 404,
 }

@@ -34,7 +34,7 @@ const AXIOS = axios.create({
 });
 
 export const requestCreateAccount = async (data: ICreateAccountDto) => {
-  return AXIOS.post('/auth/otp/register', data).then(result => result.data);
+  return AXIOS.post<IAccountResponseDto>('/auth/otp/register', data).then(result => result.data);
 };
 
 export const requestLogin = async (data: IAccountLoginDto) => {
@@ -113,8 +113,10 @@ AXIOS.interceptors.response.use(
     }
     // There is the case we cannot refresh token, we need to logout user.
     else if (
-      error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
-      error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
+      (error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
+        error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST) ||
+      (error?.response?.data?.errorCode === EErrorCode.UNKNOWN_ERROR &&
+        error?.response?.data?.statusCode === EStatusCode.NOT_FOUND)
     ) {
       navigationRef.current.dispatch(
         CommonActions.navigate({
