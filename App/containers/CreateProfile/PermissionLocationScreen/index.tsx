@@ -12,16 +12,34 @@ import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { styles } from './styles';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 
 const PermissionLocationScreen = () => {
   const { t } = useTranslation();
   useRequestLocationPermission();
-  const handePressGoToSetting = useCallback(() => {}, []);
+  const navigation = useNavigation();
+  const handePressGoToSetting = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {
+            name: ENavigationScreen.MAIN_GAME_NAVIGATOR,
+            state: {
+              index: 1,
+              routes: [{ name: EMainGameScreen.MAP_SCREEN }, { name: EMainGameScreen.SETTING_NAVIGATOR }],
+            },
+          },
+        ],
+      }),
+    );
+  }, [navigation]);
   const user = useSelector(reduxSelector.getUser);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header />
+      <Header shouldHideBackButton />
       <CustomText style={styles.title}>{`${user?.displayName},\n${t('bạn đang ở đâu?')}`}</CustomText>
       <CustomText style={styles.subTitle}>
         {t('Cho phép Terriana truy cập vào vị trí của bạn để mang tới trải nghiệm tốt hơn nhé!')}

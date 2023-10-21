@@ -1,6 +1,7 @@
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
+import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ECreateProfileScreen, EForgotPasswordScreen, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
@@ -45,12 +46,14 @@ function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICre
   const { data, navigation } = action.payload;
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    yield call(requestCreateAccount, data as ICreateAccountDto);
+    const response: IAccountResponseDto = yield call(requestCreateAccount, data as ICreateAccountDto);
+    yield call(setPropertyInDevice, EDataStorageKey.ACCESS_TOKEN, response.credentials?.token);
+    yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response.credentials?.refreshToken);
+    navigation.dispatch(StackActions.pop());
     navigation.dispatch(CommonActions.navigate(ENavigationScreen.CREATE_PROFILE_NAVIGATOR));
   } catch (error) {
     console.log(error?.response?.data);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
-  } finally {
     navigation.dispatch(StackActions.pop());
   }
 }
@@ -272,12 +275,18 @@ export function* watchAccountRecoverAsync() {
 }
 
 function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUserAction, any>) {
+  const navigation = action?.payload?.navigation;
   try {
-    const navigation = action?.payload?.navigation;
     const profile: IProfileResDto = yield call(requestUserReadProfile);
     yield put(reduxUserAction.setUser(profile as IUser));
     navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
   } catch (error) {
+    if (
+      error?.response?.data?.errorCode === EErrorCode.PROFILE_NOT_FOUND &&
+      error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
+    ) {
+      navigation.dispatch(CommonActions.navigate(ENavigationScreen.CREATE_PROFILE_NAVIGATOR));
+    }
     console.log(error?.response?.data);
   }
 }
