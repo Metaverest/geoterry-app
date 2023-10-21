@@ -113,8 +113,10 @@ AXIOS.interceptors.response.use(
     }
     // There is the case we cannot refresh token, we need to logout user.
     else if (
-      error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
-      error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
+      (error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
+        error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST) ||
+      (error?.response?.data?.errorCode === EErrorCode.UNKNOWN_ERROR &&
+        error?.response?.data?.statusCode === EStatusCode.NOT_FOUND)
     ) {
       navigationRef.current.dispatch(
         CommonActions.navigate({
