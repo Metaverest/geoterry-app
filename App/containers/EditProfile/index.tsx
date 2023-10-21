@@ -16,7 +16,7 @@ import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { head, isEmpty, isString } from 'lodash';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import { isValidPhoneNumber } from 'App/utils/string';
 import * as Yup from 'yup';
@@ -83,9 +83,9 @@ const EditProfileScreen = () => {
             logoUrl: user.logoUrl,
           },
           navigation,
-          // {
-          //   onSuccess: () => navigation.dispatch(CommonActions.goBack()),
-          // },
+          {
+            onSuccess: () => navigation.dispatch(CommonActions.goBack()),
+          },
         ),
       );
     },

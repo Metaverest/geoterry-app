@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createStackNavigator } from '@react-navigation/stack';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import { isEmpty } from 'lodash';
 import { useEffect } from 'react';
@@ -14,6 +14,7 @@ import SettingNavigator from '../Setting';
 import ProfileScreen from '../Profile';
 import EditProfileScreen from '../EditProfile';
 import QRScreen from '../QRScreen';
+import LoadingModal from '../Modal/LoadingModal';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,11 @@ const MainGameNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name={EMainGameScreen.QR_SCREEN} component={QRScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={ENavigationScreen.LOADING_MODAL}
+        component={LoadingModal}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
     </Stack.Navigator>
   );
 };

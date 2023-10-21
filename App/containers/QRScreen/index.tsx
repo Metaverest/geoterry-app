@@ -42,7 +42,7 @@ const QRScreen = () => {
       .catch(error => console.log('Cannot create QR code', error));
   };
   const handleShareQR = async () => {
-    Share.open({ url: 'https://github.com/gevgasparyan/rn-qr-generator' })
+    Share.open({ message: user.id })
       .then(res => {
         console.log(res);
       })
@@ -75,7 +75,7 @@ const QRScreen = () => {
           {uriQR && <Image source={{ uri: uriQR }} style={styles.imgQR} resizeMode="contain" />}
         </View>
         <CustomText style={styles.title}>{t('Terriana')}</CustomText>
-        <CustomText style={styles.nameUser}>Nguyễn Hải</CustomText>
+        <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
         <View style={styles.buttonsContainer}>
           <CustomButtonIcon
             renderIcon={<ShareIcon style={styles.iconBtn} />}
