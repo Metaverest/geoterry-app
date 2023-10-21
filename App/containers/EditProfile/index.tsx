@@ -111,15 +111,15 @@ const EditProfileScreen = () => {
               return (
                 <>
                   <CustomInputInformation
-                    title="Tên"
-                    placeholder="Thêm tên"
+                    title={t('Tên')}
+                    placeholder={t('Thêm tên')}
                     value={values.name}
                     underline
                     onChangeText={text => setFieldValue('name', text, true)}
                   />
                   <CustomInputInformation
-                    title="Bio"
-                    placeholder="Thêm Bio"
+                    title={t('Bio')}
+                    placeholder={t('Thêm Bio')}
                     value={values.bio}
                     underline
                     onChangeText={text => setFieldValue('bio', text, true)}
@@ -127,16 +127,16 @@ const EditProfileScreen = () => {
                   />
                   <CustomText style={styles.countCharacters}>{(values.bio && values.bio.length) || 0}/40</CustomText>
                   <CustomInputInformation
-                    title="Số điện thoại"
-                    placeholder={'Thêm số điện thoại'}
+                    title={t('Số điện thoại')}
+                    placeholder={t('Thêm số điện thoại')}
                     value={values.phone}
                     onChangeText={text => setFieldValue('phone', text, true)}
                     underline
                   />
                   {values.phone && errors.phone && <CustomText style={styles.errorAlert}>{errors.phone}</CustomText>}
                   <CustomInputInformation
-                    title="Email"
-                    placeholder={'Thêm email'}
+                    title={t('Email')}
+                    placeholder={t('Thêm email')}
                     value={values.email}
                     onChangeText={text => setFieldValue('email', text, true)}
                   />
