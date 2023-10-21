@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import { IRealtimeLocation } from 'App/types';
 import MapView from 'react-native-maps';
+import useCoordinateToAddress from 'App/hooks/useCoordinateToAddress';
 
 interface CityNameProps {
   region: IRealtimeLocation;
@@ -11,26 +12,20 @@ interface CityNameProps {
 }
 
 const CityNameBoard = ({ region, mapRef }: CityNameProps) => {
-  const [cityName, setCityName] = useState<string>('');
+  const address = useCoordinateToAddress(
+    mapRef,
+    {
+      latitude: region.latitude,
+      longitude: region.longitude,
+    },
+    true,
+  );
 
-  useEffect(() => {
-    (async () => {
-      if (region.latitude && region.longitude && mapRef.current) {
-        try {
-          const address = await mapRef.current.addressForCoordinate({
-            latitude: region.latitude,
-            longitude: region.longitude,
-          });
-          setCityName(!address.locality ? address.subAdministrativeArea || address.name : address.locality);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    })();
-  }, [mapRef, region]);
   return (
     <View style={styles.cityNameContainer}>
-      <CustomText style={styles.cityName}>{cityName}</CustomText>
+      <CustomText style={styles.cityName}>
+        {address?.locality || address?.subAdministrativeArea || address?.name || ''}
+      </CustomText>
     </View>
   );
 };

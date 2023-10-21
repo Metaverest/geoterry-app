@@ -21,6 +21,7 @@ const defaultAppState: IAppState = {
     terrain: { min: 1, max: 5 },
     distance: { min: 0, max: RADIUS_TO_GET_NEARBY_TERRY },
   },
+  publicTerry: undefined,
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -79,6 +80,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...state.publicTerryFilter,
           ...action.payload?.publicTerryFilter,
         },
+      };
+    case EReduxAppAction.SET_PUBLIC_TERRY:
+      return {
+        ...state,
+        publicTerry: action.payload?.publicTerry,
       };
     default:
       return state;
