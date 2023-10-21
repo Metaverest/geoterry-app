@@ -104,3 +104,8 @@ export interface IProfileDto {
   displayName: string;
   photoUrl?: string;
 }
+
+export interface IAccountUpdateCredentialsDto {
+  password: string;
+  oldPassword: string;
+}

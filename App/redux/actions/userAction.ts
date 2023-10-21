@@ -3,7 +3,13 @@ import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/red
 import { ISagaAsyncActionOptions } from 'App/types/redux';
 import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
 
-import { IAccountLoginDto, ICreateAccountDto, ICreateProfileReqDto, IUser } from 'App/types/user';
+import {
+  IAccountLoginDto,
+  IAccountUpdateCredentialsDto,
+  ICreateAccountDto,
+  ICreateProfileReqDto,
+  IUser,
+} from 'App/types/user';
 
 const reduxUserAction = {
   setUser: (user: Partial<IUser>): PayloadAction<Partial<IUser>> => {
@@ -91,6 +97,12 @@ const sagaUserAction = {
     return {
       type: ESagaAppAction.GET_PUBLIC_TERRY_BY_ID,
       payload: { navigation: navigation, data },
+    };
+  },
+  updateCredentialsAsync: (data: IAccountUpdateCredentialsDto, navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaUserAction.UPDATE_CREDENTIALS,
+      payload: { data, navigation, options },
     };
   },
 };
