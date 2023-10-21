@@ -28,6 +28,7 @@ export interface ITerryResponseDto {
   checkedIn?: boolean;
   saved?: boolean;
   favourite?: boolean;
+  distance?: number;
 }
 
 export const MOCK_TERRY: ITerryResponseDto[] = [
@@ -141,4 +142,14 @@ export interface ITerryFilterParams {
   pageSize?: number;
   includeCategoryData?: boolean;
   includeProfileData?: boolean;
+}
+
+export interface IGetTerryByIdParams {
+  terryId: string;
+  latitude?: number;
+  longitude?: number;
+  includeCategoryData?: boolean;
+  includeProfileData?: boolean;
+  markAsFavourited?: boolean;
+  markAsSaved?: boolean;
 }

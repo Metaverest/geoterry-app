@@ -1,6 +1,6 @@
 import { IRealtimeLocation } from 'App/types';
 
-function calculateDistance(point1: IRealtimeLocation, point2: IRealtimeLocation) {
+export const calculateDistance = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
   const earthRadius = 6371; // Radius of the Earth in kilometers
 
   // Convert latitude and longitude from degrees to radians
@@ -19,6 +19,9 @@ function calculateDistance(point1: IRealtimeLocation, point2: IRealtimeLocation)
   const distance = earthRadius * c * 1000; // Distance in Meters
 
   return distance;
-}
+};
 
-export { calculateDistance };
+export const meterToKilometer = (meter: number) => {
+  const kilometer = meter / 1000;
+  return kilometer.toFixed(2);
+};

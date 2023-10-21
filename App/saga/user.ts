@@ -9,7 +9,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import { IError } from 'App/types/error';
 import { IReduxActionWithNavigation } from 'App/types/redux';
-import { ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
+import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -28,6 +28,7 @@ import AXIOS, {
   requestCreateAccount,
   requestCreateProfile,
   requestGetOTP,
+  requestHunterGetTerryById,
   requestLogin,
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
@@ -38,7 +39,7 @@ import AXIOS, {
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
-import { isEmpty, last } from 'lodash';
+import { isEmpty, isNil, last } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
@@ -361,6 +362,43 @@ export function* watchUpdateProfile() {
   yield takeLatest(ESagaUserAction.UPDATE_PROFILE, userUpdateProfile);
 }
 
+function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, IGetTerryByIdParams>) {
+  const navigation = action?.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const terryParams = action?.payload?.data;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user?.id;
+    const terryData: ITerryResponseDto = yield call(
+      requestHunterGetTerryById,
+      terryParams as IGetTerryByIdParams,
+      profileId,
+    );
+    if (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) {
+      const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+      const updatedTerries = terries.map((terry: ITerryResponseDto) => {
+        if (terry?.id === terryData?.id) {
+          return terryData;
+        }
+        return terry;
+      });
+      yield put(reduxAppAction.setPublicTerries(updatedTerries));
+    }
+    yield put(reduxAppAction.setPublicTerry(terryData));
+    navigation.dispatch(StackActions.pop());
+    if (action?.payload?.options?.onSuccess) {
+      action?.payload?.options?.onSuccess();
+    }
+  } catch (error) {
+    console.log(error?.response?.data);
+    navigation.dispatch(StackActions.pop());
+  }
+}
+
+export function* watchGetPublicTerryById() {
+  yield takeLatest(ESagaAppAction.GET_PUBLIC_TERRY_BY_ID, getPublicTerryById);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -375,5 +413,6 @@ export default function* userSaga() {
     watchGetPublicFilterTerryCategories(),
     watchGetPublicTerries(),
     watchUpdateProfile(),
+    watchGetPublicTerryById(),
   ]);
 }

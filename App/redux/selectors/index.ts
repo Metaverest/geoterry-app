@@ -14,4 +14,5 @@ export const reduxSelector = {
   getAppPublicTerries: (state: IReduxRootState) => state.app.publicTerries,
   getAppPublicTerryFilter: (state: IReduxRootState) => state.app.publicTerryFilter,
   getUserLanguageCode: (state: IReduxRootState) => state.user.languageCode,
+  getAppPublicTerry: (state: IReduxRootState) => state.app.publicTerry,
 };
