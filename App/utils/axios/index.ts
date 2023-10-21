@@ -34,7 +34,7 @@ const AXIOS = axios.create({
 });
 
 export const requestCreateAccount = async (data: ICreateAccountDto) => {
-  return AXIOS.post('/auth/otp/register', data).then(result => result.data);
+  return AXIOS.post<IAccountResponseDto>('/auth/otp/register', data).then(result => result.data);
 };
 
 export const requestLogin = async (data: IAccountLoginDto) => {
