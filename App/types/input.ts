@@ -17,6 +17,7 @@ export interface IInputProps {
   onBlur?: () => void;
   onFocus?: () => void;
   onSubmitEditing?: () => void;
+  onContentSizeChange?: () => void;
   returnKeyType?: ReturnKeyTypeOptions;
   autoCorrect?: boolean;
   autoFocus?: boolean;
