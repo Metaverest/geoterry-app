@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createStackNavigator } from '@react-navigation/stack';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import { isEmpty } from 'lodash';
 import { useEffect } from 'react';
@@ -12,6 +12,10 @@ import MapTypeScreen from './MapTypeScreen';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import SettingNavigator from '../Setting';
 import TerryDetailScreen from './TerryDetail';
+import ProfileScreen from '../Profile';
+import EditProfileScreen from '../EditProfile';
+import QRScreen from '../QRScreen';
+import LoadingModal from '../Modal/LoadingModal';
 
 const Stack = createStackNavigator();
 
@@ -74,6 +78,18 @@ const MainGameNavigator = () => {
             backgroundColor: EColor.color_00000080,
           },
         }}
+      />
+      <Stack.Screen name={EMainGameScreen.PROFILE_SCREEN} component={ProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.EDIT_PROFILE_SCREEN}
+        component={EditProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name={EMainGameScreen.QR_SCREEN} component={QRScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={ENavigationScreen.LOADING_MODAL}
+        component={LoadingModal}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
       />
     </Stack.Navigator>
   );

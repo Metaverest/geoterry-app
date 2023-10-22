@@ -31,7 +31,7 @@ const CustomButton = (props: IButtonProps) => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           colors={solidButtonColorStyle}>
-          <TouchableOpacity onPress={props.onPress}>
+          <TouchableOpacity disabled={props.disabled} onPress={props.onPress}>
             <CustomText style={buttonTitleStyle}>{props.title}</CustomText>
           </TouchableOpacity>
         </LinearGradient>
@@ -39,6 +39,7 @@ const CustomButton = (props: IButtonProps) => {
     case EButtonType.OUTLINE:
       return (
         <TouchableOpacity
+          disabled={props.disabled}
           activeOpacity={0.8}
           onPress={props.onPress}
           style={[styles.buttonContainer, props.customStyleContainer, { backgroundColor: 'transparent' }]}>

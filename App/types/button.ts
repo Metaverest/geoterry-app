@@ -18,6 +18,7 @@ export interface IButtonIconProps {
   customStyleText?: object;
   buttonType: EButtonType;
   onPress: () => void;
+  title?: string;
 }
 
 export interface ILanguageItemProps {
