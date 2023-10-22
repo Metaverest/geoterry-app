@@ -76,9 +76,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
         </View>
         <View style={styles.terrySubHeaderContainer}>
           <View style={styles.terryCreateByAndCreateAtContainer}>
-            <CustomText style={styles.terryCreateByText}>{`${t('Được tạo bởi')}: ${
-              terry?.profile?.displayName
-            }`}</CustomText>
+            <CustomText style={styles.terryCreateByText}>
+              {t('Được tạo bởi')}:{' '}
+              <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
+            </CustomText>
             <CustomText style={styles.terryCreateAtText}>{convertDateFormat(terry.createdAt)}</CustomText>
           </View>
           <View style={styles.suggestionAndRateContainer}>

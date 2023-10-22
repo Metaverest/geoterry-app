@@ -39,6 +39,13 @@ export const styles = StyleSheet.create({
   terryCreateByAndCreateAtContainer: {},
   terryCreateByText: {
     fontSize: rh(12),
+    fontWeight: '400',
+    lineHeight: rh(18),
+    color: EColor.color_CCCCCC,
+    textAlign: 'center',
+  },
+  terryCreateByDisplayNameText: {
+    fontSize: rh(12),
     fontWeight: '600',
     lineHeight: rh(18),
     color: EColor.color_CCCCCC,
