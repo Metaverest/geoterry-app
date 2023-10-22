@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import FilterItem from './FilterItem';
 import FilterItemWithCheckbox, { IOption } from './FilterItemWithCheckbox';
 import { styles } from './styles';
+import CustomText from 'App/components/CustomText';
+import HeaderLineSwipeModalIcon from 'App/media/HeaderLineSwipeModalIcon';
 
 const FilterScreen = () => {
   const { t } = useTranslation();
@@ -86,8 +88,12 @@ const FilterScreen = () => {
   );
 
   return (
-    <CustomSwipeUpModal title={t('Bộ lọc')}>
+    <CustomSwipeUpModal>
       <View style={styles.container}>
+        <View style={styles.headerLineSwipeContainer}>
+          <HeaderLineSwipeModalIcon />
+        </View>
+        <CustomText style={styles.headerTitle}>{t('Bộ lọc')}</CustomText>
         <ScrollView>
           <FilterItem
             low={publicTerryFilter?.size?.min || 1}

@@ -5,8 +5,9 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
-    marginTop: rh(32),
+    marginTop: rh(16),
     width: '100%',
+    paddingHorizontal: rw(16),
   },
   itemContainer: {
     paddingVertical: rh(12),
@@ -36,5 +37,16 @@ export const styles = StyleSheet.create({
     backgroundColor: EColor.color_FAFAFA,
     height: 0.5,
     width: '100%',
+  },
+  headerLineSwipeContainer: {
+    alignSelf: 'center',
+  },
+  headerTitle: {
+    fontSize: rh(20),
+    fontWeight: '700',
+    lineHeight: rh(30),
+    color: EColor.color_FAFAFA,
+    marginTop: rh(16),
+    textAlign: 'center',
   },
 });

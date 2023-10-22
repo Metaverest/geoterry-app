@@ -105,6 +105,8 @@ const MapScreen = () => {
             terryId: selectedTerryId,
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
+            includeProfileData: true,
+            includeCategoryData: true,
           },
           navigation,
         ),

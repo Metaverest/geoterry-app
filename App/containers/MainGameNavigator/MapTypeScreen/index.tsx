@@ -12,6 +12,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { MAP_TYPES } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
+import HeaderLineSwipeModalIcon from 'App/media/HeaderLineSwipeModalIcon';
 
 const MapTypeScreen = () => {
   const { t } = useTranslation();
@@ -49,8 +50,12 @@ const MapTypeScreen = () => {
     return <View style={styles.separator} />;
   }, []);
   return (
-    <CustomSwipeUpModal title={t('Bản đồ')}>
+    <CustomSwipeUpModal>
       <View style={styles.container}>
+        <View style={styles.headerLineSwipeContainer}>
+          <HeaderLineSwipeModalIcon />
+        </View>
+        <CustomText style={styles.headerTitle}>{t('Bản đồ')}</CustomText>
         <FlatList
           renderItem={renderItem}
           data={[EMapType.STANDARD, EMapType.SATELLITE]}

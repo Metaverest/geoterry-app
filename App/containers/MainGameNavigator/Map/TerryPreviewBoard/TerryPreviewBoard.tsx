@@ -1,28 +1,37 @@
-import React from 'react';
-import { View } from 'react-native';
-import { styles } from './styles';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import CustomText from 'App/components/CustomText';
-import LocationIcon from 'App/media/LocationIcon';
-import DifficultyIcon from 'App/media/DifficultyIcon';
-import SizingIcon from 'App/media/SizingIcon';
-import NextIcon from 'App/media/NextIcon';
-import { ITerryResponseDto } from 'App/types/terry';
-import { useTranslation } from 'react-i18next';
-import { meterToKilometer } from 'App/utils/convert';
+import { EMainGameScreen } from 'App/enums/navigation';
 import { makeTextShortToDisplay } from 'App/helpers/text';
-import MapView from 'react-native-maps';
 import useCoordinateToAddress from 'App/hooks/useCoordinateToAddress';
+import DifficultyIcon from 'App/media/DifficultyIcon';
+import LocationIcon from 'App/media/LocationIcon';
+import NextIcon from 'App/media/NextIcon';
+import SizingIcon from 'App/media/SizingIcon';
+import { ITerryResponseDto } from 'App/types/terry';
+import { meterToKilometer } from 'App/utils/convert';
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity, View } from 'react-native';
+import MapView from 'react-native-maps';
+import { styles } from './styles';
 
 const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef: React.RefObject<MapView> }) => {
   const { t } = useTranslation();
-
+  const navigation = useNavigation();
   const address = useCoordinateToAddress(mapRef, {
     latitude: terry.location.latitude,
     longitude: terry.location.longitude,
   });
-
+  const openTerryDetail = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: EMainGameScreen.TERRY_DETAIL_SCREEN,
+        params: { terry: terry },
+      }),
+    );
+  }, [navigation, terry]);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={openTerryDetail}>
       <View style={styles.subContainer}>
         <CustomText style={styles.terryName}>{makeTextShortToDisplay(terry.name, 30)}</CustomText>
         <View style={styles.terryDetailContainer}>
@@ -39,7 +48,7 @@ const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef
       <View style={styles.nextIcon}>
         <NextIcon />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
