@@ -1,4 +1,5 @@
 import { IRealtimeLocation } from 'App/types';
+import dayjs from 'dayjs';
 
 export const calculateDistance = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
   const earthRadius = 6371; // Radius of the Earth in kilometers
@@ -24,4 +25,10 @@ export const calculateDistance = (point1: IRealtimeLocation, point2: IRealtimeLo
 export const meterToKilometer = (meter: number) => {
   const kilometer = meter / 1000;
   return kilometer.toFixed(2);
+};
+
+export const convertDateFormat = (inputDate: string) => {
+  const date = dayjs(inputDate);
+  const formattedDate = date.format('HH[h]mm DD/MM/YYYY');
+  return formattedDate;
 };

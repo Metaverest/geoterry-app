@@ -4,15 +4,10 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: rh(32),
+    marginTop: rh(16),
     width: '100%',
-  },
-  itemContainer: {
-    paddingVertical: rh(12),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    paddingHorizontal: rw(16),
+    paddingBottom: rh(32),
   },
   itemImageTitleContainer: {
     flexDirection: 'row',
@@ -40,6 +35,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    paddingHorizontal: rw(16),
   },
   buttonContainer: {
     width: '48%',
@@ -52,4 +48,15 @@ export const styles = StyleSheet.create({
     lineHeight: rh(24),
   },
   customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: rw(1) },
+  headerTitle: {
+    fontSize: rh(20),
+    fontWeight: '700',
+    lineHeight: rh(30),
+    color: EColor.color_FAFAFA,
+    marginTop: rh(16),
+    textAlign: 'center',
+  },
+  headerLineSwipeContainer: {
+    alignSelf: 'center',
+  },
 });

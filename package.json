@@ -29,6 +29,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "class-validator": "^0.14.0",
     "country-telephone-data": "^0.6.3",
+    "dayjs": "^1.11.10",
     "formik": "^2.4.3",
     "i18next": "^23.2.8",
     "immer": "^10.0.2",

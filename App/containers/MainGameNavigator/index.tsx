@@ -11,6 +11,7 @@ import MapScreen from './Map';
 import MapTypeScreen from './MapTypeScreen';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import SettingNavigator from '../Setting';
+import TerryDetailScreen from './TerryDetail';
 
 const Stack = createStackNavigator();
 
@@ -62,6 +63,17 @@ const MainGameNavigator = () => {
         name={EMainGameScreen.SETTING_NAVIGATOR}
         component={SettingNavigator}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.TERRY_DETAIL_SCREEN}
+        component={TerryDetailScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardStyle: {
+            backgroundColor: EColor.color_00000080,
+          },
+        }}
       />
     </Stack.Navigator>
   );
