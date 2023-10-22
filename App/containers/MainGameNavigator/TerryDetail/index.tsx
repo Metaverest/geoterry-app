@@ -12,6 +12,7 @@ import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import { convertDateFormat, meterToKilometer } from 'App/utils/convert';
 import DotIcon from 'App/media/DotIcon';
+import { head } from 'lodash';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -46,7 +47,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
       {
         title: t('Độ khó'),
         subTitle: t('Khả năng tìm thấy trong vòng 10 - 15 phút'),
-        value: `${t('Mức')} ${terry.metadata.size}`,
+        value: `${t('Mức')} ${terry.metadata.difficulty}`,
       },
     ] as ITerryItem[];
   }, [t, terry]);
@@ -71,7 +72,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               'km',
             )}`}</CustomText>
             <DotIcon />
-            <CustomText style={styles.terryDistanceAndCategoryText}>{terry.description}</CustomText>
+            <CustomText style={styles.terryDistanceAndCategoryText}>{head(terry.categories)?.name}</CustomText>
           </View>
         </View>
         <View style={styles.terrySubHeaderContainer}>

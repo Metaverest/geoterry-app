@@ -1,3 +1,4 @@
+import { ITerryCategoryResDto } from './category';
 import { IProfileDto } from './user';
 
 export interface ITerryLocationresDto {
@@ -29,6 +30,7 @@ export interface ITerryResponseDto {
   saved?: boolean;
   favourite?: boolean;
   distance?: number;
+  categories?: ITerryCategoryResDto[];
 }
 
 export const MOCK_TERRY: ITerryResponseDto[] = [
