@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { removePropertyInDevice } from 'App/utils/storage/storage';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 const ProfileScreen = () => {
   const { t } = useTranslation();
@@ -38,13 +39,13 @@ const ProfileScreen = () => {
           {user.logoUrl ? (
             <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
           ) : (
-            <MapMarkerUserDefault width={72} height={72} />
+            <MapMarkerUserDefault width={rw(72)} height={rh(72)} />
           )}
           <View style={styles.ml16}>
             <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
             <CustomText style={styles.biography}>{user.bio || 'Bio'}</CustomText>
             <View style={styles.contentRewardPoints}>
-              <RewardPointsIcon width={20} height={20} />
+              <RewardPointsIcon width={rw(20)} height={rh(20)} />
               <CustomText style={styles.textRewardPoints}>{t('Reward Points')}:</CustomText>
               <CustomText style={styles.points}>1098</CustomText>
             </View>
