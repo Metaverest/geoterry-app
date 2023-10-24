@@ -12,14 +12,10 @@ interface CityNameProps {
 }
 
 const CityNameBoard = ({ region, mapRef }: CityNameProps) => {
-  const address = useCoordinateToAddress(
-    mapRef,
-    {
-      latitude: region.latitude,
-      longitude: region.longitude,
-    },
-    true,
-  );
+  const address = useCoordinateToAddress(mapRef, {
+    latitude: region.latitude,
+    longitude: region.longitude,
+  });
 
   return (
     <View style={styles.cityNameContainer}>

@@ -6,7 +6,7 @@ interface LatLng {
   longitude: number;
 }
 
-const useCoordinateToAddress = (mapRef: React.RefObject<MapView>, location: LatLng, forceFetch?: boolean) => {
+const useCoordinateToAddress = (mapRef: React.RefObject<MapView>, location: LatLng, forceOverrideValue?: boolean) => {
   const [address, setAddress] = useState<Address | null>();
   const prevLocationRef = useRef<LatLng | null>(null);
 
@@ -25,7 +25,7 @@ const useCoordinateToAddress = (mapRef: React.RefObject<MapView>, location: LatL
             setAddress(resAddress);
             prevLocationRef.current = location;
           } catch (error) {
-            if (!forceFetch) {
+            if (forceOverrideValue) {
               setAddress(null);
             }
             console.log(error);

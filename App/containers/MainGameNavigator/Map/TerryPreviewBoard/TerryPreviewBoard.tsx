@@ -18,10 +18,14 @@ import { styles } from './styles';
 const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef: React.RefObject<MapView> }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const address = useCoordinateToAddress(mapRef, {
-    latitude: terry.location.latitude,
-    longitude: terry.location.longitude,
-  });
+  const address = useCoordinateToAddress(
+    mapRef,
+    {
+      latitude: terry.location.latitude,
+      longitude: terry.location.longitude,
+    },
+    true,
+  );
   const openTerryDetail = useCallback(() => {
     navigation.dispatch(
       CommonActions.navigate({
