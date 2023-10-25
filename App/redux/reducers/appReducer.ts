@@ -22,6 +22,7 @@ const defaultAppState: IAppState = {
     distance: { min: 0, max: RADIUS_TO_GET_NEARBY_TERRY },
   },
   publicTerry: undefined,
+  terryCheckins: [],
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -85,6 +86,14 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         publicTerry: action.payload?.publicTerry,
+      };
+    case EReduxAppAction.SET_TERRY_CHECKINS:
+      return {
+        ...state,
+        terryCheckins: [
+          ...(state.terryCheckins || []),
+          ...(action.payload?.terryCheckins?.filter(item => !state.terryCheckins?.some(e => item.id === e.id)) || []),
+        ],
       };
     default:
       return state;

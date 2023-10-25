@@ -11,7 +11,15 @@ import { reduxSelector } from 'App/redux/selectors';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import { IError } from 'App/types/error';
 import { IReduxActionWithNavigation } from 'App/types/redux';
-import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
+import {
+  IFilterTerryCheckins,
+  IGetTerryByIdParams,
+  IResponseTerryCheckins,
+  ITerryCheckinsParams,
+  ITerryFilterInputDto,
+  ITerryFilterParams,
+  ITerryResponseDto,
+} from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -31,6 +39,7 @@ import AXIOS, {
   requestCreateAccount,
   requestCreateProfile,
   requestGetOTP,
+  requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
   requestLogin,
   requestPublicFilterTerryCategories,
@@ -434,6 +443,35 @@ export function* watchUpdateCredentials() {
   yield takeLatest(ESagaUserAction.UPDATE_CREDENTIALS, updateCredentials);
 }
 
+function* getTerryCheckins(
+  action: IReduxActionWithNavigation<
+    ESagaAppAction,
+    { filterParams: ITerryCheckinsParams; filterData: IFilterTerryCheckins }
+  >,
+) {
+  const navigation = action?.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const data = action.payload?.data?.filterData as IFilterTerryCheckins;
+    const params = action.payload?.data?.filterParams as ITerryCheckinsParams;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const response: IResponseTerryCheckins[] = yield call(requestHunterFilterTerryCheckins, data, params, profileId);
+    yield put(reduxAppAction.setTerryCheckins(response));
+    navigation.dispatch(StackActions.pop());
+    if (action?.payload?.options?.onSuccess) {
+      action?.payload?.options?.onSuccess();
+    }
+  } catch (error) {
+    console.log(error?.response?.data);
+    navigation.dispatch(StackActions.pop());
+  }
+}
+
+export function* watchGetTerryCheckins() {
+  yield takeLatest(ESagaUserAction.GET_TERRY_CHECKINS, getTerryCheckins);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -450,5 +488,6 @@ export default function* userSaga() {
     watchUpdateProfile(),
     watchGetPublicTerryById(),
     watchUpdateCredentials(),
+    watchGetTerryCheckins(),
   ]);
 }

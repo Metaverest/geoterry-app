@@ -155,3 +155,44 @@ export interface IGetTerryByIdParams {
   markAsFavourited?: boolean;
   markAsSaved?: boolean;
 }
+export interface ITerryCheckinsParams {
+  page?: number;
+  pageSize?: number;
+  includeTerryData?: boolean;
+}
+
+export interface IResponseTerryCheckins {
+  terryId: string;
+  profileId: string;
+  checkinAt: string;
+  reviewText: string;
+  photoUrls: string[];
+  rate: number;
+  location: Location;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
+  terry: Terry;
+}
+
+export interface Location {
+  latitude: number;
+  longitude: number;
+}
+
+export interface Terry {
+  id: string;
+  metadata: Metadata;
+  name: string;
+  location: Location;
+}
+
+export interface Metadata {
+  size: number;
+  difficulty: number;
+  terrain: number;
+}
+
+export interface IFilterTerryCheckins {
+  terryIds?: string[];
+}
