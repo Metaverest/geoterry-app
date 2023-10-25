@@ -1,5 +1,5 @@
 import { View, FlatList } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage } from 'App/components/image';
 import Header from 'App/components/Header';
@@ -19,9 +19,6 @@ const HistoryScreen = () => {
   const navigation = useNavigation();
   const terryCheckins = useSelector(reduxSelector.getAppTerryCheckins);
 
-  const [page, setPage] = useState(1);
-  const scroll = useRef(false);
-
   const renderItem = useCallback(({ item }: { item: IResponseTerryCheckins }) => {
     return <ItemHistory {...item} />;
   }, []);
@@ -32,28 +29,17 @@ const HistoryScreen = () => {
     return <CustomText style={styles.textEmpty}>{t('Bạn chưa tìm thấy kho báu nào cả!')}</CustomText>;
   }, [t]);
 
-  console.log(page);
-  const onEndReached = useCallback(() => {
-    console.log('ccc');
-    if (scroll.current) {
-      setPage(page + 1);
-    }
-    scroll.current = false;
-  }, [page]);
-
   useEffect(() => {
     dispatch(
       sagaUserAction.filterTerryCheckinsAsyns(
         {},
         {
-          page,
-          pageSize: 10,
           includeTerryData: true,
         },
         navigation,
       ),
     );
-  }, [dispatch, navigation, page]);
+  }, [dispatch, navigation]);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -64,11 +50,6 @@ const HistoryScreen = () => {
         style={styles.containHistory}
         ItemSeparatorComponent={ItemSeparatorComponent}
         ListEmptyComponent={ListEmptyComponent}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={0.5}
-        onMomentumScrollBegin={() => {
-          scroll.current = true;
-        }}
       />
     </CustomSafeArea>
   );
