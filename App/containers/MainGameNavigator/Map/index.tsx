@@ -7,7 +7,7 @@ import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { EMainGameScreen } from 'App/enums/navigation';
 import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
@@ -20,7 +20,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { ITerryFilterParams } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
-import { getStoredProperty, removePropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty } from 'App/utils/storage/storage';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
@@ -226,10 +226,8 @@ const MapScreen = () => {
           renderIcon={<SettingIcon />}
         />
         <CustomButtonIcon
-          onPress={async () => {
-            await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
-            await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
-            navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
+          onPress={() => {
+            navigation.dispatch(CommonActions.navigate(EMainGameScreen.HISTORY));
           }}
           buttonColor={EColor.color_171717}
           customStyleContainer={styles.buttonRHNContainer}

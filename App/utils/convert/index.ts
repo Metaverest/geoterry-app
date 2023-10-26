@@ -32,3 +32,8 @@ export const convertDateFormat = (inputDate: string) => {
   const formattedDate = date.format('HH[h]mm DD/MM/YYYY');
   return formattedDate;
 };
+export const convertDateFormatHistory = (inputDate: string) => {
+  const date = dayjs(inputDate);
+  const formattedDate = date.format('HH:mm - DD/MM/YYYY');
+  return formattedDate;
+};

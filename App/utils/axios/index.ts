@@ -5,7 +5,15 @@ import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
-import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
+import {
+  IFilterTerryCheckins,
+  IGetTerryByIdParams,
+  IResponseTerryCheckins,
+  ITerryCheckinsParams,
+  ITerryFilterInputDto,
+  ITerryFilterParams,
+  ITerryResponseDto,
+} from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -171,6 +179,16 @@ export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, pro
 
 export const requestUpdateCredentials = async (data: IAccountUpdateCredentialsDto) => {
   return AXIOS.put<IAccountResponseDto>('/auth/update-credentials', data).then(result => result.data);
+};
+
+export const requestHunterFilterTerryCheckins = async (
+  data: IFilterTerryCheckins,
+  params: ITerryCheckinsParams,
+  profileId: string,
+) => {
+  return AXIOS.post<IResponseTerryCheckins[]>(`/hunter/${profileId}/terry-checkin/filter`, data, { params }).then(
+    res => res.data,
+  );
 };
 
 export default AXIOS;

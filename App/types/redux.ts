@@ -3,7 +3,7 @@ import { EMapType } from 'App/enums/map';
 import { IError } from './error';
 import { ICreateAccountDto, IUser } from './user';
 import { ITerryCategoryResDto } from './category';
-import { ITerryFilterInputDto, ITerryResponseDto } from './terry';
+import { IResponseTerryCheckins, ITerryFilterInputDto, ITerryResponseDto } from './terry';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -42,6 +42,7 @@ export interface IAppState {
   publicTerries?: ITerryResponseDto[];
   publicTerryFilter?: ITerryFilterInputDto;
   publicTerry?: ITerryResponseDto;
+  terryCheckins?: IResponseTerryCheckins[];
 }
 
 export interface IRootState {

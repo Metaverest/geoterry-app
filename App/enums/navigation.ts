@@ -1,3 +1,6 @@
+import { ParamListBase } from '@react-navigation/native';
+import { IResponseTerryCheckins } from 'App/types/terry';
+
 export enum ENavigationScreen {
   SPLASH_SCREEN = 'SPLASH_SCREEN',
   ONBOARDING_SCREEN = 'ONBOARDING_SCREEN',
@@ -33,6 +36,9 @@ export enum EMainGameScreen {
   PROFILE_SCREEN = 'PROFILE_SCREEN',
   EDIT_PROFILE_SCREEN = 'EDIT_PROFILE_SCREEN',
   QR_SCREEN = 'QR_SCREEN',
+  HISTORY = 'HISTORY',
+  DETAIL_HISTORY = 'DETAIL_HISTORY',
+  ENLARGE_IMAGE = 'ENLARGE_IMAGE',
 }
 
 export enum ESettingNavigator {
@@ -44,4 +50,17 @@ export enum ESettingNavigator {
   LOW_ENERGY_SCREEN = 'LOW_ENERGY_SCREEN',
   POLICY_SCREEN = 'POLICY_SCREEN',
   ABOUT_SCREEN = 'ABOUT_SCREEN',
+}
+export interface EMainGameNavigatorParams extends ParamListBase {
+  [EMainGameScreen.MAP_SCREEN]: undefined;
+  [EMainGameScreen.MAP_TYPE_SCREEN]: undefined;
+  [EMainGameScreen.FILTER_SCREEN]: undefined;
+  [EMainGameScreen.SETTING_NAVIGATOR]: undefined;
+  [EMainGameScreen.TERRY_DETAIL_SCREEN]: undefined;
+  [EMainGameScreen.PROFILE_SCREEN]: undefined;
+  [EMainGameScreen.EDIT_PROFILE_SCREEN]: undefined;
+  [EMainGameScreen.QR_SCREEN]: undefined;
+  [EMainGameScreen.HISTORY]: undefined;
+  [EMainGameScreen.DETAIL_HISTORY]: IResponseTerryCheckins;
+  [ENavigationScreen.LOADING_MODAL]: undefined;
 }

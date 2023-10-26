@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createStackNavigator } from '@react-navigation/stack';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import { isEmpty } from 'lodash';
 import { useEffect } from 'react';
@@ -16,8 +16,10 @@ import ProfileScreen from '../Profile';
 import EditProfileScreen from '../EditProfile';
 import QRScreen from '../QRScreen';
 import LoadingModal from '../Modal/LoadingModal';
+import HistoryScreen from '../History';
+import DetailHistory from '../DetailHistory';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
 const MainGameNavigator = () => {
   const dispatch = useDispatch();
@@ -91,6 +93,8 @@ const MainGameNavigator = () => {
         component={LoadingModal}
         options={{ headerShown: false, presentation: 'transparentModal' }}
       />
+      <Stack.Screen name={EMainGameScreen.HISTORY} component={HistoryScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={EMainGameScreen.DETAIL_HISTORY} component={DetailHistory} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

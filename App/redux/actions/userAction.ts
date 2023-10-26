@@ -1,7 +1,13 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
-import { IGetTerryByIdParams, ITerryFilterInputDto, ITerryFilterParams } from 'App/types/terry';
+import {
+  IFilterTerryCheckins,
+  IGetTerryByIdParams,
+  ITerryCheckinsParams,
+  ITerryFilterInputDto,
+  ITerryFilterParams,
+} from 'App/types/terry';
 
 import {
   IAccountLoginDto,
@@ -103,6 +109,17 @@ const sagaUserAction = {
     return {
       type: ESagaUserAction.UPDATE_CREDENTIALS,
       payload: { data, navigation, options },
+    };
+  },
+  filterTerryCheckinsAsyns: (
+    filterData: IFilterTerryCheckins,
+    filterParams: ITerryCheckinsParams,
+    navigation: any,
+    options?: ISagaAsyncActionOptions,
+  ) => {
+    return {
+      type: ESagaUserAction.GET_TERRY_CHECKINS,
+      payload: { data: { filterData, filterParams }, navigation, options },
     };
   },
 };
