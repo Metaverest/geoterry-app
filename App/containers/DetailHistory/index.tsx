@@ -14,21 +14,23 @@ import { EColor } from 'App/enums/color';
 import { EButtonType } from 'App/enums';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import ImageView from 'react-native-image-viewing';
-import dayjs from 'dayjs';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
+import { convertDateFormatHistory } from 'App/utils/convert';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.DETAIL_HISTORY>>();
 
   const [visible, setIsVisible] = useState(false);
+  const [indexImage, setIndexImage] = useState(0);
 
   const images = params?.photoUrls.map(e => ({ uri: e }));
 
-  const renderItem = useCallback(({ item }: { item: string }) => {
+  const renderItem = useCallback(({ item, index }: { item: string; index: number }) => {
     return (
       <TouchableOpacity
         onPress={() => {
+          setIndexImage(index);
           setIsVisible(true);
         }}>
         <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
@@ -48,7 +50,7 @@ export default function DetailHistory() {
         <SlideSizeIcon style={styles.icon} />
         <CustomText style={[styles.location, styles.ml4]}>{params.terry.metadata.size}</CustomText>
       </View>
-      <CustomText style={styles.location}>{dayjs(params.checkinAt).format('HH:mm - DD/MM/YYYY')}</CustomText>
+      <CustomText style={styles.location}>{convertDateFormatHistory(params.checkinAt)}</CustomText>
       <View style={styles.containerDesc}>
         <CustomText style={styles.desc}>{t(params.reviewText)}</CustomText>
       </View>
@@ -65,7 +67,7 @@ export default function DetailHistory() {
       <ImageView
         images={images}
         keyExtractor={(_, index) => index.toString()}
-        imageIndex={0}
+        imageIndex={indexImage}
         visible={visible}
         onRequestClose={() => setIsVisible(false)}
       />

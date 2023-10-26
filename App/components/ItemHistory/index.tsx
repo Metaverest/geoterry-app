@@ -10,7 +10,7 @@ import BackIcon from 'App/media/BackIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameScreen } from 'App/enums/navigation';
 import { IResponseTerryCheckins } from 'App/types/terry';
-import dayjs from 'dayjs';
+import { convertDateFormatHistory } from 'App/utils/convert';
 
 const ItemHistory = (props: IResponseTerryCheckins) => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const ItemHistory = (props: IResponseTerryCheckins) => {
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, props));
       }}>
       <View>
-        <CustomText style={styles.timeHistory}>{dayjs(props.checkinAt).format('HH:mm - DD/MM/YYYY')}</CustomText>
+        <CustomText style={styles.timeHistory}>{convertDateFormatHistory(props.checkinAt)}</CustomText>
         <CustomText style={styles.title}>{t(props.terry.name)}</CustomText>
         <View style={styles.row}>
           <LocationIcon />
