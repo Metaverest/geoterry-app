@@ -18,6 +18,7 @@ import QRScreen from '../QRScreen';
 import LoadingModal from '../Modal/LoadingModal';
 import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
+import Review from '../Review';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -95,6 +96,7 @@ const MainGameNavigator = () => {
       />
       <Stack.Screen name={EMainGameScreen.HISTORY} component={HistoryScreen} options={{ headerShown: false }} />
       <Stack.Screen name={EMainGameScreen.DETAIL_HISTORY} component={DetailHistory} options={{ headerShown: false }} />
+      <Stack.Screen name={EMainGameScreen.REVIEW_SCREEN} component={Review} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

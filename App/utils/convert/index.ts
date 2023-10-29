@@ -1,5 +1,7 @@
 import { IRealtimeLocation } from 'App/types';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/vi';
 
 export const calculateDistance = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
   const earthRadius = 6371; // Radius of the Earth in kilometers
@@ -36,4 +38,14 @@ export const convertDateFormatHistory = (inputDate: string) => {
   const date = dayjs(inputDate);
   const formattedDate = date.format('HH:mm - DD/MM/YYYY');
   return formattedDate;
+};
+export const convertDateToNow = (inputDate: string, isVietnamese: boolean) => {
+  if (isVietnamese) {
+    dayjs.locale('vi');
+  } else {
+    dayjs.locale('en');
+  }
+  dayjs.extend(relativeTime);
+
+  return dayjs(inputDate).fromNow();
 };

@@ -1,5 +1,5 @@
 import { ITerryCategoryResDto } from './category';
-import { IProfileDto } from './user';
+import { IProfileDto, IProfileResDto } from './user';
 
 export interface ITerryLocationresDto {
   latitude: number;
@@ -195,4 +195,10 @@ export interface Metadata {
 
 export interface IFilterTerryCheckins {
   terryIds?: string[];
+}
+export interface IGetCheckinsOfTerryParams extends ITerryCheckinsParams {
+  includeProfileData?: boolean;
+}
+export interface IResponseGetCheckinsOfTerry extends IResponseTerryCheckins {
+  profile: Pick<IProfileResDto, 'id' | 'displayName' | 'logoUrl' | 'slug'>;
 }
