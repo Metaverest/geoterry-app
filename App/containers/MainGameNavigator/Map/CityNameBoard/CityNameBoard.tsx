@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
@@ -12,10 +12,14 @@ interface CityNameProps {
 }
 
 const CityNameBoard = ({ region, mapRef }: CityNameProps) => {
-  const address = useCoordinateToAddress(mapRef, {
-    latitude: region.latitude,
-    longitude: region.longitude,
-  });
+  const location = useMemo(
+    () => ({
+      latitude: region.latitude,
+      longitude: region.longitude,
+    }),
+    [region.latitude, region.longitude],
+  );
+  const address = useCoordinateToAddress(mapRef, location);
 
   return (
     <View style={styles.cityNameContainer}>
