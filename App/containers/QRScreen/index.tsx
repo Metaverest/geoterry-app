@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { EarthBottomIcon } from 'App/components/image';
+import { EarthIcon } from 'App/components/image';
 import { styles } from './styles';
 import CloseIcon from 'App/media/CloseIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
@@ -61,7 +61,7 @@ const QRScreen = () => {
 
   return (
     <CustomSafeArea style={styles.container}>
-      <Image style={[styles.image, { marginTop: -(top + 10) }]} source={EarthBottomIcon} />
+      <Image style={[styles.image, { marginTop: -(top + 10) }]} source={EarthIcon} />
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {

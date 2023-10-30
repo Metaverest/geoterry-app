@@ -11,7 +11,11 @@ export const styles = StyleSheet.create({
   },
   image: {
     position: 'absolute',
-    bottom: 0,
+    bottom: rh(-180),
+    right: rw(-120),
+    transform: [{ rotate: '-29.582deg' }],
+    width: rw(402),
+    height: rh(402),
   },
   createProfileTitle: {
     color: EColor.color_FAFAFA,

@@ -20,6 +20,7 @@ import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
 import CreateNewTerryScreen from './CreateNewTerry';
 import PopupModal from '../Modal/PopupModal';
+import Review from '../Review';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -107,6 +108,7 @@ const MainGameNavigator = () => {
         component={CreateNewTerryScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name={EMainGameScreen.REVIEW_SCREEN} component={Review} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

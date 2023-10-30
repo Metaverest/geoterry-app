@@ -1,40 +1,29 @@
-import { useEffect, useState, useRef } from 'react';
-import MapView, { Address } from 'react-native-maps';
-
-interface LatLng {
-  latitude: number;
-  longitude: number;
-}
+import { useEffect, useState } from 'react';
+import MapView, { Address, LatLng } from 'react-native-maps';
 
 const useCoordinateToAddress = (mapRef: React.RefObject<MapView>, location: LatLng, forceOverrideValue?: boolean) => {
   const [address, setAddress] = useState<Address | null>();
-  const prevLocationRef = useRef<LatLng | null>(null);
 
   useEffect(() => {
-    if (
-      location.latitude !== prevLocationRef.current?.latitude ||
-      location.longitude !== prevLocationRef.current?.longitude
-    ) {
-      (async () => {
-        if (location.latitude && location.longitude && mapRef.current) {
-          try {
-            const resAddress = await mapRef.current.addressForCoordinate({
-              latitude: location.latitude,
-              longitude: location.longitude,
-            });
-            setAddress(resAddress);
-            prevLocationRef.current = location;
-          } catch (error) {
-            if (forceOverrideValue) {
-              setAddress(null);
-            }
-            console.log(error);
+    (async () => {
+      if (location.latitude && location.longitude && mapRef.current) {
+        try {
+          console.log(location);
+          const resAddress = await mapRef.current.addressForCoordinate({
+            latitude: location.latitude,
+            longitude: location.longitude,
+          });
+          setAddress(resAddress);
+        } catch (error) {
+          if (forceOverrideValue) {
+            setAddress(null);
           }
+          console.log(error);
         }
-      })();
-    }
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location, mapRef]);
+  }, [location]);
 
   return address;
 };

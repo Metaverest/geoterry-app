@@ -13,6 +13,9 @@ import CustomText from 'App/components/CustomText';
 import { convertDateFormat, meterToKilometer } from 'App/utils/convert';
 import DotIcon from 'App/media/DotIcon';
 import { head } from 'lodash';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -23,6 +26,7 @@ interface ITerryItem {
 }
 const TerryDetailScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
+  const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
@@ -88,7 +92,11 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               <CustomText style={styles.suggestionAndRateText}>{t('Gợi ý')}</CustomText>
             </TouchableOpacity>
             <View style={styles.suggestionAndRateDivider} />
-            <TouchableOpacity style={styles.suggestionAndRateButton}>
+            <TouchableOpacity
+              style={styles.suggestionAndRateButton}
+              onPress={() => {
+                navigation.dispatch(StackActions.replace(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id }));
+              }}>
               <CustomText style={styles.suggestionAndRateText}>{t('Xem đánh giá')}</CustomText>
             </TouchableOpacity>
           </View>

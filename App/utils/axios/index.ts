@@ -7,7 +7,9 @@ import { navigationRef } from 'App/navigation';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import {
   IFilterTerryCheckins,
+  IGetCheckinsOfTerryParams,
   IGetTerryByIdParams,
+  IResponseGetCheckinsOfTerry,
   IResponseTerryCheckins,
   ITerryCheckinsParams,
   ITerryFilterInputDto,
@@ -193,6 +195,12 @@ export const requestHunterFilterTerryCheckins = async (
 };
 export const requestBuilderCreateTerry = async (data: ITerryInputDto, userID: string) => {
   return AXIOS.post(`/builder/${userID}/terry`, data).then(result => result.data);
+};
+
+export const requestPublicGetCheckinsOfTerry = async (params: IGetCheckinsOfTerryParams, terryId: string) => {
+  return AXIOS.get<IResponseGetCheckinsOfTerry[]>(`/public/terry-checkin/terry/${terryId}`, { params }).then(
+    res => res.data,
+  );
 };
 
 export default AXIOS;

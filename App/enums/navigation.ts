@@ -41,6 +41,7 @@ export enum EMainGameScreen {
   DETAIL_HISTORY = 'DETAIL_HISTORY',
   ENLARGE_IMAGE = 'ENLARGE_IMAGE',
   CREATE_NEW_TERRY_SCREEN = 'CREATE_NEW_TERRY_SCREEN',
+  REVIEW_SCREEN = 'REVIEW_SCREEN',
 }
 
 export enum ESettingNavigator {
@@ -64,5 +65,8 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   [EMainGameScreen.QR_SCREEN]: undefined;
   [EMainGameScreen.HISTORY]: undefined;
   [EMainGameScreen.DETAIL_HISTORY]: IResponseTerryCheckins;
+  [EMainGameScreen.REVIEW_SCREEN]: {
+    terryId: string;
+  };
   [ENavigationScreen.LOADING_MODAL]: undefined;
 }
