@@ -58,7 +58,10 @@ export const styles = StyleSheet.create({
   },
   image: {
     position: 'absolute',
-    right: 0,
-    transform: [{ rotate: '-90deg' }],
+    left: 0,
+    transform: [{ rotate: '-106.215deg' }],
+    width: rw(604),
+    height: rh(604),
+    top: rh(-150),
   },
 });
