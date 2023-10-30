@@ -1,6 +1,7 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
@@ -46,7 +47,7 @@ const MapScreen = () => {
     })();
   });
 
-  //The current region of the map view
+  // The current region of the map view
   const [region, setRegion] = useState(currentLocation);
   const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
   const changeRegion = useCallback(
@@ -68,8 +69,9 @@ const MapScreen = () => {
     [dispatch, navigation, regionToGetTerry],
   );
 
+  // TODO: Need to somehow to be able to remove this effect since it costs a lot of resource
+  // If the current location is not empty and the region is empty or default location, set the region to the current location
   useEffect(() => {
-    // If the current location is not empty and the region is empty or default location, set the region to the current location
     if (
       !isEmpty(currentLocation) &&
       (isEmpty(region) ||
@@ -78,6 +80,7 @@ const MapScreen = () => {
       changeRegion(currentLocation);
     }
   }, [currentLocation, region, changeRegion]);
+
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
@@ -139,9 +142,13 @@ const MapScreen = () => {
         ref={mapRef}
         style={styles.mapContainer}
         showsUserLocation={isSaveBatterryMode}
-        compassOffset={{ x: -10, y: 208 }}
-        onRegionChangeComplete={e => {
-          changeRegion(e as IRealtimeLocation);
+        compassOffset={{ x: -rh(10), y: rw(208) }}
+        onRegionChangeComplete={(data, gesture) => {
+          // To avoid onRegionChangeComplete() callback is called infinitely
+          if (!gesture.isGesture) {
+            return;
+          }
+          changeRegion(data as IRealtimeLocation);
         }}
         onLongPress={() => setSelectedTerryId(null)}
         region={region}>
