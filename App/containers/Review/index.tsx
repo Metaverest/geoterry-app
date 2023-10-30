@@ -13,7 +13,6 @@ import { IResponseGetCheckinsOfTerry } from 'App/types/terry';
 import { convertDateRelativeToNow } from 'App/utils/convert';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
-import { ELanguageCode } from 'App/enums';
 import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -40,7 +39,7 @@ const Review = () => {
           <View style={styles.flex}>
             <CustomText style={styles.name}>{item.profile.displayName}</CustomText>
             <CustomText style={styles.time}>
-              {t(convertDateRelativeToNow(item.createdAt, user.languageCode === ELanguageCode.VN))}
+              {t(convertDateRelativeToNow(item.createdAt, user.languageCode))}
             </CustomText>
             <CustomText style={styles.desc}>{item.reviewText}</CustomText>
             <FlatList
