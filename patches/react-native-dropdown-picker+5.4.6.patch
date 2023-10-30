@@ -11,7 +11,7 @@ index 338c9de..cf5d562 100644
  
    interface DropDownPickerSingleProps<T> {
 diff --git a/node_modules/react-native-dropdown-picker/src/components/Picker.js b/node_modules/react-native-dropdown-picker/src/components/Picker.js
-index e3fb93b..94cb42a 100644
+index e3fb93b..eb337a7 100644
 --- a/node_modules/react-native-dropdown-picker/src/components/Picker.js
 +++ b/node_modules/react-native-dropdown-picker/src/components/Picker.js
 @@ -162,7 +162,8 @@ function Picker({
@@ -46,8 +46,7 @@ index e3fb93b..94cb42a 100644
 +       return  <>
              {SelectedItemIconComponent}
              <Text style={_labelStyle} {...labelProps}>
--                {_selectedItemLabel}
-+                {"_selectedItemLabel"}
+                 {_selectedItemLabel}
              </Text>
          </>
 -    ), [SelectedItemIconComponent, _labelStyle, labelProps, _selectedItemLabel]);
