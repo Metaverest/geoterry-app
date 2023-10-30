@@ -13,7 +13,7 @@ import CustomText from 'App/components/CustomText';
 import { convertDateFormat, meterToKilometer } from 'App/utils/convert';
 import DotIcon from 'App/media/DotIcon';
 import { head } from 'lodash';
-import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 export interface ITerryDetailProps {
@@ -95,10 +95,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <TouchableOpacity
               style={styles.suggestionAndRateButton}
               onPress={() => {
-                navigation.dispatch(StackActions.pop());
-                setTimeout(() => {
-                  navigation.dispatch(CommonActions.navigate(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id }));
-                }, 200);
+                navigation.dispatch(StackActions.replace(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id }));
               }}>
               <CustomText style={styles.suggestionAndRateText}>{t('Xem đánh giá')}</CustomText>
             </TouchableOpacity>

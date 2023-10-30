@@ -39,7 +39,7 @@ export const convertDateFormatHistory = (inputDate: string) => {
   const formattedDate = date.format('HH:mm - DD/MM/YYYY');
   return formattedDate;
 };
-export const convertDateToNow = (inputDate: string, isVietnamese: boolean) => {
+export const convertDateRelativeToNow = (inputDate: string, isVietnamese: boolean) => {
   if (isVietnamese) {
     dayjs.locale('vi');
   } else {
@@ -47,5 +47,5 @@ export const convertDateToNow = (inputDate: string, isVietnamese: boolean) => {
   }
   dayjs.extend(relativeTime);
 
-  return dayjs(inputDate).fromNow();
+  return dayjs().diff(inputDate, 'd', true) > 14 ? convertDateFormat(inputDate) : dayjs(inputDate).fromNow();
 };
