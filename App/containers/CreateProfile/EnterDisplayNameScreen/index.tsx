@@ -1,4 +1,4 @@
-import { AppBackgroundImage, EarthBottomIcon } from 'App/components/image';
+import { AppBackgroundImage, EarthIcon } from 'App/components/image';
 
 import CustomButton from 'App/components/Button';
 import CustomInput from 'App/components/CustomInput';
@@ -75,7 +75,7 @@ const EnterDisplayNameScreen = () => {
           );
         }}
       </Formik>
-      <Image style={styles.image} source={EarthBottomIcon} />
+      <Image style={styles.image} source={EarthIcon} />
     </CustomSafeArea>
   );
 };

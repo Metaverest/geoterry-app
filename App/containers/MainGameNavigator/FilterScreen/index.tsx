@@ -19,8 +19,10 @@ import FilterItemWithCheckbox, { IOption } from './FilterItemWithCheckbox';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import HeaderLineSwipeModalIcon from 'App/media/HeaderLineSwipeModalIcon';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const FilterScreen = () => {
+  const { bottom } = useSafeAreaInsets();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -89,7 +91,7 @@ const FilterScreen = () => {
 
   return (
     <CustomSwipeUpModal>
-      <View style={styles.container}>
+      <View style={[styles.container, { paddingBottom: bottom }]}>
         <View style={styles.headerLineSwipeContainer}>
           <HeaderLineSwipeModalIcon />
         </View>
@@ -131,24 +133,24 @@ const FilterScreen = () => {
             shouldShowDivider={false}
           />
         </ScrollView>
-      </View>
-      <View style={styles.buttonsContainer}>
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            onPress={resetFilter}
-            customStyleText={styles.customOutlineButtonText}
-            customStyleContainer={styles.customOutlineButtonContainer}
-            title={t('Xoá bộ lọc')}
-            buttonType={EButtonType.OUTLINE}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            onPress={applyFilter}
-            title={t('Áp dụng')}
-            buttonType={EButtonType.SOLID}
-            linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-          />
+        <View style={styles.buttonsContainer}>
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              onPress={resetFilter}
+              customStyleText={styles.customOutlineButtonText}
+              customStyleContainer={styles.customOutlineButtonContainer}
+              title={t('Xoá bộ lọc')}
+              buttonType={EButtonType.OUTLINE}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              onPress={applyFilter}
+              title={t('Áp dụng')}
+              buttonType={EButtonType.SOLID}
+              linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+            />
+          </View>
         </View>
       </View>
     </CustomSwipeUpModal>

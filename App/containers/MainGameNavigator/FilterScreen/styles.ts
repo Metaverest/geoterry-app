@@ -7,7 +7,6 @@ export const styles = StyleSheet.create({
     marginTop: rh(16),
     width: '100%',
     paddingHorizontal: rw(16),
-    paddingBottom: rh(32),
   },
   itemImageTitleContainer: {
     flexDirection: 'row',
@@ -36,6 +35,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: rw(16),
+    paddingTop: rh(32),
   },
   buttonContainer: {
     width: '48%',
