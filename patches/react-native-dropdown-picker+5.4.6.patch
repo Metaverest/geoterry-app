@@ -1,0 +1,57 @@
+diff --git a/node_modules/react-native-dropdown-picker/index.d.ts b/node_modules/react-native-dropdown-picker/index.d.ts
+index 338c9de..cf5d562 100644
+--- a/node_modules/react-native-dropdown-picker/index.d.ts
++++ b/node_modules/react-native-dropdown-picker/index.d.ts
+@@ -272,6 +272,7 @@ declare module 'react-native-dropdown-picker' {
+     closeOnBackPressed?: boolean;
+     hideSelectedItemIcon?: boolean;
+     extendableBadgeContainer?: boolean;
++    renderBodyComponent?: (props: RenderListItemPropsInterface<T>) => JSX.Element;
+   }
+ 
+   interface DropDownPickerSingleProps<T> {
+diff --git a/node_modules/react-native-dropdown-picker/src/components/Picker.js b/node_modules/react-native-dropdown-picker/src/components/Picker.js
+index e3fb93b..94cb42a 100644
+--- a/node_modules/react-native-dropdown-picker/src/components/Picker.js
++++ b/node_modules/react-native-dropdown-picker/src/components/Picker.js
+@@ -162,7 +162,8 @@ function Picker({
+     testID,
+     closeOnBackPressed = false,
+     extendableBadgeContainer = false,
+-    onSelectItem = (item) => {}
++    onSelectItem = (item) => {},
++    renderBodyComponent = null
+ }) {
+     const [necessaryItems, setNecessaryItems] = useState([]);
+     const [searchText, setSearchText] = useState('');
+@@ -794,7 +795,7 @@ function Picker({
+             zIndex: _zIndex
+         },
+         ...[dropDownContainerStyle].flat(),
+-        dropDownNoBorderRadius
++        dropDownNoBorderRadius,
+     ]), [
+         dropDownContainerStyle,
+         pickerHeight,
+@@ -902,14 +903,17 @@ function Picker({
+      * The simple body component.
+      * @returns {JSX.Element}
+      */
+-    const SimpleBodyComponent = useMemo(() => (
+-        <>
++    const SimpleBodyComponent = useMemo(() => {
++        if(renderBodyComponent){
++            return renderBodyComponent(_selectedItemLabel)
++        }
++       return  <>
+             {SelectedItemIconComponent}
+             <Text style={_labelStyle} {...labelProps}>
+-                {_selectedItemLabel}
++                {"_selectedItemLabel"}
+             </Text>
+         </>
+-    ), [SelectedItemIconComponent, _labelStyle, labelProps, _selectedItemLabel]);
++}, [SelectedItemIconComponent, _labelStyle, labelProps, _selectedItemLabel, renderBodyComponent]);
+ 
+     /**
+      * onPress badge.
