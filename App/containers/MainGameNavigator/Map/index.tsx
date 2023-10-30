@@ -31,6 +31,7 @@ import UserMarker from './UserMarker';
 import TerryPreviewBoard from './TerryPreviewBoard/TerryPreviewBoard';
 import HeartIcon from 'App/media/HeartIcon';
 import SavedIcon from 'App/media/SavedIcon';
+import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 
 const MapScreen = () => {
   // The current user`s location
@@ -81,6 +82,15 @@ const MapScreen = () => {
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
+
+  const handleCreateNewTerry = useCallback(() => {
+    navigation.dispatch(
+      StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+      }),
+    );
+  }, [navigation, currentLocation]);
 
   const handlePressFilterMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
@@ -167,8 +177,15 @@ const MapScreen = () => {
             renderIcon={<TypeMapIcon />}
           />
           <CustomButtonIcon
-            onPress={handlePressFilterMap}
+            onPress={handleCreateNewTerry}
             buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
+            customStyleContainer={styles.buttonContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<AddNewTerryIcon />}
+          />
+          <CustomButtonIcon
+            onPress={handlePressFilterMap}
+            buttonColor={EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<FilterMapIcon />}

@@ -18,6 +18,8 @@ import QRScreen from '../QRScreen';
 import LoadingModal from '../Modal/LoadingModal';
 import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
+import CreateNewTerryScreen from './CreateNewTerry';
+import PopupModal from '../Modal/PopupModal';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -93,8 +95,18 @@ const MainGameNavigator = () => {
         component={LoadingModal}
         options={{ headerShown: false, presentation: 'transparentModal' }}
       />
+      <Stack.Screen
+        name={ENavigationScreen.POPUP_SCREEN}
+        component={PopupModal}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
       <Stack.Screen name={EMainGameScreen.HISTORY} component={HistoryScreen} options={{ headerShown: false }} />
       <Stack.Screen name={EMainGameScreen.DETAIL_HISTORY} component={DetailHistory} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.CREATE_NEW_TERRY_SCREEN}
+        component={CreateNewTerryScreen}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

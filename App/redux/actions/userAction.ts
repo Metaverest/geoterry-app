@@ -7,6 +7,7 @@ import {
   ITerryCheckinsParams,
   ITerryFilterInputDto,
   ITerryFilterParams,
+  ITerryInputDto,
 } from 'App/types/terry';
 
 import {
@@ -120,6 +121,13 @@ const sagaUserAction = {
     return {
       type: ESagaUserAction.GET_TERRY_CHECKINS,
       payload: { data: { filterData, filterParams }, navigation, options },
+    };
+  },
+
+  builderCreateTerryAsync: (data: ITerryInputDto, navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaAppAction.BUILDER_CREATE_TERRY,
+      payload: { data, navigation, options },
     };
   },
 };

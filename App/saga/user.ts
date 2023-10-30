@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
+import { CreatedTerryPopupImage } from 'App/components/image';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ECreateProfileScreen, EForgotPasswordScreen, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -18,6 +19,7 @@ import {
   ITerryCheckinsParams,
   ITerryFilterInputDto,
   ITerryFilterParams,
+  ITerryInputDto,
   ITerryResponseDto,
 } from 'App/types/terry';
 
@@ -36,6 +38,7 @@ import {
 } from 'App/types/user';
 import AXIOS, {
   requestAccountRecover,
+  requestBuilderCreateTerry,
   requestCreateAccount,
   requestCreateProfile,
   requestGetOTP,
@@ -472,6 +475,37 @@ export function* watchGetTerryCheckins() {
   yield takeLatest(ESagaUserAction.GET_TERRY_CHECKINS, getTerryCheckins);
 }
 
+function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryInputDto>) {
+  const navigation = action.payload?.navigation;
+  const t = action.payload?.options?.t;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const data = action.payload?.data as ITerryInputDto;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const userID = user.id;
+    //skip this called because of BE issue. Will be updated later
+    if (false) {
+      yield call(requestBuilderCreateTerry, data, userID);
+    }
+    navigation.dispatch(StackActions.pop(2));
+    navigation.dispatch(
+      StackActions.push(ENavigationScreen.POPUP_SCREEN, {
+        title: t && t('Tạo kho báu thành công'),
+        subtitle: t && t('Giờ đây Hunter đã có thể nhìn thấy kho báu của bạn trên bản đồ'),
+        image: CreatedTerryPopupImage,
+        confirmButtonTitle: t && t('Ok'),
+      }),
+    );
+  } catch (error) {
+    console.log(error?.response?.data);
+    navigation.dispatch(StackActions.pop());
+  }
+}
+
+export function* watchCreateTerry() {
+  yield takeLatest(ESagaAppAction.BUILDER_CREATE_TERRY, createTerry);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -489,5 +523,6 @@ export default function* userSaga() {
     watchGetPublicTerryById(),
     watchUpdateCredentials(),
     watchGetTerryCheckins(),
+    watchCreateTerry(),
   ]);
 }

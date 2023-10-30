@@ -2,6 +2,7 @@ import { EIdentifierType, ELanguageCode, ENamespace } from 'App/enums';
 
 export interface IUser {
   id: string;
+  userId: string;
   displayName: string;
   email?: string;
   phoneNumber?: string;

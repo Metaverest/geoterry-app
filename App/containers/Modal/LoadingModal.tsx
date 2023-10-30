@@ -6,7 +6,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 const LoadingModal = () => {
   return (
     <CustomSafeArea style={styles.container} isModal>
-      <View style={styles.loadingIndicatorContainer}>
+      <View>
         <ActivityIndicator />
       </View>
     </CustomSafeArea>

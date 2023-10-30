@@ -9,3 +9,4 @@ export const SatelliteMap = require('../../media/SatelliteMap.png');
 export const ModalSwipeUpBackgroundImage = require('../../media/ModalSwipeUpBackgroundImage.png');
 export const TerryHeartIcon = require('../../media/TerryHeart.png');
 export const TerrySavedIcon = require('../../media/TerrySaved.png');
+export const CreatedTerryPopupImage = require('../../media/CreatedTerryPopupImage.png');
