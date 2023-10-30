@@ -21,7 +21,7 @@ import { get, head, isEmpty, isNumber, some } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
-import { ImagePickerResponse, launchCamera } from 'react-native-image-picker';
+import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
@@ -136,7 +136,7 @@ const CreateNewTerryScreen = ({ route }: { route: any }) => {
       ) => Promise<void | FormikErrors<IFormValues>>,
       currentValue?: string[],
     ) => {
-      const response: ImagePickerResponse = await launchCamera({});
+      const response: ImagePickerResponse = await launchImageLibrary({});
       if (response.assets) {
         try {
           const res: IUploadProfileResDto = await requestUploadProfileImage(head(response.assets));

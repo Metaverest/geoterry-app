@@ -84,6 +84,7 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
     const response: IAccountResponseDto = yield call(requestLogin, data as IAccountLoginDto);
     yield call(setPropertyInDevice, EDataStorageKey.ACCESS_TOKEN, response?.credentials?.token);
     yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
+    yield call(setPropertyInDevice, EDataStorageKey.NAMESPACE, response?.namespace);
     yield call(setAuthorizationRequestHeader, AXIOS);
     navigation.dispatch(StackActions.pop());
     yield put(sagaUserAction.getProfileAndGoToMainAppAsync(navigation));

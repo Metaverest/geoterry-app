@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   dropDownContainer: {
     borderRadius: rh(16),
     marginTop: rh(4),
-    backgroundColor: 'transparent',
+    backgroundColor: EColor.color_333333,
     borderWidth: 0,
     zIndex: 99999999,
     elevation: 99999999,
