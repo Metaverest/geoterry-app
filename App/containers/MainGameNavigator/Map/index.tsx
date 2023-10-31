@@ -6,7 +6,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
-import { EButtonType, EDataStorageKey } from 'App/enums';
+import { EButtonType, EDataStorageKey, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen } from 'App/enums/navigation';
 import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
@@ -32,10 +32,20 @@ import UserMarker from './UserMarker';
 import TerryPreviewBoard from './TerryPreviewBoard/TerryPreviewBoard';
 import HeartIcon from 'App/media/HeartIcon';
 import SavedIcon from 'App/media/SavedIcon';
+import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 
 const MapScreen = () => {
   // The current user`s location
   const currentLocation = useCurrentLocation();
+  const [isBuilderNamespace, setIsBuilderNamespace] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const sessionNamespace = await getStoredProperty(EDataStorageKey.NAMESPACE);
+      if (sessionNamespace === ENamespace.GEOTERRY_BUILDERS && !isBuilderNamespace) {
+        setIsBuilderNamespace(true);
+      }
+    })();
+  }, [isBuilderNamespace]);
   const mapRef = useRef<MapView>(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -84,6 +94,15 @@ const MapScreen = () => {
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
+
+  const handleCreateNewTerry = useCallback(() => {
+    navigation.dispatch(
+      StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+      }),
+    );
+  }, [navigation, currentLocation]);
 
   const handlePressFilterMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
@@ -173,9 +192,18 @@ const MapScreen = () => {
             buttonType={EButtonType.SOLID}
             renderIcon={<TypeMapIcon />}
           />
+          {isBuilderNamespace && (
+            <CustomButtonIcon
+              onPress={handleCreateNewTerry}
+              buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
+              customStyleContainer={styles.buttonContainer}
+              buttonType={EButtonType.SOLID}
+              renderIcon={<AddNewTerryIcon />}
+            />
+          )}
           <CustomButtonIcon
             onPress={handlePressFilterMap}
-            buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
+            buttonColor={EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<FilterMapIcon />}

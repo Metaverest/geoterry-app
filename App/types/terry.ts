@@ -196,6 +196,26 @@ export interface Metadata {
 export interface IFilterTerryCheckins {
   terryIds?: string[];
 }
+
+export interface ITerryLocationDto {
+  latitude: number;
+  longitude: number;
+}
+export interface ITerryMetadataDto {
+  size: number;
+  difficulty: number;
+  terrain: number;
+}
+export interface ITerryInputDto {
+  name: string;
+  description?: string;
+  hint?: string;
+  isAvailable: boolean;
+  photoUrls?: string[];
+  categoryIds?: string[];
+  location: ITerryLocationDto;
+  metadata: ITerryMetadataDto;
+}
 export interface IGetCheckinsOfTerryParams extends ITerryCheckinsParams {
   includeProfileData?: boolean;
 }
