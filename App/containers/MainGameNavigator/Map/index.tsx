@@ -1,7 +1,7 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
-import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
@@ -61,12 +61,13 @@ const MapScreen = () => {
   const [region, setRegion] = useState(currentLocation);
   const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
   const changeRegion = useCallback(
-    (updatedRegion: IRealtimeLocation) => {
+    (updatedRegion: IRealtimeLocation, fetchTerries?: boolean) => {
       setRegion(updatedRegion);
       if (
-        !isEmpty(regionToGetTerry) &&
-        !isEmpty(updatedRegion) &&
-        calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY
+        (!isEmpty(regionToGetTerry) &&
+          !isEmpty(updatedRegion) &&
+          calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY) ||
+        fetchTerries
       ) {
         setRegionToGetTerry(updatedRegion);
         dispatch(
@@ -87,7 +88,7 @@ const MapScreen = () => {
       (isEmpty(region) ||
         (region.latitude === defaultLocation.latitude && region.longitude === defaultLocation.longitude))
     ) {
-      changeRegion(currentLocation);
+      changeRegion(currentLocation, true);
     }
   }, [currentLocation, region, changeRegion]);
 
@@ -164,7 +165,7 @@ const MapScreen = () => {
         compassOffset={{ x: -rh(10), y: rw(208) }}
         onRegionChangeComplete={(data, gesture) => {
           // To avoid onRegionChangeComplete() callback is called infinitely
-          if (!gesture.isGesture) {
+          if (isAndroidDevice() && !gesture.isGesture) {
             return;
           }
           changeRegion(data as IRealtimeLocation);
