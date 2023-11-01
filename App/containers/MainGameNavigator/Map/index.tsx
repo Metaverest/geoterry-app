@@ -40,12 +40,13 @@ const MapScreen = () => {
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
 
   useEffect(() => {
+    if (publicTerryFilter?.categoryIds?.length) {
+      numberOfFilters.current = 1;
+    }
     for (let key in publicTerryFilter) {
-      if (key === 'categoryIds') {
-        numberOfFilters.current = publicTerryFilter[key]?.length as number;
-      } else if (key === 'size' || key === 'difficulty' || key === 'rate') {
+      if (key === 'size' || key === 'difficulty' || key === 'rate') {
         if (publicTerryFilter[key]?.min !== 1 || publicTerryFilter[key]?.max !== 5) {
-          numberOfFilters.current += 1;
+          numberOfFilters.current++;
         }
       }
     }
