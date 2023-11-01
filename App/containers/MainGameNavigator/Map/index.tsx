@@ -33,8 +33,25 @@ import TerryPreviewBoard from './TerryPreviewBoard/TerryPreviewBoard';
 import HeartIcon from 'App/media/HeartIcon';
 import SavedIcon from 'App/media/SavedIcon';
 import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
+import CustomText from 'App/components/CustomText';
 
 const MapScreen = () => {
+  let numberOfFilters = useRef(0);
+  const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
+
+  useEffect(() => {
+    if (publicTerryFilter?.categoryIds?.length) {
+      numberOfFilters.current = 1;
+    }
+    for (let key in publicTerryFilter) {
+      if (key === 'size' || key === 'difficulty' || key === 'rate') {
+        if (publicTerryFilter[key]?.min !== 1 || publicTerryFilter[key]?.max !== 5) {
+          numberOfFilters.current++;
+        }
+      }
+    }
+  }, [publicTerryFilter]);
+
   // The current user`s location
   const currentLocation = useCurrentLocation();
   const [isBuilderNamespace, setIsBuilderNamespace] = useState(false);
@@ -202,13 +219,20 @@ const MapScreen = () => {
               renderIcon={<AddNewTerryIcon />}
             />
           )}
-          <CustomButtonIcon
-            onPress={handlePressFilterMap}
-            buttonColor={EColor.color_171717}
-            customStyleContainer={styles.buttonContainer}
-            buttonType={EButtonType.SOLID}
-            renderIcon={<FilterMapIcon />}
-          />
+          <View>
+            <CustomButtonIcon
+              onPress={handlePressFilterMap}
+              buttonColor={numberOfFilters.current ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+              customStyleContainer={styles.buttonContainer}
+              buttonType={EButtonType.SOLID}
+              renderIcon={<FilterMapIcon color={numberOfFilters.current ? EColor.black : EColor.color_FAFAFA} />}
+            />
+            {numberOfFilters.current > 0 && (
+              <View style={styles.containerNumberOfFilter}>
+                <CustomText style={styles.textNumberOfFilter}>{numberOfFilters.current}</CustomText>
+              </View>
+            )}
+          </View>
           <CustomButtonIcon
             onPress={onCenter}
             buttonColor={EColor.color_171717}

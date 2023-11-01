@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { EColor } from 'App/enums/color';
 
 export const styles = StyleSheet.create({
   container: {
@@ -32,5 +33,22 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: rh(36),
     right: rw(16),
+  },
+  containerNumberOfFilter: {
+    position: 'absolute',
+    right: 0,
+    top: rh(-10),
+    backgroundColor: EColor.color_171717,
+    width: rw(24),
+    height: rh(24),
+    borderRadius: rh(24),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textNumberOfFilter: {
+    color: EColor.white,
+    fontWeight: '600',
+    lineHeight: rh(20),
+    fontSize: rh(14),
   },
 });
