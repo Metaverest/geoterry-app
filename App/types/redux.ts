@@ -15,6 +15,7 @@ export interface ISagaAsyncActionOptions {
   profileId?: string;
   onSuccess?: () => void;
   onError?: () => void;
+  t?: (key: string) => string;
 }
 export interface IReduxActionWithNavigation<T, P = undefined> {
   type: T;

@@ -1,12 +1,12 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
-import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
 import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
-import { EButtonType, EDataStorageKey } from 'App/enums';
+import { EButtonType, EDataStorageKey, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen } from 'App/enums/navigation';
 import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
@@ -32,10 +32,37 @@ import UserMarker from './UserMarker';
 import TerryPreviewBoard from './TerryPreviewBoard/TerryPreviewBoard';
 import HeartIcon from 'App/media/HeartIcon';
 import SavedIcon from 'App/media/SavedIcon';
+import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
+import CustomText from 'App/components/CustomText';
 
 const MapScreen = () => {
+  let numberOfFilters = useRef(0);
+  const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
+
+  useEffect(() => {
+    if (publicTerryFilter?.categoryIds?.length) {
+      numberOfFilters.current = 1;
+    }
+    for (let key in publicTerryFilter) {
+      if (key === 'size' || key === 'difficulty' || key === 'rate') {
+        if (publicTerryFilter[key]?.min !== 1 || publicTerryFilter[key]?.max !== 5) {
+          numberOfFilters.current++;
+        }
+      }
+    }
+  }, [publicTerryFilter]);
+
   // The current user`s location
   const currentLocation = useCurrentLocation();
+  const [isBuilderNamespace, setIsBuilderNamespace] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const sessionNamespace = await getStoredProperty(EDataStorageKey.NAMESPACE);
+      if (sessionNamespace === ENamespace.GEOTERRY_BUILDERS && !isBuilderNamespace) {
+        setIsBuilderNamespace(true);
+      }
+    })();
+  }, [isBuilderNamespace]);
   const mapRef = useRef<MapView>(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -51,12 +78,13 @@ const MapScreen = () => {
   const [region, setRegion] = useState(currentLocation);
   const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
   const changeRegion = useCallback(
-    (updatedRegion: IRealtimeLocation) => {
+    (updatedRegion: IRealtimeLocation, fetchTerries?: boolean) => {
       setRegion(updatedRegion);
       if (
-        !isEmpty(regionToGetTerry) &&
-        !isEmpty(updatedRegion) &&
-        calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY
+        (!isEmpty(regionToGetTerry) &&
+          !isEmpty(updatedRegion) &&
+          calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY) ||
+        fetchTerries
       ) {
         setRegionToGetTerry(updatedRegion);
         dispatch(
@@ -77,13 +105,22 @@ const MapScreen = () => {
       (isEmpty(region) ||
         (region.latitude === defaultLocation.latitude && region.longitude === defaultLocation.longitude))
     ) {
-      changeRegion(currentLocation);
+      changeRegion(currentLocation, true);
     }
   }, [currentLocation, region, changeRegion]);
 
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
+
+  const handleCreateNewTerry = useCallback(() => {
+    navigation.dispatch(
+      StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
+        longitude: currentLocation.longitude,
+        latitude: currentLocation.latitude,
+      }),
+    );
+  }, [navigation, currentLocation]);
 
   const handlePressFilterMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
@@ -145,7 +182,7 @@ const MapScreen = () => {
         compassOffset={{ x: -rh(10), y: rw(208) }}
         onRegionChangeComplete={(data, gesture) => {
           // To avoid onRegionChangeComplete() callback is called infinitely
-          if (!gesture.isGesture) {
+          if (isAndroidDevice() && !gesture.isGesture) {
             return;
           }
           changeRegion(data as IRealtimeLocation);
@@ -173,13 +210,29 @@ const MapScreen = () => {
             buttonType={EButtonType.SOLID}
             renderIcon={<TypeMapIcon />}
           />
-          <CustomButtonIcon
-            onPress={handlePressFilterMap}
-            buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
-            customStyleContainer={styles.buttonContainer}
-            buttonType={EButtonType.SOLID}
-            renderIcon={<FilterMapIcon />}
-          />
+          {isBuilderNamespace && (
+            <CustomButtonIcon
+              onPress={handleCreateNewTerry}
+              buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
+              customStyleContainer={styles.buttonContainer}
+              buttonType={EButtonType.SOLID}
+              renderIcon={<AddNewTerryIcon />}
+            />
+          )}
+          <View>
+            <CustomButtonIcon
+              onPress={handlePressFilterMap}
+              buttonColor={numberOfFilters.current ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+              customStyleContainer={styles.buttonContainer}
+              buttonType={EButtonType.SOLID}
+              renderIcon={<FilterMapIcon color={numberOfFilters.current ? EColor.black : EColor.color_FAFAFA} />}
+            />
+            {numberOfFilters.current > 0 && (
+              <View style={styles.containerNumberOfFilter}>
+                <CustomText style={styles.textNumberOfFilter}>{numberOfFilters.current}</CustomText>
+              </View>
+            )}
+          </View>
           <CustomButtonIcon
             onPress={onCenter}
             buttonColor={EColor.color_171717}

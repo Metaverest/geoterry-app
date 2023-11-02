@@ -13,3 +13,7 @@ export const responsiveByHeight = (value: number, referenceScreenHeight: number 
 export const isIOSDevice = () => {
   return Platform.OS === 'ios';
 };
+
+export const isAndroidDevice = () => {
+  return Platform.OS === 'android';
+};

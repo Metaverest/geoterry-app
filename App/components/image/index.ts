@@ -17,3 +17,4 @@ export const InvalidAccessErrorImage = require('../../media/InvalidAccessErrorIm
 export const UndefinedErrorImage = require('../../media/UndefinedErrorImage.png');
 export const UploadFileFailedImage = require('../../media/UploadFileFailedImage.png');
 export const WarningImage = require('../../media/WarningImage.png');
+export const CreatedTerryPopupImage = require('../../media/CreatedTerryPopupImage.png');

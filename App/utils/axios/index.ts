@@ -14,6 +14,7 @@ import {
   ITerryCheckinsParams,
   ITerryFilterInputDto,
   ITerryFilterParams,
+  ITerryInputDto,
   ITerryResponseDto,
 } from 'App/types/terry';
 
@@ -191,6 +192,9 @@ export const requestHunterFilterTerryCheckins = async (
   return AXIOS.post<IResponseTerryCheckins[]>(`/hunter/${profileId}/terry-checkin/filter`, data, { params }).then(
     res => res.data,
   );
+};
+export const requestBuilderCreateTerry = async (data: ITerryInputDto, userID: string) => {
+  return AXIOS.post(`/builder/${userID}/terry`, data).then(result => result.data);
 };
 
 export const requestPublicGetCheckinsOfTerry = async (params: IGetCheckinsOfTerryParams, terryId: string) => {

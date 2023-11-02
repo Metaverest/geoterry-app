@@ -14,6 +14,7 @@ const CustomSwipeUpModal = (props: ISwipeUpModalProps) => {
     setModalVisible(false);
     navigation.dispatch(CommonActions.goBack());
   }, [navigation]);
+
   return (
     <Modal
       swipeThreshold={150}
