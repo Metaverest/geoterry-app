@@ -198,38 +198,41 @@ const CreateNewTerryScreen = ({ route }: { route: any }) => {
                   />
                 </View>
 
-                <View style={styles.terryInputContainer}>
-                  <CustomDropdownInput
-                    options={categoryOptions as any}
-                    onSelectOption={o => setFieldValue('category', o, true)}
-                    selectedOption={values.category}
-                    placeholder={t('Danh mục')}
-                  />
-                </View>
-                <View style={styles.terryInputContainer}>
-                  <CustomDropdownInput
-                    options={terrianOptions}
-                    onSelectOption={o => setFieldValue('terrain', o, true)}
-                    selectedOption={values.terrain}
-                    placeholder={t('Địa hình')}
-                  />
-                </View>
-                <View style={styles.terryInputContainer}>
-                  <CustomDropdownInput
-                    options={sizeOptions}
-                    onSelectOption={o => setFieldValue('size', o, true)}
-                    selectedOption={values.size}
-                    placeholder={t('Kích thước')}
-                  />
-                </View>
-                <View style={styles.terryInputContainer}>
-                  <CustomDropdownInput
-                    options={difficultyOptions}
-                    onSelectOption={o => setFieldValue('difficulty', o, true)}
-                    selectedOption={values.difficulty}
-                    placeholder={t('Độ khó')}
-                  />
-                </View>
+                <CustomDropdownInput
+                  zIndex={40}
+                  zIndexInverse={10}
+                  options={categoryOptions as any}
+                  onSelectOption={o => setFieldValue('category', o, true)}
+                  selectedOption={values.category}
+                  placeholder={t('Danh mục')}
+                />
+
+                <CustomDropdownInput
+                  zIndex={30}
+                  zIndexInverse={20}
+                  options={terrianOptions}
+                  onSelectOption={o => setFieldValue('terrain', o, true)}
+                  selectedOption={values.terrain}
+                  placeholder={t('Địa hình')}
+                />
+
+                <CustomDropdownInput
+                  zIndex={20}
+                  zIndexInverse={30}
+                  options={sizeOptions}
+                  onSelectOption={o => setFieldValue('size', o, true)}
+                  selectedOption={values.size}
+                  placeholder={t('Kích thước')}
+                />
+
+                <CustomDropdownInput
+                  zIndex={10}
+                  zIndexInverse={40}
+                  options={difficultyOptions}
+                  onSelectOption={o => setFieldValue('difficulty', o, true)}
+                  selectedOption={values.difficulty}
+                  placeholder={t('Độ khó')}
+                />
                 <View style={styles.terryAddImageContainer}>
                   <CustomButtonIcon
                     onPress={() => handleAddImage(setFieldValue, values.photoUrls)}

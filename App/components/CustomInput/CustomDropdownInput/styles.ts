@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: EColor.color_333333,
     borderRadius: rh(12),
     borderWidth: 0,
+    marginTop: rh(16),
   },
   itemContainer: {
     backgroundColor: EColor.color_333333,
@@ -33,10 +34,7 @@ export const styles = StyleSheet.create({
   },
   dropDownContainer: {
     borderRadius: rh(16),
-    marginTop: rh(4),
+    marginTop: rh(20),
     backgroundColor: EColor.color_333333,
-    borderWidth: 0,
-    zIndex: 99999999,
-    elevation: 99999999,
   },
 });
