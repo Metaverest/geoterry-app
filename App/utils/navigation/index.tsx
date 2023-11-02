@@ -80,6 +80,13 @@ export const PopUpModalParams = {
     image: UndefinedErrorImage,
     confirmButtonTitle: t('Ok'),
   } as IPopupModalParamsProps,
+  [EPopUpModalType.TERRY_INFORMATION_CAN_BE_DISCLOSED]: {
+    title: t('Cảnh báo'),
+    subtitle: t('Thông tin về kho báu có thể sẽ bị tiết lộ, gây mất trải nghiệm khi chơi game. Bạn vẫn muốn tiếp tục?'),
+    image: UndefinedErrorImage,
+    confirmButtonTitle: t('Tiếp tục'),
+    cancelButtonTitle: t('Thoát'),
+  } as IPopupModalParamsProps,
 };
 export const getPopupModalParamsFromErrorCodeAndStatusCode = (
   errorCode: EErrorCode,

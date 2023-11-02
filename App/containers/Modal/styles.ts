@@ -43,5 +43,16 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
+    flex: 1,
   },
+  groupButtonContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    columnGap: rw(16),
+  },
+  customOutlineButtonText: {
+    color: EColor.color_FAFAFA,
+  },
+  customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: rw(1) },
 });
