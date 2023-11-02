@@ -21,7 +21,7 @@ export interface IPopupModalProps {
 }
 const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
   const { t } = useTranslation();
-  const { image, cancelButtonTitle, confirmButtonTitle, onConfirm, subtitle, title } = route.params;
+  const { image, cancelButtonTitle, confirmButtonTitle, onCancel, onConfirm, subtitle, title } = route.params;
   const containOnlyOneButton = useMemo(() => {
     return !cancelButtonTitle || !confirmButtonTitle;
   }, [cancelButtonTitle, confirmButtonTitle]);
@@ -46,7 +46,33 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
               />
             </View>
           ) : (
-            <></>
+            <View style={styles.groupButtonContainer}>
+              <View style={styles.buttonContainer}>
+                <CustomButton
+                  onPress={() => {
+                    onCancel && onCancel();
+                    navigation.dispatch(CommonActions.goBack());
+                  }}
+                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                  title={confirmButtonTitle}
+                  customStyleText={styles.customOutlineButtonText}
+                  customStyleContainer={styles.customOutlineButtonContainer}
+                  buttonType={EButtonType.OUTLINE}
+                />
+              </View>
+              <View style={styles.buttonContainer}>
+                <CustomButton
+                  onPress={() => {
+                    onCancel && onCancel();
+                    onConfirm && onConfirm();
+                    navigation.dispatch(CommonActions.goBack());
+                  }}
+                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                  buttonType={EButtonType.SOLID}
+                  title={cancelButtonTitle}
+                />
+              </View>
+            </View>
           )}
         </View>
       </View>
