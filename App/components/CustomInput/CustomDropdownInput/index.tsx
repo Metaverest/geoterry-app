@@ -11,7 +11,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { styles } from './styles';
 
 interface Props extends IInputProps {
-  title: string;
+  zIndex: number;
+  zIndexInverse: number;
+  title?: string;
   options: any[];
   onSelectOption: (o: any) => void;
   selectedOption: any;
@@ -40,6 +42,8 @@ const CustomDropdownInput = (props: Props) => {
   );
   return (
     <DropDownPicker
+      zIndex={props.zIndex}
+      zIndexInverse={props.zIndexInverse}
       disableBorderRadius={false}
       dropDownContainerStyle={styles.dropDownContainer}
       style={[styles.textInputContainer, open && { borderWidth: rw(1), borderColor: EColor.color_CCCCCC }]}

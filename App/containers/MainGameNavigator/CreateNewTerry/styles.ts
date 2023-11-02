@@ -26,8 +26,6 @@ export const styles = StyleSheet.create({
     marginTop: rh(32),
     position: 'absolute',
     bottom: rh(29),
-    zIndex: 99999999,
-    elevation: 99999999,
   },
   addImagebuttonContainer: {
     paddingHorizontal: rh(12),
@@ -45,6 +43,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     maxHeight: rh(600),
+    zIndex: 1,
   },
   photoItemContainer: {},
   image: {
