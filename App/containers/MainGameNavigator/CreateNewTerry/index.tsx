@@ -85,6 +85,9 @@ const CreateNewTerryScreen = ({ route }: { route: any }) => {
   );
   const getShouldDisableButton = useCallback((formValues: IFormValues) => {
     return some(Object.keys(formValues), key => {
+      if (key === 'photoUrls') {
+        return false;
+      }
       return isNumber(get(formValues, key, null)) ? get(formValues, key, 0) === 0 : isEmpty(get(formValues, key, null));
     });
   }, []);

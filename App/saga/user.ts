@@ -1,16 +1,22 @@
 /* eslint-disable max-lines */
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
-import { CreatedTerryPopupImage } from 'App/components/image';
 import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
-import { ECreateProfileScreen, EForgotPasswordScreen, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import {
+  ECreateProfileScreen,
+  EForgotPasswordScreen,
+  EMainGameScreen,
+  ENavigationScreen,
+  EPopUpModalType,
+} from 'App/enums/navigation';
 import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxUserAction, sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import { IError } from 'App/types/error';
+import { IPopupModalParamsProps } from 'App/types/modal';
 import { IReduxActionWithNavigation } from 'App/types/redux';
 import {
   IFilterTerryCheckins,
@@ -54,9 +60,27 @@ import AXIOS, {
   requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
 } from 'App/utils/axios';
+import {
+  PopUpModalParams,
+  getPopupModalParamsFromErrorCodeAndStatusCode,
+  navigateToPopUpModal,
+} from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { isEmpty, isNil, last } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+
+function* handleError(error: IError, navigation: any, additionalPopupModalParams?: IPopupModalParamsProps) {
+  console.log(`[⚠ ERROR] ${error?.errorCode} - ${error?.statusCode} - ${error?.message}]`);
+  const errorPopupParams = getPopupModalParamsFromErrorCodeAndStatusCode(
+    error?.errorCode as EErrorCode,
+    error?.statusCode as EStatusCode,
+    additionalPopupModalParams,
+  );
+  if (!isEmpty(errorPopupParams)) {
+    navigateToPopUpModal(navigation, errorPopupParams);
+  }
+}
+
 function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAccountDto>) {
   const { data, navigation } = action.payload;
   try {
@@ -67,7 +91,7 @@ function* createAccount(action: IReduxActionWithNavigation<ESagaUserAction, ICre
     navigation.dispatch(StackActions.pop());
     navigation.dispatch(CommonActions.navigate(ENavigationScreen.CREATE_PROFILE_NAVIGATOR));
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, error?.response?.data as IError, navigation);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
     navigation.dispatch(StackActions.pop());
   }
@@ -89,7 +113,7 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
     navigation.dispatch(StackActions.pop());
     yield put(sagaUserAction.getProfileAndGoToMainAppAsync(navigation));
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, error?.response?.data as IError, navigation);
     navigation.dispatch(StackActions.pop());
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
   }
@@ -121,7 +145,7 @@ function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAcco
       }),
     );
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, error?.response?.data as IError, navigation);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
     const navigator = navigation.getParent();
     if (navigator) {
@@ -156,7 +180,7 @@ function* createProfile(action: IReduxActionWithNavigation<ESagaUserAction>) {
       navigation.dispatch(StackActions.push(ECreateProfileScreen.PERMISSION_LOCATION_SCREEN));
     }, 5000);
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
@@ -180,8 +204,8 @@ function* handleSubmitDisplayName(action: IReduxActionWithNavigation<ESagaUserAc
     }
     navigation.dispatch(StackActions.push(ECreateProfileScreen.CHOOSE_AVATAR_SCREEN));
   } catch (error) {
-    console.log(error?.response?.data);
-    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    yield put(reduxAppAction.mergeError((error as any)?.response?.data as IError));
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
@@ -203,8 +227,8 @@ function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction
     yield put(reduxUserAction.setUser({ logoUrl: response?.photoUrl }));
     navigation.dispatch(StackActions.pop());
   } catch (error) {
-    console.log(error?.response?.data);
-    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    yield put(reduxAppAction.mergeError((error as any)?.response?.data as IError));
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
@@ -239,8 +263,8 @@ function* verifyAccountRecoverOTP(action: IReduxActionWithNavigation<ESagaUserAc
     }
     navigation.dispatch(StackActions.push(EForgotPasswordScreen.INPUT_NEW_PASSWORD_SCREEN));
   } catch (error) {
-    console.log(error?.response?.data);
-    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    yield put(reduxAppAction.mergeError((error as any)?.response?.data as IError));
     const navigator = navigation.getParent();
     if (navigator) {
       navigator.dispatch(StackActions.pop());
@@ -274,7 +298,7 @@ function* accountRecover(action: IReduxActionWithNavigation<ESagaUserAction, str
 
     navigation.dispatch(StackActions.push(ENavigationScreen.LOGIN_SCREEN));
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
     const navigator = navigation.getParent();
     if (navigator) {
@@ -295,12 +319,12 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
     navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
   } catch (error) {
     if (
-      error?.response?.data?.errorCode === EErrorCode.PROFILE_NOT_FOUND &&
-      error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
+      (error as any)?.response?.data?.errorCode === EErrorCode.PROFILE_NOT_FOUND &&
+      (error as any)?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
     ) {
       navigation.dispatch(CommonActions.navigate(ENavigationScreen.CREATE_PROFILE_NAVIGATOR));
     }
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
 
@@ -317,7 +341,7 @@ function* getPublicFilterTerryCategories(
 
     yield put(reduxAppAction.setPublicCategories(response));
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
 
@@ -352,7 +376,7 @@ function* getPublicTerries(
       navigation.dispatch(CommonActions.goBack());
     }
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
 
@@ -375,7 +399,7 @@ function* userUpdateProfile(action: IReduxActionWithNavigation<ESagaUserAction, 
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     navigation.dispatch(StackActions.pop());
   }
 }
@@ -412,7 +436,7 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     navigation.dispatch(StackActions.pop());
   }
 }
@@ -437,9 +461,9 @@ function* updateCredentials(action: IReduxActionWithNavigation<ESagaUserAction, 
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     navigation.dispatch(StackActions.pop());
-    yield put(reduxAppAction.mergeError(error?.response?.data as IError));
+    yield put(reduxAppAction.mergeError((error as any)?.response?.data as IError));
   }
 }
 
@@ -467,7 +491,7 @@ function* getTerryCheckins(
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     navigation.dispatch(StackActions.pop());
   }
 }
@@ -478,7 +502,6 @@ export function* watchGetTerryCheckins() {
 
 function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryInputDto>) {
   const navigation = action.payload?.navigation;
-  const t = action.payload?.options?.t;
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     const data = action.payload?.data as ITerryInputDto;
@@ -489,16 +512,9 @@ function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryI
       yield call(requestBuilderCreateTerry, data, userID);
     }
     navigation.dispatch(StackActions.pop(2));
-    navigation.dispatch(
-      StackActions.push(ENavigationScreen.POPUP_SCREEN, {
-        title: t && t('Tạo kho báu thành công'),
-        subtitle: t && t('Giờ đây Hunter đã có thể nhìn thấy kho báu của bạn trên bản đồ'),
-        image: CreatedTerryPopupImage,
-        confirmButtonTitle: t && t('Ok'),
-      }),
-    );
+    navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CREATE_TERRY_SUCCESS]);
   } catch (error) {
-    console.log(error?.response?.data);
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     navigation.dispatch(StackActions.pop());
   }
 }

@@ -1,3 +1,4 @@
+import { StackActions } from '@react-navigation/routers';
 import {
   CannotCreateQRImage,
   CannotFindProfileImage,
@@ -8,7 +9,7 @@ import {
   UploadFileFailedImage,
 } from 'App/components/image';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
-import { EPopUpModalType } from 'App/enums/navigation';
+import { ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
 import { IPopupModalParamsProps } from 'App/types/modal';
 import i18next from 'i18next';
 const t = i18next.t;
@@ -80,12 +81,12 @@ export const PopUpModalParams = {
     confirmButtonTitle: t('Ok'),
   } as IPopupModalParamsProps,
 };
-export const getPopupModalParams = (
+export const getPopupModalParamsFromErrorCodeAndStatusCode = (
   errorCode: EErrorCode,
   statusCode: EStatusCode,
   additionalPopupModalParams?: IPopupModalParamsProps,
 ) => {
-  let resultPopupModalParams = {};
+  let resultPopupModalParams = null;
   if (errorCode === EErrorCode.UNKNOWN_ERROR) {
     resultPopupModalParams = PopUpModalParams[EPopUpModalType.UNDEFINED_ERROR];
   } else if (errorCode === EErrorCode.PROFILE_NOT_FOUND) {
@@ -93,6 +94,16 @@ export const getPopupModalParams = (
   } else if (errorCode === EErrorCode.OUT_OF_DISTANCE) {
     resultPopupModalParams = PopUpModalParams[EPopUpModalType.DISTANCE_ERROR];
   }
-
+  if (!resultPopupModalParams) {
+    return;
+  }
   return { ...resultPopupModalParams, ...additionalPopupModalParams };
+};
+
+export const navigateToPopUpModal = (navigation: any, params: IPopupModalParamsProps) => {
+  navigation.dispatch(
+    StackActions.push(ENavigationScreen.POPUP_SCREEN, {
+      ...params,
+    }),
+  );
 };
