@@ -22,6 +22,7 @@ import {
   IFilterTerryCheckins,
   IGetTerryByIdParams,
   IResponseTerryCheckins,
+  ITerryCheckinInputDto,
   ITerryCheckinsParams,
   ITerryFilterInputDto,
   ITerryFilterParams,
@@ -48,6 +49,7 @@ import AXIOS, {
   requestCreateAccount,
   requestCreateProfile,
   requestGetOTP,
+  requestHunterCheckinTerry,
   requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
   requestLogin,
@@ -523,6 +525,31 @@ export function* watchCreateTerry() {
   yield takeLatest(ESagaAppAction.BUILDER_CREATE_TERRY, createTerry);
 }
 
+function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryCheckinInputDto>) {
+  const navigation = action.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const data: ITerryCheckinInputDto = yield select(reduxSelector.getAppTerryCheckinInput);
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileID = user.id;
+    yield call(requestHunterCheckinTerry, data, profileID);
+    navigation.dispatch(StackActions.pop());
+    if (action?.payload?.options?.onSuccess) {
+      action?.payload?.options?.onSuccess();
+    }
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    navigation.dispatch(StackActions.pop());
+    if (action.payload?.options?.onError) {
+      action.payload?.options?.onError();
+    }
+  }
+}
+
+export function* watchHunterCheckinTerry() {
+  yield takeLatest(ESagaAppAction.HUNTER_CHECKIN_TERRY, hunterCheckinTerry);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -541,5 +568,6 @@ export default function* userSaga() {
     watchUpdateCredentials(),
     watchGetTerryCheckins(),
     watchCreateTerry(),
+    watchHunterCheckinTerry(),
   ]);
 }

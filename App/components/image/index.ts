@@ -18,3 +18,6 @@ export const UndefinedErrorImage = require('../../media/UndefinedErrorImage.png'
 export const UploadFileFailedImage = require('../../media/UploadFileFailedImage.png');
 export const WarningImage = require('../../media/WarningImage.png');
 export const CreatedTerryPopupImage = require('../../media/CreatedTerryPopupImage.png');
+export const CheckInTerryCongratImage = require('../../media/CheckInTerryCongratImage.png');
+export const SmileImage = require('../../media/SmileImage.png');
+export const CannotFindTerryImage = require('../../media/CannotFindTerryImage.png');

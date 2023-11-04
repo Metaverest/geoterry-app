@@ -21,6 +21,8 @@ import DetailHistory from '../DetailHistory';
 import CreateNewTerryScreen from './CreateNewTerry';
 import PopupModal from '../Modal/PopupModal';
 import Review from '../Review';
+import CheckinTerryScreen from './CheckinTerry';
+import CheckinTerryVoteScreen from './CheckinTerryVote';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -109,6 +111,22 @@ const MainGameNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name={EMainGameScreen.REVIEW_SCREEN} component={Review} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.CHECKIN_TERRY_SCREEN}
+        component={CheckinTerryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.CHECKIN_TERRY_VOTE_SCREEN}
+        component={CheckinTerryVoteScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardStyle: {
+            backgroundColor: EColor.color_00000080,
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };

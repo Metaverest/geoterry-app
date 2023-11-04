@@ -23,6 +23,10 @@ const defaultAppState: IAppState = {
   },
   publicTerry: undefined,
   terryCheckins: [],
+  // Used to store data for checkin terry flow
+  terryCheckinInput: {
+    rate: 3,
+  },
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -94,6 +98,14 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...(state.terryCheckins || []),
           ...(action.payload?.terryCheckins?.filter(item => !state.terryCheckins?.some(e => item.id === e.id)) || []),
         ],
+      };
+    case EReduxAppAction.SET_CHECKIN_TERRY_DATA:
+      return {
+        ...state,
+        terryCheckinInput: {
+          ...state.terryCheckinInput,
+          ...action.payload?.terryCheckinInput,
+        },
       };
     default:
       return state;

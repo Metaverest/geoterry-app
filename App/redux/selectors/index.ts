@@ -16,4 +16,6 @@ export const reduxSelector = {
   getUserLanguageCode: (state: IReduxRootState) => state.user.languageCode,
   getAppPublicTerry: (state: IReduxRootState) => state.app.publicTerry,
   getAppTerryCheckins: (state: IReduxRootState) => state.app.terryCheckins,
+  getAppTerryCheckinInput: (state: IReduxRootState) => state.app.terryCheckinInput,
+  getAppTerryCheckinInputRate: (state: IReduxRootState) => state.app.terryCheckinInput?.rate,
 };

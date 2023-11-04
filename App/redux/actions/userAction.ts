@@ -130,6 +130,12 @@ const sagaUserAction = {
       payload: { data, navigation, options },
     };
   },
+  hunterCheckinTerryAsync: (navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaAppAction.HUNTER_CHECKIN_TERRY,
+      payload: { navigation, options },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };

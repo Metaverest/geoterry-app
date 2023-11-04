@@ -15,5 +15,6 @@ export enum EColor {
   color_C072FD = '#C072FD',
   color_51D5FF = '#51D5FF',
   color_0BFF6C = '#0BFF6C',
+  color_D9D9D9 = '#D9D9D9',
   transparent = 'transparent',
 }
