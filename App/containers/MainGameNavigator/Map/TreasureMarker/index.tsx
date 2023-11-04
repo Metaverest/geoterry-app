@@ -19,26 +19,32 @@ const TreasureMarker = ({
 }: {
   treasure: ITerryResponseDto;
   isSelect?: boolean;
-  setSelectedTerry: React.Dispatch<React.SetStateAction<string | null>>;
-  centerToRegion: (targetLocation: IRealtimeLocation) => void;
+  setSelectedTerry?: React.Dispatch<React.SetStateAction<string | null>>;
+  centerToRegion?: (targetLocation: IRealtimeLocation) => void;
 }) => {
   if (!treasure.isAvailable) {
     return null;
   }
 
   const handleSelectTerry = () => {
-    centerToRegion({
-      latitude: treasure.location.latitude,
-      longitude: treasure.location.longitude,
-      latitudeDelta: 0.008,
-      longitudeDelta: 0.008,
-    });
-    setSelectedTerry(treasure.id);
+    centerToRegion &&
+      centerToRegion({
+        latitude: treasure.location.latitude,
+        longitude: treasure.location.longitude,
+        latitudeDelta: 0.008,
+        longitudeDelta: 0.008,
+      });
+    setSelectedTerry && setSelectedTerry(treasure.id);
   };
 
   if (isSelect) {
     return (
-      <Marker style={styles.markerContainer} coordinate={treasure.location} onPress={() => setSelectedTerry(null)}>
+      <Marker
+        style={styles.markerContainer}
+        coordinate={treasure.location}
+        onPress={() => {
+          setSelectedTerry && setSelectedTerry(null);
+        }}>
         <View style={styles.markerContainer}>
           <LinearGradient
             style={styles.imageContainer}

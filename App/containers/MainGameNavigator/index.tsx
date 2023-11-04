@@ -23,6 +23,7 @@ import PopupModal from '../Modal/PopupModal';
 import Review from '../Review';
 import CheckinTerryScreen from './CheckinTerry';
 import CheckinTerryVoteScreen from './CheckinTerryVote';
+import HuntingMapScreen from './HuntingMap';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -73,6 +74,11 @@ const MainGameNavigator = () => {
       <Stack.Screen
         name={EMainGameScreen.SETTING_NAVIGATOR}
         component={SettingNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.HUNTING_MAP_SCREEN}
+        component={HuntingMapScreen}
         options={{ headerShown: false }}
       />
       <Stack.Screen
