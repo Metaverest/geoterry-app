@@ -17,10 +17,15 @@ export const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: rh(4),
   },
   ml4: {
     marginLeft: rw(4),
+  },
+  mr10: {
+    marginRight: rw(10),
+  },
+  columnWrapperStyle: {
+    justifyContent: 'space-between',
   },
   icon: {
     marginLeft: rw(16),
@@ -47,10 +52,9 @@ export const styles = StyleSheet.create({
     borderRadius: rh(12),
   },
   image: {
-    width: rw(36),
-    height: rh(36),
+    width: rw(48),
+    height: rh(48),
     borderRadius: rh(4),
-    marginRight: rw(8),
   },
   containerImage: {
     width: '100%',
@@ -58,5 +62,32 @@ export const styles = StyleSheet.create({
   },
   btn: {
     marginTop: rh(32),
+  },
+  mv4: {
+    marginVertical: rh(4),
+  },
+  mt4: {
+    marginTop: rh(4),
+  },
+  iconArrowMaximize: {
+    position: 'absolute',
+    right: rw(4),
+    bottom: rh(4),
+  },
+  lastImage: {
+    position: 'absolute',
+    backgroundColor: EColor.color_00000070,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textLastImage: {
+    fontSize: rh(12),
+    fontWeight: '500',
+    lineHeight: rh(18),
+    color: EColor.white,
   },
 });
