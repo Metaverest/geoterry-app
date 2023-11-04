@@ -3,7 +3,7 @@ import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IError } from 'App/types/error';
 
-import { IResponseTerryCheckins, ITerryFilterInputDto } from 'App/types/terry';
+import { IResponseTerryCheckins, ITerryCheckinInputDto, ITerryFilterInputDto } from 'App/types/terry';
 import { ICreateAccountDto } from 'App/types/user';
 
 const reduxAppAction = {
@@ -77,6 +77,12 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_TERRY_CHECKINS,
       payload: { terryCheckins },
+    };
+  },
+  setCheckinTerryData: (terryCheckinInput: Partial<ITerryCheckinInputDto>) => {
+    return {
+      type: EReduxAppAction.SET_CHECKIN_TERRY_DATA,
+      payload: { terryCheckinInput },
     };
   },
 };

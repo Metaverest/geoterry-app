@@ -13,7 +13,6 @@ interface IProps {
 }
 export const CustomSafeArea = (props: IProps) => {
   const insets = useSafeAreaInsets();
-
   return (
     <View
       style={{

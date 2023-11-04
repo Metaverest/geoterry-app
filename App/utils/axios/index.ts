@@ -11,6 +11,8 @@ import {
   IGetTerryByIdParams,
   IResponseGetCheckinsOfTerry,
   IResponseTerryCheckins,
+  ITerryCheckinInputDto,
+  ITerryCheckinResDto,
   ITerryCheckinsParams,
   ITerryFilterInputDto,
   ITerryFilterParams,
@@ -201,6 +203,10 @@ export const requestPublicGetCheckinsOfTerry = async (params: IGetCheckinsOfTerr
   return AXIOS.get<IResponseGetCheckinsOfTerry[]>(`/public/terry-checkin/terry/${terryId}`, { params }).then(
     res => res.data,
   );
+};
+
+export const requestHunterCheckinTerry = async (data: ITerryCheckinInputDto, profileId: string) => {
+  return AXIOS.post<ITerryCheckinResDto>(`/hunter/${profileId}/terry-checkin`, data).then(result => result.data);
 };
 
 export default AXIOS;

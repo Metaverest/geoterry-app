@@ -222,3 +222,13 @@ export interface IGetCheckinsOfTerryParams extends ITerryCheckinsParams {
 export interface IResponseGetCheckinsOfTerry extends IResponseTerryCheckins {
   profile: Pick<IProfileResDto, 'id' | 'displayName' | 'logoUrl' | 'slug'>;
 }
+
+export interface ITerryCheckinInputDto {
+  terryId: string;
+  reviewText?: string;
+  photoUrls?: string[];
+  rate?: number;
+  location: ITerryLocationDto;
+}
+
+export interface ITerryCheckinResDto {}
