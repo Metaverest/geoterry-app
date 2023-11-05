@@ -22,7 +22,7 @@ export const CustomSafeArea = (props: IProps) => {
       <StatusBar backgroundColor={EColor.transparent} translucent />
       {props.backgroundImageSource ? (
         <ImageBackground
-          style={{ marginTop: insets.top, marginBottom: insets.bottom, flex: 1 }}
+          style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
           source={props.backgroundImageSource}>
           <View
             style={{
