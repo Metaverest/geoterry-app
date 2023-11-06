@@ -1,28 +1,28 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import { EColor } from 'App/enums/color';
-import { ImageBackground } from 'react-native';
-import { View } from 'react-native';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { ImageBackground, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface IProps {
   backgroundImageSource?: any;
   isModal?: boolean;
   style?: any;
   children?: any;
+  shouldUseFullScreenView?: boolean;
 }
 export const CustomSafeArea = (props: IProps) => {
   const insets = useSafeAreaInsets();
+  console.log(insets);
   return (
     <View
       style={{
-        width: wp('100'),
-        height: hp('100'),
+        flex: 1,
         backgroundColor: props.isModal ? 'transparent' : EColor.color_171717,
       }}>
+      <StatusBar backgroundColor={EColor.transparent} translucent />
       {props.backgroundImageSource ? (
         <ImageBackground
-          style={{ marginTop: insets.top, marginBottom: insets.bottom, flex: 1 }}
+          style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
           source={props.backgroundImageSource}>
           <View
             style={{
@@ -34,12 +34,13 @@ export const CustomSafeArea = (props: IProps) => {
         </ImageBackground>
       ) : (
         <View
-          style={{
-            marginTop: insets.top,
-            marginBottom: insets.bottom,
-            flex: 1,
-            ...props.style,
-          }}>
+          style={[
+            !props.shouldUseFullScreenView && { marginTop: insets.top, marginBottom: insets.bottom },
+            {
+              flex: 1,
+              ...props.style,
+            },
+          ]}>
           {props.children}
         </View>
       )}
