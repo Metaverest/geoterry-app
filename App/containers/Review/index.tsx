@@ -1,4 +1,4 @@
-import { View, FlatList, Image, ListRenderItemInfo, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
@@ -13,9 +13,9 @@ import { IResponseGetCheckinsOfTerry } from 'App/types/terry';
 import { convertDateRelativeToNow } from 'App/utils/convert';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
-import ImageView from 'react-native-image-viewing';
-import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import Rating from 'App/components/Rating';
+import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 
 const Review = () => {
   const { t } = useTranslation();
@@ -24,9 +24,6 @@ const Review = () => {
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
 
   const [listReview, setListReview] = useState<IResponseGetCheckinsOfTerry[]>([]);
-  const [listImagesView, setListImagesView] = useState<ImageSource[]>([]);
-  const [visible, setIsVisible] = useState(false);
-  const [indexImage, setIndexImage] = useState(0);
 
   const ListEmptyComponent = useCallback(() => {
     return <CustomText style={styles.textEmpty}>{t('Chưa có đánh giá nào!')}</CustomText>;
@@ -41,23 +38,9 @@ const Review = () => {
             <CustomText style={styles.time}>
               {t(convertDateRelativeToNow(item.createdAt, user.languageCode))}
             </CustomText>
+            <Rating rate={item.rate} style={styles.rating} />
             <CustomText style={styles.desc}>{item.reviewText}</CustomText>
-            <FlatList
-              numColumns={5}
-              data={item.photoUrls}
-              renderItem={(element: ListRenderItemInfo<string>) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setIndexImage(element.index);
-                      setListImagesView(item.photoUrls.map(e => ({ uri: e })));
-                      setIsVisible(true);
-                    }}>
-                    <Image source={{ uri: element.item }} style={styles.image} resizeMode="cover" />
-                  </TouchableOpacity>
-                );
-              }}
-            />
+            <MultipleImagesOnLine images={item.photoUrls} numColumns={5} containerItemImageStyle={styles.mr8} />
           </View>
         </View>
       );
@@ -84,13 +67,6 @@ const Review = () => {
         renderItem={renderItem}
         style={styles.containList}
         ListEmptyComponent={ListEmptyComponent}
-      />
-      <ImageView
-        images={listImagesView}
-        keyExtractor={(_, index) => index.toString()}
-        imageIndex={indexImage}
-        visible={visible}
-        onRequestClose={() => setIsVisible(false)}
       />
     </CustomSafeArea>
   );
