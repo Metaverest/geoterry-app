@@ -34,6 +34,7 @@ import HeartIcon from 'App/media/HeartIcon';
 import SavedIcon from 'App/media/SavedIcon';
 import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 import CustomText from 'App/components/CustomText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -171,9 +172,9 @@ const MapScreen = () => {
       );
     }
   };
-
+  const insets = useSafeAreaInsets();
   return (
-    <CustomSafeArea style={styles.container}>
+    <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <MapView
         mapType={mapType}
         ref={mapRef}
@@ -266,7 +267,7 @@ const MapScreen = () => {
 
       {selectedTerry && selectedTerryId ? <TerryPreviewBoard terry={selectedTerry} mapRef={mapRef} /> : null}
 
-      <View style={styles.listButtonRHNContainer}>
+      <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon
           onPress={() => {
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN));

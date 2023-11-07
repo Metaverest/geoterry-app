@@ -140,7 +140,7 @@ const MenuScreen = () => {
     ] as IMenuItem[];
   }, [t, isSwitchEnable, navigation]);
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container} shouldUseFullScreenView backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Cài đặt')} />
       <View style={styles.listItemContainer}>
         {menuItems.map((item, index) => {
