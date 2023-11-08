@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: rh(4),
   },
   textLastImage: {
     fontSize: rh(12),

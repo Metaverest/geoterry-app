@@ -38,7 +38,7 @@ const Review = () => {
             <CustomText style={styles.time}>
               {t(convertDateRelativeToNow(item.createdAt, user.languageCode))}
             </CustomText>
-            <Rating rate={item.rate} style={styles.rating} />
+            {item.rate && <Rating rate={item.rate} style={styles.rating} />}
             <CustomText style={styles.desc}>{item.reviewText}</CustomText>
             <MultipleImagesOnLine images={item.photoUrls} numColumns={5} containerItemImageStyle={styles.mr8} />
           </View>
