@@ -24,9 +24,6 @@ export const styles = StyleSheet.create({
   mr10: {
     marginRight: rw(10),
   },
-  columnWrapperStyle: {
-    justifyContent: 'space-between',
-  },
   icon: {
     marginLeft: rw(16),
   },
@@ -51,11 +48,6 @@ export const styles = StyleSheet.create({
     paddingVertical: rh(16),
     borderRadius: rh(12),
   },
-  image: {
-    width: rw(48),
-    height: rh(48),
-    borderRadius: rh(4),
-  },
   containerImage: {
     width: '100%',
     marginTop: rh(16),
@@ -68,26 +60,5 @@ export const styles = StyleSheet.create({
   },
   mt4: {
     marginTop: rh(4),
-  },
-  iconArrowMaximize: {
-    position: 'absolute',
-    right: rw(4),
-    bottom: rh(4),
-  },
-  lastImage: {
-    position: 'absolute',
-    backgroundColor: EColor.color_00000070,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textLastImage: {
-    fontSize: rh(12),
-    fontWeight: '500',
-    lineHeight: rh(18),
-    color: EColor.white,
   },
 });

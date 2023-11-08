@@ -16,6 +16,7 @@ import { head } from 'lodash';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
+import Rating from 'App/components/Rating';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -30,7 +31,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
-  console.log(route?.params?.terry);
+
   const terryItem: ITerryItem[] = useMemo(() => {
     return [
       {
@@ -78,6 +79,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <DotIcon />
             <CustomText style={styles.terryDistanceAndCategoryText}>{head(terry.categories)?.name}</CustomText>
           </View>
+          <CustomText style={styles.desc}>“{terry.description}”</CustomText>
         </View>
         <View style={styles.terrySubHeaderContainer}>
           <View style={styles.terryCreateByAndCreateAtContainer}>
@@ -86,6 +88,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
             </CustomText>
             <CustomText style={styles.terryCreateAtText}>{convertDateFormat(terry.createdAt)}</CustomText>
+            <View style={styles.containerRating}>
+              <Rating rate={terry.rating.rate} />
+              <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>
+            </View>
           </View>
           <View style={styles.suggestionAndRateContainer}>
             <TouchableOpacity style={styles.suggestionAndRateButton}>

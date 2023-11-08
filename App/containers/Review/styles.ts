@@ -19,10 +19,10 @@ export const styles = StyleSheet.create({
     color: EColor.color_F2F2F2,
   },
   avatar: {
-    width: rw(56),
-    height: rh(56),
+    width: rw(36),
+    height: rh(36),
     backgroundColor: EColor.color_FAFAFA,
-    borderRadius: rh(56),
+    borderRadius: rh(36),
     marginRight: rw(14),
   },
   containerItem: {
@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: rh(0.5),
     paddingVertical: rh(16),
     borderColor: EColor.color_666666,
+    paddingRight: rw(2),
   },
   name: {
     fontSize: rh(14),
@@ -48,7 +49,7 @@ export const styles = StyleSheet.create({
     fontSize: rh(12),
     fontWeight: '500',
     lineHeight: rh(18),
-    marginTop: rh(8),
+    marginVertical: rh(8),
   },
   image: {
     width: rw(48),
@@ -56,9 +57,12 @@ export const styles = StyleSheet.create({
     backgroundColor: EColor.color_FAFAFA,
     borderRadius: rh(4),
     marginRight: rw(8),
-    marginTop: rh(8),
   },
   flex: {
     flex: 1,
   },
+  rating: {
+    marginTop: rh(8),
+  },
+  mr8: { marginRight: rw(8) },
 });

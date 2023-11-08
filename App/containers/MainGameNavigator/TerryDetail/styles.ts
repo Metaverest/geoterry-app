@@ -165,4 +165,24 @@ export const styles = StyleSheet.create({
     lineHeight: rh(24),
   },
   customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: rw(1) },
+  desc: {
+    color: EColor.color_FAFAFA,
+    textAlign: 'center',
+    fontSize: rh(12),
+    fontWeight: '500',
+    lineHeight: rh(18),
+    marginTop: rh(16),
+    marginBottom: rh(4),
+  },
+  containerRating: {
+    flexDirection: 'row',
+    marginTop: rh(10),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quantityRate: {
+    color: EColor.color_CCCCCC,
+    fontSize: rh(12),
+    lineHeight: rh(18),
+  },
 });
