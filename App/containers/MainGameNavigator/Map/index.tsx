@@ -249,14 +249,16 @@ const MapScreen = () => {
       {selectedTerry && selectedTerryId ? (
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
-            onPress={() => updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite })}
+            onPress={() =>
+              updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite, markAsSaved: false })
+            }
             buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<HeartIcon focus={selectedTerry.favourite} />}
           />
           <CustomButtonIcon
-            onPress={() => updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved })}
+            onPress={() => updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved, markAsFavourited: false })}
             buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
