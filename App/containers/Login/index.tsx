@@ -3,7 +3,6 @@ import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword'
 import CustomInputPhoneNumber from 'App/components/CustomInput/CustomInputPhoneNumber';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
-import Header from 'App/components/Header';
 import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
@@ -81,7 +80,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   }, [navigation]);
   return (
     <CustomSafeArea style={styles.container}>
-      <Header />
       <Image style={styles.image} source={EarthIcon} />
       <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
       <CustomText style={styles.createAccountSubTitle}>
