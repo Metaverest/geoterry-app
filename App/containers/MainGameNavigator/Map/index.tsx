@@ -3,12 +3,19 @@ import MapView from 'react-native-maps';
 import { styles } from './styles';
 import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 
-import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+  CommonActions,
+  RouteProp,
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
@@ -38,6 +45,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
+  const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
 
   useEffect(() => {
@@ -109,6 +117,14 @@ const MapScreen = () => {
       changeRegion(currentLocation, true);
     }
   }, [currentLocation, region, changeRegion]);
+
+  useEffect(() => {
+    if (params?.locationTerry) {
+      console.log(params.locationTerry);
+      changeRegion(params.locationTerry, true);
+      setSelectedTerryId(params.terryId);
+    }
+  }, [changeRegion, params?.locationTerry, params?.terryId]);
 
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));

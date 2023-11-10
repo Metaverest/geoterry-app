@@ -1,4 +1,5 @@
 import { ParamListBase } from '@react-navigation/native';
+import { IRealtimeLocation } from 'App/types';
 import { IResponseTerryCheckins } from 'App/types/terry';
 
 export enum ENavigationScreen {
@@ -57,7 +58,7 @@ export enum ESettingNavigator {
   ABOUT_SCREEN = 'ABOUT_SCREEN',
 }
 export interface EMainGameNavigatorParams extends ParamListBase {
-  [EMainGameScreen.MAP_SCREEN]: undefined;
+  [EMainGameScreen.MAP_SCREEN]: { locationTerry?: IRealtimeLocation; terryId: string };
   [EMainGameScreen.MAP_TYPE_SCREEN]: undefined;
   [EMainGameScreen.FILTER_SCREEN]: undefined;
   [EMainGameScreen.SETTING_NAVIGATOR]: undefined;

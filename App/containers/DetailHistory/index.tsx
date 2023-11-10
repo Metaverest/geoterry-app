@@ -12,15 +12,17 @@ import SlideSizeIcon from 'App/media/SlideSizeIcon';
 import CustomButton from 'App/components/Button';
 import { EColor } from 'App/enums/color';
 import { EButtonType } from 'App/enums';
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { convertDateFormatHistory } from 'App/utils/convert';
 import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.DETAIL_HISTORY>>();
+  const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -48,7 +50,22 @@ export default function DetailHistory() {
         showIconMaximize
       />
       <CustomButton
-        onPress={() => {}}
+        onPress={() => {
+          navigation.dispatch(
+            StackActions.replace(EMainGameScreen.MAP_SCREEN, {
+              terryId: params.terryId,
+              locationTerry: {
+                latitude: params.terry.location.latitude,
+                longitude: params.terry.location.longitude,
+                altitude: 0,
+                heading: 0,
+                speed: 0,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              },
+            }),
+          );
+        }}
         linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
         buttonType={EButtonType.SOLID}
         title={t('Xem trên bản đồ')}
