@@ -2,7 +2,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
 import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-
+import messaging from '@react-native-firebase/messaging';
 import {
   CommonActions,
   RouteProp,
@@ -42,6 +42,7 @@ import SavedIcon from 'App/media/SavedIcon';
 import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 import CustomText from 'App/components/CustomText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -189,6 +190,13 @@ const MapScreen = () => {
     }
   };
   const insets = useSafeAreaInsets();
+  useRequestNotificationPermission();
+  useEffect(() => {
+    (async () => {
+      const token = await messaging().getToken();
+      console.log(token);
+    })();
+  }, []);
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <MapView

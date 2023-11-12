@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "446523929728",
+    "project_id": "terriana-1336c",
+    "storage_bucket": "terriana-1336c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446523929728:android:14472aad564a16ba712265",
+        "android_client_info": {
+          "package_name": "com.geoterry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446523929728-mts97dogegnd8msnpei3ts88kbu91mqs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5T5N-W5SCNKFIE5LB4zy9-vIXlngRF9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446523929728-mts97dogegnd8msnpei3ts88kbu91mqs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

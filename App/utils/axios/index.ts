@@ -25,6 +25,7 @@ import {
   IAccountResponseDto,
   IAccountUpdateCredentialsDto,
   ICreateAccountDto,
+  ICreateOrUpdateDeviceInputDto,
   ICreateProfileReqDto,
   IProfileResDto,
   IRecoveryAccountDto,
@@ -207,6 +208,10 @@ export const requestPublicGetCheckinsOfTerry = async (params: IGetCheckinsOfTerr
 
 export const requestHunterCheckinTerry = async (data: ITerryCheckinInputDto, profileId: string) => {
   return AXIOS.post<ITerryCheckinResDto>(`/hunter/${profileId}/terry-checkin`, data).then(result => result.data);
+};
+
+export const requestUserCreateOrUpdateDevice = async (data: ICreateOrUpdateDeviceInputDto, profileId: string) => {
+  return AXIOS.post(`/user/${profileId}/device`, data).then(result => result.data);
 };
 
 export default AXIOS;

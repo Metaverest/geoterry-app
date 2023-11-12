@@ -317,6 +317,7 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
   const navigation = action?.payload?.navigation;
   try {
     const profile: IProfileResDto = yield call(requestUserReadProfile);
+
     yield put(reduxUserAction.setUser(profile as IUser));
     navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
   } catch (error) {
