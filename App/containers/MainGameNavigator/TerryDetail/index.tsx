@@ -17,6 +17,9 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import Rating from 'App/components/Rating';
+import { requestHunterGetTerryCheckin } from 'App/utils/axios';
+import { useSelector } from 'react-redux';
+import { reduxSelector } from 'App/redux/selectors';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -26,11 +29,23 @@ interface ITerryItem {
   value: string;
 }
 const TerryDetailScreen = ({ route }: { route: any }) => {
+  const user = useSelector(reduxSelector.getUser);
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
+
+  const handleViewHistory = () => {
+    requestHunterGetTerryCheckin({
+      profileId: user.id,
+      id: terry.id,
+      findBy: 'terry_id',
+      includeTerryData: true,
+    }).then(res => {
+      navigation.dispatch(StackActions.replace(EMainGameScreen.DETAIL_HISTORY, res));
+    });
+  };
 
   const terryItem: ITerryItem[] = useMemo(() => {
     return [
@@ -127,7 +142,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               </View>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={() => {}}
+                  onPress={handleViewHistory}
                   title={t('Xem lịch sử')}
                   buttonType={EButtonType.OUTLINE}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}

@@ -154,3 +154,10 @@ export interface ITerryCheckinInputDto {
 }
 
 export interface ITerryCheckinResDto {}
+
+export interface IHunterGetTerryCheckinParams {
+  profileId: string;
+  id: string;
+  findBy: 'terry_id' | 'checkin_id';
+  includeTerryData?: boolean;
+}
