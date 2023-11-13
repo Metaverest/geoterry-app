@@ -1,6 +1,6 @@
 import CustomButton from 'App/components/Button';
 import CustomSwipeUpModal from 'App/components/SwipeUpModal';
-import { EButtonType } from 'App/enums';
+import { EButtonType, FindTerryCheckinBy } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ITerryResponseDto } from 'App/types/terry';
 import React, { useCallback, useMemo } from 'react';
@@ -40,7 +40,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
     requestHunterGetTerryCheckin({
       profileId: user.id,
       id: terry.id,
-      findBy: 'terry_id',
+      findBy: FindTerryCheckinBy.TERRY_ID,
       includeTerryData: true,
     }).then(res => {
       navigation.dispatch(StackActions.replace(EMainGameScreen.DETAIL_HISTORY, res));
