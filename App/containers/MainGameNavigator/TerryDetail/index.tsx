@@ -13,9 +13,9 @@ import CustomText from 'App/components/CustomText';
 import { convertDateFormat, meterToKilometer } from 'App/utils/convert';
 import DotIcon from 'App/media/DotIcon';
 import { head } from 'lodash';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import Rating from 'App/components/Rating';
 import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { useSelector } from 'react-redux';
@@ -37,14 +37,18 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   }, [route]);
 
   const handleViewHistory = () => {
+    navigation.dispatch(StackActions.replace(ENavigationScreen.LOADING_MODAL));
     requestHunterGetTerryCheckin({
       profileId: user.id,
       id: terry.id,
       findBy: FindTerryCheckinBy.TERRY_ID,
       includeTerryData: true,
-    }).then(res => {
-      navigation.dispatch(StackActions.replace(EMainGameScreen.DETAIL_HISTORY, res));
-    });
+    })
+      .then(res => {
+        navigation.dispatch(StackActions.pop());
+        navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, res));
+      })
+      .catch(err => console.log(err, 'terryDetail'));
   };
 
   const terryItem: ITerryItem[] = useMemo(() => {

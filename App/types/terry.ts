@@ -159,6 +159,6 @@ export interface ITerryCheckinResDto {}
 export interface IHunterGetTerryCheckinParams {
   profileId: string;
   id: string;
-  findBy: FindTerryCheckinBy;
+  findBy?: FindTerryCheckinBy;
   includeTerryData?: boolean;
 }
