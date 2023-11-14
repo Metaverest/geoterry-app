@@ -16,6 +16,7 @@ export interface ISagaAsyncActionOptions {
   onSuccess?: () => void;
   onError?: () => void;
   t?: (key: string) => string;
+  fcmToken?: string;
 }
 export interface IReduxActionWithNavigation<T, P = undefined> {
   type: T;

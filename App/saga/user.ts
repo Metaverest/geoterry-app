@@ -57,6 +57,7 @@ import AXIOS, {
   requestPublicGetTerries,
   requestUpdateCredentials,
   requestUploadProfileImage,
+  requestUserCreateOrUpdateDevice,
   requestUserReadProfile,
   requestUserUpdateProfile,
   requestVerifyAccountRecoveryOTP,
@@ -315,10 +316,14 @@ export function* watchAccountRecoverAsync() {
 
 function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUserAction, any>) {
   const navigation = action?.payload?.navigation;
+  const fcmToken = action?.payload?.options?.fcmToken;
   try {
     const profile: IProfileResDto = yield call(requestUserReadProfile);
 
     yield put(reduxUserAction.setUser(profile as IUser));
+    if (fcmToken) {
+      yield call(requestUserCreateOrUpdateDevice, { enabled: true, fcmToken: fcmToken }, profile.id);
+    }
     navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
   } catch (error) {
     if (

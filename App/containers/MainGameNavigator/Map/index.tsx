@@ -2,7 +2,6 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
 import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-import messaging from '@react-native-firebase/messaging';
 import {
   CommonActions,
   RouteProp,
@@ -191,12 +190,6 @@ const MapScreen = () => {
   };
   const insets = useSafeAreaInsets();
   useRequestNotificationPermission();
-  useEffect(() => {
-    (async () => {
-      const token = await messaging().getToken();
-      console.log(token);
-    })();
-  }, []);
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <MapView

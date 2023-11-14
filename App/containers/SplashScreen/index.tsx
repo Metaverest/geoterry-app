@@ -9,6 +9,7 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { styles } from './styles';
+import messaging from '@react-native-firebase/messaging';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -16,8 +17,9 @@ const SplashScreen = () => {
   useEffect(() => {
     (async () => {
       const token = await getStoredProperty(EDataStorageKey.ACCESS_TOKEN);
+      const fcmToken = await messaging().getToken();
       if (!isEmpty(token)) {
-        dispatch(sagaUserAction.getProfileAndGoToMainAppAsync(navigation));
+        dispatch(sagaUserAction.getProfileAndGoToMainAppAsync(navigation, { fcmToken: fcmToken }));
       } else {
         navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
       }
