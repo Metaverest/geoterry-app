@@ -20,16 +20,6 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Geoterry uses this to show your current location on our map</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Geoterry uses this to show your current location on our map</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Geoterry uses this to show your current location on our map</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Your description for camera access</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Your description for photo library access</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -45,20 +35,16 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>UIRequiredDeviceCapabilities</key>
-	<array>
-		<string>armv7</string>
-	</array>
-	<key>UISupportedInterfaceOrientations</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Your description for camera access</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Geoterry uses this to show your current location on our map</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Geoterry uses this to show your current location on our map</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Geoterry uses this to show your current location on our map</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Your description for photo library access</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Black.ttf</string>
@@ -80,5 +66,24 @@
 		<string>Montserrat-Thin.ttf</string>
 		<string>Montserrat-ThinItalic.ttf</string>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
