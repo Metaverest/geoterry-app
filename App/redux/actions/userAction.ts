@@ -76,10 +76,10 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
-  getProfileAndGoToMainAppAsync: (navigation: any) => {
+  getProfileAndGoToMainAppAsync: (navigation: any, options?: ISagaAsyncActionOptions) => {
     return {
       type: ESagaUserAction.GET_PROFILE_AND_GO_TO_MAIN_APP,
-      payload: { navigation },
+      payload: { navigation, options },
     };
   },
   getPublicFilterCategoriesAsync: (categoryIds: string[]) => {

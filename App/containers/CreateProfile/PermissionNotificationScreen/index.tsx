@@ -1,33 +1,31 @@
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage, PermissionLocationIcon } from 'App/components/image';
+import { AppBackgroundImage, PermissionNotificationImage } from 'App/components/image';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission';
-import { reduxSelector } from 'App/redux/selectors';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import { styles } from './styles';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { ECreateProfileScreen, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const PermissionLocationScreen = () => {
+const PermissionNotificationScreen = () => {
   const { t } = useTranslation();
+  useRequestNotificationPermission();
   const navigation = useNavigation();
-  useRequestLocationPermission();
   const handlePressSkip = useCallback(() => {
-    navigation.dispatch(CommonActions.navigate(ECreateProfileScreen.PERMISSION_NOTIFICATION_SCREEN));
+    navigation.dispatch(CommonActions.navigate(ENavigationScreen.MAIN_GAME_NAVIGATOR));
   }, [navigation]);
   const RightButton = useCallback(() => {
     return (
       <TouchableOpacity onPress={handlePressSkip}>
         <CustomText numberOfLines={1} style={styles.skipText}>
-          {t('Tiếp theo')}
+          {t('Xong')}
         </CustomText>
       </TouchableOpacity>
     );
@@ -48,19 +46,13 @@ const PermissionLocationScreen = () => {
       }),
     );
   }, [navigation]);
-  const user = useSelector(reduxSelector.getUser);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header shouldHideBackButton rightButton={<RightButton />} />
-      <CustomText style={styles.title}>{`${user?.displayName},\n${t('bạn đang ở đâu?')}`}</CustomText>
-      <CustomText style={styles.subTitle}>
-        {t('Cho phép Terriana truy cập vào vị trí của bạn để mang tới trải nghiệm tốt hơn nhé!')}
-      </CustomText>
-      <Image style={styles.image} source={PermissionLocationIcon} />
-      <CustomText style={styles.footerText}>
-        {t('Đừng lo, chúng tôi sẽ không chia sẻ dữ liệu của bạn khi không được phép!')}
-      </CustomText>
+      <CustomText style={styles.title}>{t('Cho phép bật thông báo')}</CustomText>
+      <CustomText style={styles.subTitle}>{t('Cho phép Terriana gửi thông báo ứng dụng về máy của bạn!')}</CustomText>
+      <Image style={styles.image} source={PermissionNotificationImage} />
       <View style={styles.buttonContainer}>
         <CustomButton
           buttonType={EButtonType.SOLID}
@@ -73,4 +65,4 @@ const PermissionLocationScreen = () => {
   );
 };
 
-export default PermissionLocationScreen;
+export default PermissionNotificationScreen;

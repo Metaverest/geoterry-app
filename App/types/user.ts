@@ -112,3 +112,8 @@ export interface IAccountUpdateCredentialsDto {
   password: string;
   oldPassword: string;
 }
+
+export interface ICreateOrUpdateDeviceInputDto {
+  fcmToken: string;
+  enabled: boolean;
+}

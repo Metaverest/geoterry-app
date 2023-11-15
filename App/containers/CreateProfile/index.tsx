@@ -5,6 +5,7 @@ import ChooseAvatarScreen from './ChooseAvatarScreen';
 import CreateProfileSuccessScreen from './CreateProfileSuccessfully';
 import EnterDisplayNameScreen from './EnterDisplayNameScreen';
 import PermissionLocationScreen from './PermissionLocationScreen';
+import PermissionNotificationScreen from './PermissionNotificationScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,6 +31,11 @@ const CreateProfileNavigator = () => {
         options={{ headerShown: false }}
         name={ECreateProfileScreen.PERMISSION_LOCATION_SCREEN}
         component={PermissionLocationScreen}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name={ECreateProfileScreen.PERMISSION_NOTIFICATION_SCREEN}
+        component={PermissionNotificationScreen}
       />
     </Stack.Navigator>
   );
