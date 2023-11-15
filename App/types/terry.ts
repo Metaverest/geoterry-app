@@ -1,3 +1,4 @@
+import { FindTerryCheckinBy } from 'App/enums';
 import { ITerryCategoryResDto } from './category';
 import { IProfileDto, IProfileResDto } from './user';
 
@@ -154,3 +155,10 @@ export interface ITerryCheckinInputDto {
 }
 
 export interface ITerryCheckinResDto {}
+
+export interface IHunterGetTerryCheckinParams {
+  profileId: string;
+  id: string;
+  findBy?: FindTerryCheckinBy;
+  includeTerryData?: boolean;
+}

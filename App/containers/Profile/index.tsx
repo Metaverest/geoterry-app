@@ -47,7 +47,7 @@ const ProfileScreen = () => {
             <View style={styles.contentRewardPoints}>
               <RewardPointsIcon width={rw(20)} height={rh(20)} />
               <CustomText style={styles.textRewardPoints}>{t('Reward Points')}:</CustomText>
-              <CustomText style={styles.points}>1098</CustomText>
+              <CustomText style={styles.points}>{user.rewardPoints}</CustomText>
             </View>
           </View>
         </View>

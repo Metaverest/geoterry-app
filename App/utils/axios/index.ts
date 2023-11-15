@@ -9,6 +9,7 @@ import {
   IFilterTerryCheckins,
   IGetCheckinsOfTerryParams,
   IGetTerryByIdParams,
+  IHunterGetTerryCheckinParams,
   IResponseGetCheckinsOfTerry,
   IResponseTerryCheckins,
   ITerryCheckinInputDto,
@@ -212,6 +213,12 @@ export const requestHunterCheckinTerry = async (data: ITerryCheckinInputDto, pro
 
 export const requestUserCreateOrUpdateDevice = async (data: ICreateOrUpdateDeviceInputDto, profileId: string) => {
   return AXIOS.post(`/user/${profileId}/device`, data).then(result => result.data);
+};
+
+export const requestHunterGetTerryCheckin = async (params: IHunterGetTerryCheckinParams) => {
+  return AXIOS.get<IResponseTerryCheckins>(`/hunter/${params.profileId}/terry-checkin/${params.id}`, {
+    params,
+  }).then(res => res.data);
 };
 
 export default AXIOS;

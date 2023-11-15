@@ -1,6 +1,6 @@
 import CustomButton from 'App/components/Button';
 import CustomSwipeUpModal from 'App/components/SwipeUpModal';
-import { EButtonType } from 'App/enums';
+import { EButtonType, FindTerryCheckinBy } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ITerryResponseDto } from 'App/types/terry';
 import React, { useCallback, useMemo } from 'react';
@@ -13,10 +13,13 @@ import CustomText from 'App/components/CustomText';
 import { convertDateFormat, meterToKilometer } from 'App/utils/convert';
 import DotIcon from 'App/media/DotIcon';
 import { head } from 'lodash';
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import Rating from 'App/components/Rating';
+import { requestHunterGetTerryCheckin } from 'App/utils/axios';
+import { useSelector } from 'react-redux';
+import { reduxSelector } from 'App/redux/selectors';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -26,11 +29,27 @@ interface ITerryItem {
   value: string;
 }
 const TerryDetailScreen = ({ route }: { route: any }) => {
+  const user = useSelector(reduxSelector.getUser);
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
+
+  const handleViewHistory = () => {
+    navigation.dispatch(StackActions.replace(ENavigationScreen.LOADING_MODAL));
+    requestHunterGetTerryCheckin({
+      profileId: user.id,
+      id: terry.id,
+      findBy: FindTerryCheckinBy.TERRY_ID,
+      includeTerryData: true,
+    })
+      .then(res => {
+        navigation.dispatch(StackActions.pop());
+        navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, res));
+      })
+      .catch(err => console.log(err, 'terryDetail'));
+  };
 
   const terryItem: ITerryItem[] = useMemo(() => {
     return [
@@ -127,7 +146,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               </View>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={() => {}}
+                  onPress={handleViewHistory}
                   title={t('Xem lịch sử')}
                   buttonType={EButtonType.OUTLINE}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
