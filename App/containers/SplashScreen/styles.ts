@@ -26,9 +26,10 @@ export const styles = StyleSheet.create({
   },
   containerImage: {
     width: rw(76),
-    height: rh(76),
+    height: rw(76),
     borderRadius: rh(12),
     marginTop: rh(16),
+    justifyContent: 'center',
   },
   textFooter: {
     fontSize: rh(10),
