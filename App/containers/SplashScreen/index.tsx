@@ -13,6 +13,7 @@ import { EarthIcon, OnboardingBackgroundImage } from 'App/components/image';
 import CustomText from 'App/components/CustomText';
 import LinearGradient from 'react-native-linear-gradient';
 import { EColor } from 'App/enums/color';
+import messaging from '@react-native-firebase/messaging';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -21,8 +22,9 @@ const SplashScreen = () => {
   useEffect(() => {
     (async () => {
       const token = await getStoredProperty(EDataStorageKey.ACCESS_TOKEN);
+      const fcmToken = await messaging().getToken();
       if (!isEmpty(token)) {
-        dispatch(sagaUserAction.getProfileAndGoToMainAppAsync(navigation));
+        dispatch(sagaUserAction.getProfileAndGoToMainAppAsync(navigation, { fcmToken: fcmToken }));
       } else {
         navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
       }
