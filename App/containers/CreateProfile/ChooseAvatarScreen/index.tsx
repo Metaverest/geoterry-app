@@ -57,7 +57,7 @@ const ChooseAvatarScreen = () => {
       <Header rightButton={<RightButton />} />
       <CustomText style={styles.uploadAvatarTitle}>{t('Tải lên ảnh đại diện')}</CustomText>
       <View style={styles.avatarIconContainer}>
-        {userAvatar ? <Image resizeMode="contain" source={{ uri: userAvatar }} style={styles.image} /> : <AvatarIcon />}
+        {userAvatar ? <Image resizeMode="cover" source={{ uri: userAvatar }} style={styles.image} /> : <AvatarIcon />}
       </View>
       <View style={styles.groupButtonContainer}>
         <View style={styles.buttonContainer}>

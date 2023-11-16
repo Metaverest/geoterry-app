@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   boxImageQR: {
     width: rw(238),
-    height: rh(238),
+    height: rw(238),
     paddingHorizontal: rw(25),
     paddingVertical: rh(25),
     backgroundColor: EColor.color_FAFAFA,

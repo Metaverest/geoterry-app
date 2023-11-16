@@ -15,7 +15,6 @@ const useCoordinateToAddress = (mapRef: React.RefObject<MapView>, location: LatL
     (async () => {
       if (location.latitude && location.longitude && mapRef.current) {
         try {
-          console.log(location);
           const resAddress = await mapRef.current.addressForCoordinate({
             latitude: location.latitude,
             longitude: location.longitude,

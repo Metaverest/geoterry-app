@@ -228,7 +228,10 @@ function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction
 
     yield setPropertyInDevice(EDataStorageKey.AVATAR_TO_CREATE_PROFILE, response?.photoUrl);
     yield put(reduxUserAction.setUser({ logoUrl: response?.photoUrl }));
-    navigation.dispatch(StackActions.pop());
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
     yield put(reduxAppAction.mergeError((error as any)?.response?.data as IError));

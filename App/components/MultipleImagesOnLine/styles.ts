@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: rw(48),
-    height: rh(48),
+    height: rw(48),
     borderRadius: rh(4),
   },
   lastImage: {

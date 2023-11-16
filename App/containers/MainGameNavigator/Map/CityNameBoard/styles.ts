@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     width: '70%',
   },
   cityName: {
-    fontSize: rh(28),
+    fontSize: rh(35),
     color: EColor.black,
     fontWeight: '700',
     width: '100%',

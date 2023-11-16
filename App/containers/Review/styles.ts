@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
   },
   avatar: {
     width: rw(36),
-    height: rh(36),
+    height: rw(36),
     backgroundColor: EColor.color_FAFAFA,
     borderRadius: rh(36),
     marginRight: rw(14),
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: rw(48),
-    height: rh(48),
+    height: rw(48),
     backgroundColor: EColor.color_FAFAFA,
     borderRadius: rh(4),
     marginRight: rw(8),

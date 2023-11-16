@@ -49,6 +49,7 @@ const MapScreen = () => {
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
 
   useEffect(() => {
+    numberOfFilters.current = 0;
     if (publicTerryFilter?.categoryIds?.length) {
       numberOfFilters.current = 1;
     }
@@ -120,7 +121,6 @@ const MapScreen = () => {
 
   useEffect(() => {
     if (params?.locationTerry) {
-      console.log(params.locationTerry);
       changeRegion(params.locationTerry, true);
       setSelectedTerryId(params.terryId);
     }
