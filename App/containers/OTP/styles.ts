@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     fontSize: rh(16),
     fontWeight: '500',
     lineHeight: rh(24),
-    height: rh(64),
+    height: rw(64),
     width: rw(60),
   },
   otpContainer: {

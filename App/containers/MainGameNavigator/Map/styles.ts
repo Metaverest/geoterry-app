@@ -40,8 +40,8 @@ export const styles = StyleSheet.create({
     top: rh(-10),
     backgroundColor: EColor.color_171717,
     width: rw(24),
-    height: rh(24),
-    borderRadius: rh(24),
+    height: rw(24),
+    borderRadius: rw(24),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -49,6 +49,6 @@ export const styles = StyleSheet.create({
     color: EColor.white,
     fontWeight: '600',
     lineHeight: rh(20),
-    fontSize: rh(14),
+    fontSize: rw(14),
   },
 });

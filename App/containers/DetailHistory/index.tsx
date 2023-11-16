@@ -6,7 +6,6 @@ import { AppBackgroundImage } from 'App/components/image';
 import Header from 'App/components/Header';
 import CustomText from 'App/components/CustomText';
 import { useTranslation } from 'react-i18next';
-import LocationIcon from 'App/media/LocationIcon';
 import DumbbellIcon from 'App/media/DumbbellIcon';
 import SlideSizeIcon from 'App/media/SlideSizeIcon';
 import CustomButton from 'App/components/Button';
@@ -30,14 +29,12 @@ export default function DetailHistory() {
       <CustomText style={styles.title}>{t(params.terry.name)}</CustomText>
       <Rating style={styles.mt4} rate={params.rate} />
       <View style={[styles.row, styles.mv4]}>
-        <LocationIcon />
-        <CustomText style={[styles.location, styles.ml4]}>5.6km, Ben Tre</CustomText>
+        <CustomText style={styles.location}>{convertDateFormatHistory(params.checkinAt)}</CustomText>
         <DumbbellIcon style={styles.icon} />
         <CustomText style={[styles.location, styles.ml4]}>{params.terry.metadata.difficulty}</CustomText>
         <SlideSizeIcon style={styles.icon} />
         <CustomText style={[styles.location, styles.ml4]}>{params.terry.metadata.size}</CustomText>
       </View>
-      <CustomText style={styles.location}>{convertDateFormatHistory(params.checkinAt)}</CustomText>
       <View style={styles.containerDesc}>
         <CustomText style={styles.desc}>{t(params.reviewText)}</CustomText>
       </View>
