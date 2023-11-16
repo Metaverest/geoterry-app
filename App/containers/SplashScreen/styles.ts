@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
   },
   logo: {
     width: rw(76),
-    height: rh(76),
+    height: rw(76),
     borderRadius: rh(12),
   },
   containerImage: {
