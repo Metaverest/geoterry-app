@@ -12,6 +12,7 @@ import { styles } from './styles';
 import { EarthIcon, OnboardingBackgroundImage } from 'App/components/image';
 import CustomText from 'App/components/CustomText';
 import LinearGradient from 'react-native-linear-gradient';
+import { EColor } from 'App/enums/color';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -31,7 +32,7 @@ const SplashScreen = () => {
     <CustomSafeArea style={styles.container} backgroundImageSource={OnboardingBackgroundImage}>
       <View style={styles.content}>
         <CustomText style={styles.title}>Terriana</CustomText>
-        <LinearGradient colors={['#547AFF', '#4551DE']} style={styles.containerImage}>
+        <LinearGradient colors={[EColor.color_547AFF, EColor.color_4551DE]} style={styles.containerImage}>
           <Image source={EarthIcon} style={styles.logo} resizeMode="contain" />
         </LinearGradient>
       </View>
