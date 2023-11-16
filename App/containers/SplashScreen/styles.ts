@@ -5,10 +5,13 @@ import { responsiveByWidth as rw, responsiveByHeight as rh } from 'App/helpers/c
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: rh(187),
+    marginBottom: rh(17),
   },
   content: {
-    marginTop: rh(187),
+    alignItems: 'center',
   },
   title: {
     color: EColor.color_FAFAFA,
@@ -26,5 +29,10 @@ export const styles = StyleSheet.create({
     height: rh(76),
     borderRadius: rh(12),
     marginTop: rh(16),
+  },
+  textFooter: {
+    fontSize: rh(10),
+    lineHeight: rh(16),
+    color: EColor.color_CCCCCC,
   },
 });

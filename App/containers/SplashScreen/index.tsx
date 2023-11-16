@@ -38,6 +38,7 @@ const SplashScreen = () => {
           <Image source={EarthIcon} style={styles.logo} resizeMode="contain" />
         </LinearGradient>
       </View>
+      <CustomText style={styles.textFooter}>Powered by Metaverest</CustomText>
     </CustomSafeArea>
   );
 };
