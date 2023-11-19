@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
   menuItemActionButton: {},
   switchButtonContainer: {
     backgroundColor: 'red',
-    borderRadius: rh(16),
+    borderRadius: rw(16),
     borderWidth: 1,
   },
   swithButtonContainerEnable: {

@@ -1,5 +1,7 @@
 import { ParamListBase } from '@react-navigation/native';
 import { IResponseTerryCheckins, ITerryResponseDto } from 'App/types/terry';
+import { IRealtimeLocation } from 'App/types';
+import { IResponseTerryCheckins } from 'App/types/terry';
 
 export enum ENavigationScreen {
   SPLASH_SCREEN = 'SPLASH_SCREEN',
@@ -21,6 +23,7 @@ export enum ECreateProfileScreen {
   CHOOSE_AVATAR_SCREEN = 'CHOOSE_AVATAR_SCREEN',
   CREATE_PROFILE_SUCCESS_SCREEN = 'CREATE_PROFILE_SUCCESS_SCREEN',
   PERMISSION_LOCATION_SCREEN = 'PERMISSION_LOCATION_SCREEN',
+  PERMISSION_NOTIFICATION_SCREEN = 'PERMISSION_NOTIFICATION_SCREEN',
 }
 
 export enum EForgotPasswordScreen {
@@ -58,7 +61,7 @@ export enum ESettingNavigator {
   ABOUT_SCREEN = 'ABOUT_SCREEN',
 }
 export interface EMainGameNavigatorParams extends ParamListBase {
-  [EMainGameScreen.MAP_SCREEN]: undefined;
+  [EMainGameScreen.MAP_SCREEN]: { locationTerry?: IRealtimeLocation; terryId: string };
   [EMainGameScreen.MAP_TYPE_SCREEN]: undefined;
   [EMainGameScreen.FILTER_SCREEN]: undefined;
   [EMainGameScreen.SETTING_NAVIGATOR]: undefined;

@@ -48,8 +48,8 @@ export const styles = StyleSheet.create({
   },
   image: {
     width: rw(148),
-    height: rh(148),
-    borderRadius: rh(74),
+    height: rw(148),
+    borderRadius: rw(74),
   },
   customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: 1 },
 });

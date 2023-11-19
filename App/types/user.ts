@@ -9,6 +9,7 @@ export interface IUser {
   bio?: string;
   logoUrl?: string;
   languageCode?: ELanguageCode;
+  rewardPoints: number;
 }
 
 export interface IAccountCredentialsResDto {
@@ -34,6 +35,7 @@ export interface IProfileResDto {
   updateAt: string;
   displayName: string;
   bio?: string;
+  rewardPoints: number;
   email?: string;
   phoneNumber?: string;
   slug: string;
@@ -109,4 +111,9 @@ export interface IProfileDto {
 export interface IAccountUpdateCredentialsDto {
   password: string;
   oldPassword: string;
+}
+
+export interface ICreateOrUpdateDeviceInputDto {
+  fcmToken: string;
+  enabled: boolean;
 }

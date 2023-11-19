@@ -40,9 +40,14 @@ export const convertDateFormatHistory = (inputDate: string) => {
   const formattedDate = date.format('HH:mm - DD/MM/YYYY');
   return formattedDate;
 };
+export const convertDateFormatOnlyDate = (inputDate: string) => {
+  const date = dayjs(inputDate);
+  const formattedDate = date.format('DD/MM/YYYY');
+  return formattedDate;
+};
 export const convertDateRelativeToNow = (inputDate: string, language?: ELanguageCode) => {
   dayjs.locale(language || ELanguageCode.VN);
   dayjs.extend(relativeTime);
 
-  return dayjs().diff(inputDate, 'd', true) > 14 ? convertDateFormat(inputDate) : dayjs(inputDate).fromNow();
+  return dayjs().diff(inputDate, 'd', true) > 14 ? convertDateFormatOnlyDate(inputDate) : dayjs(inputDate).fromNow();
 };

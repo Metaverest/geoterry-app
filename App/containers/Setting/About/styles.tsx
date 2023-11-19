@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: rh(18),
     fontSize: rh(12),
+    textAlign: 'justify',
   },
   aboutContainer: {
     marginTop: rh(68),

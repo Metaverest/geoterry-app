@@ -4,14 +4,14 @@ import { EColor } from 'App/enums/color';
 
 export const styles = StyleSheet.create({
   container: {
-    height: rh(26),
+    height: rw(26),
     width: rw(26),
   },
   subIconContainer: { position: 'absolute', bottom: -0, right: -0 },
   subIcon: {},
   image: {
     width: rw(44),
-    height: rh(44),
+    height: rw(44),
     borderRadius: rh(11),
   },
   markerContainer: {
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     width: rw(40),
-    height: rh(40),
+    height: rw(40),
     borderRadius: rh(11),
     backgroundColor: 'red',
     justifyContent: 'center',

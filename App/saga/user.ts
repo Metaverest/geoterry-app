@@ -57,6 +57,7 @@ import AXIOS, {
   requestPublicGetTerries,
   requestUpdateCredentials,
   requestUploadProfileImage,
+  requestUserCreateOrUpdateDevice,
   requestUserReadProfile,
   requestUserUpdateProfile,
   requestVerifyAccountRecoveryOTP,
@@ -227,7 +228,10 @@ function* uploadAvatarProfile(action: IReduxActionWithNavigation<ESagaUserAction
 
     yield setPropertyInDevice(EDataStorageKey.AVATAR_TO_CREATE_PROFILE, response?.photoUrl);
     yield put(reduxUserAction.setUser({ logoUrl: response?.photoUrl }));
-    navigation.dispatch(StackActions.pop());
+    const navigator = navigation.getParent();
+    if (navigator) {
+      navigator.dispatch(StackActions.pop());
+    }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
     yield put(reduxAppAction.mergeError((error as any)?.response?.data as IError));
@@ -315,9 +319,14 @@ export function* watchAccountRecoverAsync() {
 
 function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUserAction, any>) {
   const navigation = action?.payload?.navigation;
+  const fcmToken = action?.payload?.options?.fcmToken;
   try {
     const profile: IProfileResDto = yield call(requestUserReadProfile);
+
     yield put(reduxUserAction.setUser(profile as IUser));
+    if (fcmToken) {
+      yield call(requestUserCreateOrUpdateDevice, { enabled: true, fcmToken: fcmToken }, profile.id);
+    }
     navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
   } catch (error) {
     if (

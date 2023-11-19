@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
   },
   avatarUser: {
     width: rw(72),
-    height: rh(72),
+    height: rw(72),
     borderRadius: rh(11),
   },
   textUploadAvatar: {

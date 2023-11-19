@@ -10,8 +10,7 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameScreen } from 'App/enums/navigation';
 import { IResponseTerryCheckins } from 'App/types/terry';
 import { convertDateFormatHistory } from 'App/utils/convert';
-import StarIcon from 'App/media/StarIcon';
-import GoldStarIcon from 'App/media/GoldStarIcon';
+import Rating from '../Rating';
 
 const ItemHistory = (props: IResponseTerryCheckins) => {
   const { t } = useTranslation();
@@ -27,11 +26,7 @@ const ItemHistory = (props: IResponseTerryCheckins) => {
         <CustomText style={styles.timeHistory}>{convertDateFormatHistory(props.checkinAt)}</CustomText>
         <CustomText style={styles.title}>{t(props.terry.name)}</CustomText>
         <View style={styles.row}>
-          {[1, 2, 3, 4, 5].map((item, index) => {
-            return (
-              <View key={index.toString()}>{Math.round(props.rate) >= item ? <GoldStarIcon /> : <StarIcon />}</View>
-            );
-          })}
+          <Rating rate={props.rate} />
           <DumbbellIcon style={styles.icon} />
           <CustomText style={[styles.timeHistory, styles.ml4]}>{props.terry.metadata.difficulty}</CustomText>
           <SlideSizeIcon style={styles.icon} />

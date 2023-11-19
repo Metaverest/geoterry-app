@@ -27,3 +27,8 @@ export enum EButtonType {
   SOLID = 'SOLID',
   OUTLINE = 'OUTLINE',
 }
+
+export enum FindTerryCheckinBy {
+  TERRY_ID = 'terry_id',
+  CHECKIN_ID = 'checkin_id',
+}

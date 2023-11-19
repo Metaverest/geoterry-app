@@ -2,13 +2,19 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
 import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-
-import { CommonActions, StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+  CommonActions,
+  RouteProp,
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
@@ -34,12 +40,16 @@ import HeartIcon from 'App/media/HeartIcon';
 import SavedIcon from 'App/media/SavedIcon';
 import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 import CustomText from 'App/components/CustomText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
+  const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
 
   useEffect(() => {
+    numberOfFilters.current = 0;
     if (publicTerryFilter?.categoryIds?.length) {
       numberOfFilters.current = 1;
     }
@@ -109,6 +119,13 @@ const MapScreen = () => {
     }
   }, [currentLocation, region, changeRegion]);
 
+  useEffect(() => {
+    if (params?.locationTerry) {
+      changeRegion(params.locationTerry, true);
+      setSelectedTerryId(params.terryId);
+    }
+  }, [changeRegion, params?.locationTerry, params?.terryId]);
+
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
@@ -171,9 +188,10 @@ const MapScreen = () => {
       );
     }
   };
-
+  const insets = useSafeAreaInsets();
+  useRequestNotificationPermission();
   return (
-    <CustomSafeArea style={styles.container}>
+    <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <MapView
         mapType={mapType}
         ref={mapRef}
@@ -248,14 +266,16 @@ const MapScreen = () => {
       {selectedTerry && selectedTerryId ? (
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
-            onPress={() => updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite })}
+            onPress={() =>
+              updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite, markAsSaved: false })
+            }
             buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<HeartIcon focus={selectedTerry.favourite} />}
           />
           <CustomButtonIcon
-            onPress={() => updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved })}
+            onPress={() => updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved, markAsFavourited: false })}
             buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
@@ -266,7 +286,7 @@ const MapScreen = () => {
 
       {selectedTerry && selectedTerryId ? <TerryPreviewBoard terry={selectedTerry} mapRef={mapRef} /> : null}
 
-      <View style={styles.listButtonRHNContainer}>
+      <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon
           onPress={() => {
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN));
