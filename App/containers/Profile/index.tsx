@@ -43,10 +43,10 @@ const ProfileScreen = () => {
           )}
           <View style={styles.ml16}>
             <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
-            <CustomText style={styles.biography}>{user.bio || 'Bio'}</CustomText>
+            <CustomText style={styles.biography}>{user.bio || t('Bio')}</CustomText>
             <View style={styles.contentRewardPoints}>
               <RewardPointsIcon width={rw(20)} height={rh(20)} />
-              <CustomText style={styles.textRewardPoints}>{t('Reward Points')}:</CustomText>
+              <CustomText style={styles.textRewardPoints}>{t('Điểm tích luỹ')}:</CustomText>
               <CustomText style={styles.points}>{user.rewardPoints}</CustomText>
             </View>
           </View>
@@ -54,13 +54,13 @@ const ProfileScreen = () => {
         <CustomText style={styles.title}>{t('Thông tin liên hệ')}</CustomText>
 
         <CustomInputInformation
-          title="Số điện thoại"
-          placeholder={'Thêm số điện thoại'}
+          title={t('Số điện thoại')}
+          placeholder={t('Thêm số điện thoại')}
           value={user.phoneNumber}
           editable={false}
           underline
         />
-        <CustomInputInformation title="Email" placeholder={'Thêm email'} value={user.email} editable={false} />
+        <CustomInputInformation title={t('Email')} placeholder={t('Thêm email')} value={user.email} editable={false} />
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
             <CustomButton
