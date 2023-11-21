@@ -14,6 +14,7 @@ import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxUserAction, sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
+import { IRealtimeLocation } from 'App/types';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import { IError } from 'App/types/error';
 import { IPopupModalParamsProps } from 'App/types/modal';
@@ -28,6 +29,7 @@ import {
   ITerryFilterParams,
   ITerryInputDto,
   ITerryResponseDto,
+  ITerryUserPathResDto,
 } from 'App/types/terry';
 
 import {
@@ -52,6 +54,8 @@ import AXIOS, {
   requestHunterCheckinTerry,
   requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
+  requestHunterGetTerryUserPath,
+  requestHunterUpsertTerryUserPath,
   requestLogin,
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
@@ -69,7 +73,7 @@ import {
   navigateToPopUpModal,
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
-import { isEmpty, isNil, last } from 'lodash';
+import { isEmpty, isNil, last, map } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 function* handleError(error: IError, navigation: any, additionalPopupModalParams?: IPopupModalParamsProps) {
@@ -366,8 +370,8 @@ function* getPublicTerries(
     { filterParams: ITerryFilterParams; filterData: ITerryFilterInputDto }
   >,
 ) {
+  const navigation = action?.payload?.navigation;
   try {
-    const navigation = action?.payload?.navigation;
     if (!isEmpty(action?.payload?.data?.filterData)) {
       yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
     }
@@ -426,6 +430,18 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
     const terryParams = action?.payload?.data;
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
+
+    //Fetch terry path
+    const terryPathRes: ITerryUserPathResDto = yield call(
+      requestHunterGetTerryUserPath,
+      profileId,
+      terryParams?.terryId,
+    );
+    if (!isEmpty(terryPathRes?.path)) {
+      // Convert string path to array
+      const path: IRealtimeLocation[] = JSON.parse(terryPathRes?.path as string);
+      yield put(reduxAppAction.setCoordinatesPath({ [terryParams?.terryId as string]: path }));
+    }
     const terryData: ITerryResponseDto = yield call(
       requestHunterGetTerryById,
       terryParams as IGetTerryByIdParams,
@@ -559,6 +575,27 @@ export function* watchHunterCheckinTerry() {
   yield takeLatest(ESagaAppAction.HUNTER_CHECKIN_TERRY, hunterCheckinTerry);
 }
 
+function* hunterUpdateTerrypath(action: IReduxActionWithNavigation<ESagaAppAction, string>) {
+  const navigation = action.payload?.navigation;
+  try {
+    const terryId = action.payload?.data;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const paths: { [key: string]: IRealtimeLocation[] } = yield select(reduxSelector.getAppCoordinatesPath);
+    const path = paths && paths[terryId as string];
+    const pathString = JSON.stringify(map(path, item => ({ latitude: item.latitude, longitude: item.longitude })));
+    const profileID = user.id;
+    if (!isEmpty(path) && !isEmpty(path)) {
+      yield call(requestHunterUpsertTerryUserPath, pathString, profileID, terryId);
+    }
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchHunterUpdateTerrypath() {
+  yield takeLatest(ESagaAppAction.HUNTER_UPDATE_TERRY_PATH, hunterUpdateTerrypath);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -578,5 +615,6 @@ export default function* userSaga() {
     watchGetTerryCheckins(),
     watchCreateTerry(),
     watchHunterCheckinTerry(),
+    watchHunterUpdateTerrypath(),
   ]);
 }

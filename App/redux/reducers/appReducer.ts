@@ -27,6 +27,7 @@ const defaultAppState: IAppState = {
   terryCheckinInput: {
     rate: 3,
   },
+  coordinatesPath: {},
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -105,6 +106,15 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
         terryCheckinInput: {
           ...state.terryCheckinInput,
           ...action.payload?.terryCheckinInput,
+        },
+      };
+
+    case EReduxAppAction.SET_COORDINATES_PATH:
+      return {
+        ...state,
+        coordinatesPath: {
+          ...state.coordinatesPath,
+          ...action.payload?.coordinatesPath,
         },
       };
     default:

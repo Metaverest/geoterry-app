@@ -162,3 +162,12 @@ export interface IHunterGetTerryCheckinParams {
   findBy?: FindTerryCheckinBy;
   includeTerryData?: boolean;
 }
+
+export interface ITerryUserPathResDto {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  terryId: string;
+  profileId: string;
+  path?: string;
+}

@@ -15,7 +15,7 @@ import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common'
 import { EButtonType, EDataStorageKey, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
-import useCurrentLocation, { defaultLocation } from 'App/hooks/useCurrentLocation';
+import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
 import SettingIcon from 'App/media/SettingIcon';
@@ -42,6 +42,7 @@ import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 import CustomText from 'App/components/CustomText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
+import { DEFAULT_LOCATION } from 'App/constants/common';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -113,7 +114,7 @@ const MapScreen = () => {
     if (
       !isEmpty(currentLocation) &&
       (isEmpty(region) ||
-        (region.latitude === defaultLocation.latitude && region.longitude === defaultLocation.longitude))
+        (region.latitude === DEFAULT_LOCATION.latitude && region.longitude === DEFAULT_LOCATION.longitude))
     ) {
       changeRegion(currentLocation, true);
     }

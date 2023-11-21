@@ -138,8 +138,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={() => {}}
                   title={t('Chỉ đường')}
+                  onPress={() => {
+                    navigation.dispatch(StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, { terry }));
+                  }}
                   buttonType={EButtonType.SOLID}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                 />
@@ -165,7 +167,9 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               </View>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.dispatch(StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, { terry }));
+                  }}
                   title={t('Chỉ đường')}
                   buttonType={EButtonType.OUTLINE}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}

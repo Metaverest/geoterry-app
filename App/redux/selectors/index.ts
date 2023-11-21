@@ -18,4 +18,7 @@ export const reduxSelector = {
   getAppTerryCheckins: (state: IReduxRootState) => state.app.terryCheckins,
   getAppTerryCheckinInput: (state: IReduxRootState) => state.app.terryCheckinInput,
   getAppTerryCheckinInputRate: (state: IReduxRootState) => state.app.terryCheckinInput?.rate,
+  getAppCoordinatesPath: (state: IReduxRootState) => state.app.coordinatesPath,
+  getAppCoordinatesPathByTerryId: (state: IReduxRootState, terryId: string) =>
+    state.app.coordinatesPath && state.app.coordinatesPath[terryId],
 };

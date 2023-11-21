@@ -2,7 +2,7 @@
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import BackIcon from 'App/media/BackIcon';
 import { useCallback } from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CustomText from '../CustomText';
 import { styles } from './styles';
@@ -11,17 +11,19 @@ const Header = ({
   title,
   rightButton,
   shouldHideBackButton,
+  headerContainerStyle,
 }: {
   title?: string;
   rightButton?: any;
   shouldHideBackButton?: boolean;
+  headerContainerStyle?: StyleProp<ViewStyle>;
 }) => {
   const navigation = useNavigation();
   const handlePressBackButton = useCallback(() => {
     navigation.dispatch(CommonActions.goBack());
   }, [navigation]);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, headerContainerStyle]}>
       <TouchableOpacity style={styles.backButtonContainer} onPress={handlePressBackButton}>
         {!shouldHideBackButton && <BackIcon />}
       </TouchableOpacity>

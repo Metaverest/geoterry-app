@@ -1,6 +1,6 @@
 import { ParamListBase } from '@react-navigation/native';
 import { IRealtimeLocation } from 'App/types';
-import { IResponseTerryCheckins } from 'App/types/terry';
+import { IResponseTerryCheckins, ITerryResponseDto } from 'App/types/terry';
 
 export enum ENavigationScreen {
   SPLASH_SCREEN = 'SPLASH_SCREEN',
@@ -46,6 +46,7 @@ export enum EMainGameScreen {
   REVIEW_SCREEN = 'REVIEW_SCREEN',
   CHECKIN_TERRY_SCREEN = 'CHECKIN_TERRY_SCREEN',
   CHECKIN_TERRY_VOTE_SCREEN = 'CHECKIN_TERRY_VOTE_SCREEN',
+  HUNTING_MAP_SCREEN = 'HUNTING_MAP_SCREEN',
 }
 
 export enum ESettingNavigator {
@@ -71,6 +72,9 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   [EMainGameScreen.DETAIL_HISTORY]: IResponseTerryCheckins;
   [EMainGameScreen.REVIEW_SCREEN]: {
     terryId: string;
+  };
+  [EMainGameScreen.HUNTING_MAP_SCREEN]: {
+    terry: ITerryResponseDto;
   };
   [ENavigationScreen.LOADING_MODAL]: undefined;
 }

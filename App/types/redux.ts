@@ -4,6 +4,7 @@ import { IError } from './error';
 import { ICreateAccountDto, IUser } from './user';
 import { ITerryCategoryResDto } from './category';
 import { IResponseTerryCheckins, ITerryCheckinInputDto, ITerryFilterInputDto, ITerryResponseDto } from './terry';
+import { IRealtimeLocation } from '.';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -46,6 +47,7 @@ export interface IAppState {
   publicTerry?: ITerryResponseDto;
   terryCheckins?: IResponseTerryCheckins[];
   terryCheckinInput?: Partial<ITerryCheckinInputDto>;
+  coordinatesPath?: { [key: string]: IRealtimeLocation[] };
 }
 
 export interface IRootState {
