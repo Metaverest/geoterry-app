@@ -1,11 +1,15 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import MapView, { Polyline } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import { styles } from './styles';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import Header from 'App/components/Header';
-import { DEFAULT_LOCATION, INTERVAL_TIME_CALL_UPDATE_PATH } from 'App/constants/common';
+import {
+  DEFAULT_LOCATION,
+  INTERVAL_TIME_CALL_UPDATE_PATH,
+  THRESHOLD_DISTANCE_TO_UPDATE_PATH,
+} from 'App/constants/common';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
@@ -15,7 +19,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { ITerryResponseDto } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
-import { isEmpty, isEqual, last } from 'lodash';
+import { first, isEmpty, isEqual, last } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -68,9 +72,11 @@ const HuntingMapScreen = () => {
   useEffect(() => {
     if (isEmpty(initialUserLocation) && !isEmpty(currentLocation) && !currentLocation.isDefault && !isEmpty(terry)) {
       setInitialUserLocation(currentLocation);
-      dispatch(reduxAppAction.setCoordinatesPath({ [terry?.id as string]: [currentLocation] }));
+      if (isEmpty(coordinatesPathOfTerry)) {
+        dispatch(reduxAppAction.setCoordinatesPath({ [terry?.id as string]: [currentLocation] }));
+      }
     }
-  }, [currentLocation, initialUserLocation, terry, dispatch]);
+  }, [currentLocation, initialUserLocation, terry, dispatch, coordinatesPathOfTerry]);
   const { t } = useTranslation();
   useEffect(() => {
     setTerry(params.terry);
@@ -85,7 +91,7 @@ const HuntingMapScreen = () => {
       return;
     }
     const deltaDistance = calculateDistance(last(coordinatesPathOfTerry) as IRealtimeLocation, currentLocation);
-    if (deltaDistance > 200) {
+    if (deltaDistance > THRESHOLD_DISTANCE_TO_UPDATE_PATH) {
       dispatch(
         reduxAppAction.setCoordinatesPath({ [terry?.id as string]: [...coordinatesPathOfTerry, currentLocation] }),
       );
@@ -106,7 +112,7 @@ const HuntingMapScreen = () => {
     return () => clearInterval(intervalId);
   }, [updatePathToServer]); // Empty dependency array means this effect runs once (on mount) and cleans up on unmount
   return (
-    <CustomSafeArea style={styles.container} statusBarColor={EColor.black}>
+    <CustomSafeArea style={styles.container} shouldHideStatusBar shouldUseFullScreenView>
       <Header
         headerContainerStyle={{ backgroundColor: EColor.black }}
         title={t('Chỉ đường')}
@@ -123,6 +129,14 @@ const HuntingMapScreen = () => {
         showsUserLocation={true}
         followsUserLocation={true}>
         {terry && <TreasureMarker key={terry.id} treasure={terry} />}
+        {!isEmpty(coordinatesPathOfTerry) && (
+          <Marker
+            coordinate={{
+              latitude: first(coordinatesPathOfTerry)?.latitude as number,
+              longitude: first(coordinatesPathOfTerry)?.longitude as number,
+            }}
+          />
+        )}
         <Polyline
           coordinates={coordinatesPathOfTerry}
           strokeColor={EColor.color_00FF00} // fallback for when `strokeColors` is not supported by the map-provider

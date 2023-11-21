@@ -10,6 +10,7 @@ interface IProps {
   children?: any;
   shouldUseFullScreenView?: boolean;
   statusBarColor?: EColor;
+  shouldHideStatusBar?: boolean;
 }
 export const CustomSafeArea = (props: IProps) => {
   const insets = useSafeAreaInsets();
@@ -19,7 +20,11 @@ export const CustomSafeArea = (props: IProps) => {
         flex: 1,
         backgroundColor: props.isModal ? 'transparent' : EColor.color_171717,
       }}>
-      <StatusBar backgroundColor={props.statusBarColor || EColor.transparent} translucent />
+      <StatusBar
+        backgroundColor={props.statusBarColor || EColor.transparent}
+        hidden={props.shouldHideStatusBar}
+        translucent
+      />
       {props.backgroundImageSource ? (
         <ImageBackground
           style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}

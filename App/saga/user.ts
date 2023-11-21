@@ -29,6 +29,7 @@ import {
   ITerryFilterParams,
   ITerryInputDto,
   ITerryResponseDto,
+  ITerryUserPathResDto,
 } from 'App/types/terry';
 
 import {
@@ -53,6 +54,7 @@ import AXIOS, {
   requestHunterCheckinTerry,
   requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
+  requestHunterGetTerryUserPath,
   requestHunterUpsertTerryUserPath,
   requestLogin,
   requestPublicFilterTerryCategories,
@@ -368,8 +370,8 @@ function* getPublicTerries(
     { filterParams: ITerryFilterParams; filterData: ITerryFilterInputDto }
   >,
 ) {
+  const navigation = action?.payload?.navigation;
   try {
-    const navigation = action?.payload?.navigation;
     if (!isEmpty(action?.payload?.data?.filterData)) {
       yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
     }
@@ -428,6 +430,18 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
     const terryParams = action?.payload?.data;
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
+
+    //Fetch terry path
+    const terryPathRes: ITerryUserPathResDto = yield call(
+      requestHunterGetTerryUserPath,
+      profileId,
+      terryParams?.terryId,
+    );
+    if (!isEmpty(terryPathRes?.path)) {
+      // Convert string path to array
+      const path: IRealtimeLocation[] = JSON.parse(terryPathRes?.path as string);
+      yield put(reduxAppAction.setCoordinatesPath({ [terryParams?.terryId as string]: path }));
+    }
     const terryData: ITerryResponseDto = yield call(
       requestHunterGetTerryById,
       terryParams as IGetTerryByIdParams,

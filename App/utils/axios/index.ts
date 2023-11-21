@@ -228,4 +228,10 @@ export const requestHunterUpsertTerryUserPath = async (path: string, profileId: 
   );
 };
 
+export const requestHunterGetTerryUserPath = async (profileId: string, terryId: string) => {
+  return AXIOS.get<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`).then(
+    result => result.data,
+  );
+};
+
 export default AXIOS;

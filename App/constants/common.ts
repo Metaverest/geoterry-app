@@ -21,3 +21,5 @@ export const DEFAULT_LOCATION = {
 };
 
 export const INTERVAL_TIME_CALL_UPDATE_PATH = 1000 * 60 * 2; // 2 minutes
+
+export const THRESHOLD_DISTANCE_TO_UPDATE_PATH = 50; // 50 meters
