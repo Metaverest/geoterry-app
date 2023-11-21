@@ -22,4 +22,8 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
   },
+  rightButtonContainer: {
+    flexDirection: 'row',
+    columnGap: rw(16),
+  },
 });

@@ -21,6 +21,9 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import TreasureMarker from '../Map/TreasureMarker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import CompassIcon from 'App/media/CompassIcon';
+import MapTypeIcon from 'App/media/MapTypeIcon';
 const HuntingMapScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -33,6 +36,20 @@ const HuntingMapScreen = () => {
     }
     return allCoordinatesPath[terry?.id as string] || [];
   }, [allCoordinatesPath, terry?.id]);
+
+  const RightButton = useCallback(() => {
+    return (
+      <View style={styles.rightButtonContainer}>
+        <TouchableOpacity onPress={() => {}}>
+          <CompassIcon />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {}}>
+          <MapTypeIcon />
+        </TouchableOpacity>
+      </View>
+    );
+  }, []);
+
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
   const onUserLocationChange = useCallback(
     (location: IRealtimeLocation) => {
@@ -90,7 +107,11 @@ const HuntingMapScreen = () => {
   }, [updatePathToServer]); // Empty dependency array means this effect runs once (on mount) and cleans up on unmount
   return (
     <CustomSafeArea style={styles.container} statusBarColor={EColor.black}>
-      <Header headerContainerStyle={{ backgroundColor: EColor.black }} title={t('Chỉ đường')} />
+      <Header
+        headerContainerStyle={{ backgroundColor: EColor.black }}
+        title={t('Chỉ đường')}
+        rightButton={<RightButton />}
+      />
       <MapView
         onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
         region={{
