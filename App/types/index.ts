@@ -4,6 +4,7 @@ export interface IRealtimeLocation {
   altitude?: number | null;
   heading?: number | null;
   speed?: number | null;
-  latitudeDelta: number;
-  longitudeDelta: number;
+  latitudeDelta?: number;
+  longitudeDelta?: number;
+  isDefault?: boolean;
 }

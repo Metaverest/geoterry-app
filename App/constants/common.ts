@@ -8,3 +8,16 @@ export const DEFAULT_USER_MARK_POINT_ANIMATION_DURATION = 1000;
 export const RADIUS_TO_GET_NEARBY_TERRY = 20000;
 
 export const DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY = 5000;
+
+export const DEFAULT_LOCATION = {
+  latitude: 21.0479597522,
+  longitude: 105.85170291,
+  altitude: 0,
+  heading: 0,
+  speed: 0,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+  isDefault: true,
+};
+
+export const INTERVAL_TIME_CALL_UPDATE_PATH = 1000 * 60 * 2; // 2 minutes

@@ -70,7 +70,11 @@ const TreasureMarker = ({
   }
 
   return (
-    <Marker style={styles.container} coordinate={treasure.location} onPress={handleSelectTerry}>
+    <Marker
+      anchor={{ x: 0.5, y: 0 }}
+      style={styles.container}
+      coordinate={treasure.location}
+      onPress={handleSelectTerry}>
       <View style={styles.container}>
         {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
         {!treasure.checkedIn ? (

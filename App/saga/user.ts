@@ -14,6 +14,7 @@ import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxUserAction, sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
+import { IRealtimeLocation } from 'App/types';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import { IError } from 'App/types/error';
 import { IPopupModalParamsProps } from 'App/types/modal';
@@ -52,6 +53,7 @@ import AXIOS, {
   requestHunterCheckinTerry,
   requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
+  requestHunterUpsertTerryUserPath,
   requestLogin,
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
@@ -69,7 +71,7 @@ import {
   navigateToPopUpModal,
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
-import { isEmpty, isNil, last } from 'lodash';
+import { isEmpty, isNil, last, map } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 function* handleError(error: IError, navigation: any, additionalPopupModalParams?: IPopupModalParamsProps) {
@@ -559,6 +561,27 @@ export function* watchHunterCheckinTerry() {
   yield takeLatest(ESagaAppAction.HUNTER_CHECKIN_TERRY, hunterCheckinTerry);
 }
 
+function* hunterUpdateTerrypath(action: IReduxActionWithNavigation<ESagaAppAction, string>) {
+  const navigation = action.payload?.navigation;
+  try {
+    const terryId = action.payload?.data;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const paths: { [key: string]: IRealtimeLocation[] } = yield select(reduxSelector.getAppCoordinatesPath);
+    const path = paths && paths[terryId as string];
+    const pathString = JSON.stringify(map(path, item => ({ latitude: item.latitude, longitude: item.longitude })));
+    const profileID = user.id;
+    if (!isEmpty(path) && !isEmpty(path)) {
+      yield call(requestHunterUpsertTerryUserPath, pathString, profileID, terryId);
+    }
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchHunterUpdateTerrypath() {
+  yield takeLatest(ESagaAppAction.HUNTER_UPDATE_TERRY_PATH, hunterUpdateTerrypath);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -578,5 +601,6 @@ export default function* userSaga() {
     watchGetTerryCheckins(),
     watchCreateTerry(),
     watchHunterCheckinTerry(),
+    watchHunterUpdateTerrypath(),
   ]);
 }

@@ -19,6 +19,7 @@ import {
   ITerryFilterParams,
   ITerryInputDto,
   ITerryResponseDto,
+  ITerryUserPathResDto,
 } from 'App/types/terry';
 
 import {
@@ -219,6 +220,12 @@ export const requestHunterGetTerryCheckin = async (params: IHunterGetTerryChecki
   return AXIOS.get<IResponseTerryCheckins>(`/hunter/${params.profileId}/terry-checkin/${params.id}`, {
     params,
   }).then(res => res.data);
+};
+
+export const requestHunterUpsertTerryUserPath = async (path: string, profileId: string, terryId: string) => {
+  return AXIOS.put<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`, { path }).then(
+    result => result.data,
+  );
 };
 
 export default AXIOS;

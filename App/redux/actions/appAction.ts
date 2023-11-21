@@ -1,6 +1,7 @@
 import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
+import { IRealtimeLocation } from 'App/types';
 import { IError } from 'App/types/error';
 
 import { IResponseTerryCheckins, ITerryCheckinInputDto, ITerryFilterInputDto } from 'App/types/terry';
@@ -83,6 +84,12 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_CHECKIN_TERRY_DATA,
       payload: { terryCheckinInput },
+    };
+  },
+  setCoordinatesPath: (coordinatesPath: { [key: string]: IRealtimeLocation[] }) => {
+    return {
+      type: EReduxAppAction.SET_COORDINATES_PATH,
+      payload: { coordinatesPath },
     };
   },
 };

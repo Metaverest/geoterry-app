@@ -136,6 +136,12 @@ const sagaUserAction = {
       payload: { navigation, options },
     };
   },
+  hunterUpdateTerryPathAsync: (terryId: string, navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaAppAction.HUNTER_UPDATE_TERRY_PATH,
+      payload: { data: terryId, navigation, options },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };

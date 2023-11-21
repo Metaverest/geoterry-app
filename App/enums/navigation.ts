@@ -1,7 +1,6 @@
 import { ParamListBase } from '@react-navigation/native';
-import { IResponseTerryCheckins, ITerryResponseDto } from 'App/types/terry';
 import { IRealtimeLocation } from 'App/types';
-import { IResponseTerryCheckins } from 'App/types/terry';
+import { IResponseTerryCheckins, ITerryResponseDto } from 'App/types/terry';
 
 export enum ENavigationScreen {
   SPLASH_SCREEN = 'SPLASH_SCREEN',
