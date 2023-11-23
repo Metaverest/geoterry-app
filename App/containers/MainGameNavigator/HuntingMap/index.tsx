@@ -126,8 +126,7 @@ const HuntingMapScreen = () => {
           longitude: terry?.location.longitude || 0,
         }}
         style={styles.mapContainer}
-        showsUserLocation={true}
-        followsUserLocation={true}>
+        showsUserLocation={true}>
         {terry && <TreasureMarker key={terry.id} treasure={terry} />}
         {!isEmpty(coordinatesPathOfTerry) && (
           <Marker

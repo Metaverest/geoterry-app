@@ -36,7 +36,7 @@ const Review = () => {
           <View style={styles.flex}>
             <CustomText style={styles.name}>{item.profile.displayName}</CustomText>
             <CustomText style={styles.time}>
-              {item.rate ? t('Đã tìm thấy') : t('Chưa tìm thấy')}
+              {item.isFound ? t('Đã tìm thấy') : t('Chưa tìm thấy')}
               {' - '}
               {t(convertDateRelativeToNow(item.createdAt, user.languageCode))}
             </CustomText>

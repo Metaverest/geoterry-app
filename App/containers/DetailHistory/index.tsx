@@ -29,7 +29,10 @@ export default function DetailHistory() {
       <CustomText style={styles.title}>{t(params.terry.name)}</CustomText>
       <Rating style={styles.mt4} rate={params.rate} />
       <View style={[styles.row, styles.mv4]}>
-        <CustomText style={styles.location}>{convertDateFormatHistory(params.checkinAt)}</CustomText>
+        <CustomText style={styles.location}>
+          {params.isFound ? t('Đã tìm thấy') : t('Không tìm thấy')} {'  |  '}
+          {convertDateFormatHistory(params.checkinAt)}
+        </CustomText>
         <DumbbellIcon style={styles.icon} />
         <CustomText style={[styles.location, styles.ml4]}>{params.terry.metadata.difficulty}</CustomText>
         <SlideSizeIcon style={styles.icon} />
