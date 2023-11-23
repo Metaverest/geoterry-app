@@ -436,6 +436,7 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
       requestHunterGetTerryUserPath,
       profileId,
       terryParams?.terryId,
+      { ignoreError: true },
     );
     if (!isEmpty(terryPathRes?.path)) {
       // Convert string path to array

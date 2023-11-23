@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: isIOSDevice() ? rh(55) : 0,
+    marginBottom: isIOSDevice() ? rw(55) : 0,
   },
   imageContainer: {
     width: rw(50),
