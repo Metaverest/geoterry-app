@@ -1,6 +1,7 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
+import { isAndroidDevice } from 'App/helpers/common';
 import {
   CommonActions,
   RouteProp,
