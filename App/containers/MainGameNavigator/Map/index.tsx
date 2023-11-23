@@ -198,7 +198,7 @@ const MapScreen = () => {
         ref={mapRef}
         style={styles.mapContainer}
         showsUserLocation={isSaveBatterryMode}
-        compassOffset={{ x: -rh(10), y: rw(208) }}
+        showsCompass={false}
         onRegionChangeComplete={(data, gesture) => {
           // To avoid onRegionChangeComplete() callback is called infinitely
           if (isAndroidDevice() && !gesture.isGesture) {
