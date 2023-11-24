@@ -142,7 +142,6 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             styles.headerContainer,
             {
               marginTop: terry.photoUrls?.length === 0 ? rh(13) : styles.headerContainer.marginTop,
-              paddingTop: terry.photoUrls?.length === 0 ? rh(0) : styles.headerContainer.marginTop,
             },
           ]}>
           <View style={styles.containerLocation}>

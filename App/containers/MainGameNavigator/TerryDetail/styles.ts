@@ -9,8 +9,7 @@ export const styles = StyleSheet.create({
     width: '100%',
   },
   headerContainer: {
-    marginTop: rh(24),
-    paddingTop: rh(16),
+    marginTop: rh(40),
     paddingHorizontal: rw(16),
   },
   terryNameText: {
