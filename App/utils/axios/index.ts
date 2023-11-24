@@ -130,10 +130,8 @@ AXIOS.interceptors.response.use(
     }
     // There is the case we cannot refresh token, we need to logout user.
     else if (
-      (error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
-        error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST) ||
-      (error?.response?.data?.errorCode === EErrorCode.UNKNOWN_ERROR &&
-        error?.response?.data?.statusCode === EStatusCode.NOT_FOUND)
+      error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
+      error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
     ) {
       navigationRef.current.dispatch(
         CommonActions.navigate({
@@ -228,10 +226,18 @@ export const requestHunterUpsertTerryUserPath = async (path: string, profileId: 
   );
 };
 
-export const requestHunterGetTerryUserPath = async (profileId: string, terryId: string) => {
-  return AXIOS.get<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`).then(
-    result => result.data,
-  );
+export const requestHunterGetTerryUserPath = async (
+  profileId: string,
+  terryId: string,
+  options?: { ignoreError?: boolean },
+) => {
+  return AXIOS.get<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`)
+    .then(result => result.data)
+    .catch(error => {
+      if (!options?.ignoreError) {
+        throw error;
+      }
+    });
 };
 
 export default AXIOS;

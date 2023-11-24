@@ -96,6 +96,7 @@ export interface IResponseTerryCheckins {
   updatedAt: string;
   id: string;
   terry: Terry;
+  isFound: boolean;
 }
 
 export interface Location {

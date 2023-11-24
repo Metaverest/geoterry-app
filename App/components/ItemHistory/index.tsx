@@ -23,7 +23,10 @@ const ItemHistory = (props: IResponseTerryCheckins) => {
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, props));
       }}>
       <View>
-        <CustomText style={styles.timeHistory}>{convertDateFormatHistory(props.checkinAt)}</CustomText>
+        <CustomText style={styles.timeHistory}>
+          {props.isFound ? t('Đã tìm thấy') : t('Không tìm thấy')} {'  |  '}
+          {convertDateFormatHistory(props.checkinAt)}
+        </CustomText>
         <CustomText style={styles.title}>{t(props.terry.name)}</CustomText>
         <View style={styles.row}>
           <Rating rate={props.rate} />

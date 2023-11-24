@@ -1,7 +1,7 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
-import { isAndroidDevice, responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { isAndroidDevice } from 'App/helpers/common';
 import {
   CommonActions,
   RouteProp,
@@ -198,7 +198,7 @@ const MapScreen = () => {
         ref={mapRef}
         style={styles.mapContainer}
         showsUserLocation={isSaveBatterryMode}
-        compassOffset={{ x: -rh(10), y: rw(208) }}
+        showsCompass={false}
         onRegionChangeComplete={(data, gesture) => {
           // To avoid onRegionChangeComplete() callback is called infinitely
           if (isAndroidDevice() && !gesture.isGesture) {
