@@ -1,18 +1,15 @@
 import CustomButton from 'App/components/Button';
-import CustomSwipeUpModal from 'App/components/SwipeUpModal';
 import { EButtonType, FindTerryCheckinBy } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ITerryResponseDto } from 'App/types/terry';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TouchableOpacity, View } from 'react-native';
+import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
-import { convertDateFormat, meterToKilometer } from 'App/utils/convert';
-import DotIcon from 'App/media/DotIcon';
-import { head } from 'lodash';
+import { meterToKilometer } from 'App/utils/convert';
 import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -20,6 +17,13 @@ import Rating from 'App/components/Rating';
 import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
+import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
+import { AppBackgroundImage, CheckInTerryCongratImage } from 'App/components/image';
+import WhiteLocationIcon from 'App/media/WhiteLocationIcon';
+import PaginationDots from 'App/components/PaginationDots';
+import Header from 'App/components/Header';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { responsiveByHeight as rh } from 'App/helpers/common';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -30,8 +34,10 @@ interface ITerryItem {
 }
 const TerryDetailScreen = ({ route }: { route: any }) => {
   const user = useSelector(reduxSelector.getUser);
+  const { top } = useSafeAreaInsets();
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
+  const [indexImg, setIndexImg] = useState(0);
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
@@ -75,43 +81,95 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
       },
     ] as ITerryItem[];
   }, [t, terry]);
-  const RenderTerryItem = useCallback(({ terryItemToRender }: { terryItemToRender: ITerryItem }) => {
-    return (
-      <View style={styles.terryItemContainer}>
-        <View style={styles.terryItemTitleAndSubtitleContainer}>
-          <CustomText style={styles.terryItemTitleText}>{terryItemToRender.title}</CustomText>
-          <CustomText style={styles.terryItemSubtitleText}>{terryItemToRender.subTitle}</CustomText>
-        </View>
-        <CustomText style={styles.terryItemValueText}>{terryItemToRender.value}</CustomText>
-      </View>
-    );
-  }, []);
-  return (
-    <CustomSwipeUpModal>
-      <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <CustomText style={styles.terryNameText}>{terry?.name}</CustomText>
-          <View style={styles.terryDistanceAndCategoryContainer}>
-            <CustomText style={styles.terryDistanceAndCategoryText}>{`${meterToKilometer(terry.distance || 0)} ${t(
-              'km',
-            )}`}</CustomText>
-            <DotIcon />
-            <CustomText style={styles.terryDistanceAndCategoryText}>{head(terry.categories)?.name}</CustomText>
+  const RenderTerryItem = useCallback(
+    ({ terryItemToRender, index }: { terryItemToRender: ITerryItem; index: number }) => {
+      return (
+        <View
+          style={[
+            styles.terryItemContainer,
+            {
+              borderBottomWidth:
+                index === terryItem.length - 1 ? undefined : styles.terryItemContainer.borderBottomWidth,
+            },
+          ]}>
+          <View style={styles.terryItemTitleAndSubtitleContainer}>
+            <CustomText style={styles.terryItemTitleText}>{terryItemToRender.title}</CustomText>
+            <CustomText style={styles.terryItemSubtitleText}>{terryItemToRender.subTitle}</CustomText>
           </View>
+          <CustomText style={styles.terryItemValueText}>{terryItemToRender.value}</CustomText>
+        </View>
+      );
+    },
+    [terryItem.length],
+  );
+  const image = (index: number) => ({ image: terry.photoUrls![index % terry.photoUrls!.length] });
+  const items = Array.from(Array(terry.photoUrls?.length)).map((_, index) => image(index));
+  return (
+    <ImageBackground source={AppBackgroundImage}>
+      <ScrollView style={styles.container}>
+        {terry.photoUrls?.length === 0 ? (
+          <Image source={CheckInTerryCongratImage} style={styles.imageNullTerryCheckin} resizeMode="cover" />
+        ) : (
+          <View style={styles.imageSlider}>
+            <SwiperFlatListWithGestureHandler
+              autoplay
+              autoplayLoop
+              autoplayDelay={2}
+              index={0}
+              showPagination
+              data={items}
+              onChangeIndex={({ index }) => setIndexImg(index)}
+              renderItem={({ item, index }) => {
+                return (
+                  <ImageBackground
+                    style={styles.imageSlider}
+                    source={{ uri: item.image }}
+                    testID={`container_swiper_renderItem_screen_${index}`}
+                    resizeMode="cover"
+                  />
+                );
+              }}
+              PaginationComponent={() => (
+                <View style={styles.containerPaginationDots}>
+                  <PaginationDots length={items.length} index={indexImg} />
+                </View>
+              )}
+            />
+          </View>
+        )}
+        <View
+          style={[
+            styles.headerContainer,
+            {
+              marginTop: terry.photoUrls?.length === 0 ? rh(13) : styles.headerContainer.marginTop,
+              paddingTop: terry.photoUrls?.length === 0 ? rh(0) : styles.headerContainer.marginTop,
+            },
+          ]}>
+          <View style={styles.containerLocation}>
+            <WhiteLocationIcon />
+            <CustomText style={styles.terryDistanceAndCategoryText}>
+              Bến tre, {`${meterToKilometer(terry.distance || 0)} ${t('km')}`}
+            </CustomText>
+            <Rating rate={terry.rating.rate} />
+            <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>
+          </View>
+          <CustomText style={styles.terryNameText}>{terry?.name}</CustomText>
+          <CustomText style={styles.terryCreateByText}>
+            {t('Tạo bởi')}:{' '}
+            <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
+          </CustomText>
+          {terry.categories && (
+            <View style={styles.containerTag}>
+              {terry.categories.map((item, index) => (
+                <View style={styles.tag} key={index}>
+                  <CustomText style={styles.textTag}>{t(item.name)}</CustomText>
+                </View>
+              ))}
+            </View>
+          )}
           <CustomText style={styles.desc}>“{terry.description}”</CustomText>
         </View>
         <View style={styles.terrySubHeaderContainer}>
-          <View style={styles.terryCreateByAndCreateAtContainer}>
-            <CustomText style={styles.terryCreateByText}>
-              {t('Được tạo bởi')}:{' '}
-              <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
-            </CustomText>
-            <CustomText style={styles.terryCreateAtText}>{convertDateFormat(terry.createdAt)}</CustomText>
-            <View style={styles.containerRating}>
-              <Rating rate={terry.rating.rate} />
-              <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>
-            </View>
-          </View>
           <View style={styles.suggestionAndRateContainer}>
             <TouchableOpacity style={styles.suggestionAndRateButton}>
               <CustomText style={styles.suggestionAndRateText}>{t('Gợi ý')}</CustomText>
@@ -125,11 +183,12 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               <CustomText style={styles.suggestionAndRateText}>{t('Xem đánh giá')}</CustomText>
             </TouchableOpacity>
           </View>
+          <CustomText style={styles.textDetailInfor}>{t('Thông tin chi tiết')}</CustomText>
         </View>
         <View style={styles.terryMainContainer}>
           <ScrollView>
-            {terryItem?.map(o => (
-              <RenderTerryItem key={o.title} terryItemToRender={o} />
+            {terryItem?.map((o, index) => (
+              <RenderTerryItem index={index} key={o.title} terryItemToRender={o} />
             ))}
           </ScrollView>
         </View>
@@ -178,8 +237,9 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             </>
           )}
         </View>
-      </View>
-    </CustomSwipeUpModal>
+      </ScrollView>
+      <Header title="" headerContainerStyle={{ marginTop: top }} />
+    </ImageBackground>
   );
 };
 

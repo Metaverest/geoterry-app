@@ -86,7 +86,6 @@ const MainGameNavigator = () => {
         component={TerryDetailScreen}
         options={{
           headerShown: false,
-          presentation: 'transparentModal',
           cardStyle: {
             backgroundColor: EColor.color_00000080,
           },
