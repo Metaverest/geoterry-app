@@ -185,7 +185,6 @@ export const styles = StyleSheet.create({
   imageSlider: {
     width,
     height: rh(282),
-    backgroundColor: 'white',
   },
   containerLocation: {
     flexDirection: 'row',
