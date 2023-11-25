@@ -12,18 +12,19 @@ import CustomText from 'App/components/CustomText';
 import { meterToKilometer } from 'App/utils/convert';
 import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
 import Rating from 'App/components/Rating';
 import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
-import { AppBackgroundImage, CheckInTerryCongratImage } from 'App/components/image';
+import { AppBackgroundImage, CheckInTerryCongratImage, CreateTerrySuccessImage } from 'App/components/image';
 import WhiteLocationIcon from 'App/media/WhiteLocationIcon';
 import PaginationSeperators from 'App/components/PaginationSeperators';
 import Header from 'App/components/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByHeight as rh } from 'App/helpers/common';
+import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -42,6 +43,15 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
     return route?.params?.terry;
   }, [route]);
 
+  const handleViewSuggestion = () => {
+    navigateToPopUpModal(navigation, {
+      title: t('Gợi ý'),
+      subtitle: terry.hint || t('Không có gợi ý'),
+      image: CreateTerrySuccessImage,
+      confirmButtonTitle: t('Xong'),
+    });
+  };
+
   const handleViewHistory = () => {
     navigation.dispatch(StackActions.replace(ENavigationScreen.LOADING_MODAL));
     requestHunterGetTerryCheckin({
@@ -55,6 +65,14 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, res));
       })
       .catch(err => console.log(err, 'terryDetail'));
+  };
+
+  const handleViewReviews = () => {
+    navigateToPopUpModal(navigation, {
+      ...PopUpModalParams[EPopUpModalType.TERRY_INFORMATION_CAN_BE_DISCLOSED],
+      closeModalBeforeActiom: true,
+      onCancel: () => navigation.dispatch(CommonActions.navigate(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id })),
+    });
   };
 
   const terryItem: ITerryItem[] = useMemo(() => {
@@ -172,15 +190,11 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
         </View>
         <View style={styles.terrySubHeaderContainer}>
           <View style={styles.suggestionAndRateContainer}>
-            <TouchableOpacity style={styles.suggestionAndRateButton}>
+            <TouchableOpacity style={styles.suggestionAndRateButton} onPress={handleViewSuggestion}>
               <CustomText style={styles.suggestionAndRateText}>{t('Gợi ý')}</CustomText>
             </TouchableOpacity>
             <View style={styles.suggestionAndRateDivider} />
-            <TouchableOpacity
-              style={styles.suggestionAndRateButton}
-              onPress={() => {
-                navigation.dispatch(StackActions.replace(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id }));
-              }}>
+            <TouchableOpacity style={styles.suggestionAndRateButton} onPressIn={handleViewReviews}>
               <CustomText style={styles.suggestionAndRateText}>{t('Xem đánh giá')}</CustomText>
             </TouchableOpacity>
           </View>

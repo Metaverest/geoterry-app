@@ -45,6 +45,9 @@ export const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  buttonContainerSingle: {
+    width: '100%',
+  },
   groupButtonContainer: {
     width: '100%',
     flexDirection: 'row',

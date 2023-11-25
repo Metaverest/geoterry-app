@@ -14,6 +14,7 @@ export interface IPopupModalParamsProps {
   subtitle?: string;
   confirmButtonTitle?: string;
   cancelButtonTitle?: string;
+  closeModalBeforeActiom?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
