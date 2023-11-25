@@ -372,6 +372,9 @@ function* getPublicTerries(
 ) {
   const navigation = action?.payload?.navigation;
   try {
+    if (last(navigation.getState().routes)?.name !== ENavigationScreen.LOADING_MODAL_TRANSPARENT) {
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL_TRANSPARENT));
+    }
     if (!isEmpty(action?.payload?.data?.filterData)) {
       yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
     }
@@ -386,12 +389,13 @@ function* getPublicTerries(
       profileId,
     );
     yield put(reduxAppAction.setPublicTerries(response));
-
+    navigation.dispatch(StackActions.pop());
     if (last(navigation.getState().routes)?.name === EMainGameScreen.FILTER_SCREEN) {
       navigation.dispatch(CommonActions.goBack());
     }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    navigation.dispatch(StackActions.pop());
   }
 }
 

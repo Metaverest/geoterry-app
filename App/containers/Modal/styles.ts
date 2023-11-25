@@ -10,6 +10,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: rw(16),
   },
+  loadingTransparent: {
+    backgroundColor: 'transparent',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: rw(16),
+  },
   popupContainer: {
     width: '100%',
     backgroundColor: EColor.color_666666,

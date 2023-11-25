@@ -24,6 +24,7 @@ import Review from '../Review';
 import CheckinTerryScreen from './CheckinTerry';
 import CheckinTerryVoteScreen from './CheckinTerryVote';
 import HuntingMapScreen from './HuntingMap';
+import LoadingModalTransparent from '../Modal/LoadingModalTransparent';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -131,6 +132,11 @@ const MainGameNavigator = () => {
             backgroundColor: EColor.color_00000080,
           },
         }}
+      />
+      <Stack.Screen
+        name={ENavigationScreen.LOADING_MODAL_TRANSPARENT}
+        component={LoadingModalTransparent}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
       />
     </Stack.Navigator>
   );
