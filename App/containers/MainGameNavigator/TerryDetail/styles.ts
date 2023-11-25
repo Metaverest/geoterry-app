@@ -1,14 +1,15 @@
 import { EColor } from 'App/enums/color';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+
+const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginTop: rh(24),
   },
   headerContainer: {
-    paddingVertical: rh(8),
+    marginTop: rh(40),
     paddingHorizontal: rw(16),
   },
   terryNameText: {
@@ -16,7 +17,6 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: rh(30),
     color: EColor.color_FAFAFA,
-    textAlign: 'center',
     paddingVertical: rh(8),
   },
   terryDistanceAndCategoryContainer: {
@@ -30,26 +30,25 @@ export const styles = StyleSheet.create({
     fontSize: rh(10),
     fontWeight: '500',
     lineHeight: rh(16),
+    marginLeft: rw(4),
+    marginRight: rw(16),
   },
   terrySubHeaderContainer: {
-    paddingVertical: rh(8),
     paddingHorizontal: rw(16),
     width: '100%',
   },
   terryCreateByAndCreateAtContainer: {},
   terryCreateByText: {
-    fontSize: rh(12),
-    fontWeight: '400',
-    lineHeight: rh(18),
+    fontSize: rh(10),
+    fontWeight: '500',
+    lineHeight: rh(16),
     color: EColor.color_CCCCCC,
-    textAlign: 'center',
   },
   terryCreateByDisplayNameText: {
-    fontSize: rh(12),
+    fontSize: rh(10),
     fontWeight: '600',
-    lineHeight: rh(18),
-    color: EColor.color_CCCCCC,
-    textAlign: 'center',
+    lineHeight: rh(16),
+    color: EColor.color_FAFAFA,
   },
   terryCreateAtText: {
     fontSize: rh(12),
@@ -62,7 +61,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    marginTop: rh(10),
   },
   suggestionAndRateDivider: {
     backgroundColor: EColor.color_FAFAFA,
@@ -167,12 +165,10 @@ export const styles = StyleSheet.create({
   customOutlineButtonContainer: { borderColor: EColor.color_FAFAFA, borderStyle: 'solid', borderWidth: rw(1) },
   desc: {
     color: EColor.color_FAFAFA,
-    textAlign: 'center',
     fontSize: rh(12),
     fontWeight: '500',
     lineHeight: rh(18),
-    marginTop: rh(16),
-    marginBottom: rh(4),
+    marginVertical: rh(24),
   },
   containerRating: {
     flexDirection: 'row',
@@ -185,4 +181,44 @@ export const styles = StyleSheet.create({
     fontSize: rh(12),
     lineHeight: rh(18),
   },
+  imageSlider: {
+    width,
+    height: rh(282),
+  },
+  containerLocation: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tag: {
+    paddingVertical: rh(2),
+    paddingHorizontal: rw(8),
+    marginRight: rw(4),
+    borderRadius: rh(2),
+    backgroundColor: EColor.color_333333,
+  },
+  textTag: {
+    fontSize: rh(10),
+    fontWeight: '500',
+    lineHeight: rh(16),
+    color: EColor.color_F2F2F2,
+  },
+  containerTag: {
+    flexDirection: 'row',
+    marginTop: rh(8),
+  },
+  textDetailInfor: {
+    fontSize: rh(18),
+    fontWeight: '700',
+    lineHeight: rh(26),
+    color: EColor.color_FAFAFA,
+    marginTop: rh(48),
+  },
+  containerPaginationDots: {
+    position: 'absolute',
+    backgroundColor: EColor.transparent,
+    bottom: 10,
+    left: 0,
+    right: 0,
+  },
+  imageNullTerryCheckin: { width: rw(146), height: rh(140), marginTop: rh(90), alignSelf: 'center' },
 });
