@@ -16,12 +16,14 @@ export interface IPopupModalProps {
   subtitle?: string;
   confirmButtonTitle?: string;
   cancelButtonTitle?: string;
+  closeModalBeforeActiom?: boolean;
   onConfirm?: () => void;
   onCancel?: () => void;
 }
 const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
   const { t } = useTranslation();
-  const { image, cancelButtonTitle, confirmButtonTitle, onCancel, onConfirm, subtitle, title } = route.params;
+  const { image, cancelButtonTitle, confirmButtonTitle, onCancel, onConfirm, subtitle, title, closeModalBeforeActiom } =
+    route.params;
   const containOnlyOneButton = useMemo(() => {
     return !cancelButtonTitle || !confirmButtonTitle;
   }, [cancelButtonTitle, confirmButtonTitle]);
@@ -29,12 +31,12 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView isModal>
       <View style={styles.popupContainer}>
-        <Image style={styles.popupImage} source={image} />
+        <Image style={styles.popupImage} resizeMode="contain" source={image} />
         <CustomText style={styles.popupTitle}>{title}</CustomText>
         <CustomText style={styles.popupSubtitle}>{subtitle}</CustomText>
         <View style={styles.footerContainer}>
           {containOnlyOneButton ? (
-            <View style={styles.buttonContainer}>
+            <View style={styles.buttonContainerSingle}>
               <CustomButton
                 onPress={() => {
                   onConfirm && onConfirm();
@@ -50,8 +52,13 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
               <View style={styles.buttonContainer}>
                 <CustomButton
                   onPress={() => {
-                    onCancel && onCancel();
-                    navigation.dispatch(CommonActions.goBack());
+                    if (closeModalBeforeActiom) {
+                      navigation.dispatch(CommonActions.goBack());
+                      onCancel && onCancel();
+                    } else {
+                      onCancel && onCancel();
+                      navigation.dispatch(CommonActions.goBack());
+                    }
                   }}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   title={confirmButtonTitle}
@@ -63,9 +70,13 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
               <View style={styles.buttonContainer}>
                 <CustomButton
                   onPress={() => {
-                    onCancel && onCancel();
-                    onConfirm && onConfirm();
-                    navigation.dispatch(CommonActions.goBack());
+                    if (closeModalBeforeActiom) {
+                      navigation.dispatch(CommonActions.goBack());
+                      onConfirm && onConfirm();
+                    } else {
+                      onConfirm && onConfirm();
+                      navigation.dispatch(CommonActions.goBack());
+                    }
                   }}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                   buttonType={EButtonType.SOLID}
