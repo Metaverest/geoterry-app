@@ -45,7 +45,7 @@ const ProfileScreen = () => {
             <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
             <CustomText style={styles.biography}>{user.bio || t('Bio')}</CustomText>
             <View style={styles.contentRewardPoints}>
-              <RewardPointsIcon width={rw(20)} height={rh(20)} />
+              <RewardPointsIcon />
               <CustomText style={styles.textRewardPoints}>{t('Điểm tích luỹ')}:</CustomText>
               <CustomText style={styles.points}>{user.rewardPoints}</CustomText>
             </View>

@@ -125,6 +125,7 @@ const HuntingMapScreen = () => {
           latitude: terry?.location.latitude || 0,
           longitude: terry?.location.longitude || 0,
         }}
+        showsCompass={false}
         style={styles.mapContainer}
         showsUserLocation={true}>
         {terry && <TreasureMarker key={terry.id} treasure={terry} />}
