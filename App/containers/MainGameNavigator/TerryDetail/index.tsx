@@ -20,7 +20,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
 import { AppBackgroundImage, CheckInTerryCongratImage } from 'App/components/image';
 import WhiteLocationIcon from 'App/media/WhiteLocationIcon';
-import PaginationDots from 'App/components/PaginationDots';
+import PaginationSeperators from 'App/components/PaginationSeperators';
 import Header from 'App/components/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByHeight as rh } from 'App/helpers/common';
@@ -131,7 +131,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               }}
               PaginationComponent={() => (
                 <View style={styles.containerPaginationDots}>
-                  <PaginationDots length={items.length} index={indexImg} />
+                  <PaginationSeperators length={items.length} index={indexImg} />
                 </View>
               )}
             />
@@ -157,15 +157,17 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             {t('Tạo bởi')}:{' '}
             <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
           </CustomText>
-          {terry.categories && (
-            <View style={styles.containerTag}>
-              {terry.categories.map((item, index) => (
-                <View style={styles.tag} key={index}>
-                  <CustomText style={styles.textTag}>{t(item.name)}</CustomText>
-                </View>
-              ))}
-            </View>
-          )}
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {terry.categories && (
+              <View style={styles.containerTag}>
+                {terry.categories.map((item, index) => (
+                  <View style={styles.tag} key={index}>
+                    <CustomText style={styles.textTag}>{t(item.name)}</CustomText>
+                  </View>
+                ))}
+              </View>
+            )}
+          </ScrollView>
           <CustomText style={styles.desc}>“{terry.description}”</CustomText>
         </View>
         <View style={styles.terrySubHeaderContainer}>

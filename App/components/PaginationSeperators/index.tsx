@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import React from 'react';
 import { styles } from './styles';
 
-const PaginationDots = ({ length, index }: { length: number; index: number }) => {
+const PaginationSeperators = ({ length, index }: { length: number; index: number }) => {
   const arr = [...Array(length).keys()];
   return (
     <View style={styles.containerDots}>
@@ -13,4 +13,4 @@ const PaginationDots = ({ length, index }: { length: number; index: number }) =>
   );
 };
 
-export default PaginationDots;
+export default PaginationSeperators;
