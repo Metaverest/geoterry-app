@@ -132,7 +132,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
             <CustomButton
               title={t('Nhắn tin')}
               onPress={() => {
-                navigation.dispatch(CommonActions.navigate(EMainGameScreen.EDIT_PROFILE_SCREEN));
+                console.log('Should be redirected to messaging screen');
               }}
               buttonType={EButtonType.SOLID}
               linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
