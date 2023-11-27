@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { EPublicReadProfileBy } from 'App/enums';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
 import {
@@ -140,6 +141,12 @@ const sagaUserAction = {
     return {
       type: ESagaAppAction.HUNTER_UPDATE_TERRY_PATH,
       payload: { data: terryId, navigation, options },
+    };
+  },
+  getPublicProfileAsync: (profileID: string, findBy: EPublicReadProfileBy, navigation: any) => {
+    return {
+      type: ESagaAppAction.GET_PUBLIC_PROFILE,
+      payload: { data: { profileID, findBy }, navigation },
     };
   },
 };

@@ -5,7 +5,7 @@ import { IRealtimeLocation } from 'App/types';
 import { IError } from 'App/types/error';
 
 import { IResponseTerryCheckins, ITerryCheckinInputDto, ITerryFilterInputDto } from 'App/types/terry';
-import { ICreateAccountDto } from 'App/types/user';
+import { ICreateAccountDto, IUser } from 'App/types/user';
 
 const reduxAppAction = {
   setLanguage: (language: ELanguageCode) => {
@@ -90,6 +90,13 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_COORDINATES_PATH,
       payload: { coordinatesPath },
+    };
+  },
+
+  setOtherUserProfileToDisplay: (otherUserProfileToDisplay: IUser) => {
+    return {
+      type: EReduxAppAction.SET_OTHER_USER_PROFILE_TO_DISPLAY,
+      payload: { otherUserProfileToDisplay },
     };
   },
 };

@@ -9,7 +9,7 @@ import OTPScreen from 'App/containers/OTP';
 import OnboardingScreen from 'App/containers/Onboarding';
 import RegisterScreen from 'App/containers/Register';
 import SplashScreen from 'App/containers/SplashScreen';
-import { ELanguageCode } from 'App/enums';
+import { EDataStorageKey, ELanguageCode } from 'App/enums';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import AXIOS, { setLanguageRequestHeader } from 'App/utils/axios';
@@ -17,6 +17,10 @@ import i18next from 'i18next';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import NetworkLoggerButton from './NetworkLoggerButton';
+import { Linking } from 'react-native';
+import { getStoredProperty } from 'App/utils/storage/storage';
+import { ROUTES } from './linkingConfig';
+import { PREFIX_LINK } from 'App/constants/common';
 
 export const navigationRef = React.createRef<any>();
 
@@ -29,6 +33,17 @@ const Navigation = () => {
       await setLanguageRequestHeader(AXIOS, language || ELanguageCode.VN);
     })();
   }, [language]);
+
+  useEffect(() => {
+    (async () => {
+      const initURL = await Linking.getInitialURL();
+      const accessToken = await getStoredProperty(EDataStorageKey.ACCESS_TOKEN);
+      if (!initURL || accessToken || Object.values(ROUTES.AUTH_ROUTES).includes(initURL.replace(PREFIX_LINK, ''))) {
+        return;
+      }
+      navigationRef.current?.navigate(ENavigationScreen.LOGIN_SCREEN);
+    })();
+  }, []);
 
   return (
     <>

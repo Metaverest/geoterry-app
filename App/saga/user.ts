@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
-import { EDataStorageKey, EIdentifierType, ENamespace } from 'App/enums';
+import { EDataStorageKey, EIdentifierType, ENamespace, EPublicReadProfileBy } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import {
   ECreateProfileScreen,
@@ -59,6 +59,7 @@ import AXIOS, {
   requestLogin,
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
+  requestPublicReadProfile,
   requestUpdateCredentials,
   requestUploadProfileImage,
   requestUserCreateOrUpdateDevice,
@@ -597,6 +598,27 @@ export function* watchHunterUpdateTerrypath() {
   yield takeLatest(ESagaAppAction.HUNTER_UPDATE_TERRY_PATH, hunterUpdateTerrypath);
 }
 
+function* getPublicProfile(
+  action: IReduxActionWithNavigation<ESagaAppAction, { profileID: string; findBy: EPublicReadProfileBy }>,
+) {
+  const navigation = action.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const profileID = action.payload?.data?.profileID;
+    const findBy = action.payload?.data?.findBy;
+    const response: IProfileResDto = yield call(requestPublicReadProfile, profileID, findBy);
+    yield put(reduxAppAction.setOtherUserProfileToDisplay(response));
+    navigation.dispatch(StackActions.pop());
+  } catch (error) {
+    navigation.dispatch(StackActions.pop());
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchGetPublicProfile() {
+  yield takeLatest(ESagaAppAction.GET_PUBLIC_PROFILE, getPublicProfile);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -617,5 +639,6 @@ export default function* userSaga() {
     watchCreateTerry(),
     watchHunterCheckinTerry(),
     watchHunterUpdateTerrypath(),
+    watchGetPublicProfile(),
   ]);
 }
