@@ -48,6 +48,7 @@ const MapScreen = () => {
   let numberOfFilters = useRef(0);
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
+  const user = useSelector(reduxSelector.getUser);
 
   useEffect(() => {
     numberOfFilters.current = 0;
@@ -290,7 +291,7 @@ const MapScreen = () => {
       <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon
           onPress={() => {
-            navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN));
+            navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: user.id }));
           }}
           buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
           customStyleContainer={styles.buttonRHNContainer}

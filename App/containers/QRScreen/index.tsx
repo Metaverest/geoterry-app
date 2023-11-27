@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Image } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { EarthIcon } from 'App/components/image';
 import { styles } from './styles';
@@ -18,6 +18,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { reduxSelector } from 'App/redux/selectors';
 import { useSelector } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { PREFIX_LINK } from 'App/constants/common';
 
 const QRScreen = () => {
   const { top } = useSafeAreaInsets();
@@ -27,10 +28,12 @@ const QRScreen = () => {
   const user = useSelector(reduxSelector.getUser);
 
   const [uriQR, setUriQR] = useState('');
-
+  const shareLink = useMemo(() => {
+    return `${PREFIX_LINK}://profile/${user.id}`;
+  }, [user.id]);
   const generateQRCode = () => {
     RNQRGenerator.generate({
-      value: user.id,
+      value: shareLink,
       height: 100,
       width: 100,
       correctionLevel: 'H',
@@ -42,7 +45,7 @@ const QRScreen = () => {
       .catch(error => console.log('Cannot create QR code', error));
   };
   const handleShareQR = async () => {
-    Share.open({ message: user.id })
+    Share.open({ message: shareLink })
       .then(res => {
         console.log(res);
       })
@@ -51,7 +54,7 @@ const QRScreen = () => {
       });
   };
   const handleCopyToClipboard = () => {
-    Clipboard.setString(user.id);
+    Clipboard.setString(shareLink);
   };
 
   useEffect(() => {

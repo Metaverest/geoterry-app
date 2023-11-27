@@ -32,3 +32,8 @@ export enum FindTerryCheckinBy {
   TERRY_ID = 'terry_id',
   CHECKIN_ID = 'checkin_id',
 }
+
+export enum EPublicReadProfileBy {
+  ID = 'id',
+  SLUG = 'slug',
+}

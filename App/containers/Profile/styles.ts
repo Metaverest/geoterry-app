@@ -50,7 +50,6 @@ export const styles = StyleSheet.create({
     fontSize: rh(18),
     fontWeight: '700',
     lineHeight: rh(26),
-    marginTop: rh(32),
   },
   customOutlineButtonText: {
     color: EColor.color_FAFAFA,
@@ -64,7 +63,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: rh(24),
+    marginTop: rh(32),
   },
   buttonContainer: {
     width: '48%',
@@ -90,4 +89,9 @@ export const styles = StyleSheet.create({
   ml16: {
     marginLeft: rw(16),
   },
+  profileSections: {
+    marginTop: rh(32),
+    rowGap: rh(32),
+  },
+  profileSection: {},
 });

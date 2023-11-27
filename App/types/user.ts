@@ -10,6 +10,8 @@ export interface IUser {
   logoUrl?: string;
   languageCode?: ELanguageCode;
   rewardPoints: number;
+  totalCheckedinTerry?: number;
+  createdAt?: string;
 }
 
 export interface IAccountCredentialsResDto {
