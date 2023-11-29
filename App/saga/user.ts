@@ -326,6 +326,7 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
   const fcmToken = action?.payload?.options?.fcmToken;
   try {
     const profile: IProfileResDto = yield call(requestUserReadProfile);
+    // console.log(profile)
 
     yield put(reduxUserAction.setUser(profile as IUser));
     if (fcmToken) {
