@@ -1,4 +1,5 @@
 import { ParamListBase } from '@react-navigation/native';
+import { IPopupModalProps } from 'App/containers/Modal/PopupModal';
 import { IRealtimeLocation } from 'App/types';
 import { IResponseTerryCheckins, ITerryResponseDto } from 'App/types/terry';
 
@@ -77,6 +78,7 @@ export interface EMainGameNavigatorParams extends ParamListBase {
     terry: ITerryResponseDto;
   };
   [ENavigationScreen.LOADING_MODAL]: undefined;
+  [ENavigationScreen.POPUP_SCREEN]: IPopupModalProps;
 }
 
 export enum EPopUpModalType {

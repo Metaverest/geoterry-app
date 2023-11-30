@@ -241,6 +241,6 @@ export const requestHunterGetTerryUserPath = async (
 };
 
 export const requestSwitchRole = async (role: ROLE_USER, reason: string) =>
-  AXIOS.put<{ status: STATUS_ROLE_REQUESTING.PENDING }>('/auth/switch-role', { role, reason }).then(({ data }) => data);
+  AXIOS.put<{ status: STATUS_ROLE_REQUESTING }>('/auth/switch-role', { role, reason }).then(({ data }) => data);
 
 export default AXIOS;
