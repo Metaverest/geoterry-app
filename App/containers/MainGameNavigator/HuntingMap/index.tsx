@@ -2,7 +2,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { styles } from './styles';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { CommonActions, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import Header from 'App/components/Header';
 import {
@@ -155,7 +155,14 @@ const HuntingMapScreen = () => {
       <View style={styles.footerButtonContainer}>
         <View style={styles.buttonContainer}>
           <CustomButton
-            onPress={() => {}}
+            onPress={() => {
+              navigation.dispatch(
+                CommonActions.navigate({
+                  name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
+                  params: { isCannotFindTerry: false },
+                }),
+              );
+            }}
             title={t('Đã tìm thấy')}
             buttonType={EButtonType.SOLID}
             linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
@@ -163,7 +170,14 @@ const HuntingMapScreen = () => {
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton
-            onPress={() => {}}
+            onPress={() => {
+              navigation.dispatch(
+                CommonActions.navigate({
+                  name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
+                  params: { isCannotFindTerry: true },
+                }),
+              );
+            }}
             title={t('Không tìm thấy')}
             buttonType={EButtonType.SOLID}
             linearGradient={[EColor.black, EColor.black]}

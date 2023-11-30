@@ -233,7 +233,14 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={() => {}}
+                  onPress={() => {
+                    navigation.dispatch(
+                      CommonActions.navigate({
+                        name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
+                        params: { isCannotFindTerry: false },
+                      }),
+                    );
+                  }}
                   title={t('Đã tìm thấy')}
                   buttonType={EButtonType.SOLID}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
