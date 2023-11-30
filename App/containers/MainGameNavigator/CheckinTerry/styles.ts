@@ -55,6 +55,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     rowGap: rw(8),
     columnGap: rw(8),
+    alignItems: 'center',
   },
   inputContainer: {
     flexDirection: 'column',
@@ -65,10 +66,14 @@ export const styles = StyleSheet.create({
     paddingBottom: rh(100),
   },
   photoItemContainer: {},
-  image: {},
+  image: {
+    width: rw(48),
+    height: rw(48),
+    borderRadius: rw(4),
+  },
   dismissCircleIconButton: {
     position: 'absolute',
-    top: rh(0),
-    right: rw(0),
+    top: rw(2),
+    right: rw(2),
   },
 });
