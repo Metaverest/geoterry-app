@@ -20,6 +20,9 @@ export const styles = StyleSheet.create({
     marginTop: rh(0),
     alignSelf: 'flex-start',
   },
+  headerImage: {
+    alignSelf: 'center',
+  },
   checkInSubtitle: {
     color: EColor.color_F2F2F2,
     fontSize: rh(12),

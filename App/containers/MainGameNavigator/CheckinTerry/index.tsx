@@ -111,7 +111,10 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header />
       <KeyboardAwareScrollView enableOnAndroid enableAutomaticScroll extraHeight={rh(151)}>
-        <Image style={styles.image} source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage} />
+        <Image
+          style={styles.headerImage}
+          source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage}
+        />
         <CustomText style={styles.checkInTitle}>
           {isCannotFindTerry ? t('Ồ, bạn không tìm thấy kho báu sao?') : t('Chúc mừng\nBạn đã tìm thấy kho báu!')}
         </CustomText>
