@@ -6,7 +6,6 @@ import RadioButtonUncheck from 'App/media/RadioButtonUncheck';
 import { styles } from './styles';
 import { useTranslation } from 'react-i18next';
 import { EUseRoleRequestStatus } from 'App/enums';
-import { EColor } from 'App/enums/color';
 
 export interface IItemSelectorSettingProps {
   disabled?: boolean;
@@ -26,7 +25,7 @@ const ItemSelectorSetting = ({ onPress, title, isSelected, status, disabled }: I
             <CustomText style={styles.status}>{t('Đang chờ xét duyệt')}</CustomText>
           )}
           {status === EUseRoleRequestStatus.REJECTED && (
-            <CustomText style={[styles.status, { color: EColor.color_FF0B0B }]}>{t('Bị từ chối')}</CustomText>
+            <CustomText style={styles.status}>{t('Bị từ chối')}</CustomText>
           )}
         </View>
 

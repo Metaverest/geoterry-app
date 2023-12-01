@@ -6,7 +6,6 @@ import { AppBackgroundImage, FoundProfileImage, NoteImage } from 'App/components
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
@@ -24,54 +23,48 @@ const RuleScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
   const [showModal, setShowModal] = useState(false);
-  const [roleSelect, setRoleSelect] = useState<EUserRole>(user.role);
   const [reason, setReason] = useState('');
 
-  const handleSave = useCallback(async () => {}, []);
-  const RightButton = useCallback(() => {
-    return (
-      <TouchableOpacity onPress={handleSave}>
-        <CustomText numberOfLines={1} style={styles.saveText}>
-          {t('Lưu')}
-        </CustomText>
-      </TouchableOpacity>
-    );
-  }, [t, handleSave]);
-
-  const handleSubmit = useCallback(() => {
-    setShowModal(false);
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    requestSwitchRole(roleSelect, reason).then(({ status }) => {
-      requestUserReadProfile().then(res => {
-        dispatch(reduxUserAction.setUser(res));
-        navigation.dispatch(StackActions.pop());
-        switch (status) {
-          case EUseRoleRequestStatus.PENDING:
-            navigation.dispatch(
-              StackActions.push(ENavigationScreen.POPUP_SCREEN, {
-                image: NoteImage,
-                title: t('Đang gửi xét duyệt'),
-                subtitle: t('Admin đang xét duyệt hồ sơ của bạn'),
-                confirmButtonTitle: t('Đã hiểu'),
-              }),
-            );
-            break;
-          case EUseRoleRequestStatus.ACCEPTED:
-            navigation.dispatch(
-              StackActions.push(ENavigationScreen.POPUP_SCREEN, {
-                image: FoundProfileImage,
-                title: t('Xét duyệt thành công'),
-                subtitle: t('Hồ sơ của bạn đã được xét duyệt để trở thành Builder. Đến giao diện mới ngay!'),
-                confirmButtonTitle: t('Tiếp tục'),
-              }),
-            );
-            break;
-          default:
-            return;
-        }
+  const handleSubmit = useCallback(
+    (payload: { role: EUserRole }) => {
+      setShowModal(false);
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+      requestSwitchRole(payload.role, reason).then(({ status }) => {
+        requestUserReadProfile().then(res => {
+          dispatch(reduxUserAction.setUser(res));
+          navigation.dispatch(StackActions.pop());
+          switch (status) {
+            case EUseRoleRequestStatus.PENDING:
+              navigation.dispatch(
+                StackActions.push(ENavigationScreen.POPUP_SCREEN, {
+                  image: NoteImage,
+                  title: t('Đang gửi xét duyệt'),
+                  subtitle: t('Admin đang xét duyệt hồ sơ của bạn'),
+                  confirmButtonTitle: t('Đã hiểu'),
+                }),
+              );
+              break;
+            case EUseRoleRequestStatus.ACCEPTED:
+              navigation.dispatch(
+                StackActions.push(ENavigationScreen.POPUP_SCREEN, {
+                  image: FoundProfileImage,
+                  title: t('Xét duyệt thành công'),
+                  subtitle:
+                    payload.role === EUserRole.builder
+                      ? t('Hồ sơ của bạn đã được xét duyệt để trở thành Builder. Đến giao diện mới ngay!')
+                      : t('Thay đổi vai trò Hunter thành công'),
+                  confirmButtonTitle: t('Tiếp tục'),
+                }),
+              );
+              break;
+            default:
+              return;
+          }
+        });
       });
-    });
-  }, [dispatch, navigation, reason, roleSelect, t]);
+    },
+    [dispatch, navigation, reason, t],
+  );
 
   const options: IItemSelectorSettingProps[] = useMemo(() => {
     return [
@@ -79,15 +72,13 @@ const RuleScreen = () => {
         title: t(ETitleUserRole.HUNTER),
         isSelected: user.role === EUserRole.hunter,
         onPress: () => {
-          setRoleSelect(() => EUserRole.hunter);
-          handleSubmit();
+          handleSubmit({ role: EUserRole.hunter });
         },
       },
       {
         title: t(ETitleUserRole.BUILDER),
         isSelected: user.role === EUserRole.builder,
         onPress: () => {
-          setRoleSelect(() => EUserRole.builder);
           setShowModal(true);
         },
       },
@@ -96,7 +87,7 @@ const RuleScreen = () => {
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header title={t('Vai trò')} rightButton={<RightButton />} />
+      <Header title={t('Vai trò')} />
       <CustomText style={styles.chooseRuleTitle}>{t('Lựa chọn vai trò người chơi')}</CustomText>
       <View style={styles.listItemContainer}>
         {options?.map((item, index) => (
@@ -116,7 +107,7 @@ const RuleScreen = () => {
         onClose={() => setShowModal(false)}
         reason={reason}
         setReason={setReason}
-        onSubmit={handleSubmit}
+        onSubmit={() => handleSubmit({ role: EUserRole.builder })}
       />
     </CustomSafeArea>
   );
