@@ -9,6 +9,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: rw(16),
   },
+  containerRoot: {
+    backgroundColor: 'transparent',
+    flex: 1,
+  },
 
   saveText: {
     color: EColor.white,

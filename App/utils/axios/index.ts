@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { CommonActions } from '@react-navigation/native';
-import { EDataStorageKey, ELanguageCode, EPublicReadProfileBy } from 'App/enums';
+import { EDataStorageKey, ELanguageCode, EPublicReadProfileBy, EUserRole, EUseRoleRequestStatus } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
@@ -239,6 +239,9 @@ export const requestHunterGetTerryUserPath = async (
       }
     });
 };
+
+export const requestSwitchRole = async (role: EUserRole, reason: string) =>
+  AXIOS.put<{ status: EUseRoleRequestStatus }>('/auth/switch-role', { role, reason }).then(({ data }) => data);
 
 export const requestPublicReadProfile = async (profileID: string, findBy: EPublicReadProfileBy) => {
   return AXIOS.get<IProfileResDto>(`/public/profile/${profileID}`, {

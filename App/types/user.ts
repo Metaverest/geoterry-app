@@ -1,18 +1,6 @@
-import { EIdentifierType, ELanguageCode, ENamespace } from 'App/enums';
+import { EIdentifierType, ELanguageCode, ENamespace, EUserRole, EUseRoleRequestStatus } from 'App/enums';
 
-export interface IUser {
-  id: string;
-  userId: string;
-  displayName: string;
-  email?: string;
-  phoneNumber?: string;
-  bio?: string;
-  logoUrl?: string;
-  languageCode?: ELanguageCode;
-  rewardPoints: number;
-  totalCheckedinTerry?: number;
-  createdAt?: string;
-}
+export interface IUser extends IProfileResDto {}
 
 export interface IAccountCredentialsResDto {
   passwordChangedAt: string;
@@ -44,6 +32,9 @@ export interface IProfileResDto {
   userId: string;
   logoUrl?: string;
   languageCode?: ELanguageCode;
+  role: EUserRole;
+  roleRequestingStatus?: EUseRoleRequestStatus;
+  roleRequesting?: EUserRole;
 }
 
 export interface ICreateProfileReqDto {
