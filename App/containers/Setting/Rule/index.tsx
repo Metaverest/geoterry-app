@@ -11,7 +11,7 @@ import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { requestSwitchRole, requestUserReadProfile } from 'App/utils/axios';
-import { ROLE_USER, STATUS_ROLE_REQUESTING } from 'App/enums';
+import { EUserRole, EUseRoleRequestStatus, ETitleUserRole } from 'App/enums';
 import ModalReasonRequestRole from './ModalReasonRequestRole';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { EMainGameNavigatorParams, ENavigationScreen, ESettingNavigator } from 'App/enums/navigation';
@@ -24,7 +24,7 @@ const RuleScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
   const [showModal, setShowModal] = useState(false);
-  const [roleSelect, setRoleSelect] = useState<ROLE_USER>(user.role);
+  const [roleSelect, setRoleSelect] = useState<EUserRole>(user.role);
   const [reason, setReason] = useState('');
 
   const handleSave = useCallback(async () => {}, []);
@@ -41,18 +41,18 @@ const RuleScreen = () => {
   const options: IItemSelectorSettingProps[] = useMemo(() => {
     return [
       {
-        title: t('Hunter'),
-        isSelected: user.role === ROLE_USER.hunter,
+        title: t(ETitleUserRole.HUNTER),
+        isSelected: user.role === EUserRole.hunter,
         onPress: () => {
-          setRoleSelect(ROLE_USER.hunter);
+          setRoleSelect(EUserRole.hunter);
           setShowModal(true);
         },
       },
       {
-        title: t('Builder'),
-        isSelected: user.role === ROLE_USER.builder,
+        title: t(ETitleUserRole.BUILDER),
+        isSelected: user.role === EUserRole.builder,
         onPress: () => {
-          setRoleSelect(ROLE_USER.builder);
+          setRoleSelect(EUserRole.builder);
           setShowModal(true);
         },
       },
@@ -67,7 +67,7 @@ const RuleScreen = () => {
         dispatch(reduxUserAction.setUser(res));
         navigation.dispatch(StackActions.pop());
         switch (status) {
-          case STATUS_ROLE_REQUESTING.PENDING:
+          case EUseRoleRequestStatus.PENDING:
             navigation.dispatch(
               StackActions.push(ENavigationScreen.POPUP_SCREEN, {
                 image: NoteImage,
@@ -77,7 +77,7 @@ const RuleScreen = () => {
               }),
             );
             break;
-          case STATUS_ROLE_REQUESTING.ACCEPTED:
+          case EUseRoleRequestStatus.ACCEPTED:
             navigation.dispatch(
               StackActions.push(ENavigationScreen.POPUP_SCREEN, {
                 image: FoundProfileImage,
@@ -106,7 +106,11 @@ const RuleScreen = () => {
               title={item.title}
               isSelected={item.isSelected}
               onPress={item.onPress}
-              status={item.title === 'Builder' ? user.roleRequestingStatus : undefined}
+              status={
+                item.title === ETitleUserRole.BUILDER && user.roleRequesting === EUserRole.builder
+                  ? user.roleRequestingStatus
+                  : undefined
+              }
             />
           </View>
         ))}

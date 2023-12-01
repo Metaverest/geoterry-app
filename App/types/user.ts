@@ -1,4 +1,4 @@
-import { EIdentifierType, ELanguageCode, ENamespace, ROLE_USER, STATUS_ROLE_REQUESTING } from 'App/enums';
+import { EIdentifierType, ELanguageCode, ENamespace, EUserRole, EUseRoleRequestStatus } from 'App/enums';
 
 export interface IUser extends IProfileResDto {}
 
@@ -32,8 +32,9 @@ export interface IProfileResDto {
   userId: string;
   logoUrl?: string;
   languageCode?: ELanguageCode;
-  role: ROLE_USER;
-  roleRequestingStatus: STATUS_ROLE_REQUESTING;
+  role: EUserRole;
+  roleRequestingStatus?: EUseRoleRequestStatus;
+  roleRequesting?: EUserRole;
 }
 
 export interface ICreateProfileReqDto {

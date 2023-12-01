@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { CommonActions } from '@react-navigation/native';
-import { EDataStorageKey, ELanguageCode, ROLE_USER, STATUS_ROLE_REQUESTING } from 'App/enums';
+import { EDataStorageKey, ELanguageCode, EUserRole, EUseRoleRequestStatus } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
@@ -240,7 +240,7 @@ export const requestHunterGetTerryUserPath = async (
     });
 };
 
-export const requestSwitchRole = async (role: ROLE_USER, reason: string) =>
-  AXIOS.put<{ status: STATUS_ROLE_REQUESTING }>('/auth/switch-role', { role, reason }).then(({ data }) => data);
+export const requestSwitchRole = async (role: EUserRole, reason: string) =>
+  AXIOS.put<{ status: EUseRoleRequestStatus }>('/auth/switch-role', { role, reason }).then(({ data }) => data);
 
 export default AXIOS;
