@@ -28,6 +28,7 @@ const defaultAppState: IAppState = {
     rate: 3,
   },
   coordinatesPath: {},
+  otherUserProfileToDisplay: undefined,
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -116,6 +117,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...state.coordinatesPath,
           ...action.payload?.coordinatesPath,
         },
+      };
+    case EReduxAppAction.SET_OTHER_USER_PROFILE_TO_DISPLAY:
+      return {
+        ...state,
+        otherUserProfileToDisplay: action.payload?.otherUserProfileToDisplay,
       };
     default:
       return state;

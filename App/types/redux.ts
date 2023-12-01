@@ -48,6 +48,8 @@ export interface IAppState {
   terryCheckins?: IResponseTerryCheckins[];
   terryCheckinInput?: Partial<ITerryCheckinInputDto>;
   coordinatesPath?: { [key: string]: IRealtimeLocation[] };
+  // This is used to display the public profile of other users when user scan the QR code
+  otherUserProfileToDisplay?: IUser;
 }
 
 export interface IRootState {

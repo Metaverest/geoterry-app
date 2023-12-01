@@ -46,3 +46,8 @@ export enum EUseRoleRequestStatus {
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
 }
+
+export enum EPublicReadProfileBy {
+  ID = 'id',
+  SLUG = 'slug',
+}

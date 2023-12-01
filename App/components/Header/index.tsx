@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { EMainGameScreen } from 'App/enums/navigation';
 import BackIcon from 'App/media/BackIcon';
 import { useCallback } from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
@@ -20,6 +21,10 @@ const Header = ({
 }) => {
   const navigation = useNavigation();
   const handlePressBackButton = useCallback(() => {
+    if (!navigation.canGoBack()) {
+      navigation.dispatch(CommonActions.navigate(EMainGameScreen.MAP_SCREEN));
+      return;
+    }
     navigation.dispatch(CommonActions.goBack());
   }, [navigation]);
   return (

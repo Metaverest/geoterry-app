@@ -21,4 +21,5 @@ export const reduxSelector = {
   getAppCoordinatesPath: (state: IReduxRootState) => state.app.coordinatesPath,
   getAppCoordinatesPathByTerryId: (state: IReduxRootState, terryId: string) =>
     state.app.coordinatesPath && state.app.coordinatesPath[terryId],
+  getAppOtherUserProfileToDisplay: (state: IReduxRootState) => state.app.otherUserProfileToDisplay,
 };

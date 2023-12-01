@@ -6,6 +6,7 @@ import { startNetworkLogging } from 'react-native-network-logger';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import Navigation, { navigationRef } from './App/navigation';
+import { linking } from 'App/navigation/linkingConfig';
 
 setupI18N();
 startNetworkLogging();
@@ -14,7 +15,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer linking={linking} ref={navigationRef}>
           <Suspense fallback={<></>}>
             <Navigation />
           </Suspense>
