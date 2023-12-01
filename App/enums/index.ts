@@ -44,4 +44,5 @@ export enum ETitleUserRole {
 export enum EUseRoleRequestStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
 }

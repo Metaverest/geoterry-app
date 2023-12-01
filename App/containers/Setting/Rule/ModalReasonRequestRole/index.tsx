@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import React, { Dispatch, SetStateAction } from 'react';
 import Modal from 'react-native-modal';
 import CustomText from 'App/components/CustomText';
@@ -31,25 +31,27 @@ const ModalReasonRequestRole = (props: Props) => {
         props.onClose();
         props.setReason('');
       }}>
-      <View style={styles.container}>
-        <CustomText style={styles.title}>{t('Bạn muốn trở thành Builder?')}</CustomText>
-        <CustomText style={styles.subTitle}>{t('Hãy nêu lý do để Admin xét duyệt.')}</CustomText>
-        <CustomInput
-          minHeightInput={rh(191)}
-          onChangeText={props.setReason}
-          placeholder={t('Nhập gì đó')}
-          numberOfLines={10}
-          multiline
-          value={props.reason}
-        />
-        <CustomButton
-          onPress={props.onSubmit}
-          linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-          buttonType={EButtonType.SOLID}
-          title={t('Gửi')}
-          customStyleContainer={styles.btnSubmit}
-        />
-      </View>
+      <KeyboardAvoidingView keyboardVerticalOffset={150} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.container}>
+          <CustomText style={styles.title}>{t('Bạn muốn trở thành Builder?')}</CustomText>
+          <CustomText style={styles.subTitle}>{t('Hãy nêu lý do để Admin xét duyệt.')}</CustomText>
+          <CustomInput
+            minHeightInput={rh(191)}
+            onChangeText={props.setReason}
+            placeholder={t('Nhập gì đó')}
+            numberOfLines={10}
+            multiline
+            value={props.reason}
+          />
+          <CustomButton
+            onPress={props.onSubmit}
+            linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+            buttonType={EButtonType.SOLID}
+            title={t('Gửi')}
+            customStyleContainer={styles.btnSubmit}
+          />
+        </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 };

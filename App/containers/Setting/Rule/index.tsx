@@ -38,28 +38,7 @@ const RuleScreen = () => {
     );
   }, [t, handleSave]);
 
-  const options: IItemSelectorSettingProps[] = useMemo(() => {
-    return [
-      {
-        title: t(ETitleUserRole.HUNTER),
-        isSelected: user.role === EUserRole.hunter,
-        onPress: () => {
-          setRoleSelect(EUserRole.hunter);
-          setShowModal(true);
-        },
-      },
-      {
-        title: t(ETitleUserRole.BUILDER),
-        isSelected: user.role === EUserRole.builder,
-        onPress: () => {
-          setRoleSelect(EUserRole.builder);
-          setShowModal(true);
-        },
-      },
-    ] as IItemSelectorSettingProps[];
-  }, [t, user.role]);
-
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     setShowModal(false);
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     requestSwitchRole(roleSelect, reason).then(({ status }) => {
@@ -92,7 +71,28 @@ const RuleScreen = () => {
         }
       });
     });
-  };
+  }, [dispatch, navigation, reason, roleSelect, t]);
+
+  const options: IItemSelectorSettingProps[] = useMemo(() => {
+    return [
+      {
+        title: t(ETitleUserRole.HUNTER),
+        isSelected: user.role === EUserRole.hunter,
+        onPress: () => {
+          setRoleSelect(() => EUserRole.hunter);
+          handleSubmit();
+        },
+      },
+      {
+        title: t(ETitleUserRole.BUILDER),
+        isSelected: user.role === EUserRole.builder,
+        onPress: () => {
+          setRoleSelect(() => EUserRole.builder);
+          setShowModal(true);
+        },
+      },
+    ] as IItemSelectorSettingProps[];
+  }, [handleSubmit, t, user.role]);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -102,15 +102,11 @@ const RuleScreen = () => {
         {options?.map((item, index) => (
           <View style={styles.itemSelectorContainer} key={index}>
             <ItemSelectorSetting
-              disabled={item.isSelected}
+              disabled={item.isSelected || user.roleRequesting === EUserRole.builder}
               title={item.title}
               isSelected={item.isSelected}
               onPress={item.onPress}
-              status={
-                item.title === ETitleUserRole.BUILDER && user.roleRequesting === EUserRole.builder
-                  ? user.roleRequestingStatus
-                  : undefined
-              }
+              status={item.title === ETitleUserRole.BUILDER ? user.roleRequestingStatus : undefined}
             />
           </View>
         ))}
