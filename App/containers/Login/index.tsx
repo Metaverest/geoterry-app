@@ -78,6 +78,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   const goToForgotPassword = useCallback(() => {
     navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.FORGOT_PASSWORD_NAVIGATOR }));
   }, [navigation]);
+
+  // Need to add loading
   return (
     <CustomSafeArea style={styles.container}>
       <Image style={styles.image} source={EarthIcon} />
