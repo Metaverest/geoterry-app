@@ -564,11 +564,10 @@ function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, 
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
-    yield call(handleError, (error as any)?.response?.data as IError, navigation);
-
     if (action.payload?.options?.onError) {
       action.payload?.options?.onError();
     }
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
 
