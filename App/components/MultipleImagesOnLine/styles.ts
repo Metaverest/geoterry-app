@@ -33,4 +33,9 @@ export const styles = StyleSheet.create({
   columnWrapperStyle: {
     justifyContent: 'space-between',
   },
+  dismissCircleIconButton: {
+    position: 'absolute',
+    top: rw(2),
+    right: rw(6),
+  },
 });

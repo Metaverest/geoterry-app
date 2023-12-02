@@ -54,10 +54,9 @@ export const styles = StyleSheet.create({
   },
   terryAddImageContainer: {
     marginTop: rh(16),
-    alignSelf: 'flex-start',
     flexDirection: 'row',
-    rowGap: rw(8),
-    columnGap: rw(8),
+
+    columnGap: rw(4),
     alignItems: 'center',
   },
   inputContainer: {
@@ -68,7 +67,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingBottom: rh(100),
   },
-  photoItemContainer: {},
   image: {
     width: rw(48),
     height: rw(48),
@@ -78,5 +76,11 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: rw(2),
     right: rw(2),
+  },
+  containerImageStyle: {
+    columnGap: rw(8),
+  },
+  containerItemImageStyle: {
+    marginHorizontal: rw(4),
   },
 });

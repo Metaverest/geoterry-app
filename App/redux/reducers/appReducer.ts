@@ -25,7 +25,7 @@ const defaultAppState: IAppState = {
   terryCheckins: [],
   // Used to store data for checkin terry flow
   terryCheckinInput: {
-    rate: 3,
+    rate: 5,
   },
   coordinatesPath: {},
   otherUserProfileToDisplay: undefined,

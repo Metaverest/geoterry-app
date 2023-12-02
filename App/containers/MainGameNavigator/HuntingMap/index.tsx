@@ -2,7 +2,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { styles } from './styles';
 
-import { CommonActions, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { CommonActions, RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import Header from 'App/components/Header';
 import {
@@ -102,18 +102,24 @@ const HuntingMapScreen = () => {
     dispatch(sagaUserAction.hunterUpdateTerryPathAsync(terry?.id as string, navigation));
   }, [dispatch, terry?.id, navigation]);
 
-  useEffect(() => {
-    // Your function to be called every 5000ms
+  const isFocusedOnScreen = useIsFocused();
 
-    // Set interval to call yourFunction every 5000ms
+  useEffect(() => {
+    // Don't schedule the interval if the screen is not focused
+    if (!isFocusedOnScreen) {
+      return;
+    }
+
+    // Schedule the interval:
     const intervalId = setInterval(updatePathToServer, INTERVAL_TIME_CALL_UPDATE_PATH);
 
     // Clean up function to clear the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, [updatePathToServer]); // Empty dependency array means this effect runs once (on mount) and cleans up on unmount
+  }, [updatePathToServer, isFocusedOnScreen]); // Empty dependency array means this effect runs once (on mount) and cleans up on unmount
 
   const navigateToTerryCheckinScreen = useCallback(
     (isCannotFindTerry: Boolean) => {
+      updatePathToServer();
       dispatch(
         reduxAppAction.setCheckinTerryData({
           terryId: terry?.id,
@@ -127,7 +133,7 @@ const HuntingMapScreen = () => {
         }),
       );
     },
-    [dispatch, navigation, currentLocation, terry?.id],
+    [dispatch, navigation, currentLocation, terry?.id, updatePathToServer],
   );
   return (
     <CustomSafeArea style={styles.container} shouldHideStatusBar shouldUseFullScreenView>
