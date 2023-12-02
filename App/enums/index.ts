@@ -33,6 +33,20 @@ export enum FindTerryCheckinBy {
   CHECKIN_ID = 'checkin_id',
 }
 
+export enum EUserRole {
+  builder = 'partner',
+  hunter = 'user',
+}
+export enum ETitleUserRole {
+  HUNTER = 'Hunter',
+  BUILDER = 'Builder',
+}
+export enum EUseRoleRequestStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+}
+
 export enum EPublicReadProfileBy {
   ID = 'id',
   SLUG = 'slug',

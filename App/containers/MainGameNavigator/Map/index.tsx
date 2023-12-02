@@ -12,7 +12,7 @@ import {
 } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
-import { EButtonType, EDataStorageKey, ENamespace } from 'App/enums';
+import { EButtonType, EDataStorageKey, ENamespace, EUserRole } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
@@ -70,11 +70,14 @@ const MapScreen = () => {
   useEffect(() => {
     (async () => {
       const sessionNamespace = await getStoredProperty(EDataStorageKey.NAMESPACE);
-      if (sessionNamespace === ENamespace.GEOTERRY_BUILDERS && !isBuilderNamespace) {
+      if (
+        (sessionNamespace === ENamespace.GEOTERRY_BUILDERS && !isBuilderNamespace) ||
+        user.role === EUserRole.builder
+      ) {
         setIsBuilderNamespace(true);
       }
     })();
-  }, [isBuilderNamespace]);
+  }, [isBuilderNamespace, user.role]);
   const mapRef = useRef<MapView>(null);
   const dispatch = useDispatch();
   const navigation = useNavigation();

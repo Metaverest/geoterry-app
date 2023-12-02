@@ -22,3 +22,4 @@ export const CheckInTerryCongratImage = require('../../media/CheckInTerryCongrat
 export const SmileImage = require('../../media/SmileImage.png');
 export const CannotFindTerryImage = require('../../media/CannotFindTerryImage.png');
 export const PermissionNotificationImage = require('../../media/PermissionNotification.png');
+export const NoteImage = require('../../media/NoteImage.png');
