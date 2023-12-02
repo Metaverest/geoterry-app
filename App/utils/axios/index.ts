@@ -37,7 +37,7 @@ import {
   IVerifyAccountRecoverOTPDto,
   IVerifyAccountRecoverOTPResDto,
 } from 'App/types/user';
-import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty, removePropertyInDevice, setPropertyInDevice } from 'App/utils/storage/storage';
 import axios, { AxiosInstance } from 'axios';
 import { Platform } from 'react-native';
 import Config from 'react-native-config';
@@ -133,6 +133,8 @@ AXIOS.interceptors.response.use(
       error?.response?.data?.errorCode === EErrorCode.FAILED_TO_REFRESH_TOKEN &&
       error?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
     ) {
+      await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
+      await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
       navigationRef.current.dispatch(
         CommonActions.navigate({
           name: ENavigationScreen.LOGIN_SCREEN,

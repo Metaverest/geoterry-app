@@ -41,7 +41,7 @@ const Navigation = () => {
       if (!initURL || accessToken || Object.values(ROUTES.AUTH_ROUTES).includes(initURL.replace(PREFIX_LINK, ''))) {
         return;
       }
-      navigationRef.current?.navigate(ENavigationScreen.LOGIN_SCREEN);
+      navigationRef.current?.navigate(ENavigationScreen.ONBOARDING_SCREEN);
     })();
   }, []);
 

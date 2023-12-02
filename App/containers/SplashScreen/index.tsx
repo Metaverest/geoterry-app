@@ -26,7 +26,7 @@ const SplashScreen = () => {
       if (!isEmpty(token)) {
         dispatch(sagaUserAction.getProfileAndGoToMainAppAsync(navigation, { fcmToken: fcmToken }));
       } else {
-        navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
+        navigation.dispatch(CommonActions.navigate(ENavigationScreen.ONBOARDING_SCREEN));
       }
     })();
   }, [navigation, dispatch]);
