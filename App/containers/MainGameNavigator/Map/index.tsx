@@ -169,6 +169,7 @@ const MapScreen = () => {
             longitude: currentLocation.longitude,
             includeProfileData: true,
             includeCategoryData: true,
+            includeUserPath: true,
           },
           navigation,
         ),

@@ -175,6 +175,7 @@ export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, pro
       latitude: params.latitude,
       longitude: params.longitude,
       includeCategoryData: params.includeCategoryData,
+      includeUserPath: params.includeUserPath,
       includeProfileData: params.includeProfileData,
       markAsFavourited: params.markAsFavourited,
       markAsSaved: params.markAsSaved,
@@ -224,20 +225,6 @@ export const requestHunterUpsertTerryUserPath = async (path: string, profileId: 
   return AXIOS.put<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`, { path }).then(
     result => result.data,
   );
-};
-
-export const requestHunterGetTerryUserPath = async (
-  profileId: string,
-  terryId: string,
-  options?: { ignoreError?: boolean },
-) => {
-  return AXIOS.get<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`)
-    .then(result => result.data)
-    .catch(error => {
-      if (!options?.ignoreError) {
-        throw error;
-      }
-    });
 };
 
 export const requestSwitchRole = async (role: EUserRole, reason: string) =>
