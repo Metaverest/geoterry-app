@@ -545,21 +545,19 @@ export function* watchCreateTerry() {
 function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryCheckinInputDto>) {
   const navigation = action.payload?.navigation;
   try {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     const data: ITerryCheckinInputDto = yield select(reduxSelector.getAppTerryCheckinInput);
     const user: IUser = yield select(reduxSelector.getUser);
     const profileID = user.id;
     yield call(requestHunterCheckinTerry, data, profileID);
-    navigation.dispatch(StackActions.pop());
+
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
-    yield call(handleError, (error as any)?.response?.data as IError, navigation);
-    navigation.dispatch(StackActions.pop());
     if (action.payload?.options?.onError) {
       action.payload?.options?.onError();
     }
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
 

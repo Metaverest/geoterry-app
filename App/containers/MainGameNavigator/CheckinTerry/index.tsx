@@ -5,13 +5,13 @@ import CustomInput from 'App/components/CustomInput';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
+import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { AppBackgroundImage, CannotFindTerryImage, CheckInTerryCongratImage } from 'App/components/image';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen } from 'App/enums/navigation';
 import { responsiveByHeight as rh } from 'App/helpers/common';
 import useClearError from 'App/hooks/useClearError';
-import DismissCircleIcon from 'App/media/DismissCircleIcon';
 import ImageAddIcon from 'App/media/ImageAddIcon';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { IUploadProfileResDto } from 'App/types/user';
@@ -20,8 +20,9 @@ import { Formik, FormikErrors } from 'formik';
 import { get, head, isEmpty, some } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
@@ -107,10 +108,17 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
     [],
   );
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-        <Header />
-        <Image style={styles.image} source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage} />
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+      <Header />
+      <KeyboardAwareScrollView
+        enableOnAndroid
+        enableAutomaticScroll
+        showsVerticalScrollIndicator={false}
+        extraHeight={rh(151)}>
+        <Image
+          style={styles.headerImage}
+          source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage}
+        />
         <CustomText style={styles.checkInTitle}>
           {isCannotFindTerry ? t('Ồ, bạn không tìm thấy kho báu sao?') : t('Chúc mừng\nBạn đã tìm thấy kho báu!')}
         </CustomText>
@@ -125,41 +133,39 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
             return (
               <>
                 <View style={styles.inputContainer}>
-                  <ScrollView>
-                    <View style={styles.terryInputContainer}>
-                      <CustomInput
-                        minHeightInput={rh(191)}
-                        error={shouldDisplayError ? errors.reviewText : ''}
-                        onChangeText={text => setFieldValue('reviewText', text, true)}
-                        placeholder={t('Nhập...')}
-                        numberOfLines={10}
-                        multiline
-                        value={values.reviewText}
-                      />
-                    </View>
+                  <View style={styles.terryInputContainer}>
+                    <CustomInput
+                      minHeightInput={rh(151)}
+                      error={shouldDisplayError ? errors.reviewText : ''}
+                      onChangeText={text => setFieldValue('reviewText', text, true)}
+                      placeholder={t('Nhập...')}
+                      numberOfLines={10}
+                      multiline
+                      value={values.reviewText}
+                    />
+                  </View>
 
-                    <View style={styles.terryAddImageContainer}>
-                      <CustomButtonIcon
-                        onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
-                        buttonColor={EColor.color_333333}
-                        customStyleContainer={styles.addImagebuttonContainer}
-                        buttonType={EButtonType.SOLID}
-                        renderIcon={<ImageAddIcon />}
+                  <View style={styles.terryAddImageContainer}>
+                    <CustomButtonIcon
+                      onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
+                      buttonColor={EColor.color_333333}
+                      customStyleContainer={styles.addImagebuttonContainer}
+                      buttonType={EButtonType.SOLID}
+                      renderIcon={<ImageAddIcon />}
+                    />
+                    {!isEmpty(values.photoUrls) && (
+                      <MultipleImagesOnLine
+                        images={values.photoUrls as string[]}
+                        numColumns={4}
+                        containerItemImageStyle={styles.containerItemImageStyle}
+                        containerImageStyle={styles.containerImageStyle}
+                        canRemoveImage
+                        removeImage={url => {
+                          removeImage(setFieldValue, values.photoUrls, url);
+                        }}
                       />
-                      {values.photoUrls?.map((url, index) => {
-                        return (
-                          <View key={index} style={styles.photoItemContainer}>
-                            <Image resizeMode="contain" source={{ uri: url }} style={styles.image} />
-                            <TouchableOpacity
-                              style={styles.dismissCircleIconButton}
-                              onPress={() => removeImage(setFieldValue, values.photoUrls, url)}>
-                              <DismissCircleIcon />
-                            </TouchableOpacity>
-                          </View>
-                        );
-                      })}
-                    </View>
-                  </ScrollView>
+                    )}
+                  </View>
                 </View>
                 <View style={styles.buttonContainer}>
                   <CustomButton
@@ -177,8 +183,8 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
             );
           }}
         </Formik>
-      </CustomSafeArea>
-    </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
+    </CustomSafeArea>
   );
 };
 

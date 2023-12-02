@@ -15,7 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
 import Rating from 'App/components/Rating';
 import { requestHunterGetTerryCheckin } from 'App/utils/axios';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
 import { AppBackgroundImage, CheckInTerryCongratImage, CreateTerrySuccessImage } from 'App/components/image';
@@ -25,6 +25,8 @@ import Header from 'App/components/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByHeight as rh } from 'App/helpers/common';
 import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
+import { reduxAppAction } from 'App/redux/actions/appAction';
+import useCurrentLocation from 'App/hooks/useCurrentLocation';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -37,8 +39,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const user = useSelector(reduxSelector.getUser);
   const { top } = useSafeAreaInsets();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const [indexImg, setIndexImg] = useState(0);
+  const currentLocation = useCurrentLocation();
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
@@ -233,7 +237,20 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  onPress={() => {}}
+                  onPress={() => {
+                    dispatch(
+                      reduxAppAction.setCheckinTerryData({
+                        terryId: terry?.id,
+                        location: { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
+                      }),
+                    );
+                    navigation.dispatch(
+                      CommonActions.navigate({
+                        name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
+                        params: { isCannotFindTerry: false },
+                      }),
+                    );
+                  }}
                   title={t('Đã tìm thấy')}
                   buttonType={EButtonType.SOLID}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}

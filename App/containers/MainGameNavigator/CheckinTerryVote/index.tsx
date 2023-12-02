@@ -3,14 +3,14 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, TouchableOpacity, View } from 'react-native';
 
-import { StackActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CustomButton from 'App/components/Button';
 import CustomText from 'App/components/CustomText';
 import { SmileImage } from 'App/components/image';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameNavigatorParams } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import ActiveStartIcon from 'App/media/ActiveStartIcon';
 import StartIcon from 'App/media/StartIcon';
 import { reduxAppAction } from 'App/redux/actions/appAction';
@@ -36,7 +36,7 @@ const CheckinTerryVoteScreen = () => {
     dispatch(
       sagaUserAction.hunterCheckinTerryAsync(navigation, {
         onSuccess: () => {
-          navigation.dispatch(StackActions.pop(2));
+          navigation.dispatch(CommonActions.navigate(EMainGameScreen.MAP_SCREEN));
         },
         onError: () => {
           navigation.dispatch(StackActions.pop(2));

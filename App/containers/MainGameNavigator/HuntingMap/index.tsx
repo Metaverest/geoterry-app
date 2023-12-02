@@ -2,7 +2,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import { styles } from './styles';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { CommonActions, RouteProp, useIsFocused, useNavigation, useRoute } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import Header from 'App/components/Header';
 import {
@@ -102,13 +102,39 @@ const HuntingMapScreen = () => {
     dispatch(sagaUserAction.hunterUpdateTerryPathAsync(terry?.id as string, navigation));
   }, [dispatch, terry?.id, navigation]);
 
+  const isFocusedOnScreen = useIsFocused();
+
   useEffect(() => {
-    // Set interval to call every 5000ms
+    // Don't schedule the interval if the screen is not focused
+    if (!isFocusedOnScreen) {
+      return;
+    }
+
+    // Schedule the interval:
     const intervalId = setInterval(updatePathToServer, INTERVAL_TIME_CALL_UPDATE_PATH);
 
     // Clean up function to clear the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, [updatePathToServer]); // Empty dependency array means this effect runs once (on mount) and cleans up on unmount
+  }, [updatePathToServer, isFocusedOnScreen]); // Empty dependency array means this effect runs once (on mount) and cleans up on unmount
+
+  const navigateToTerryCheckinScreen = useCallback(
+    (isCannotFindTerry: Boolean) => {
+      updatePathToServer();
+      dispatch(
+        reduxAppAction.setCheckinTerryData({
+          terryId: terry?.id,
+          location: { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
+        }),
+      );
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
+          params: { isCannotFindTerry: isCannotFindTerry },
+        }),
+      );
+    },
+    [dispatch, navigation, currentLocation, terry?.id, updatePathToServer],
+  );
   return (
     <CustomSafeArea style={styles.container} shouldHideStatusBar shouldUseFullScreenView>
       <Header
@@ -153,7 +179,7 @@ const HuntingMapScreen = () => {
       <View style={styles.footerButtonContainer}>
         <View style={styles.buttonContainer}>
           <CustomButton
-            onPress={() => {}}
+            onPress={() => navigateToTerryCheckinScreen(false)}
             title={t('Đã tìm thấy')}
             buttonType={EButtonType.SOLID}
             linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
@@ -161,7 +187,7 @@ const HuntingMapScreen = () => {
         </View>
         <View style={styles.buttonContainer}>
           <CustomButton
-            onPress={() => {}}
+            onPress={() => navigateToTerryCheckinScreen(true)}
             title={t('Không tìm thấy')}
             buttonType={EButtonType.SOLID}
             linearGradient={[EColor.black, EColor.black]}

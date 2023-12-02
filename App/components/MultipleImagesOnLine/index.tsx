@@ -7,6 +7,7 @@ import CustomText from '../CustomText';
 import { styles } from './styles';
 import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
+import DismissCircleIcon from 'App/media/DismissCircleIcon';
 
 interface Props {
   images: string[];
@@ -14,6 +15,8 @@ interface Props {
   showIconMaximize?: boolean;
   containerImageStyle?: ViewStyle;
   containerItemImageStyle: ViewStyle;
+  canRemoveImage?: boolean;
+  removeImage?: (url: string) => void;
 }
 const MultipleImagesOnLine = (props: Props) => {
   const [visible, setIsVisible] = useState(false);
@@ -53,6 +56,22 @@ const MultipleImagesOnLine = (props: Props) => {
     },
     [props.containerItemImageStyle, props.images.length, props.numColumns, props.showIconMaximize],
   );
+
+  const renderItemWithRemoveButton = useCallback(
+    ({ item, index }: { item: string; index: number }) => {
+      return (
+        <View>
+          {renderItem({ item, index })}
+          <TouchableOpacity
+            style={styles.dismissCircleIconButton}
+            onPress={() => props.removeImage && props.removeImage(item)}>
+            <DismissCircleIcon />
+          </TouchableOpacity>
+        </View>
+      );
+    },
+    [renderItem, props],
+  );
   useEffect(() => {
     setListImagesView(props.images.map(e => ({ uri: e })));
   }, [props.images]);
@@ -61,7 +80,7 @@ const MultipleImagesOnLine = (props: Props) => {
       <FlatList
         numColumns={props.numColumns}
         data={props.images}
-        renderItem={renderItem}
+        renderItem={props.canRemoveImage ? renderItemWithRemoveButton : renderItem}
         scrollEnabled={false}
         columnWrapperStyle={props.images.length > 5 ? styles.columnWrapperStyle : null}
       />
