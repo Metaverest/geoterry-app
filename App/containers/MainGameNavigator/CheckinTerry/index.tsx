@@ -110,7 +110,11 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header />
-      <KeyboardAwareScrollView enableOnAndroid enableAutomaticScroll extraHeight={rh(151)}>
+      <KeyboardAwareScrollView
+        enableOnAndroid
+        enableAutomaticScroll
+        showsVerticalScrollIndicator={false}
+        extraHeight={rh(151)}>
         <Image
           style={styles.headerImage}
           source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage}
