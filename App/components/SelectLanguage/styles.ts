@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   },
   dropdownContainer: {
     position: 'absolute',
-    top: rh(28),
+    top: rh(33),
     right: 0,
     borderRadius: rh(2),
     gap: rh(4),
@@ -30,6 +30,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: rw(17),
     height: rh(16),
+    marginVertical: rh(2),
   },
   itemText: {
     fontSize: rh(8),
@@ -37,6 +38,7 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     color: EColor.color_FAFAFA,
     lineHeight: rh(10),
+    textTransform: 'uppercase',
   },
   triangleContainer: {
     width: 0,
