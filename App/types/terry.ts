@@ -36,6 +36,7 @@ export interface ITerryResponseDto {
     rate: number;
     total: number;
   };
+  path?: string;
 }
 export interface IMinMaxQueryDto {
   min: number;
@@ -77,6 +78,7 @@ export interface IGetTerryByIdParams {
   includeProfileData?: boolean;
   markAsFavourited?: boolean;
   markAsSaved?: boolean;
+  includeUserPath?: boolean;
 }
 export interface ITerryCheckinsParams {
   page?: number;

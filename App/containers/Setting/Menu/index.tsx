@@ -24,6 +24,7 @@ import { styles } from './styles';
 interface IMenuItem {
   title: string;
   subtitle: string;
+  hide?: boolean;
   onPress: () => void;
   RenderIcon: () => JSX.Element;
   shouldUseSwithButton?: boolean;
@@ -84,6 +85,8 @@ const MenuScreen = () => {
       {
         title: t('Nâng cấp phiên bản Pro'),
         subtitle: t('Mở khoá tính năng cao cấp'),
+        // TODO: Should handle by feature flag here
+        hide: true,
         onPress: () => {},
         RenderIcon: () => <VersionUpgradeIcon />,
       },
@@ -144,6 +147,9 @@ const MenuScreen = () => {
       <Header title={t('Cài đặt')} />
       <View style={styles.listItemContainer}>
         {menuItems.map((item, index) => {
+          if (item.hide) {
+            return;
+          }
           return (
             <MenuItem
               key={index}

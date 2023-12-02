@@ -103,9 +103,7 @@ const HuntingMapScreen = () => {
   }, [dispatch, terry?.id, navigation]);
 
   useEffect(() => {
-    // Your function to be called every 5000ms
-
-    // Set interval to call yourFunction every 5000ms
+    // Set interval to call every 5000ms
     const intervalId = setInterval(updatePathToServer, INTERVAL_TIME_CALL_UPDATE_PATH);
 
     // Clean up function to clear the interval when the component is unmounted
