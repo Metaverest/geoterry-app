@@ -29,7 +29,6 @@ import {
   ITerryFilterParams,
   ITerryInputDto,
   ITerryResponseDto,
-  ITerryUserPathResDto,
 } from 'App/types/terry';
 
 import {
@@ -54,7 +53,6 @@ import AXIOS, {
   requestHunterCheckinTerry,
   requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
-  requestHunterGetTerryUserPath,
   requestHunterUpsertTerryUserPath,
   requestLogin,
   requestPublicFilterTerryCategories,
@@ -373,6 +371,9 @@ function* getPublicTerries(
 ) {
   const navigation = action?.payload?.navigation;
   try {
+    if (last(navigation.getState().routes)?.name === EMainGameScreen.FILTER_SCREEN) {
+      navigation.dispatch(CommonActions.goBack());
+    }
     if (!isEmpty(action?.payload?.data?.filterData)) {
       yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
     }
@@ -387,10 +388,6 @@ function* getPublicTerries(
       profileId,
     );
     yield put(reduxAppAction.setPublicTerries(response));
-
-    if (last(navigation.getState().routes)?.name === EMainGameScreen.FILTER_SCREEN) {
-      navigation.dispatch(CommonActions.goBack());
-    }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
@@ -432,23 +429,16 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
 
-    //Fetch terry path
-    const terryPathRes: ITerryUserPathResDto = yield call(
-      requestHunterGetTerryUserPath,
-      profileId,
-      terryParams?.terryId,
-      { ignoreError: true },
-    );
-    if (!isEmpty(terryPathRes?.path)) {
-      // Convert string path to array
-      const path: IRealtimeLocation[] = JSON.parse(terryPathRes?.path as string);
-      yield put(reduxAppAction.setCoordinatesPath({ [terryParams?.terryId as string]: path }));
-    }
     const terryData: ITerryResponseDto = yield call(
       requestHunterGetTerryById,
       terryParams as IGetTerryByIdParams,
       profileId,
     );
+    if (!isEmpty(terryData?.path)) {
+      // Convert string path to array
+      const path: IRealtimeLocation[] = JSON.parse(terryData?.path as string);
+      yield put(reduxAppAction.setCoordinatesPath({ [terryParams?.terryId as string]: path }));
+    }
     if (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) {
       const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
       const updatedTerries = terries.map((terry: ITerryResponseDto) => {

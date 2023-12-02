@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import { CommonActions } from '@react-navigation/native';
-import { EDataStorageKey, ELanguageCode, EPublicReadProfileBy } from 'App/enums';
+import { EDataStorageKey, ELanguageCode, EPublicReadProfileBy, EUserRole, EUseRoleRequestStatus } from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
@@ -175,6 +175,7 @@ export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, pro
       latitude: params.latitude,
       longitude: params.longitude,
       includeCategoryData: params.includeCategoryData,
+      includeUserPath: params.includeUserPath,
       includeProfileData: params.includeProfileData,
       markAsFavourited: params.markAsFavourited,
       markAsSaved: params.markAsSaved,
@@ -226,19 +227,8 @@ export const requestHunterUpsertTerryUserPath = async (path: string, profileId: 
   );
 };
 
-export const requestHunterGetTerryUserPath = async (
-  profileId: string,
-  terryId: string,
-  options?: { ignoreError?: boolean },
-) => {
-  return AXIOS.get<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`)
-    .then(result => result.data)
-    .catch(error => {
-      if (!options?.ignoreError) {
-        throw error;
-      }
-    });
-};
+export const requestSwitchRole = async (role: EUserRole, reason: string) =>
+  AXIOS.put<{ status: EUseRoleRequestStatus }>('/auth/switch-role', { role, reason }).then(({ data }) => data);
 
 export const requestPublicReadProfile = async (profileID: string, findBy: EPublicReadProfileBy) => {
   return AXIOS.get<IProfileResDto>(`/public/profile/${profileID}`, {

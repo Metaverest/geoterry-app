@@ -5,7 +5,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingVertical: rh(4),
+    paddingVertical: rh(18),
     paddingHorizontal: rw(16),
     borderRadius: rh(8),
     backgroundColor: EColor.color_333333,
@@ -18,7 +18,10 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     color: EColor.color_FAFAFA,
     lineHeight: rh(24),
-    textAlign: 'center',
-    paddingVertical: rh(14),
+  },
+  status: {
+    fontSize: rh(10),
+    lineHeight: rh(16),
+    color: EColor.color_999999,
   },
 });
