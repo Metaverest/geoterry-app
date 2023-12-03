@@ -129,7 +129,8 @@ const MapScreen = () => {
       changeRegion(params.locationTerry, true);
       setSelectedTerryId(params.terryId);
     }
-  }, [changeRegion, params?.locationTerry, params?.terryId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params?.locationTerry, params?.terryId]);
 
   const handlePressTypeMap = useCallback(() => {
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));

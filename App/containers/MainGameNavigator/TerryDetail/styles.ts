@@ -44,6 +44,10 @@ export const styles = StyleSheet.create({
     lineHeight: rh(16),
     color: EColor.color_CCCCCC,
   },
+  creatorNameContainer: {
+    flex: 1,
+    flexDirection: 'row',
+  },
   terryCreateByDisplayNameText: {
     fontSize: rh(10),
     fontWeight: '600',
