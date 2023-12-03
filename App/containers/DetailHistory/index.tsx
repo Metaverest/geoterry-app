@@ -11,12 +11,13 @@ import SlideSizeIcon from 'App/media/SlideSizeIcon';
 import CustomButton from 'App/components/Button';
 import { EColor } from 'App/enums/color';
 import { EButtonType } from 'App/enums';
-import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
+import { CommonActions, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { convertDateFormatHistory } from 'App/utils/convert';
 import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { DEFAULT_LOCATION } from 'App/constants/common';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
@@ -52,16 +53,12 @@ export default function DetailHistory() {
       <CustomButton
         onPress={() => {
           navigation.dispatch(
-            StackActions.replace(EMainGameScreen.MAP_SCREEN, {
+            CommonActions.navigate(EMainGameScreen.MAP_SCREEN, {
               terryId: params.terryId,
               locationTerry: {
+                ...DEFAULT_LOCATION,
                 latitude: params.terry.location.latitude,
                 longitude: params.terry.location.longitude,
-                altitude: 0,
-                heading: 0,
-                speed: 0,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
               },
             }),
           );

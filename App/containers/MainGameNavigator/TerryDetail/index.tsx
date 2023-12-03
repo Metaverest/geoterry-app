@@ -175,10 +175,18 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>
           </View>
           <CustomText style={styles.terryNameText}>{terry?.name}</CustomText>
-          <CustomText style={styles.terryCreateByText}>
-            {t('Tạo bởi')}:{' '}
-            <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
-          </CustomText>
+          <View style={styles.creatorNameContainer}>
+            <CustomText style={styles.terryCreateByText}>{t('Tạo bởi')}: </CustomText>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.dispatch(
+                  CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: terry?.profile?.id! }),
+                )
+              }>
+              <CustomText style={styles.terryCreateByDisplayNameText}>{terry?.profile?.displayName}</CustomText>
+            </TouchableOpacity>
+          </View>
+
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {terry.categories && (
               <View style={styles.containerTag}>

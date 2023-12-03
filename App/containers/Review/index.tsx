@@ -1,4 +1,4 @@
-import { View, FlatList, Image } from 'react-native';
+import { View, FlatList, Image, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
@@ -6,7 +6,7 @@ import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import { useTranslation } from 'react-i18next';
-import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
+import { CommonActions, RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { requestPublicGetCheckinsOfTerry } from 'App/utils/axios';
 import { IResponseGetCheckinsOfTerry } from 'App/types/terry';
@@ -34,7 +34,14 @@ const Review = () => {
         <View style={styles.containerItem}>
           <Image source={{ uri: item.profile.logoUrl }} style={styles.avatar} resizeMode="cover" />
           <View style={styles.flex}>
-            <CustomText style={styles.name}>{item.profile.displayName}</CustomText>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.dispatch(
+                  CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: item?.profile?.id! }),
+                )
+              }>
+              <CustomText style={styles.name}>{item.profile.displayName}</CustomText>
+            </TouchableOpacity>
             <CustomText style={styles.time}>
               {item.isFound ? t('Đã tìm thấy') : t('Chưa tìm thấy')}
               {' - '}
@@ -47,7 +54,7 @@ const Review = () => {
         </View>
       );
     },
-    [t, user.languageCode],
+    [navigation, t, user.languageCode],
   );
   useEffect(() => {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
