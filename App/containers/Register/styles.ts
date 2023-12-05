@@ -41,12 +41,11 @@ export const styles = StyleSheet.create({
     marginTop: rh(28),
   },
   footerContainer: {
-    position: 'absolute',
     width: '100%',
-    bottom: rh(36),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    alignSelf: 'center',
   },
   hasAccountText: {
     fontSize: rh(12),

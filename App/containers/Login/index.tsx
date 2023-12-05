@@ -1,3 +1,4 @@
+import { CommonActions } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomInputPassword from 'App/components/CustomInput/CustomInputPassword';
 import CustomInputPhoneNumber from 'App/components/CustomInput/CustomInputPhoneNumber';
@@ -7,6 +8,7 @@ import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
+import { responsiveByHeight as rh } from 'App/helpers/common';
 import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
@@ -14,14 +16,14 @@ import { sagaUserAction } from 'App/redux/actions/userAction';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
-import { CommonActions } from '@react-navigation/native';
 
 interface IFormValues {
   phone: string;
@@ -44,6 +46,7 @@ const getValidateSchema = (t: (e: string) => string) => {
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const errorText = useGetErrorText();
   const onSubmit = useCallback(
     async (values: IFormValues) => {
@@ -78,8 +81,19 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   const goToForgotPassword = useCallback(() => {
     navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.FORGOT_PASSWORD_NAVIGATOR }));
   }, [navigation]);
+  const innerRef = React.useRef<KeyboardAwareScrollView>();
   return (
-    <CustomSafeArea style={styles.container}>
+    <CustomSafeArea
+      style={styles.container}
+      keyboardAwareScrollProps={{
+        innerRef: ref => (innerRef.current = ref),
+        extraScrollHeight: rh(0),
+        onKeyboardDidShow: () => {
+          innerRef.current?.scrollToEnd(true);
+          setIsKeyboardOpen(true);
+        },
+        onKeyboardDidHide: () => setIsKeyboardOpen(false),
+      }}>
       <Image style={styles.image} source={EarthIcon} />
       <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
       <CustomText style={styles.createAccountSubTitle}>
@@ -105,6 +119,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
                   placeholder={t('Mật khẩu')}
                 />
               </View>
+
               <TouchableOpacity onPress={goToForgotPassword} style={styles.forgotPasswordContainer}>
                 <CustomText style={styles.forgotPasswordText}>{t('Quên mật khẩu?')}</CustomText>
               </TouchableOpacity>
@@ -124,7 +139,14 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           );
         }}
       </Formik>
-      <View style={styles.footerContainer}>
+      <View
+        style={[
+          styles.footerContainer,
+          isKeyboardOpen
+            ? { marginTop: rh(36), paddingBottom: rh(36) }
+            : // eslint-disable-next-line react-native/no-inline-styles
+              { position: 'absolute', bottom: rh(36) },
+        ]}>
         <CustomText style={styles.hasAccountText}>{t('Bạn chưa có tài khoản?')}</CustomText>
         <CustomText style={styles.loginText} onPress={goToRegister}>
           {t('Đăng ký.')}

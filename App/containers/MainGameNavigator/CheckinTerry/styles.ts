@@ -42,10 +42,6 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    position: 'absolute',
-    bottom: rh(26),
-    zIndex: 999999,
-    elevation: 999999,
   },
   addImagebuttonContainer: {
     paddingHorizontal: rh(12),
@@ -58,11 +54,11 @@ export const styles = StyleSheet.create({
 
     columnGap: rw(4),
     alignItems: 'center',
+    alignSelf: 'flex-start',
   },
   inputContainer: {
     flexDirection: 'column',
     width: '100%',
-    maxHeight: rh(600),
     zIndex: 1,
     flex: 1,
     paddingBottom: rh(100),
