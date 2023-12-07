@@ -8,7 +8,6 @@ import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ENavigationScreen } from 'App/enums/navigation';
-import { responsiveByHeight as rh } from 'App/helpers/common';
 import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
@@ -16,7 +15,7 @@ import { sagaUserAction } from 'App/redux/actions/userAction';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -46,7 +45,6 @@ const getValidateSchema = (t: (e: string) => string) => {
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const errorText = useGetErrorText();
   const onSubmit = useCallback(
     async (values: IFormValues) => {
@@ -87,66 +85,58 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       style={styles.container}
       keyboardAwareScrollProps={{
         innerRef: ref => (innerRef.current = ref),
-        extraScrollHeight: rh(0),
         onKeyboardDidShow: () => {
           innerRef.current?.scrollToEnd(true);
-          setIsKeyboardOpen(true);
         },
-        onKeyboardDidHide: () => setIsKeyboardOpen(false),
       }}>
-      <Image style={styles.image} source={EarthIcon} />
-      <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
-      <CustomText style={styles.createAccountSubTitle}>
-        {t('Chào mừng bạn đã quay trở lại, Terriana đã nhớ bạn rất nhiều.')}
-      </CustomText>
-      <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
-        {({ handleSubmit, values, submitCount, setFieldValue, errors }) => {
-          const shouldDisplayError = submitCount > 0;
-          return (
-            <>
-              <View style={styles.phoneInputContainer}>
-                <CustomInputPhoneNumber
-                  error={shouldDisplayError ? errors.phone : ''}
-                  onChangeText={text => setFieldValue('phone', text, true)}
-                  defaultPrefix={defaultPhonePrefix}
-                  placeholder={t('Số điện thoại')}
-                />
-              </View>
-              <View style={styles.passwordInputContainer}>
-                <CustomInputPassword
-                  error={shouldDisplayError ? errors.password || errorText : ''}
-                  onChangeText={text => setFieldValue('password', text, true)}
-                  placeholder={t('Mật khẩu')}
-                />
-              </View>
+      <View style={styles.mainContainer}>
+        <Image style={styles.image} source={EarthIcon} />
+        <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
+        <CustomText style={styles.createAccountSubTitle}>
+          {t('Chào mừng bạn đã quay trở lại, Terriana đã nhớ bạn rất nhiều.')}
+        </CustomText>
+        <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
+          {({ handleSubmit, values, submitCount, setFieldValue, errors }) => {
+            const shouldDisplayError = submitCount > 0;
+            return (
+              <>
+                <View style={styles.phoneInputContainer}>
+                  <CustomInputPhoneNumber
+                    error={shouldDisplayError ? errors.phone : ''}
+                    onChangeText={text => setFieldValue('phone', text, true)}
+                    defaultPrefix={defaultPhonePrefix}
+                    placeholder={t('Số điện thoại')}
+                  />
+                </View>
+                <View style={styles.passwordInputContainer}>
+                  <CustomInputPassword
+                    error={shouldDisplayError ? errors.password || errorText : ''}
+                    onChangeText={text => setFieldValue('password', text, true)}
+                    placeholder={t('Mật khẩu')}
+                  />
+                </View>
 
-              <TouchableOpacity onPress={goToForgotPassword} style={styles.forgotPasswordContainer}>
-                <CustomText style={styles.forgotPasswordText}>{t('Quên mật khẩu?')}</CustomText>
-              </TouchableOpacity>
-              <View style={styles.buttonContainer}>
-                <CustomButton
-                  onPress={() => {
-                    clearError();
-                    handleSubmit();
-                  }}
-                  disabled={getShouldDisableButton(values)}
-                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-                  buttonType={EButtonType.SOLID}
-                  title={t('Đăng nhập')}
-                />
-              </View>
-            </>
-          );
-        }}
-      </Formik>
-      <View
-        style={[
-          styles.footerContainer,
-          isKeyboardOpen
-            ? { marginTop: rh(36), paddingBottom: rh(36) }
-            : // eslint-disable-next-line react-native/no-inline-styles
-              { position: 'absolute', bottom: rh(36) },
-        ]}>
+                <TouchableOpacity onPress={goToForgotPassword} containerStyle={styles.forgotPasswordContainer}>
+                  <CustomText style={styles.forgotPasswordText}>{t('Quên mật khẩu?')}</CustomText>
+                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                  <CustomButton
+                    onPress={() => {
+                      clearError();
+                      handleSubmit();
+                    }}
+                    disabled={getShouldDisableButton(values)}
+                    linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                    buttonType={EButtonType.SOLID}
+                    title={t('Đăng nhập')}
+                  />
+                </View>
+              </>
+            );
+          }}
+        </Formik>
+      </View>
+      <View style={styles.footerContainer}>
         <CustomText style={styles.hasAccountText}>{t('Bạn chưa có tài khoản?')}</CustomText>
         <CustomText style={styles.loginText} onPress={goToRegister}>
           {t('Đăng ký.')}

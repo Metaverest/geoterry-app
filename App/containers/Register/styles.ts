@@ -9,8 +9,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: rw(16),
   },
+  mainContainer: { flex: 1 },
   image: {
     marginTop: -rh(171),
+    alignSelf: 'center',
   },
   createAccountTitle: {
     color: EColor.color_FAFAFA,
@@ -37,7 +39,6 @@ export const styles = StyleSheet.create({
     marginTop: rh(16),
   },
   buttonContainer: {
-    width: '100%',
     marginTop: rh(28),
   },
   footerContainer: {
@@ -46,6 +47,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
+    marginVertical: rh(36),
   },
   hasAccountText: {
     fontSize: rh(12),

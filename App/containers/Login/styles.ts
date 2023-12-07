@@ -5,8 +5,10 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: EColor.color_171717,
-
     paddingHorizontal: rw(16),
+  },
+  mainContainer: {
+    flex: 1,
   },
   image: {
     marginTop: -rh(171),
@@ -42,11 +44,11 @@ export const styles = StyleSheet.create({
   },
   footerContainer: {
     width: '100%',
-
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
+    marginVertical: rh(36),
   },
   hasAccountText: {
     fontSize: rh(12),
