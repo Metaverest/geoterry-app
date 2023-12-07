@@ -24,6 +24,8 @@ import Review from '../Review';
 import CheckinTerryScreen from './CheckinTerry';
 import CheckinTerryVoteScreen from './CheckinTerryVote';
 import HuntingMapScreen from './HuntingMap';
+import Chat from '../Chat';
+import ChatView from '../Chat/ChatView';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -132,6 +134,8 @@ const MainGameNavigator = () => {
           },
         }}
       />
+      <Stack.Screen name={EMainGameScreen.CHAT_SCREEN} component={Chat} options={{ headerShown: false }} />
+      <Stack.Screen name={EMainGameScreen.CHAT_VIEW_SCREEN} component={ChatView} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

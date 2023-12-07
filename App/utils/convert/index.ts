@@ -51,3 +51,16 @@ export const convertDateRelativeToNow = (inputDate: string, language?: ELanguage
 
   return dayjs().diff(inputDate, 'd', true) > 14 ? convertDateFormatOnlyDate(inputDate) : dayjs(inputDate).fromNow();
 };
+
+export const convertDateRelativeToNowMsg = (inputDate: string, language?: ELanguageCode) => {
+  dayjs.locale(language || ELanguageCode.VN);
+  dayjs.extend(relativeTime);
+
+  if (dayjs().diff(inputDate, 'm') <= 60) {
+    return dayjs().diff(inputDate, 'm') + 'm';
+  } else if (dayjs().diff(inputDate, 'h') <= 23) {
+    return dayjs().diff(inputDate, 'h') + 'h';
+  } else {
+    return dayjs().diff(inputDate, 'd') + 'd';
+  }
+};

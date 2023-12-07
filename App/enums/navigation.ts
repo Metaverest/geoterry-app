@@ -48,6 +48,8 @@ export enum EMainGameScreen {
   CHECKIN_TERRY_SCREEN = 'CHECKIN_TERRY_SCREEN',
   CHECKIN_TERRY_VOTE_SCREEN = 'CHECKIN_TERRY_VOTE_SCREEN',
   HUNTING_MAP_SCREEN = 'HUNTING_MAP_SCREEN',
+  CHAT_SCREEN = 'CHAT_SCREEN',
+  CHAT_VIEW_SCREEN = 'CHAT_VIEW_SCREEN',
 }
 
 export enum ESettingNavigator {
@@ -79,6 +81,8 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   };
   [ENavigationScreen.LOADING_MODAL]: undefined;
   [ENavigationScreen.POPUP_SCREEN]: IPopupModalProps;
+  [EMainGameScreen.CHAT_SCREEN]: undefined;
+  [EMainGameScreen.CHAT_VIEW_SCREEN]: undefined;
 }
 
 export enum EPopUpModalType {
