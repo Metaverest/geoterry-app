@@ -43,6 +43,7 @@ import CustomText from 'App/components/CustomText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
 import { DEFAULT_LOCATION } from 'App/constants/common';
+import MessageIcon from 'App/media/MessageIcon';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -311,6 +312,15 @@ const MapScreen = () => {
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}
           renderIcon={<SettingIcon />}
+        />
+        <CustomButtonIcon
+          onPress={() => {
+            navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHAT_SCREEN));
+          }}
+          buttonColor={[EColor.color_51D5FF, EColor.color_C072FD]}
+          customStyleContainer={styles.buttonRHNContainer}
+          buttonType={EButtonType.SOLID}
+          renderIcon={<MessageIcon />}
         />
         <CustomButtonIcon
           onPress={() => {
