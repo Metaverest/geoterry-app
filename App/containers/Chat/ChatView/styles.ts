@@ -6,16 +6,6 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  containerBubble: {
-    paddingVertical: rh(8),
-    paddingHorizontal: rw(8),
-    borderRadius: rh(12),
-  },
-  textMsg: {
-    color: EColor.color_FAFAFA,
-    fontSize: rh(12),
-    lineHeight: rh(18),
-  },
   inputToolBarContainer: {
     paddingHorizontal: rw(16),
     justifyContent: 'flex-start',
@@ -44,12 +34,5 @@ export const styles = StyleSheet.create({
     height: rw(24),
     borderRadius: rw(24),
     overflow: 'hidden',
-  },
-  btnSend: {
-    width: rw(34),
-    height: rw(34),
-    borderRadius: rw(34),
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

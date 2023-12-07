@@ -3,18 +3,16 @@ import { View } from 'react-native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
-import { Avatar, BubbleProps, GiftedChat, IMessage, InputToolbar, Send, SendProps } from 'react-native-gifted-chat';
-import LinearGradient from 'react-native-linear-gradient';
-import { EColor } from 'App/enums/color';
+import { Avatar, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-import CustomText from 'App/components/CustomText';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
-import SendIcon from 'App/media/SendIcon';
 import { useTranslation } from 'react-i18next';
 import Header from './Header';
 import { useRoute } from '@react-navigation/native';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
+import CustomBubble from './CustomBubble';
+import CustomSend from './CustomSend';
 
 const dataMock = [
   {
@@ -129,39 +127,6 @@ const ChatView = () => {
   const user = useSelector(reduxSelector.getUser);
   const [messagesList, setMessagesList] = useState<any>([]);
 
-  const RenderBubble = useCallback((props: BubbleProps<IMessage>) => {
-    return (
-      <>
-        {props.currentMessage?.user._id === props.user?._id ? (
-          <LinearGradient
-            style={[styles.containerBubble, { marginLeft: rw(84) }]}
-            colors={[EColor.color_C072FD, EColor.color_51D5FF]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}>
-            <CustomText style={styles.textMsg}>{props.currentMessage?.text}</CustomText>
-          </LinearGradient>
-        ) : (
-          <View style={[styles.containerBubble, { backgroundColor: EColor.color_333333, marginRight: rw(100) }]}>
-            <CustomText style={styles.textMsg}>{props.currentMessage?.text}</CustomText>
-          </View>
-        )}
-      </>
-    );
-  }, []);
-  const RenderSend = useCallback((props: SendProps<IMessage>) => {
-    return (
-      <LinearGradient
-        style={styles.btnSend}
-        colors={[EColor.color_C072FD, EColor.color_51D5FF]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}>
-        <Send {...props} containerStyle={styles.btnSend}>
-          <SendIcon />
-        </Send>
-      </LinearGradient>
-    );
-  }, []);
-
   useEffect(() => {
     if (dataMock) {
       const formatMsg = dataMock.map(e => ({
@@ -188,7 +153,7 @@ const ChatView = () => {
         user={{
           _id: user.id,
         }}
-        renderSend={RenderSend}
+        renderSend={props => <CustomSend {...props} />}
         listViewProps={{ showsVerticalScrollIndicator: false }}
         alwaysShowSend
         scrollToBottom
@@ -209,7 +174,7 @@ const ChatView = () => {
         renderInputToolbar={props => <InputToolbar {...props} containerStyle={styles.inputToolBarContainer} />}
         textInputProps={styles.textInputProps}
         placeholder={t('Nhập tin nhắn')}
-        renderBubble={RenderBubble}
+        renderBubble={props => <CustomBubble {...props} />}
       />
       <Header avatar={params.avatar} name={params.name} />
     </CustomSafeArea>
