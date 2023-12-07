@@ -14,6 +14,8 @@ import { convertDateRelativeToNowMsg } from 'App/utils/convert';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 
 const Chat = () => {
   const user = useSelector(reduxSelector.getUser);
@@ -38,8 +40,6 @@ const Chat = () => {
           profileId: '654fbb412bb9e9b95e5579c7',
           unreadMsgCnt: 2,
           displayName: 'Trung',
-          logoUrl:
-            'https://dinh-bac-infra-ordii.s3.ap-southeast-1.amazonaws.com/geoterry/photo/geoterryUserId_65010820ce743ca3c51fd3ce_pictureId_e3386364-e7d7-46b2-9a16-e2a90dd89581.jpg',
         },
       ],
       msgCount: 2,
@@ -85,18 +85,24 @@ const Chat = () => {
           onPress={() => {
             navigation.dispatch(
               CommonActions.navigate(EMainGameScreen.CHAT_VIEW_SCREEN, {
-                avatar: userFriend.logoUrl,
-                name: userFriend.displayName,
+                profileId: user.id,
+                conversationId: item.id,
               }),
             );
           }}>
-          <Image
-            source={{
-              uri: userFriend.logoUrl,
-            }}
-            style={styles.avatar}
-            resizeMode="cover"
-          />
+          {userFriend.logoUrl ? (
+            <Image
+              source={{
+                uri: userFriend.logoUrl,
+              }}
+              style={styles.avatar}
+              resizeMode="cover"
+            />
+          ) : (
+            <View style={styles.avatar}>
+              <MapMarkerUserDefault width={rw(48)} height={rh(48)} />
+            </View>
+          )}
           <View style={styles.content}>
             <CustomText style={styles.name}>{userFriend.displayName}</CustomText>
             <View style={styles.containerLastMsg}>

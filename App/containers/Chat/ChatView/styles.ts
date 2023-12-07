@@ -31,7 +31,6 @@ export const styles = StyleSheet.create({
     fontSize: rh(12),
     fontWeight: '500',
     color: EColor.color_FAFAFA,
-    // lineHeight: rh(18),
     marginVertical: 0,
     marginBottom: 0,
     marginTop: 0,
@@ -44,6 +43,7 @@ export const styles = StyleSheet.create({
     width: rw(24),
     height: rw(24),
     borderRadius: rw(24),
+    overflow: 'hidden',
   },
   btnSend: {
     width: rw(34),
