@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { useTranslation } from 'react-i18next';
 import Header from './Header';
-import { useRoute } from '@react-navigation/native';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import CustomBubble from './CustomBubble';
 import CustomSend from './CustomSend';
@@ -110,7 +109,6 @@ const dataMock = [
 ];
 
 const ChatView = () => {
-  const { params } = useRoute<any>();
   const { t } = useTranslation();
   const user = useSelector(reduxSelector.getUser);
   const [messagesList, setMessagesList] = useState<any>([]);
@@ -123,13 +121,12 @@ const ChatView = () => {
         createdAt: e.createdAt,
         user: {
           _id: 1 || e.senderId,
-          name: 'React Native',
-          avatar: params.avatar,
+          avatar: '',
         },
       }));
       setMessagesList(formatMsg);
     }
-  }, [params.avatar]);
+  }, []);
   const onSend = useCallback((messages: any = []) => {
     setMessagesList((previousMessages: any) => GiftedChat.append(previousMessages, messages));
   }, []);
@@ -168,7 +165,7 @@ const ChatView = () => {
         placeholder={t('Nhập tin nhắn')}
         renderBubble={props => <CustomBubble {...props} />}
       />
-      <Header avatar={params.avatar} name={params.name} />
+      <Header avatar={''} name={'Test'} />
     </CustomSafeArea>
   );
 };
