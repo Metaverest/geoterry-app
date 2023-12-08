@@ -34,5 +34,13 @@ export const styles = StyleSheet.create({
     height: rw(24),
     borderRadius: rw(24),
     overflow: 'hidden',
+    marginRight: rw(5),
+  },
+  day: {
+    fontWeight: '400',
+    fontSize: rh(10),
+    marginTop: rh(14),
+    marginBottom: rh(6),
+    lineHeight: rh(16),
   },
 });

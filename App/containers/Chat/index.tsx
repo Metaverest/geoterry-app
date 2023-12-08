@@ -14,7 +14,7 @@ import { convertDateRelativeToNowMsg } from 'App/utils/convert';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { responsiveByHeight as rh } from 'App/helpers/common';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 
 const Chat = () => {
@@ -100,7 +100,7 @@ const Chat = () => {
             />
           ) : (
             <View style={styles.avatar}>
-              <MapMarkerUserDefault width={rw(48)} height={rh(48)} />
+              <MapMarkerUserDefault width={rh(48)} height={rh(48)} />
             </View>
           )}
           <View style={styles.content}>

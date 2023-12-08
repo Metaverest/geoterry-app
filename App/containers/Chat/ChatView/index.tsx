@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
-import { Avatar, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { Avatar, Day, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
@@ -27,19 +27,6 @@ const dataMock = [
     createdAt: '2023-12-04T08:19:18.450Z',
     updatedAt: '2023-12-04T08:19:18.450Z',
     id: '656d8b86e30ed00c826fe3b8',
-  },
-  {
-    payload: {
-      type: 'text',
-      text: '1',
-    },
-    conversationId: '656d8b6992407f3c6c76dd3f',
-    senderId: '650484ce6b231c404d74fb8a',
-    recipientId: '654fbb412bb9e9b95e5579c7',
-    sentAt: '2023-12-04T08:18:49.365Z',
-    createdAt: '2023-12-04T08:18:49.367Z',
-    updatedAt: '2023-12-04T08:18:49.367Z',
-    id: '656d8b6992407f3c6c76dd41',
   },
   {
     payload: {
@@ -161,11 +148,12 @@ const ChatView = () => {
           props.currentMessage?.user.avatar ? (
             <Avatar {...props} position="right" imageStyle={{ right: styles.avatar }} />
           ) : (
-            <View style={styles.avatar}>
-              <MapMarkerUserDefault width={rw(24)} height={rh(24)} />
+            <View style={[styles.avatar, { marginLeft: props.currentMessage?.user.avatar ? rw(0) : rw(7) }]}>
+              <MapMarkerUserDefault width={rw(24)} height={rw(24)} />
             </View>
           )
         }
+        renderDay={props => <Day {...props} textStyle={styles.day} />}
         showUserAvatar={false}
         showAvatarForEveryMessage={false}
         renderTime={() => null}
