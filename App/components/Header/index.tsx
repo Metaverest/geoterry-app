@@ -3,11 +3,11 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameScreen } from 'App/enums/navigation';
 import BackIcon from 'App/media/BackIcon';
 import { useCallback, useLayoutEffect } from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleProp, View, ViewStyle, TouchableOpacity } from 'react-native';
 import CustomText from '../CustomText';
 import { styles } from './styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { responsiveByWidth as rw } from 'App/helpers/common';
 
 const Header = ({
   title,
@@ -34,7 +34,10 @@ const Header = ({
       headerShown: true,
       header: () => (
         <View style={[styles.container, headerContainerStyle, insets.top > 0 && { top: insets.top }]}>
-          <TouchableOpacity style={styles.backButtonContainer} onPress={handlePressBackButton}>
+          <TouchableOpacity
+            hitSlop={{ top: rw(10), bottom: rw(10), left: rw(10), right: rw(10) }}
+            style={styles.backButtonContainer}
+            onPress={handlePressBackButton}>
             {!shouldHideBackButton && <BackIcon />}
           </TouchableOpacity>
           <CustomText style={styles.title}>{title}</CustomText>
