@@ -13,6 +13,7 @@ import { useRoute } from '@react-navigation/native';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import CustomBubble from './CustomBubble';
 import CustomSend from './CustomSend';
+import { EColor } from 'App/enums/color';
 
 const dataMock = [
   {
@@ -159,7 +160,10 @@ const ChatView = () => {
         renderTime={() => null}
         dateFormat={'hh:mm DD/MM/YYYY'}
         messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68) }}
-        renderInputToolbar={props => <InputToolbar {...props} containerStyle={styles.inputToolBarContainer} />}
+        renderInputToolbar={props => {
+          const newProp = { placeholderTextColor: EColor.color_666666 };
+          return <InputToolbar {...newProp} {...props} containerStyle={styles.inputToolBarContainer} />;
+        }}
         textInputProps={styles.textInputProps}
         placeholder={t('Nhập tin nhắn')}
         renderBubble={props => <CustomBubble {...props} />}
