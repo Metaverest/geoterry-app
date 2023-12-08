@@ -4,7 +4,6 @@ import CustomButtonIcon from 'App/components/ButtonIcon';
 import CustomInput from 'App/components/CustomInput';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
-import Header from 'App/components/Header';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { AppBackgroundImage, CannotFindTerryImage, CheckInTerryCongratImage } from 'App/components/image';
 import { EButtonType } from 'App/enums';
@@ -18,7 +17,7 @@ import { IUploadProfileResDto } from 'App/types/user';
 import { requestUploadProfileImage } from 'App/utils/axios';
 import { Formik, FormikErrors } from 'formik';
 import { get, head, isEmpty, some } from 'lodash';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
@@ -108,7 +107,6 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
     [],
   );
 
-  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const innerRef = React.useRef<KeyboardAwareScrollView>();
   return (
     <CustomSafeArea
@@ -116,69 +114,64 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
       backgroundImageSource={AppBackgroundImage}
       keyboardAwareScrollProps={{
         innerRef: ref => (innerRef.current = ref),
-        extraScrollHeight: rh(60),
         onKeyboardDidShow: () => {
           innerRef.current?.scrollToEnd(true);
-          setIsKeyboardOpen(true);
         },
-        onKeyboardDidHide: () => setIsKeyboardOpen(false),
       }}>
-      <Header />
-      <Image style={styles.headerImage} source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage} />
-      <CustomText style={styles.checkInTitle}>
-        {isCannotFindTerry ? t('Ồ, bạn không tìm thấy kho báu sao?') : t('Chúc mừng\nBạn đã tìm thấy kho báu!')}
-      </CustomText>
-      <CustomText style={styles.checkInSubtitle}>
-        {isCannotFindTerry
-          ? t('Terriana rất tiếc về trải nghiệm này, hãy để lại lời nhắn cho Builder để sớm khắc phục.')
-          : t('Chia sẻ cảm nhận với Terriana cùng với cộng đồng của chúng tôi!')}
-      </CustomText>
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ values, setFieldValue, errors, submitCount }) => {
           const shouldDisplayError = submitCount > 0;
           return (
             <>
-              <View style={styles.terryInputContainer}>
-                <CustomInput
-                  minHeightInput={rh(151)}
-                  error={shouldDisplayError ? errors.reviewText : ''}
-                  onChangeText={text => setFieldValue('reviewText', text, true)}
-                  placeholder={t('Nhập...')}
-                  numberOfLines={10}
-                  multiline
-                  value={values.reviewText}
+              <View style={styles.mainContainer}>
+                <Image
+                  style={styles.headerImage}
+                  source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage}
                 />
-              </View>
-
-              <View style={styles.terryAddImageContainer}>
-                <CustomButtonIcon
-                  onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
-                  buttonColor={EColor.color_333333}
-                  customStyleContainer={styles.addImagebuttonContainer}
-                  buttonType={EButtonType.SOLID}
-                  renderIcon={<ImageAddIcon />}
-                />
-                {!isEmpty(values.photoUrls) && (
-                  <MultipleImagesOnLine
-                    images={values.photoUrls as string[]}
-                    numColumns={4}
-                    containerItemImageStyle={styles.containerItemImageStyle}
-                    containerImageStyle={styles.containerImageStyle}
-                    canRemoveImage
-                    removeImage={url => {
-                      removeImage(setFieldValue, values.photoUrls, url);
-                    }}
+                <CustomText style={styles.checkInTitle}>
+                  {isCannotFindTerry
+                    ? t('Ồ, bạn không tìm thấy kho báu sao?')
+                    : t('Chúc mừng\nBạn đã tìm thấy kho báu!')}
+                </CustomText>
+                <CustomText style={styles.checkInSubtitle}>
+                  {isCannotFindTerry
+                    ? t('Terriana rất tiếc về trải nghiệm này, hãy để lại lời nhắn cho Builder để sớm khắc phục.')
+                    : t('Chia sẻ cảm nhận với Terriana cùng với cộng đồng của chúng tôi!')}
+                </CustomText>
+                <View style={styles.terryInputContainer}>
+                  <CustomInput
+                    minHeightInput={rh(121)}
+                    error={shouldDisplayError ? errors.reviewText : ''}
+                    onChangeText={text => setFieldValue('reviewText', text, true)}
+                    placeholder={t('Nhập...')}
+                    numberOfLines={10}
+                    multiline
+                    value={values.reviewText}
                   />
-                )}
+                </View>
+                <View style={styles.terryAddImageContainer}>
+                  <CustomButtonIcon
+                    onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
+                    buttonColor={EColor.color_333333}
+                    customStyleContainer={styles.addImagebuttonContainer}
+                    buttonType={EButtonType.SOLID}
+                    renderIcon={<ImageAddIcon />}
+                  />
+                  {!isEmpty(values.photoUrls) && (
+                    <MultipleImagesOnLine
+                      images={values.photoUrls as string[]}
+                      numColumns={4}
+                      containerItemImageStyle={styles.containerItemImageStyle}
+                      containerImageStyle={styles.containerImageStyle}
+                      canRemoveImage
+                      removeImage={url => {
+                        removeImage(setFieldValue, values.photoUrls, url);
+                      }}
+                    />
+                  )}
+                </View>
               </View>
-              <View
-                style={[
-                  styles.buttonContainer,
-                  isKeyboardOpen
-                    ? { paddingVertical: rh(36) }
-                    : // eslint-disable-next-line react-native/no-inline-styles
-                      { position: 'absolute', bottom: rh(36) },
-                ]}>
+              <View style={styles.buttonContainer}>
                 <CustomButton
                   onPress={() => {
                     clearError();

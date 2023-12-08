@@ -2,18 +2,21 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { styles } from './styles';
-import { ScrollView, View } from 'react-native';
-
+import { Dimensions, ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { responsiveByHeight as rh } from 'App/helpers/common';
+const screenHeight = Dimensions.get('window').height;
 const AboutScreen = () => {
   const { t } = useTranslation();
-
+  const insets = useSafeAreaInsets();
+  const contentHeight = useMemo(() => screenHeight - insets.top - rh(72), [insets.top]);
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Về Terriana')} />
-      <View style={styles.aboutContainer}>
+      <View style={[styles.aboutContainer, { height: contentHeight }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomText style={styles.aboutContent}>
             {t(
