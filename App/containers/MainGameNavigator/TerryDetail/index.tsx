@@ -128,9 +128,11 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
 
   const [nearToTerry, setNearToTerry] = useState(false);
   useEffect(() => {
-    const deltaDistance = calculateDistance(terry.location, currentLocation);
-    if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
-      setNearToTerry(true);
+    if (currentLocation) {
+      const deltaDistance = calculateDistance(terry.location, currentLocation);
+      if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
+        setNearToTerry(true);
+      }
     }
   }, [currentLocation, terry.location]);
 
@@ -257,7 +259,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                     dispatch(
                       reduxAppAction.setCheckinTerryData({
                         terryId: terry?.id,
-                        location: { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
+                        location: { latitude: currentLocation!.latitude, longitude: currentLocation!.longitude },
                       }),
                     );
                     navigation.dispatch(

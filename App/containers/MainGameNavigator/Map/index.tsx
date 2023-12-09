@@ -14,7 +14,7 @@ import CustomButtonIcon from 'App/components/ButtonIcon';
 import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey, ENamespace, EUserRole } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import FilterMapIcon from 'App/media/FilterMapIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
@@ -28,7 +28,7 @@ import { IRealtimeLocation } from 'App/types';
 import { ITerryFilterParams } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
 import { getStoredProperty } from 'App/utils/storage/storage';
-import { isEmpty } from 'lodash';
+import { isEmpty, last } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,7 +42,6 @@ import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 import CustomText from 'App/components/CustomText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
-import { DEFAULT_LOCATION } from 'App/constants/common';
 import MessageIcon from 'App/media/MessageIcon';
 
 const MapScreen = () => {
@@ -113,18 +112,6 @@ const MapScreen = () => {
     [dispatch, navigation, regionToGetTerry],
   );
 
-  // TODO: Need to somehow to be able to remove this effect since it costs a lot of resource
-  // If the current location is not empty and the region is empty or default location, set the region to the current location
-  useEffect(() => {
-    if (
-      !isEmpty(currentLocation) &&
-      (isEmpty(region) ||
-        (region.latitude === DEFAULT_LOCATION.latitude && region.longitude === DEFAULT_LOCATION.longitude))
-    ) {
-      changeRegion(currentLocation, true);
-    }
-  }, [currentLocation, region, changeRegion]);
-
   useEffect(() => {
     if (params?.locationTerry) {
       changeRegion(params.locationTerry, true);
@@ -138,12 +125,14 @@ const MapScreen = () => {
   }, [navigation]);
 
   const handleCreateNewTerry = useCallback(() => {
-    navigation.dispatch(
-      StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
-        longitude: currentLocation.longitude,
-        latitude: currentLocation.latitude,
-      }),
-    );
+    if (currentLocation) {
+      navigation.dispatch(
+        StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
+          longitude: currentLocation.longitude,
+          latitude: currentLocation.latitude,
+        }),
+      );
+    }
   }, [navigation, currentLocation]);
 
   const handlePressFilterMap = useCallback(() => {
@@ -162,7 +151,7 @@ const MapScreen = () => {
   const selectedTerry = useSelector(reduxSelector.getAppPublicTerry);
 
   useEffect(() => {
-    if (selectedTerryId && selectedTerryId !== selectedTerry?.id) {
+    if (selectedTerryId && selectedTerryId !== selectedTerry?.id && currentLocation) {
       dispatch(
         sagaUserAction.getPublicTerryByIdAsync(
           {
@@ -180,8 +169,21 @@ const MapScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTerryId]);
 
+  // handle loading map
+  const [successLoadMap, setSuccessLoadMap] = useState(false);
+  useEffect(() => {
+    if (!currentLocation) {
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    } else if (last(navigation.getState().routes)?.name === ENavigationScreen.LOADING_MODAL && !successLoadMap) {
+      setSuccessLoadMap(true);
+      changeRegion(currentLocation, true);
+      navigation.dispatch(StackActions.pop());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLocation]);
+
   const updateTerryUserCustomData = (payload: { markAsFavourited?: boolean; markAsSaved?: boolean }) => {
-    if (selectedTerryId) {
+    if (selectedTerryId && currentLocation) {
       dispatch(
         sagaUserAction.getPublicTerryByIdAsync(
           {
@@ -215,7 +217,9 @@ const MapScreen = () => {
         }}
         onLongPress={() => setSelectedTerryId(null)}
         region={region}>
-        {isSaveBatterryMode ? null : <UserMarker userPosition={currentLocation} centerMap={onCenter} />}
+        {isSaveBatterryMode || !currentLocation ? null : (
+          <UserMarker userPosition={currentLocation!} centerMap={onCenter} />
+        )}
         {publicTerries?.map(treasure => (
           <TreasureMarker
             key={treasure.id}
@@ -269,7 +273,7 @@ const MapScreen = () => {
         </View>
       ) : null}
 
-      <CityNameBoard region={region} mapRef={mapRef} />
+      {region && <CityNameBoard region={region} mapRef={mapRef} />}
 
       {selectedTerry && selectedTerryId ? (
         <View style={styles.listButtonFooterContainer}>
