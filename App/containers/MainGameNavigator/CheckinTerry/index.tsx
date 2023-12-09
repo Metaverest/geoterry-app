@@ -25,6 +25,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import Header from 'App/components/Header';
 
 interface IFormValues {
   reviewText: string;
@@ -118,6 +119,7 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
           innerRef.current?.scrollToEnd(true);
         },
       }}>
+      <Header />
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ values, setFieldValue, errors, submitCount }) => {
           const shouldDisplayError = submitCount > 0;
