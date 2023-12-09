@@ -38,7 +38,7 @@ const Header = ({
     navigation.dispatch(CommonActions.goBack());
   }, [navigation]);
   const insets = useSafeAreaInsets();
-  console.log(isChatView);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,

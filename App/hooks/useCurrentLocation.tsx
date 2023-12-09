@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react';
 import Geolocation from '@react-native-community/geolocation';
 import { IRealtimeLocation } from 'App/types';
 import useRequestLocationPermission from './useRequestLocationPermission';
-import { DEFAULT_LOCATION } from 'App/constants/common';
 
-const useCurrentLocation = (): IRealtimeLocation => {
+const useCurrentLocation = (): IRealtimeLocation | undefined => {
   const { hasLocationPermission } = useRequestLocationPermission();
-  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
+  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation | undefined>(undefined);
   useEffect(() => {
     let watchID: number;
     if (hasLocationPermission) {
