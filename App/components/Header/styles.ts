@@ -52,6 +52,7 @@ export const styles = StyleSheet.create({
     height: rw(36),
     borderRadius: rw(36),
     marginHorizontal: rw(16),
+    overflow: 'hidden',
   },
   name: {
     fontSize: rh(16),

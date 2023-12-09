@@ -160,7 +160,7 @@ const ChatView = () => {
         showAvatarForEveryMessage={false}
         renderTime={() => null}
         dateFormat={'hh:mm DD/MM/YYYY'}
-        messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68) }}
+        messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68), paddingBottom: rh(24) }}
         renderInputToolbar={props => {
           const newProp = { placeholderTextColor: EColor.color_666666 };
           return <InputToolbar {...newProp} {...props} containerStyle={styles.inputToolBarContainer} />;
