@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: rw(16),
   },
+  mainContainer: { flex: 1 },
   congratImage: {
     marginTop: rh(18),
   },
@@ -31,21 +32,13 @@ export const styles = StyleSheet.create({
     marginTop: rh(8),
     alignSelf: 'flex-start',
   },
-  formContainer: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: 'red',
-  },
+
   terryInputContainer: {
-    width: '100%',
     marginTop: rh(16),
   },
   buttonContainer: {
     width: '100%',
-    position: 'absolute',
-    bottom: rh(26),
-    zIndex: 999999,
-    elevation: 999999,
+    marginVertical: rh(26),
   },
   addImagebuttonContainer: {
     paddingHorizontal: rh(12),
@@ -58,11 +51,11 @@ export const styles = StyleSheet.create({
 
     columnGap: rw(4),
     alignItems: 'center',
+    alignSelf: 'flex-start',
   },
   inputContainer: {
     flexDirection: 'column',
     width: '100%',
-    maxHeight: rh(600),
     zIndex: 1,
     flex: 1,
     paddingBottom: rh(100),

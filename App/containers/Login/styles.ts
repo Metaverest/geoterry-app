@@ -1,12 +1,14 @@
 import { EColor } from 'App/enums/color';
-import { StyleSheet } from 'react-native';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: EColor.color_171717,
-    flex: 1,
     paddingHorizontal: rw(16),
+  },
+  mainContainer: {
+    flex: 1,
   },
   image: {
     marginTop: -rh(171),
@@ -41,13 +43,12 @@ export const styles = StyleSheet.create({
     marginTop: rh(33),
   },
   footerContainer: {
-    position: 'absolute',
     width: '100%',
-    bottom: rh(36),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    left: rw(16),
+    alignSelf: 'center',
+    marginVertical: rh(36),
   },
   hasAccountText: {
     fontSize: rh(12),

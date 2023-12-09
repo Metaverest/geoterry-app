@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
+import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
-import { styles } from './styles';
-import { Avatar, Day, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { EColor } from 'App/enums/color';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-import { useSelector } from 'react-redux';
-import { reduxSelector } from 'App/redux/selectors';
-import { useTranslation } from 'react-i18next';
-import Header from './Header';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
+import { reduxSelector } from 'App/redux/selectors';
+import { default as React, useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import { Avatar, Day, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { useSelector } from 'react-redux';
 import CustomBubble from './CustomBubble';
 import CustomSend from './CustomSend';
-import { EColor } from 'App/enums/color';
+import { styles } from './styles';
 
 const dataMock = [
   {
@@ -130,8 +130,12 @@ const ChatView = () => {
   const onSend = useCallback((messages: any = []) => {
     setMessagesList((previousMessages: any) => GiftedChat.append(previousMessages, messages));
   }, []);
+
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea
+      shouldDisableKeyboardAwareScroll
+      style={styles.container}
+      backgroundImageSource={AppBackgroundImage}>
       <GiftedChat
         messages={messagesList}
         onSend={messages => onSend(messages)}
@@ -156,7 +160,7 @@ const ChatView = () => {
         showAvatarForEveryMessage={false}
         renderTime={() => null}
         dateFormat={'hh:mm DD/MM/YYYY'}
-        messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68) }}
+        messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68), paddingBottom: rh(24) }}
         renderInputToolbar={props => {
           const newProp = { placeholderTextColor: EColor.color_666666 };
           return <InputToolbar {...newProp} {...props} containerStyle={styles.inputToolBarContainer} />;
@@ -165,7 +169,7 @@ const ChatView = () => {
         placeholder={t('Nhập tin nhắn')}
         renderBubble={props => <CustomBubble {...props} />}
       />
-      <Header avatar={''} name={'Test'} />
+      <Header avatar={''} name={'Test'} isChatView />
     </CustomSafeArea>
   );
 };

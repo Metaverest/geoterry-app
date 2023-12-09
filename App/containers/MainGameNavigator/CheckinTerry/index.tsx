@@ -4,7 +4,6 @@ import CustomButtonIcon from 'App/components/ButtonIcon';
 import CustomInput from 'App/components/CustomInput';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
-import Header from 'App/components/Header';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { AppBackgroundImage, CannotFindTerryImage, CheckInTerryCongratImage } from 'App/components/image';
 import { EButtonType } from 'App/enums';
@@ -26,6 +25,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import Header from 'App/components/Header';
 
 interface IFormValues {
   reviewText: string;
@@ -107,83 +107,88 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
     },
     [],
   );
-  return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header />
-      <KeyboardAwareScrollView
-        enableOnAndroid
-        enableAutomaticScroll
-        showsVerticalScrollIndicator={false}
-        extraHeight={rh(151)}>
-        <Image
-          style={styles.headerImage}
-          source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage}
-        />
-        <CustomText style={styles.checkInTitle}>
-          {isCannotFindTerry ? t('Ồ, bạn không tìm thấy kho báu sao?') : t('Chúc mừng\nBạn đã tìm thấy kho báu!')}
-        </CustomText>
-        <CustomText style={styles.checkInSubtitle}>
-          {isCannotFindTerry
-            ? t('Terriana rất tiếc về trải nghiệm này, hãy để lại lời nhắn cho Builder để sớm khắc phục.')
-            : t('Chia sẻ cảm nhận với Terriana cùng với cộng đồng của chúng tôi!')}
-        </CustomText>
-        <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
-          {({ values, setFieldValue, errors, submitCount }) => {
-            const shouldDisplayError = submitCount > 0;
-            return (
-              <>
-                <View style={styles.inputContainer}>
-                  <View style={styles.terryInputContainer}>
-                    <CustomInput
-                      minHeightInput={rh(151)}
-                      error={shouldDisplayError ? errors.reviewText : ''}
-                      onChangeText={text => setFieldValue('reviewText', text, true)}
-                      placeholder={t('Nhập...')}
-                      numberOfLines={10}
-                      multiline
-                      value={values.reviewText}
-                    />
-                  </View>
 
-                  <View style={styles.terryAddImageContainer}>
-                    <CustomButtonIcon
-                      onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
-                      buttonColor={EColor.color_333333}
-                      customStyleContainer={styles.addImagebuttonContainer}
-                      buttonType={EButtonType.SOLID}
-                      renderIcon={<ImageAddIcon />}
-                    />
-                    {!isEmpty(values.photoUrls) && (
-                      <MultipleImagesOnLine
-                        images={values.photoUrls as string[]}
-                        numColumns={4}
-                        containerItemImageStyle={styles.containerItemImageStyle}
-                        containerImageStyle={styles.containerImageStyle}
-                        canRemoveImage
-                        removeImage={url => {
-                          removeImage(setFieldValue, values.photoUrls, url);
-                        }}
-                      />
-                    )}
-                  </View>
-                </View>
-                <View style={styles.buttonContainer}>
-                  <CustomButton
-                    onPress={() => {
-                      clearError();
-                      onSubmit(values);
-                    }}
-                    linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-                    buttonType={EButtonType.SOLID}
-                    title={t('Gửi')}
-                    disabled={getShouldDisableButton(values)}
+  const innerRef = React.useRef<KeyboardAwareScrollView>();
+  return (
+    <CustomSafeArea
+      style={styles.container}
+      backgroundImageSource={AppBackgroundImage}
+      keyboardAwareScrollProps={{
+        innerRef: ref => (innerRef.current = ref),
+        onKeyboardDidShow: () => {
+          innerRef.current?.scrollToEnd(true);
+        },
+      }}>
+      <Header />
+      <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
+        {({ values, setFieldValue, errors, submitCount }) => {
+          const shouldDisplayError = submitCount > 0;
+          return (
+            <>
+              <View style={styles.mainContainer}>
+                <Image
+                  style={styles.headerImage}
+                  source={isCannotFindTerry ? CannotFindTerryImage : CheckInTerryCongratImage}
+                />
+                <CustomText style={styles.checkInTitle}>
+                  {isCannotFindTerry
+                    ? t('Ồ, bạn không tìm thấy kho báu sao?')
+                    : t('Chúc mừng\nBạn đã tìm thấy kho báu!')}
+                </CustomText>
+                <CustomText style={styles.checkInSubtitle}>
+                  {isCannotFindTerry
+                    ? t('Terriana rất tiếc về trải nghiệm này, hãy để lại lời nhắn cho Builder để sớm khắc phục.')
+                    : t('Chia sẻ cảm nhận với Terriana cùng với cộng đồng của chúng tôi!')}
+                </CustomText>
+                <View style={styles.terryInputContainer}>
+                  <CustomInput
+                    minHeightInput={rh(121)}
+                    error={shouldDisplayError ? errors.reviewText : ''}
+                    onChangeText={text => setFieldValue('reviewText', text, true)}
+                    placeholder={t('Nhập...')}
+                    numberOfLines={10}
+                    multiline
+                    value={values.reviewText}
                   />
                 </View>
-              </>
-            );
-          }}
-        </Formik>
-      </KeyboardAwareScrollView>
+                <View style={styles.terryAddImageContainer}>
+                  <CustomButtonIcon
+                    onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
+                    buttonColor={EColor.color_333333}
+                    customStyleContainer={styles.addImagebuttonContainer}
+                    buttonType={EButtonType.SOLID}
+                    renderIcon={<ImageAddIcon />}
+                  />
+                  {!isEmpty(values.photoUrls) && (
+                    <MultipleImagesOnLine
+                      images={values.photoUrls as string[]}
+                      numColumns={4}
+                      containerItemImageStyle={styles.containerItemImageStyle}
+                      containerImageStyle={styles.containerImageStyle}
+                      canRemoveImage
+                      removeImage={url => {
+                        removeImage(setFieldValue, values.photoUrls, url);
+                      }}
+                    />
+                  )}
+                </View>
+              </View>
+              <View style={styles.buttonContainer}>
+                <CustomButton
+                  onPress={() => {
+                    clearError();
+                    onSubmit(values);
+                  }}
+                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                  buttonType={EButtonType.SOLID}
+                  title={t('Gửi')}
+                  disabled={getShouldDisableButton(values)}
+                />
+              </View>
+            </>
+          );
+        }}
+      </Formik>
     </CustomSafeArea>
   );
 };

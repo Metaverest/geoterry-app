@@ -146,7 +146,10 @@ const Chat = () => {
     [navigation, t, user.id, user.languageCode],
   );
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea
+      shouldDisableKeyboardAwareScroll
+      style={styles.container}
+      backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trò chuyện')} />
       <FlatList
         keyExtractor={(_, index) => index.toString()}

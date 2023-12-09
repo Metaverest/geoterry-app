@@ -2,18 +2,21 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { styles } from './styles';
-import { ScrollView, View } from 'react-native';
-
+import { Dimensions, ScrollView, View } from 'react-native';
+import { responsiveByHeight as rh } from 'App/helpers/common';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+const screenHeight = Dimensions.get('window').height;
 const PolicyScreen = () => {
   const { t } = useTranslation();
-
+  const insets = useSafeAreaInsets();
+  const contentHeight = useMemo(() => screenHeight - insets.top - rh(72), [insets.top]);
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Chính sách bảo mật')} />
-      <View style={styles.policyContainer}>
+      <View style={[styles.policyContainer, { height: contentHeight }]}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <CustomText style={styles.policyContent}>
             {t(

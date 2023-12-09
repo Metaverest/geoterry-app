@@ -22,7 +22,6 @@ import { AppBackgroundImage, CheckInTerryCongratImage, CreateTerrySuccessImage }
 import WhiteLocationIcon from 'App/media/WhiteLocationIcon';
 import PaginationSeperators from 'App/components/PaginationSeperators';
 import Header from 'App/components/Header';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByHeight as rh } from 'App/helpers/common';
 import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
 import { reduxAppAction } from 'App/redux/actions/appAction';
@@ -37,7 +36,6 @@ interface ITerryItem {
 }
 const TerryDetailScreen = ({ route }: { route: any }) => {
   const user = useSelector(reduxSelector.getUser);
-  const { top } = useSafeAreaInsets();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
@@ -278,7 +276,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           )}
         </View>
       </ScrollView>
-      <Header title="" headerContainerStyle={{ marginTop: top }} />
+      <Header />
     </ImageBackground>
   );
 };
