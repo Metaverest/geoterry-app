@@ -24,4 +24,6 @@ export const INTERVAL_TIME_CALL_UPDATE_PATH = 1000 * 60 * 2; // 2 minutes
 
 export const THRESHOLD_DISTANCE_TO_UPDATE_PATH = 50; // 50 meters
 
+export const THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY = 50; // 50 meters
+
 export const PREFIX_LINK = 'geoterry';
