@@ -9,8 +9,9 @@ export const styles = StyleSheet.create({
   inputToolBarContainer: {
     paddingHorizontal: rw(16),
     justifyContent: 'flex-start',
-    backgroundColor: 'transparent',
     borderTopWidth: 0,
+    paddingBottom: rh(24),
+    backgroundColor: 'transparent',
   },
   textInputProps: {
     alignItems: 'center',

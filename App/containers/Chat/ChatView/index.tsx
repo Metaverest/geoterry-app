@@ -1,18 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
-import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage } from 'App/components/image';
-import { styles } from './styles';
-import { Avatar, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
-import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-import { useSelector } from 'react-redux';
-import { reduxSelector } from 'App/redux/selectors';
-import { useTranslation } from 'react-i18next';
-import Header from './Header';
 import { useRoute } from '@react-navigation/native';
+import CustomSafeArea from 'App/components/CustomSafeArea';
+import Header from 'App/components/Header';
+import { AppBackgroundImage } from 'App/components/image';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
+import { reduxSelector } from 'App/redux/selectors';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
+import { Avatar, GiftedChat, InputToolbar } from 'react-native-gifted-chat';
+import { useSelector } from 'react-redux';
 import CustomBubble from './CustomBubble';
 import CustomSend from './CustomSend';
+import { styles } from './styles';
 
 const dataMock = [
   {
@@ -142,11 +142,16 @@ const ChatView = () => {
       setMessagesList(formatMsg);
     }
   }, [params.avatar]);
+
   const onSend = useCallback((messages: any = []) => {
     setMessagesList((previousMessages: any) => GiftedChat.append(previousMessages, messages));
   }, []);
+
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea
+      shouldDisableKeyboardAwareScroll
+      style={styles.container}
+      backgroundImageSource={AppBackgroundImage}>
       <GiftedChat
         messages={messagesList}
         onSend={messages => onSend(messages)}
@@ -170,13 +175,13 @@ const ChatView = () => {
         showAvatarForEveryMessage={false}
         renderTime={() => null}
         dateFormat={'hh:mm DD/MM/YYYY'}
-        messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68) }}
+        messagesContainerStyle={{ paddingTop: rh(68), paddingBottom: rh(24) }}
         renderInputToolbar={props => <InputToolbar {...props} containerStyle={styles.inputToolBarContainer} />}
         textInputProps={styles.textInputProps}
         placeholder={t('Nhập tin nhắn')}
         renderBubble={props => <CustomBubble {...props} />}
       />
-      <Header avatar={params.avatar} name={params.name} />
+      <Header isChatView />
     </CustomSafeArea>
   );
 };
