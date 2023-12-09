@@ -4,6 +4,8 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 import BackIcon from 'App/media/BackIcon';
 import CustomText from 'App/components/CustomText';
+import { responsiveByWidth as rw } from 'App/helpers/common';
+import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 
 const Header = ({
   shouldHideBackButton,
@@ -11,7 +13,7 @@ const Header = ({
   avatar,
   name,
 }: {
-  avatar: string;
+  avatar?: string;
   name: string;
   title?: string;
   rightButton?: any;
@@ -27,7 +29,13 @@ const Header = ({
       <TouchableOpacity style={styles.backButtonContainer} onPress={handlePressBackButton}>
         {!shouldHideBackButton && <BackIcon />}
       </TouchableOpacity>
-      <Image source={{ uri: avatar }} style={styles.avatar} />
+      {avatar ? (
+        <Image source={{ uri: avatar }} style={styles.avatar} />
+      ) : (
+        <View style={styles.avatar}>
+          <MapMarkerUserDefault width={rw(36)} height={rw(36)} />
+        </View>
+      )}
       <CustomText style={styles.name}>{name}</CustomText>
     </View>
   );
