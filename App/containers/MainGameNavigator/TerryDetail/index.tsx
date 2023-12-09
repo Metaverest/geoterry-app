@@ -2,14 +2,14 @@ import CustomButton from 'App/components/Button';
 import { EButtonType, FindTerryCheckinBy } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ITerryResponseDto } from 'App/types/terry';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
-import { meterToKilometer } from 'App/utils/convert';
+import { calculateDistance, meterToKilometer } from 'App/utils/convert';
 import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
@@ -26,6 +26,7 @@ import { responsiveByHeight as rh } from 'App/helpers/common';
 import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
+import { THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY } from 'App/constants/common';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -124,6 +125,15 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   );
   const image = (index: number) => ({ image: terry.photoUrls![index % terry.photoUrls!.length] });
   const items = Array.from(Array(terry.photoUrls?.length)).map((_, index) => image(index));
+
+  const [nearToTerry, setNearToTerry] = useState(false);
+  useEffect(() => {
+    const deltaDistance = calculateDistance(terry.location, currentLocation);
+    if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
+      setNearToTerry(true);
+    }
+  }, [currentLocation, terry.location]);
+
   return (
     <ImageBackground source={AppBackgroundImage}>
       <ScrollView style={styles.container}>
@@ -258,6 +268,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                     );
                   }}
                   title={t('Đã tìm thấy')}
+                  disabled={!nearToTerry}
                   buttonType={EButtonType.SOLID}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                 />

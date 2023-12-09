@@ -8,6 +8,7 @@ import Header from 'App/components/Header';
 import {
   DEFAULT_LOCATION,
   INTERVAL_TIME_CALL_UPDATE_PATH,
+  THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY,
   THRESHOLD_DISTANCE_TO_UPDATE_PATH,
 } from 'App/constants/common';
 import { EButtonType } from 'App/enums';
@@ -135,6 +136,17 @@ const HuntingMapScreen = () => {
     },
     [dispatch, navigation, currentLocation, terry?.id, updatePathToServer],
   );
+
+  const [nearToTerry, setNearToTerry] = useState(false);
+  useEffect(() => {
+    if (terry) {
+      const deltaDistance = calculateDistance(terry.location, currentLocation);
+      if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
+        setNearToTerry(true);
+      }
+    }
+  }, [currentLocation, terry]);
+
   return (
     <CustomSafeArea style={styles.container} shouldHideStatusBar shouldUseFullScreenView>
       <Header
@@ -181,6 +193,7 @@ const HuntingMapScreen = () => {
           <CustomButton
             onPress={() => navigateToTerryCheckinScreen(false)}
             title={t('Đã tìm thấy')}
+            disabled={!nearToTerry}
             buttonType={EButtonType.SOLID}
             linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
           />
