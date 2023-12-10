@@ -210,7 +210,8 @@ const MapScreen = () => {
           }
           changeRegion(data as IRealtimeLocation);
         }}
-        onLongPress={() => setSelectedTerryId(null)}>
+        onLongPress={() => setSelectedTerryId(null)}
+        region={region}>
         {isSaveBatterryMode || !currentLocation ? null : (
           <UserMarker userPosition={currentLocation!} centerMap={onCenter} />
         )}
