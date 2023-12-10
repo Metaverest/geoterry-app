@@ -126,12 +126,7 @@ const MapScreen = () => {
 
   const handleCreateNewTerry = useCallback(() => {
     if (currentLocation) {
-      navigation.dispatch(
-        StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
-          longitude: currentLocation.longitude,
-          latitude: currentLocation.latitude,
-        }),
-      );
+      navigation.dispatch(StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN));
     }
   }, [navigation, currentLocation]);
 
@@ -215,8 +210,7 @@ const MapScreen = () => {
           }
           changeRegion(data as IRealtimeLocation);
         }}
-        onLongPress={() => setSelectedTerryId(null)}
-        region={region}>
+        onLongPress={() => setSelectedTerryId(null)}>
         {isSaveBatterryMode || !currentLocation ? null : (
           <UserMarker userPosition={currentLocation!} centerMap={onCenter} />
         )}

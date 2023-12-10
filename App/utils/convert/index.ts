@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/vi';
 import { ELanguageCode } from 'App/enums';
+import { Address } from 'react-native-maps';
 
 export const calculateDistance = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
   const earthRadius = 6371; // Radius of the Earth in kilometers
@@ -63,4 +64,22 @@ export const convertDateRelativeToNowMsg = (inputDate: string, language?: ELangu
   } else {
     return dayjs().diff(inputDate, 'd') + 'd';
   }
+};
+
+export const convertAddressObjectToString = (addressObject: Address) => {
+  if (!addressObject) {
+    return ''; // Return an empty string if the input is not provided or null
+  }
+
+  const { name, thoroughfare, locality, administrativeArea, postalCode, country } = addressObject;
+
+  // Create an array of address parts, excluding null or undefined values
+  const addressParts = [name, thoroughfare, locality, administrativeArea, postalCode, country].filter(
+    part => part !== null && part !== undefined,
+  );
+
+  // Join the address parts into a formatted string
+  const formattedAddress = addressParts.join(', ');
+
+  return formattedAddress;
 };

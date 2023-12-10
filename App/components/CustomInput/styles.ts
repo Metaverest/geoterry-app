@@ -45,4 +45,11 @@ export const styles = StyleSheet.create({
     marginLeft: rw(16),
     marginTop: rh(2),
   },
+  title: {
+    fontSize: rh(12),
+    fontWeight: '500',
+    color: EColor.color_666666,
+    lineHeight: rh(18),
+    marginBottom: rh(4),
+  },
 });

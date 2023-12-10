@@ -29,7 +29,7 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
   }, [cancelButtonTitle, confirmButtonTitle]);
   const navigation = useNavigation();
   return (
-    <CustomSafeArea style={styles.container} shouldUseFullScreenView isModal>
+    <CustomSafeArea shouldDisableKeyboardAwareScroll style={styles.container} shouldUseFullScreenView isModal>
       <View style={styles.popupContainer}>
         <Image style={styles.popupImage} resizeMode="contain" source={image} />
         <CustomText style={styles.popupTitle}>{title}</CustomText>

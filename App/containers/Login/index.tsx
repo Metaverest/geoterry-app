@@ -19,7 +19,6 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
@@ -79,16 +78,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   const goToForgotPassword = useCallback(() => {
     navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.FORGOT_PASSWORD_NAVIGATOR }));
   }, [navigation]);
-  const innerRef = React.useRef<KeyboardAwareScrollView>();
   return (
-    <CustomSafeArea
-      style={styles.container}
-      keyboardAwareScrollProps={{
-        innerRef: ref => (innerRef.current = ref),
-        onKeyboardDidShow: () => {
-          innerRef.current?.scrollToEnd(true);
-        },
-      }}>
+    <CustomSafeArea style={styles.container} keyboardAwareScrollProps={{}}>
       <View style={styles.mainContainer}>
         <Image style={styles.image} source={EarthIcon} />
         <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>

@@ -141,6 +141,7 @@ export interface ITerryInputDto {
   categoryIds?: string[];
   location: ITerryLocationDto;
   metadata: ITerryMetadataDto;
+  address?: string;
 }
 export interface IGetCheckinsOfTerryParams extends ITerryCheckinsParams {
   includeProfileData?: boolean;

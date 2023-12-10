@@ -7,9 +7,10 @@ import { TextInput, View } from 'react-native';
 import CustomText from '../CustomText';
 import { styles } from './styles';
 import { responsiveByHeight as rh } from 'App/helpers/common';
+import { isEmpty } from 'lodash';
 
 const DEFAULT_MIN_HEIGHT_MULTILINES_MODE = rh(83);
-const CustomInput = (props: IInputProps) => {
+const CustomInput = (props: IInputProps = { editable: true }) => {
   const [inputHeight, setInputHeight] = useState<number>(0);
   const Subtext = useCallback(() => {
     if (props.error) {
@@ -24,10 +25,11 @@ const CustomInput = (props: IInputProps) => {
     if (props.icon) {
       return <View style={styles.iconContainer}>{props.icon}</View>;
     }
-    return <></>;
+    return null;
   }, [props.icon]);
   return (
     <View style={styles.container}>
+      {props.title && <CustomText style={styles.title}>{props.title}</CustomText>}
       <View style={styles.textInputContainer}>
         <TextInput
           placeholderTextColor={EColor.color_666666}
@@ -41,6 +43,8 @@ const CustomInput = (props: IInputProps) => {
                   : inputHeight,
               textAlignVertical: 'top',
             },
+            // eslint-disable-next-line react-native/no-inline-styles
+            isEmpty(ButtonIcon) && { width: '100%' },
           ]}
           {...props}
           onContentSizeChange={event => {
