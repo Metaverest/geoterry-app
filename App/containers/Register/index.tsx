@@ -16,10 +16,9 @@ import { ICreateAccountDto } from 'App/types/user';
 import { isValidPhoneNumber } from 'App/utils/string';
 import { Formik } from 'formik';
 import { isEmpty } from 'lodash';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
@@ -79,16 +78,8 @@ const RegisterScreen = () => {
 
   const defaultPhonePrefix = useGetPrefixPhone();
 
-  const innerRef = useRef<KeyboardAwareScrollView>();
   return (
-    <CustomSafeArea
-      style={styles.container}
-      keyboardAwareScrollProps={{
-        innerRef: ref => (innerRef.current = ref),
-        onKeyboardDidShow: () => {
-          innerRef.current?.scrollToEnd(true);
-        },
-      }}>
+    <CustomSafeArea style={styles.container} keyboardAwareScrollProps={{}}>
       <View style={styles.mainContainer}>
         <Image style={styles.image} source={EarthIcon} />
         <CustomText style={styles.createAccountTitle}>Tạo tài khoản</CustomText>

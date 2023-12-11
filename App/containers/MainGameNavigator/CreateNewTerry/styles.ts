@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: rw(16),
+    paddingBottom: rh(48) + rh(32) + rh(30),
   },
   inputYourTerryInfofmationTitle: {
     color: EColor.color_F2F2F2,
@@ -19,13 +20,15 @@ export const styles = StyleSheet.create({
   },
   terryInputContainer: {
     width: '100%',
-    marginTop: rh(16),
   },
   buttonContainer: {
     width: '100%',
-    marginTop: rh(32),
+    paddingTop: rh(32),
+    paddingBottom: rh(30),
     position: 'absolute',
-    bottom: rh(29),
+    zIndex: 999,
+    elevation: 999,
+    bottom: 0,
   },
   addImagebuttonContainer: {
     paddingHorizontal: rh(12),
@@ -33,17 +36,16 @@ export const styles = StyleSheet.create({
     borderRadius: rh(8),
   },
   terryAddImageContainer: {
-    marginTop: rh(16),
     alignSelf: 'flex-start',
     flexDirection: 'row',
     rowGap: rw(8),
     columnGap: rw(8),
   },
   inputContainer: {
-    flexDirection: 'column',
-    width: '100%',
-    maxHeight: rh(600),
     zIndex: 1,
+    rowGap: rh(20),
+    marginTop: rh(16),
+    flex: 1,
   },
   photoItemContainer: {},
   image: {
@@ -55,5 +57,17 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     top: rh(0),
     right: rw(0),
+  },
+  mapContainer: {
+    backgroundColor: 'red',
+    height: rh(344),
+    borderRadius: rw(16),
+    zIndex: 9,
+    elevation: 9,
+  },
+  map: {
+    width: '100%',
+    height: '100%',
+    borderRadius: rw(16),
   },
 });

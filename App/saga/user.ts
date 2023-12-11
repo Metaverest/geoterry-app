@@ -527,9 +527,8 @@ function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryI
     const user: IUser = yield select(reduxSelector.getUser);
     const userID = user.id;
     //skip this called because of BE issue. Will be updated later
-    if (false) {
-      yield call(requestBuilderCreateTerry, data, userID);
-    }
+    yield call(requestBuilderCreateTerry, data, userID);
+
     navigation.dispatch(StackActions.pop(2));
     navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CREATE_TERRY_SUCCESS]);
   } catch (error) {

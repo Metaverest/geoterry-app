@@ -69,6 +69,8 @@ export const CustomSafeArea = (props: IProps) => {
       resetScrollToCoords={{ x: 0, y: 0 }}
       enableAutomaticScroll
       extraScrollHeight={0}
+      // We need to set backgroundColor to the app`s background color
+      // because when the keyboard is opened, the extra white space is appeared at the bottom of the screen - see android:windowSoftInputMode="adjustResize"
       contentContainerStyle={{ flexGrow: 1, backgroundColor: EColor.color_171717 }}
       showsVerticalScrollIndicator={false}
       {...props.keyboardAwareScrollProps}>

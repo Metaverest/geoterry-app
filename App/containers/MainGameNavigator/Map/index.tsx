@@ -126,12 +126,7 @@ const MapScreen = () => {
 
   const handleCreateNewTerry = useCallback(() => {
     if (currentLocation) {
-      navigation.dispatch(
-        StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN, {
-          longitude: currentLocation.longitude,
-          latitude: currentLocation.latitude,
-        }),
-      );
+      navigation.dispatch(StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN));
     }
   }, [navigation, currentLocation]);
 
