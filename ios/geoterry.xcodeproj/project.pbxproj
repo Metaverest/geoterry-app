@@ -11,7 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		22FAC5382B04EB680052EB7E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22FAC5372B04EB680052EB7E /* GoogleService-Info.plist */; };
+		2259E4CF2B274A9E0042931B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2259E4CE2B274A9E0042931B /* GoogleService-Info.plist */; };
 		2309162B1C204761BA994F85 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D3C87579BA8458FBF82E533 /* Montserrat-Light.ttf */; };
 		26452746852D49B4AD8108FD /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A538BB60637A47A2A791DF88 /* Montserrat-ExtraBoldItalic.ttf */; };
 		36323F6E1CB34D4D97DA4A08 /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A422E52D27DE43058D8C2F22 /* Montserrat-MediumItalic.ttf */; };
@@ -57,7 +57,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = geoterry/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = geoterry/main.m; sourceTree = "<group>"; };
 		1C019B3977A246778079D854 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../assets/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
-		22FAC5372B04EB680052EB7E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Users/macos/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2259E4CE2B274A9E0042931B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		22FAC5392B04EC4F0052EB7E /* geoterry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = geoterry.entitlements; path = geoterry/geoterry.entitlements; sourceTree = "<group>"; };
 		31DF271BD098497DFF03A039 /* Pods-geoterry-geoterryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-geoterry-geoterryTests.release.xcconfig"; path = "Target Support Files/Pods-geoterry-geoterryTests/Pods-geoterry-geoterryTests.release.xcconfig"; sourceTree = "<group>"; };
 		32D83AE0D6953EE82B20C49D /* Pods-geoterry.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-geoterry.release.xcconfig"; path = "Target Support Files/Pods-geoterry/Pods-geoterry.release.xcconfig"; sourceTree = "<group>"; };
@@ -125,8 +125,8 @@
 		13B07FAE1A68108700A75B9A /* geoterry */ = {
 			isa = PBXGroup;
 			children = (
+				2259E4CE2B274A9E0042931B /* GoogleService-Info.plist */,
 				22FAC5392B04EC4F0052EB7E /* geoterry.entitlements */,
-				22FAC5372B04EB680052EB7E /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -330,7 +330,7 @@
 				9020E0B757364A02B77BA114 /* Montserrat-SemiBoldItalic.ttf in Resources */,
 				B962421BBCE34192B904C0B6 /* Montserrat-Thin.ttf in Resources */,
 				A4A43139157846CA93123D1E /* Montserrat-ThinItalic.ttf in Resources */,
-				22FAC5382B04EB680052EB7E /* GoogleService-Info.plist in Resources */,
+				2259E4CF2B274A9E0042931B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

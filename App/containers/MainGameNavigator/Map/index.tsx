@@ -11,7 +11,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
-import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
+import { DEFAULT_LOCATION, DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey, ENamespace, EUserRole } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -90,11 +90,11 @@ const MapScreen = () => {
   });
 
   // The current region of the map view
-  const [region, setRegion] = useState(currentLocation);
+  const [region, setRegion] = useState<IRealtimeLocation | undefined>(currentLocation);
   const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
   const changeRegion = useCallback(
     (updatedRegion: IRealtimeLocation, fetchTerries?: boolean) => {
-      setRegion(updatedRegion);
+      setRegion({ ...DEFAULT_LOCATION, ...updatedRegion });
       if (
         (!isEmpty(regionToGetTerry) &&
           !isEmpty(updatedRegion) &&
