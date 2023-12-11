@@ -62,8 +62,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'red',
     height: rh(344),
     borderRadius: rw(16),
-    zIndex: 999,
-    elevation: 999,
+    zIndex: 9,
+    elevation: 9,
   },
   map: {
     width: '100%',

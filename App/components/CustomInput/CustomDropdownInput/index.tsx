@@ -6,7 +6,7 @@ import ArrowUpIcon from 'App/media/ArrowUpIcon';
 import CheckedBoxIcon from 'App/media/CheckedBoxIcon';
 import UncheckedBoxIcon from 'App/media/UncheckedBoxIcon';
 import { IInputProps } from 'App/types/input';
-import { head, isEmpty, last } from 'lodash';
+import { head, isEmpty, isUndefined, last } from 'lodash';
 import React, { useCallback, useMemo, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -25,6 +25,8 @@ interface Props extends IInputProps {
   selectedOption: ICustomDropdownOption[];
   canSelectMultiple?: boolean;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => any;
+  open?: boolean;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CustomDropdownInput = (props: Props) => {
@@ -73,7 +75,13 @@ const CustomDropdownInput = (props: Props) => {
     },
     [getIsSelectedOption, props],
   );
+  const isDropdownOpen = useMemo(() => {
+    return isUndefined(props.open) ? open : props.open;
+  }, [open, props.open]);
 
+  const setIsDropdownOpen = useMemo(() => {
+    return isUndefined(props.setOpen) ? setOpen : props.setOpen;
+  }, [props.setOpen, setOpen]);
   return (
     <View style={styles.container}>
       {props.title && <CustomText style={styles.title}>{props.title}</CustomText>}
@@ -83,12 +91,12 @@ const CustomDropdownInput = (props: Props) => {
         zIndexInverse={props.zIndexInverse}
         disableBorderRadius={false}
         dropDownContainerStyle={styles.dropDownContainer}
-        style={[styles.textInputContainer, open && styles.textInputContainerOpen]}
+        style={[styles.textInputContainer, isDropdownOpen && styles.textInputContainerOpen]}
         renderListItem={item => (
           <TouchableOpacity
             onPress={() => {
               onSelectOption({ label: item.label, value: item.value });
-              !props.canSelectMultiple && setOpen(false);
+              !props.canSelectMultiple && setIsDropdownOpen(false);
             }}
             style={[
               styles.itemContainer,
@@ -112,9 +120,9 @@ const CustomDropdownInput = (props: Props) => {
             </CustomText>
           </View>
         )}
-        open={open}
+        open={isDropdownOpen}
         items={props.options}
-        setOpen={setOpen}
+        setOpen={setIsDropdownOpen}
         ArrowDownIconComponent={() => <ArrowDownIcon />}
         ArrowUpIconComponent={() => <ArrowUpIcon />}
       />

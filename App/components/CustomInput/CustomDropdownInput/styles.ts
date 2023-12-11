@@ -31,9 +31,7 @@ export const styles = StyleSheet.create({
     lineHeight: rh(18),
     color: EColor.color_CCCCCC,
   },
-  bodyComponentContainer: {
-    backgroundColor: EColor.color_333333,
-  },
+  bodyComponentContainer: {},
   bodyComponentText: {
     fontSize: rh(12),
     fontWeight: '500',

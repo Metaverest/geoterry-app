@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { useNavigation } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomButtonIcon from 'App/components/ButtonIcon';
@@ -70,6 +71,17 @@ const CreateNewTerryScreen = () => {
   const [address, setAddress] = useState<string>('');
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
   const [terryLocation, setTerryLocation] = useState<ITerryLocationDto>(DEFAULT_LOCATION);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState<boolean>(false);
+  const [isTerrainDropdownOpen, setIsTerrainDropdownOpen] = useState<boolean>(false);
+  const [isSizeDropdownOpen, setIsSizeDropdownOpen] = useState<boolean>(false);
+  const [isDifficultyDropdownOpen, setIsDifficultyDropdownOpen] = useState<boolean>(false);
+  const closeAllDropdowns = useCallback(() => {
+    setIsCategoryDropdownOpen(false);
+    setIsTerrainDropdownOpen(false);
+    setIsSizeDropdownOpen(false);
+    setIsDifficultyDropdownOpen(false);
+  }, []);
+
   const onSubmit = useCallback(
     async (values: IFormValues) => {
       const metadata: ITerryMetadataDto = {} as ITerryMetadataDto;
@@ -294,6 +306,11 @@ const CreateNewTerryScreen = () => {
                     selectedOption={values.category}
                     placeholder={t('Chọn danh mục')}
                     canSelectMultiple
+                    open={isCategoryDropdownOpen}
+                    setOpen={value => {
+                      closeAllDropdowns();
+                      setIsCategoryDropdownOpen(value);
+                    }}
                   />
 
                   <CustomDropdownInput
@@ -305,6 +322,11 @@ const CreateNewTerryScreen = () => {
                     selectedOption={values.terrain ? [values.terrain] : []}
                     placeholder={t('Chọn địa hình')}
                     setFieldValue={setFieldValue}
+                    open={isTerrainDropdownOpen}
+                    setOpen={value => {
+                      closeAllDropdowns();
+                      setIsTerrainDropdownOpen(value);
+                    }}
                   />
 
                   <CustomDropdownInput
@@ -316,6 +338,11 @@ const CreateNewTerryScreen = () => {
                     selectedOption={values.size ? [values.size] : []}
                     placeholder={t('Chọn kích thước')}
                     setFieldValue={setFieldValue}
+                    open={isSizeDropdownOpen}
+                    setOpen={value => {
+                      closeAllDropdowns();
+                      setIsSizeDropdownOpen(value);
+                    }}
                   />
 
                   <CustomDropdownInput
@@ -327,6 +354,11 @@ const CreateNewTerryScreen = () => {
                     selectedOption={values.difficulty ? [values.difficulty] : []}
                     placeholder={t('Chọn độ khó')}
                     setFieldValue={setFieldValue}
+                    open={isDifficultyDropdownOpen}
+                    setOpen={value => {
+                      closeAllDropdowns();
+                      setIsDifficultyDropdownOpen(value);
+                    }}
                   />
                   <View style={styles.terryInputContainer}>
                     <CustomInput
