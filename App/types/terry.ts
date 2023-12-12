@@ -31,6 +31,7 @@ export interface ITerryResponseDto {
   saved?: boolean;
   favourite?: boolean;
   distance?: number;
+  address?: string;
   categories?: ITerryCategoryResDto[];
   rating: {
     rate: number;

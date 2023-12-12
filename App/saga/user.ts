@@ -1,7 +1,15 @@
 /* eslint-disable max-lines */
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
-import { EDataStorageKey, EIdentifierType, ENamespace, EPublicReadProfileBy } from 'App/enums';
+import { FoundProfileImage, NoteImage } from 'App/components/image';
+import {
+  EDataStorageKey,
+  EIdentifierType,
+  ENamespace,
+  EPublicReadProfileBy,
+  EUseRoleRequestStatus,
+  EUserRole,
+} from 'App/enums';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
 import {
   ECreateProfileScreen,
@@ -58,6 +66,7 @@ import AXIOS, {
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
   requestPublicReadProfile,
+  requestSwitchRole,
   requestUpdateCredentials,
   requestUploadProfileImage,
   requestUserCreateOrUpdateDevice,
@@ -72,6 +81,7 @@ import {
   navigateToPopUpModal,
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
+import { t } from 'i18next';
 import { isEmpty, isNil, last, map } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
@@ -606,6 +616,52 @@ export function* watchGetPublicProfile() {
   yield takeLatest(ESagaAppAction.GET_PUBLIC_PROFILE, getPublicProfile);
 }
 
+function* switchRole(action: IReduxActionWithNavigation<ESagaUserAction, { role: EUserRole; reason: string }>) {
+  const navigation = action.payload?.navigation;
+  try {
+    const role = action.payload?.data?.role;
+    const reason = action.payload?.data?.reason;
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const res: { status: EUseRoleRequestStatus } = yield call(requestSwitchRole, role, reason);
+    const resProfile: IProfileResDto = yield call(requestUserReadProfile);
+    yield put(reduxUserAction.setUser(resProfile));
+    navigation.dispatch(StackActions.pop());
+    switch (res.status) {
+      case EUseRoleRequestStatus.PENDING:
+        navigation.dispatch(
+          StackActions.push(ENavigationScreen.POPUP_SCREEN, {
+            image: NoteImage,
+            title: t('Đang gửi xét duyệt'),
+            subtitle: t('Admin đang xét duyệt hồ sơ của bạn'),
+            confirmButtonTitle: t('Đã hiểu'),
+          }),
+        );
+        break;
+      case EUseRoleRequestStatus.ACCEPTED:
+        navigation.dispatch(
+          StackActions.push(ENavigationScreen.POPUP_SCREEN, {
+            image: FoundProfileImage,
+            title: t('Xét duyệt thành công'),
+            subtitle:
+              action.payload?.data?.role === EUserRole.builder
+                ? t('Hồ sơ của bạn đã được xét duyệt để trở thành Builder. Đến giao diện mới ngay!')
+                : t('Thay đổi vai trò Hunter thành công'),
+            confirmButtonTitle: t('Tiếp tục'),
+          }),
+        );
+        break;
+      default:
+        return;
+    }
+  } catch (error) {
+    navigation.dispatch(StackActions.pop());
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+export function* watchSwitchRoleUser() {
+  yield takeLatest(ESagaUserAction.SWITCH_ROLE, switchRole);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -627,5 +683,6 @@ export default function* userSaga() {
     watchHunterCheckinTerry(),
     watchHunterUpdateTerrypath(),
     watchGetPublicProfile(),
+    watchSwitchRoleUser(),
   ]);
 }

@@ -27,6 +27,7 @@ import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import { THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY } from 'App/constants/common';
+import { shortenString } from 'App/helpers/text';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -179,7 +180,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           <View style={styles.containerLocation}>
             <WhiteLocationIcon />
             <CustomText style={styles.terryDistanceAndCategoryText}>
-              Bến tre, {`${meterToKilometer(terry.distance || 0)} ${t('km')}`}
+              {shortenString(terry.address || t('Không rõ'), 30)}
             </CustomText>
             <Rating rate={terry.rating.rate} />
             <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>

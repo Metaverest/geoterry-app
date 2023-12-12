@@ -75,6 +75,8 @@ const MapScreen = () => {
         user.role === EUserRole.builder
       ) {
         setIsBuilderNamespace(true);
+      } else {
+        setIsBuilderNamespace(false);
       }
     })();
   }, [isBuilderNamespace, user.role]);
@@ -171,7 +173,7 @@ const MapScreen = () => {
       navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     } else if (last(navigation.getState().routes)?.name === ENavigationScreen.LOADING_MODAL && !successLoadMap) {
       setSuccessLoadMap(true);
-      changeRegion(currentLocation, true);
+      changeRegion({ ...DEFAULT_LOCATION, ...currentLocation }, true);
       navigation.dispatch(StackActions.pop());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

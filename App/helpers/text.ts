@@ -1,4 +1,4 @@
-export const makeTextShortToDisplay = (text: string, maxLength: number) => {
+export const shortenString = (text: string, maxLength: number) => {
   if (text.length > maxLength) {
     return `${text.substring(0, maxLength)}...`;
   }
