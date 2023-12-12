@@ -11,7 +11,7 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
-import { DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
+import { DEFAULT_LOCATION, DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
 import { EButtonType, EDataStorageKey, ENamespace, EUserRole } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -75,6 +75,8 @@ const MapScreen = () => {
         user.role === EUserRole.builder
       ) {
         setIsBuilderNamespace(true);
+      } else {
+        setIsBuilderNamespace(false);
       }
     })();
   }, [isBuilderNamespace, user.role]);
@@ -176,7 +178,7 @@ const MapScreen = () => {
       navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     } else if (last(navigation.getState().routes)?.name === ENavigationScreen.LOADING_MODAL && !successLoadMap) {
       setSuccessLoadMap(true);
-      changeRegion(currentLocation, true);
+      changeRegion({ ...DEFAULT_LOCATION, ...currentLocation }, true);
       navigation.dispatch(StackActions.pop());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

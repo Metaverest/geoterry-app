@@ -1,7 +1,7 @@
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import CustomText from 'App/components/CustomText';
 import { EMainGameScreen } from 'App/enums/navigation';
-import { makeTextShortToDisplay } from 'App/helpers/text';
+import { shortenString } from 'App/helpers/text';
 import useCoordinateToAddress from 'App/hooks/useCoordinateToAddress';
 import DifficultyIcon from 'App/media/DifficultyIcon';
 import LocationIcon from 'App/media/LocationIcon';
@@ -37,7 +37,7 @@ const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef
   return (
     <TouchableOpacity style={styles.container} onPress={openTerryDetail}>
       <View style={styles.subContainer}>
-        <CustomText style={styles.terryName}>{makeTextShortToDisplay(terry.name, 30)}</CustomText>
+        <CustomText style={styles.terryName}>{shortenString(terry.name, 30)}</CustomText>
         <View style={styles.terryDetailContainer}>
           <LocationIcon />
           <CustomText style={styles.terryDetailText}>{`${meterToKilometer(terry.distance || 0)} ${t('km')} ${
