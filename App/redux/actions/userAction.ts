@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { EPublicReadProfileBy } from 'App/enums';
+import { EPublicReadProfileBy, EUserRole } from 'App/enums';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
 import {
@@ -147,6 +147,12 @@ const sagaUserAction = {
     return {
       type: ESagaAppAction.GET_PUBLIC_PROFILE,
       payload: { data: { profileID, findBy }, navigation },
+    };
+  },
+  switchRoleUserAsync: (role: EUserRole, reason: string, navigation: any) => {
+    return {
+      type: ESagaUserAction.SWITCH_ROLE,
+      payload: { data: { role, reason }, navigation },
     };
   },
 };
