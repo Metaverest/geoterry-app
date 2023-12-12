@@ -128,31 +128,31 @@ const CreateNewTerryScreen = () => {
 
   const terrianOptions: ICustomDropdownOption[] = useMemo(() => {
     return [
-      { label: t('1: Dễ'), value: 1 },
-      { label: t('2: Dễ vừa'), value: 2 },
-      { label: t('3: Trung bình'), value: 3 },
-      { label: t('4: Khó'), value: 4 },
-      { label: t('5: Khó và phức tạp'), value: 5 },
+      { label: `1: ${t('Dễ')}`, value: 1 },
+      { label: `2: ${t('Dễ vừa')}`, value: 2 },
+      { label: `3: ${t('Trung bình')}`, value: 3 },
+      { label: `4: ${t('Khó')}`, value: 4 },
+      { label: `5: ${t('Khó và phức tạp')}`, value: 5 },
     ];
   }, [t]);
 
   const sizeOptions: ICustomDropdownOption[] = useMemo(() => {
     return [
-      { label: t('1: Nhỏ'), value: 1 },
-      { label: t('2: Nhỏ vừa'), value: 2 },
-      { label: t('3: Trung bình'), value: 3 },
-      { label: t('4: Lớn'), value: 4 },
-      { label: t('5: Rất lớn'), value: 5 },
+      { label: `1: ${t('Nhỏ')}`, value: 1 },
+      { label: `2: ${t('Nhỏ vừa')}`, value: 2 },
+      { label: `3: ${t('Trung bình')}`, value: 3 },
+      { label: `4: ${t('Lớn')}`, value: 4 },
+      { label: `5: ${t('Rất lớn')}`, value: 5 },
     ];
   }, [t]);
 
   const difficultyOptions: ICustomDropdownOption[] = useMemo(() => {
     return [
-      { label: t('1: Dễ'), value: 1 },
-      { label: t('2: Dễ vừa'), value: 2 },
-      { label: t('3: Trung bình'), value: 3 },
-      { label: t('4: Khó'), value: 4 },
-      { label: t('5: Khó và phức tạp'), value: 5 },
+      { label: `1: ${t('Dễ')}`, value: 1 },
+      { label: `2: ${t('Dễ vừa')}`, value: 2 },
+      { label: `3: ${t('Trung bình')}`, value: 3 },
+      { label: `4: ${t('Khó')}`, value: 4 },
+      { label: `5: ${t('Khó và phức tạp')}`, value: 5 },
     ];
   }, [t]);
 
