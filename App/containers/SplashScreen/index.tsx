@@ -1,4 +1,4 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { EDataStorageKey } from 'App/enums';
 import { ENavigationScreen } from 'App/enums/navigation';
@@ -14,6 +14,7 @@ import CustomText from 'App/components/CustomText';
 import LinearGradient from 'react-native-linear-gradient';
 import { EColor } from 'App/enums/color';
 import messaging from '@react-native-firebase/messaging';
+import { resetAndNavigateToScreen } from 'App/utils/navigation';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
@@ -26,7 +27,7 @@ const SplashScreen = () => {
       if (!isEmpty(token)) {
         dispatch(sagaUserAction.getProfileAndGoToMainAppAsync(navigation, { fcmToken: fcmToken }));
       } else {
-        navigation.dispatch(CommonActions.navigate(ENavigationScreen.ONBOARDING_SCREEN));
+        resetAndNavigateToScreen(navigation, ENavigationScreen.ONBOARDING_SCREEN);
       }
     })();
   }, [navigation, dispatch]);
