@@ -29,6 +29,8 @@ import TreasureMarker from '../Map/TreasureMarker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CompassIcon from 'App/media/CompassIcon';
 import MapTypeIcon from 'App/media/MapTypeIcon';
+import { getCurrentLocation } from 'App/utils/map';
+
 const HuntingMapScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -56,6 +58,14 @@ const HuntingMapScreen = () => {
   }, []);
 
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const location = await getCurrentLocation();
+      location && setCurrentLocation(location);
+    };
+    fetchLocation();
+  }, []);
+
   const onUserLocationChange = useCallback(
     (location: IRealtimeLocation) => {
       if (

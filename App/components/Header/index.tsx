@@ -9,6 +9,7 @@ import { styles } from './styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByWidth as rw } from 'App/helpers/common';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
+import { resetAndNavigateToScreen } from 'App/utils/navigation';
 
 const Header = ({
   title,
@@ -32,7 +33,7 @@ const Header = ({
   const navigation = useNavigation();
   const handlePressBackButton = useCallback(() => {
     if (!navigation.canGoBack()) {
-      navigation.dispatch(CommonActions.navigate(EMainGameScreen.MAP_SCREEN));
+      resetAndNavigateToScreen(navigation, EMainGameScreen.MAP_SCREEN);
       return;
     }
     navigation.dispatch(CommonActions.goBack());

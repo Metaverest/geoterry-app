@@ -10,8 +10,8 @@ export interface IAccountCredentialsResDto {
 
 export interface IAccountResponseDto {
   id: string;
-  createAt: string;
-  updateAt: string;
+  createdAt: string;
+  updatedAt: string;
   namespace: ENamespace;
   blocked: boolean;
   identifier: string;
@@ -21,8 +21,8 @@ export interface IAccountResponseDto {
 
 export interface IProfileResDto {
   id: string;
-  createAt: string;
-  updateAt: string;
+  createdAt: string;
+  updatedAt: string;
   displayName: string;
   bio?: string;
   rewardPoints: number;
@@ -35,6 +35,7 @@ export interface IProfileResDto {
   role: EUserRole;
   roleRequestingStatus?: EUseRoleRequestStatus;
   roleRequesting?: EUserRole;
+  totalCheckedinTerry?: number;
 }
 
 export interface ICreateProfileReqDto {

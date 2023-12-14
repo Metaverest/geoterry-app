@@ -22,6 +22,7 @@ import { removePropertyInDevice } from 'App/utils/storage/storage';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import { convertDateFormatOnlyDate } from 'App/utils/convert';
 import { sagaUserAction } from 'App/redux/actions/userAction';
+import { resetAndNavigateToScreen } from 'App/utils/navigation';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
   const handleLogOut = useCallback(async () => {
     await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
     await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
-    navigation.dispatch(CommonActions.navigate(ENavigationScreen.LOGIN_SCREEN));
+    resetAndNavigateToScreen(navigation, ENavigationScreen.LOGIN_SCREEN);
   }, [navigation]);
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>

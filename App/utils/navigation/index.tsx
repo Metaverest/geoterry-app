@@ -1,3 +1,4 @@
+import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
 import {
   CannotCreateQRImage,
@@ -9,7 +10,7 @@ import {
   UploadFileFailedImage,
 } from 'App/components/image';
 import { EErrorCode, EStatusCode } from 'App/enums/error';
-import { ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
 import { IPopupModalParamsProps } from 'App/types/modal';
 import i18next from 'i18next';
 const t = i18next.t;
@@ -111,6 +112,15 @@ export const navigateToPopUpModal = (navigation: any, params: IPopupModalParamsP
   navigation.dispatch(
     StackActions.push(ENavigationScreen.POPUP_SCREEN, {
       ...params,
+    }),
+  );
+};
+
+export const resetAndNavigateToScreen = (navigation: any, screenName: ENavigationScreen | EMainGameScreen) => {
+  navigation.dispatch(
+    CommonActions.reset({
+      index: 0,
+      routes: [{ name: screenName }],
     }),
   );
 };
