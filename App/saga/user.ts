@@ -79,6 +79,7 @@ import {
   PopUpModalParams,
   getPopupModalParamsFromErrorCodeAndStatusCode,
   navigateToPopUpModal,
+  resetAndNavigateToScreen,
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
@@ -340,13 +341,13 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
     if (fcmToken) {
       yield call(requestUserCreateOrUpdateDevice, { enabled: true, fcmToken: fcmToken }, profile.id);
     }
-    navigation.dispatch(StackActions.push(ENavigationScreen.MAIN_GAME_NAVIGATOR));
+    resetAndNavigateToScreen(navigation, ENavigationScreen.MAIN_GAME_NAVIGATOR);
   } catch (error) {
     if (
       (error as any)?.response?.data?.errorCode === EErrorCode.PROFILE_NOT_FOUND &&
       (error as any)?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
     ) {
-      navigation.dispatch(CommonActions.navigate(ENavigationScreen.CREATE_PROFILE_NAVIGATOR));
+      resetAndNavigateToScreen(navigation, ENavigationScreen.CREATE_PROFILE_NAVIGATOR);
     }
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
