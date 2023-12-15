@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import { EColor } from 'App/enums/color';
 export const styles = StyleSheet.create({
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
     lineHeight: rh(30),
     color: EColor.color_FAFAFA,
-    marginTop: rh(76),
+    marginTop: rh(40),
   },
   row: {
     flexDirection: 'row',
@@ -60,5 +60,11 @@ export const styles = StyleSheet.create({
   },
   mt4: {
     marginTop: rh(4),
+  },
+  mapContainer: {
+    marginTop: rh(52),
+    width: Dimensions.get('window').width,
+    height: rh(130),
+    zIndex: -1,
   },
 });

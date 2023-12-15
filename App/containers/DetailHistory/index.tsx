@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { styles } from './styles';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage } from 'App/components/image';
@@ -18,15 +18,81 @@ import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DEFAULT_LOCATION } from 'App/constants/common';
+import { isEmpty, first, isEqual } from 'lodash';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import TreasureMarker from '../MainGameNavigator/Map/TreasureMarker';
+import { IRealtimeLocation } from 'App/types';
+import { useSelector } from 'react-redux';
+import { reduxSelector } from 'App/redux/selectors';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.DETAIL_HISTORY>>();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
 
+  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
+  const allCoordinatesPath = useSelector(reduxSelector.getAppCoordinatesPath);
+
+  const coordinatesPathOfTerry = useMemo(() => {
+    if (isEmpty(params.terry?.id) || isEmpty(allCoordinatesPath)) {
+      return [];
+    }
+    return allCoordinatesPath[params.terry?.id as string] || [];
+  }, [allCoordinatesPath, params.terry?.id]);
+
+  const onUserLocationChange = useCallback(
+    (location: IRealtimeLocation) => {
+      if (
+        !isEqual(
+          { latitude: location.latitude, longitude: location.longitude },
+          { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
+        )
+      ) {
+        setCurrentLocation(location);
+      }
+    },
+    [currentLocation],
+  );
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Lịch sử')} />
+      <MapView
+        onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
+        region={{
+          ...DEFAULT_LOCATION,
+          latitude: params.terry?.location.latitude || 0,
+          longitude: params.terry?.location.longitude || 0,
+        }}
+        showsCompass={false}
+        style={styles.mapContainer}
+        showsUserLocation={true}>
+        {params.terry && <TreasureMarker key={params.terry.id} treasure={params.terry} />}
+        {!isEmpty(coordinatesPathOfTerry) && (
+          <Marker
+            coordinate={{
+              latitude: first(coordinatesPathOfTerry)?.latitude as number,
+              longitude: first(coordinatesPathOfTerry)?.longitude as number,
+            }}
+          />
+        )}
+        <Polyline
+          coordinates={coordinatesPathOfTerry}
+          strokeColor={EColor.color_00FF00} // fallback for when `strokeColors` is not supported by the map-provider
+          strokeWidth={3}
+        />
+        <Polyline
+          coordinates={[
+            { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
+            {
+              latitude: params.terry?.location.latitude as number,
+              longitude: params.terry?.location.longitude as number,
+            },
+          ]}
+          strokeColor={EColor.color_127FFE} // fallback for when `strokeColors` is not supported by the map-provider
+          strokeWidth={3}
+        />
+      </MapView>
       <CustomText style={styles.title}>{t(params.terry.name)}</CustomText>
       <Rating style={styles.mt4} rate={params.rate} />
       <View style={[styles.row, styles.mv4]}>

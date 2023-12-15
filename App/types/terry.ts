@@ -98,7 +98,7 @@ export interface IResponseTerryCheckins {
   createdAt: string;
   updatedAt: string;
   id: string;
-  terry: Terry;
+  terry: ITerryResponseDto;
   isFound: boolean;
 }
 
