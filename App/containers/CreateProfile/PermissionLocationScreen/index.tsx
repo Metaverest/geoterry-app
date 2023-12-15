@@ -9,11 +9,11 @@ import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission
 import { reduxSelector } from 'App/redux/selectors';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
+import { Image, Linking, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { styles } from './styles';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import { ECreateProfileScreen, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { ECreateProfileScreen } from 'App/enums/navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const PermissionLocationScreen = () => {
@@ -32,22 +32,9 @@ const PermissionLocationScreen = () => {
       </TouchableOpacity>
     );
   }, [t, handlePressSkip]);
-  const handePressGoToSetting = useCallback(() => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          {
-            name: ENavigationScreen.MAIN_GAME_NAVIGATOR,
-            state: {
-              index: 1,
-              routes: [{ name: EMainGameScreen.MAP_SCREEN }, { name: EMainGameScreen.SETTING_NAVIGATOR }],
-            },
-          },
-        ],
-      }),
-    );
-  }, [navigation]);
+  const handePressGoToSetting = () => {
+    Linking.openSettings();
+  };
   const user = useSelector(reduxSelector.getUser);
 
   return (
