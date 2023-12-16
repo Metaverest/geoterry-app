@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { styles } from './styles';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage } from 'App/components/image';
@@ -13,20 +13,55 @@ import { EColor } from 'App/enums/color';
 import { EButtonType } from 'App/enums';
 import { CommonActions, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
-import { convertDateFormatHistory } from 'App/utils/convert';
+import { calculateMidpoint, convertDateFormatHistory } from 'App/utils/convert';
 import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DEFAULT_LOCATION } from 'App/constants/common';
+import { isEmpty, first } from 'lodash';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import TreasureMarker from '../MainGameNavigator/Map/TreasureMarker';
+import { useSelector } from 'react-redux';
+import { reduxSelector } from 'App/redux/selectors';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.DETAIL_HISTORY>>();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
 
+  const allCoordinatesPath = useSelector(reduxSelector.getAppCoordinatesPath);
+
+  const coordinatesPathOfTerry = useMemo(() => {
+    if (isEmpty(params.terry?.id) || isEmpty(allCoordinatesPath)) {
+      return [];
+    }
+    return allCoordinatesPath[params.terry?.id as string] || [];
+  }, [allCoordinatesPath, params.terry?.id]);
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Lịch sử')} />
+      <MapView
+        region={calculateMidpoint(params.terry?.location, first(coordinatesPathOfTerry) || params.terry?.location)}
+        showsCompass={false}
+        style={styles.mapContainer}>
+        {params.terry && (
+          <TreasureMarker key={params.terry.id} treasure={{ ...params.terry, isAvailable: true, checkedIn: true }} />
+        )}
+        {!isEmpty(coordinatesPathOfTerry) && (
+          <Marker
+            coordinate={{
+              latitude: first(coordinatesPathOfTerry)?.latitude as number,
+              longitude: first(coordinatesPathOfTerry)?.longitude as number,
+            }}
+          />
+        )}
+        <Polyline
+          coordinates={coordinatesPathOfTerry}
+          strokeColor={EColor.color_00FF00} // fallback for when `strokeColors` is not supported by the map-provider
+          strokeWidth={3}
+        />
+      </MapView>
       <CustomText style={styles.title}>{t(params.terry.name)}</CustomText>
       <Rating style={styles.mt4} rate={params.rate} />
       <View style={[styles.row, styles.mv4]}>
