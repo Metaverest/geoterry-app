@@ -18,7 +18,24 @@ interface IProps {
 
 export const CustomSafeArea = (props: IProps) => {
   const insets = useSafeAreaInsets();
-  const Content = (
+  const WrappedContent = props.shouldUseKeyboardAwareScrollView ? (
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      scrollEnabled={true}
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      enableAutomaticScroll
+      extraScrollHeight={0}
+      // We need to set backgroundColor to the app`s background color
+      // because when the keyboard is opened, the extra white space is appeared at the bottom of the screen - see android:windowSoftInputMode="adjustResize"
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: EColor.color_171717 }}
+      showsVerticalScrollIndicator={false}
+      {...props.keyboardAwareScrollProps}>
+      {props.children}
+    </KeyboardAwareScrollView>
+  ) : (
+    props.children
+  );
+  return (
     <View
       style={{
         flex: 1,
@@ -38,7 +55,7 @@ export const CustomSafeArea = (props: IProps) => {
               flex: 1,
               ...props.style,
             }}>
-            {props.children}
+            {WrappedContent}
           </View>
         </ImageBackground>
       ) : (
@@ -50,31 +67,10 @@ export const CustomSafeArea = (props: IProps) => {
               ...props.style,
             },
           ]}>
-          {props.children}
+          {WrappedContent}
         </View>
       )}
     </View>
-  );
-
-  // There is the case that we don't want to use KeyboardAwareScrollView because it can lead to the bug:
-  // "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead"
-  if (!props.shouldUseKeyboardAwareScrollView) {
-    return Content;
-  }
-  return (
-    <KeyboardAwareScrollView
-      enableOnAndroid={true}
-      scrollEnabled={true}
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      enableAutomaticScroll
-      extraScrollHeight={0}
-      // We need to set backgroundColor to the app`s background color
-      // because when the keyboard is opened, the extra white space is appeared at the bottom of the screen - see android:windowSoftInputMode="adjustResize"
-      contentContainerStyle={{ flexGrow: 1, backgroundColor: EColor.color_171717 }}
-      showsVerticalScrollIndicator={false}
-      {...props.keyboardAwareScrollProps}>
-      {Content}
-    </KeyboardAwareScrollView>
   );
 };
 export default CustomSafeArea;

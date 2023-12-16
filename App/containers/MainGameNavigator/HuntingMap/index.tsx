@@ -158,7 +158,7 @@ const HuntingMapScreen = () => {
   }, [currentLocation, terry]);
 
   return (
-    <CustomSafeArea style={styles.container} shouldHideStatusBar shouldUseFullScreenView>
+    <CustomSafeArea statusBarColor={EColor.black} style={styles.container}>
       <Header
         headerContainerStyle={{ backgroundColor: EColor.black }}
         title={t('Chỉ đường')}
