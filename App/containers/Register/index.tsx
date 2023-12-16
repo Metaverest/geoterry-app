@@ -79,7 +79,7 @@ const RegisterScreen = () => {
   const defaultPhonePrefix = useGetPrefixPhone();
 
   return (
-    <CustomSafeArea style={styles.container} keyboardAwareScrollProps={{}}>
+    <CustomSafeArea shouldUseKeyboardAwareScrollView style={styles.container}>
       <View style={styles.mainContainer}>
         <Image style={styles.image} source={EarthIcon} />
         <CustomText style={styles.createAccountTitle}>Tạo tài khoản</CustomText>

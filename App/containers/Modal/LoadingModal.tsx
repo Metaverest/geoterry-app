@@ -5,7 +5,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 
 const LoadingModal = () => {
   return (
-    <CustomSafeArea style={styles.container} shouldDisableKeyboardAwareScroll shouldUseFullScreenView isModal>
+    <CustomSafeArea style={styles.container} shouldUseFullScreenView isModal>
       <ActivityIndicator />
     </CustomSafeArea>
   );

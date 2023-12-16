@@ -249,10 +249,7 @@ const CreateNewTerryScreen = () => {
   }, []);
 
   return (
-    <CustomSafeArea
-      shouldDisableKeyboardAwareScroll
-      style={styles.container}
-      backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ handleSubmit, values, setFieldValue, errors, submitCount }) => {
           const shouldDisplayError = submitCount > 0;

@@ -21,7 +21,6 @@ import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
@@ -108,17 +107,11 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
     [],
   );
 
-  const innerRef = React.useRef<KeyboardAwareScrollView>();
   return (
     <CustomSafeArea
+      shouldUseKeyboardAwareScrollView
       style={styles.container}
-      backgroundImageSource={AppBackgroundImage}
-      keyboardAwareScrollProps={{
-        innerRef: ref => (innerRef.current = ref),
-        onKeyboardDidShow: () => {
-          innerRef.current?.scrollToEnd(true);
-        },
-      }}>
+      backgroundImageSource={AppBackgroundImage}>
       <Header />
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ values, setFieldValue, errors, submitCount }) => {

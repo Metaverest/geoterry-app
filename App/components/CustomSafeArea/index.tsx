@@ -14,7 +14,6 @@ interface IProps {
   shouldHideStatusBar?: boolean;
   shouldUseKeyboardAwareScrollView?: boolean;
   keyboardAwareScrollProps?: KeyboardAwareProps;
-  shouldDisableKeyboardAwareScroll?: boolean;
 }
 
 export const CustomSafeArea = (props: IProps) => {
@@ -59,7 +58,7 @@ export const CustomSafeArea = (props: IProps) => {
 
   // There is the case that we don't want to use KeyboardAwareScrollView because it can lead to the bug:
   // "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead"
-  if (props.shouldDisableKeyboardAwareScroll) {
+  if (!props.shouldUseKeyboardAwareScrollView) {
     return Content;
   }
   return (

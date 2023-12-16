@@ -79,7 +79,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     navigation.dispatch(CommonActions.navigate({ name: ENavigationScreen.FORGOT_PASSWORD_NAVIGATOR }));
   }, [navigation]);
   return (
-    <CustomSafeArea style={styles.container} keyboardAwareScrollProps={{}}>
+    <CustomSafeArea shouldUseKeyboardAwareScrollView style={styles.container}>
       <View style={styles.mainContainer}>
         <Image style={styles.image} source={EarthIcon} />
         <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
