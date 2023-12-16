@@ -18,6 +18,30 @@ interface IProps {
 
 export const CustomSafeArea = (props: IProps) => {
   const insets = useSafeAreaInsets();
+  const Content = props.backgroundImageSource ? (
+    <ImageBackground
+      style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
+      source={props.backgroundImageSource}>
+      <View
+        style={{
+          flex: 1,
+          ...props.style,
+        }}>
+        {props.children}
+      </View>
+    </ImageBackground>
+  ) : (
+    <View
+      style={[
+        !props.shouldUseFullScreenView && { marginTop: insets.top, marginBottom: insets.bottom },
+        {
+          flex: 1,
+          ...props.style,
+        },
+      ]}>
+      {props.children}
+    </View>
+  );
   const WrappedContent = props.shouldUseKeyboardAwareScrollView ? (
     <KeyboardAwareScrollView
       enableOnAndroid={true}
@@ -30,10 +54,10 @@ export const CustomSafeArea = (props: IProps) => {
       contentContainerStyle={{ flexGrow: 1, backgroundColor: EColor.color_171717 }}
       showsVerticalScrollIndicator={false}
       {...props.keyboardAwareScrollProps}>
-      {props.children}
+      {Content}
     </KeyboardAwareScrollView>
   ) : (
-    props.children
+    Content
   );
   return (
     <View
@@ -46,30 +70,7 @@ export const CustomSafeArea = (props: IProps) => {
         hidden={props.shouldHideStatusBar}
         translucent
       />
-      {props.backgroundImageSource ? (
-        <ImageBackground
-          style={{ flex: 1, paddingTop: insets.top, paddingBottom: insets.bottom }}
-          source={props.backgroundImageSource}>
-          <View
-            style={{
-              flex: 1,
-              ...props.style,
-            }}>
-            {WrappedContent}
-          </View>
-        </ImageBackground>
-      ) : (
-        <View
-          style={[
-            !props.shouldUseFullScreenView && { marginTop: insets.top, marginBottom: insets.bottom },
-            {
-              flex: 1,
-              ...props.style,
-            },
-          ]}>
-          {WrappedContent}
-        </View>
-      )}
+      {WrappedContent}
     </View>
   );
 };
