@@ -43,6 +43,7 @@ export const styles = StyleSheet.create({
     borderRadius: 0,
     borderBottomRightRadius: rw(16),
     marginTop: rh(0),
+    padding: rw(4),
     backgroundColor: EColor.color_333333,
     borderBottomLeftRadius: rw(16),
     borderWidth: rw(1),
