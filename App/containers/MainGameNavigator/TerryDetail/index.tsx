@@ -235,19 +235,9 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             <>
               <View style={styles.buttonContainer}>
                 <CustomButton
-                  title={t('Chỉ đường')}
-                  onPress={() => {
-                    navigation.dispatch(StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, { terry }));
-                  }}
-                  buttonType={EButtonType.SOLID}
-                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-                />
-              </View>
-              <View style={styles.buttonContainer}>
-                <CustomButton
                   onPress={handleViewHistory}
                   title={t('Xem lịch sử')}
-                  buttonType={EButtonType.OUTLINE}
+                  buttonType={EButtonType.SOLID}
                   linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
                 />
               </View>
