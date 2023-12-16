@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    top: 0,
     paddingHorizontal: rw(16),
     elevation: 9999,
   },

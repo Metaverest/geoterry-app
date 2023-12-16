@@ -132,10 +132,7 @@ const ChatView = () => {
   }, []);
 
   return (
-    <CustomSafeArea
-      shouldDisableKeyboardAwareScroll
-      style={styles.container}
-      backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <GiftedChat
         messages={messagesList}
         onSend={messages => onSend(messages)}
