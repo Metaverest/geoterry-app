@@ -6,11 +6,12 @@ import { Pressable } from 'react-native';
 import { styles } from './styles';
 import React from 'react';
 import { navigationRef } from 'App/navigation';
+import { CommonActions } from '@react-navigation/native';
 
 const NetworkLoggerButton = () => {
   const pan = useRef(new Animated.ValueXY()).current;
   const openNetworkLoggerScreen = useCallback(() => {
-    navigationRef.current?.navigate(ENavigationScreen.NETWORK_LOGGER_SCREEN);
+    navigationRef.dispatch(CommonActions.navigate(ENavigationScreen.NETWORK_LOGGER_SCREEN));
   }, []);
   const panResponder = useRef(
     PanResponder.create({

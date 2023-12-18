@@ -135,7 +135,7 @@ AXIOS.interceptors.response.use(
     ) {
       await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
       await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
-      navigationRef.current.dispatch(
+      navigationRef.dispatch(
         CommonActions.navigate({
           name: ENavigationScreen.LOGIN_SCREEN,
         }),

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import 'dayjs/locale/vi';
 import { ELanguageCode } from 'App/enums';
-import { Address } from 'react-native-maps';
+import { Address, LatLng } from 'react-native-maps';
 
 export const calculateMidpoint = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
   const midLatitude = (point1.latitude + point2.latitude) / 2;
@@ -14,7 +14,7 @@ export const calculateMidpoint = (point1: IRealtimeLocation, point2: IRealtimeLo
   return { latitude: midLatitude, longitude: midLongitude, latitudeDelta, longitudeDelta };
 };
 
-export const calculateDistance = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
+export const calculateDistance = (point1: LatLng, point2: LatLng) => {
   const earthRadius = 6371; // Radius of the Earth in kilometers
 
   // Convert latitude and longitude from degrees to radians

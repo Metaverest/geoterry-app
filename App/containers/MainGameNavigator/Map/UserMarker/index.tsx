@@ -1,7 +1,6 @@
 import { EColor } from 'App/enums/color';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { reduxSelector } from 'App/redux/selectors';
-import { IRealtimeLocation } from 'App/types';
 import React, { useEffect, useMemo } from 'react';
 import { Image, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -11,10 +10,11 @@ import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
 import { useAnimatedRegion, AnimatedMarker } from 'App/hooks/useAnimatedRegion';
 import { Easing } from 'react-native-reanimated';
 import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
+import { LatLng } from 'react-native-maps';
 
-const UserMarker = ({ userPosition, centerMap }: { userPosition: IRealtimeLocation; centerMap: () => void }) => {
+const UserMarker = ({ userLocation, centerMap }: { userLocation: LatLng; centerMap: () => void }) => {
   const user = useSelector(reduxSelector.getUser);
-  const animatedRegion = useAnimatedRegion(userPosition);
+  const animatedRegion = useAnimatedRegion(userLocation);
 
   const userAvatar = useMemo(() => {
     return user.logoUrl;
@@ -22,15 +22,15 @@ const UserMarker = ({ userPosition, centerMap }: { userPosition: IRealtimeLocati
 
   useEffect(() => {
     animatedRegion.animate({
-      latitude: userPosition.latitude,
-      longitude: userPosition.longitude,
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
       duration: DEFAULT_USER_MARK_POINT_ANIMATION_DURATION,
       easing: Easing.linear,
     });
-  }, [animatedRegion, userPosition]);
+  }, [animatedRegion, userLocation]);
 
   return (
-    <AnimatedMarker animatedProps={animatedRegion.props} coordinate={userPosition} onPress={centerMap}>
+    <AnimatedMarker animatedProps={animatedRegion.props} coordinate={userLocation} onPress={centerMap}>
       <View style={styles.markerContainer}>
         <LinearGradient
           style={styles.imageContainer}

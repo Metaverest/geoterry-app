@@ -1,54 +1,140 @@
-import CustomSafeArea from 'App/components/CustomSafeArea';
-import MapView from 'react-native-maps';
-import { styles } from './styles';
-import { isAndroidDevice } from 'App/helpers/common';
-import {
-  CommonActions,
-  RouteProp,
-  StackActions,
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { CommonActions, RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 import CustomButtonIcon from 'App/components/ButtonIcon';
-import { DEFAULT_LOCATION, DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY } from 'App/constants/common';
-import { EButtonType, EDataStorageKey, ENamespace, EUserRole } from 'App/enums';
+import CustomSafeArea from 'App/components/CustomSafeArea';
+import CustomText from 'App/components/CustomText';
+import {
+  DEFAULT_LATITUTE_DELTA,
+  DEFAULT_LONGITUDE_DELTA,
+  DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY,
+} from 'App/constants/common';
+import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
-import useCurrentLocation from 'App/hooks/useCurrentLocation';
+import useCurrentRegion from 'App/hooks/useCurrentRegion';
+import useIsBuilderNamespace from 'App/hooks/useIsBuilderNamespace';
+import useMap from 'App/hooks/useMap';
+import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
+import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
 import FilterMapIcon from 'App/media/FilterMapIcon';
+import HeartIcon from 'App/media/HeartIcon';
 import HistoryIcon from 'App/media/HistoryIcon';
+import MessageIcon from 'App/media/MessageIcon';
+import SavedIcon from 'App/media/SavedIcon';
 import SettingIcon from 'App/media/SettingIcon';
 import TargetIcon from 'App/media/TargetIcon';
 import TypeMapIcon from 'App/media/TypeMapIcon';
 import UserProfileIcon from 'App/media/UserProfileIcon';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
-import { IRealtimeLocation } from 'App/types';
 import { ITerryFilterParams } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
-import { getStoredProperty } from 'App/utils/storage/storage';
-import { isEmpty, last } from 'lodash';
+import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+import MapView, { LatLng } from 'react-native-maps';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import CityNameBoard from './CityNameBoard/CityNameBoard';
-import TreasureMarker from './TreasureMarker';
-import UserMarker from './UserMarker';
 import TerryPreviewBoard from './TerryPreviewBoard/TerryPreviewBoard';
-import HeartIcon from 'App/media/HeartIcon';
-import SavedIcon from 'App/media/SavedIcon';
-import AddNewTerryIcon from 'App/media/AddNewTerryIcon';
-import CustomText from 'App/components/CustomText';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
-import MessageIcon from 'App/media/MessageIcon';
+import TreasureMarker from './TreasureMarker';
+import { styles } from './styles';
+import useUserLocation from 'App/hooks/useUserLocation';
+import usePrevious from 'App/hooks/usePrevious';
+import { navigationRef } from 'App/navigation';
+import useIsSaveBatterryMode from 'App/hooks/useIsSaveBatterryMode';
+import UserMarker from './UserMarker';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const user = useSelector(reduxSelector.getUser);
+  const mapRef = useRef<MapView>(null);
+  const regionToGetTerryRef = useRef<LatLng>();
+  const { onUserLocationChange, userLocation } = useUserLocation();
+  const prevUserLocation = usePrevious(userLocation);
+  const { region, onRegionChangeComplete } = useCurrentRegion();
+  const { centerToRegion } = useMap(mapRef);
+  const mapType = useSelector(reduxSelector.getAppMapType);
+  const publicTerries = useSelector(reduxSelector.getAppPublicTerries);
+  const [selectedTerryId, setSelectedTerryId] = useState<string | null>(null);
+  const selectedTerry = useSelector(reduxSelector.getAppPublicTerry);
+  const isSaveBatterryMode = useIsSaveBatterryMode();
+  const isBuilderNamespace = useIsBuilderNamespace();
+  const insets = useSafeAreaInsets();
+  useRequestNotificationPermission();
+
+  const centerToCurrentUserLocation = useCallback(() => {
+    if (isEmpty(userLocation)) {
+      return;
+    }
+    centerToRegion({
+      ...region,
+      latitude: userLocation.latitude,
+      longitude: userLocation.longitude,
+    });
+  }, [centerToRegion, userLocation, region]);
+
+  // Fetch the terry based on the current filter and region.
+  // Also save the region that we get the terry from.
+  const fetchTerries = useCallback(
+    (coordinate: LatLng) => {
+      regionToGetTerryRef.current = { latitude: coordinate.latitude, longitude: coordinate.longitude };
+      dispatch(
+        sagaUserAction.getPublicTerriesAsync({} as ITerryFilterParams, navigation, {
+          location: { latitude: coordinate.latitude, longitude: coordinate.longitude },
+        }),
+      );
+    },
+    [dispatch, navigation],
+  );
+
+  const selectTerry = useCallback(
+    (terryId: string, coordinate: LatLng) => {
+      centerToRegion({ ...coordinate, latitudeDelta: DEFAULT_LATITUTE_DELTA, longitudeDelta: DEFAULT_LONGITUDE_DELTA });
+      setSelectedTerryId(terryId);
+      fetchTerries(coordinate);
+    },
+    [centerToRegion, fetchTerries],
+  );
+
+  const deselectTerry = useCallback(() => {
+    setSelectedTerryId(null);
+  }, []);
+
+  const handlePressTypeMap = useCallback(() => {
+    navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
+  }, [navigation]);
+
+  const handleCreateNewTerry = useCallback(() => {
+    navigation.dispatch(StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN));
+  }, [navigation]);
+
+  const handlePressFilterMap = useCallback(() => {
+    navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
+  }, [navigation]);
+
+  const updateTerryUserCustomData = useCallback(
+    (payload: { markAsFavourited?: boolean; markAsSaved?: boolean }) => {
+      if (selectedTerryId && userLocation) {
+        dispatch(
+          sagaUserAction.getPublicTerryByIdAsync(
+            {
+              terryId: selectedTerryId,
+              latitude: userLocation.latitude,
+              longitude: userLocation.longitude,
+              markAsSaved: payload.markAsSaved,
+              markAsFavourited: payload.markAsFavourited,
+            },
+            navigation,
+          ),
+        );
+      }
+    },
+    [dispatch, navigation, selectedTerryId, userLocation],
+  );
 
   useEffect(() => {
     numberOfFilters.current = 0;
@@ -64,97 +150,54 @@ const MapScreen = () => {
     }
   }, [publicTerryFilter]);
 
-  // The current user`s location
-  const currentLocation = useCurrentLocation();
-  const [isBuilderNamespace, setIsBuilderNamespace] = useState(false);
+  // Once the screen did mount, we need to display the loading modal
+  // and wait for the user location to be available.
   useEffect(() => {
-    (async () => {
-      const sessionNamespace = await getStoredProperty(EDataStorageKey.NAMESPACE);
-      if (
-        (sessionNamespace === ENamespace.GEOTERRY_BUILDERS && !isBuilderNamespace) ||
-        user.role === EUserRole.builder
-      ) {
-        setIsBuilderNamespace(true);
-      } else {
-        setIsBuilderNamespace(false);
-      }
-    })();
-  }, [isBuilderNamespace, user.role]);
-  const mapRef = useRef<MapView>(null);
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const [isSaveBatterryMode, setIsSaveBatterryMode] = useState(false);
-  useFocusEffect(() => {
-    (async () => {
-      const isSaveBatterry = await getStoredProperty(EDataStorageKey.IS_SAVE_BATTERY_MODE);
-      setIsSaveBatterryMode(isSaveBatterry as boolean);
-    })();
-  });
+    navigationRef.dispatch(CommonActions.navigate(ENavigationScreen.LOADING_MODAL));
+  }, []);
 
-  // The current region of the map view
-  const [region, setRegion] = useState<IRealtimeLocation | undefined>(currentLocation);
-  const [regionToGetTerry, setRegionToGetTerry] = useState(currentLocation);
-  const changeRegion = useCallback(
-    (updatedRegion: IRealtimeLocation, fetchTerries?: boolean) => {
-      setRegion({ ...DEFAULT_LOCATION, ...updatedRegion });
-      if (
-        (!isEmpty(regionToGetTerry) &&
-          !isEmpty(updatedRegion) &&
-          calculateDistance(regionToGetTerry, updatedRegion) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY) ||
-        fetchTerries
-      ) {
-        setRegionToGetTerry(updatedRegion);
-        dispatch(
-          sagaUserAction.getPublicTerriesAsync({} as ITerryFilterParams, navigation, {
-            location: { latitude: updatedRegion.latitude, longitude: updatedRegion.longitude },
-          }),
-        );
-      }
-    },
-    [dispatch, navigation, regionToGetTerry],
-  );
-
+  // Once the user location is available and is unavailable before, we need to fetch the terries
+  // around the user location, center the map to the user location
+  // and hide the loading modal.
   useEffect(() => {
-    if (params?.locationTerry) {
-      changeRegion(params.locationTerry, true);
-      setSelectedTerryId(params.terryId);
+    if (isEmpty(prevUserLocation) && !isEmpty(userLocation)) {
+      navigation.dispatch(StackActions.pop());
+      fetchTerries({ latitude: userLocation.latitude, longitude: userLocation.longitude });
+      centerToCurrentUserLocation();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params?.locationTerry, params?.terryId]);
+  }, [centerToCurrentUserLocation, fetchTerries, prevUserLocation, userLocation, navigation]);
 
-  const handlePressTypeMap = useCallback(() => {
-    navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
-  }, [navigation]);
-
-  const handleCreateNewTerry = useCallback(() => {
-    if (currentLocation) {
-      navigation.dispatch(StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN));
+  // If the region is changed, we need to fetch the terry again.
+  // But we only fetch the terry if the distance between the current region and the previous region that we got the terry from
+  // is greater than a threshold.
+  useEffect(() => {
+    if (
+      !isEmpty(regionToGetTerryRef.current) &&
+      calculateDistance(regionToGetTerryRef.current, region) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY
+    ) {
+      fetchTerries({ latitude: region.latitude, longitude: region.longitude });
     }
-  }, [navigation, currentLocation]);
+  }, [fetchTerries, region]);
 
-  const handlePressFilterMap = useCallback(() => {
-    navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
-  }, [navigation]);
-  const onCenter = () => {
-    mapRef?.current?.animateToRegion(currentLocation);
-  };
-  const mapType = useSelector(reduxSelector.getAppMapType);
-  const publicTerries = useSelector(reduxSelector.getAppPublicTerries);
-
-  const [selectedTerryId, setSelectedTerryId] = useState<string | null>(null);
-  const centerToRegion = (targetLocation: IRealtimeLocation) => {
-    mapRef?.current?.animateToRegion(targetLocation);
-  };
-  const selectedTerry = useSelector(reduxSelector.getAppPublicTerry);
+  // If the screen is focused, we need to check if the user is coming from the history screen
+  // based on the params props. If true, call the selectTerry function.
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (params?.locationTerry) {
+        selectTerry(params.terryId, params.locationTerry);
+      }
+    });
+    return unsubscribe;
+  }, [navigation, params, selectTerry]);
 
   useEffect(() => {
-    if (selectedTerryId && selectedTerryId !== selectedTerry?.id && currentLocation) {
+    if (selectedTerryId && selectedTerryId !== selectedTerry?.id && userLocation) {
       dispatch(
         sagaUserAction.getPublicTerryByIdAsync(
           {
             terryId: selectedTerryId,
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude,
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
             includeProfileData: true,
             includeCategoryData: true,
             includeUserPath: true,
@@ -166,64 +209,28 @@ const MapScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTerryId]);
 
-  // handle loading map
-  const [successLoadMap, setSuccessLoadMap] = useState(false);
-  useEffect(() => {
-    if (!currentLocation) {
-      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    } else if (last(navigation.getState().routes)?.name === ENavigationScreen.LOADING_MODAL && !successLoadMap) {
-      setSuccessLoadMap(true);
-      changeRegion({ ...DEFAULT_LOCATION, ...currentLocation }, true);
-      navigation.dispatch(StackActions.pop());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentLocation]);
-
-  const updateTerryUserCustomData = (payload: { markAsFavourited?: boolean; markAsSaved?: boolean }) => {
-    if (selectedTerryId && currentLocation) {
-      dispatch(
-        sagaUserAction.getPublicTerryByIdAsync(
-          {
-            terryId: selectedTerryId,
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude,
-            markAsSaved: payload.markAsSaved,
-            markAsFavourited: payload.markAsFavourited,
-          },
-          navigation,
-        ),
-      );
-    }
-  };
-  const insets = useSafeAreaInsets();
-  useRequestNotificationPermission();
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <MapView
+        onUserLocationChange={onUserLocationChange}
         mapType={mapType}
         ref={mapRef}
         style={styles.mapContainer}
         showsUserLocation={isSaveBatterryMode}
         showsCompass={false}
-        onRegionChangeComplete={(data, gesture) => {
-          // To avoid onRegionChangeComplete() callback is called infinitely
-          if (isAndroidDevice() && !gesture.isGesture) {
-            return;
-          }
-          changeRegion(data as IRealtimeLocation);
-        }}
-        onLongPress={() => setSelectedTerryId(null)}
+        onRegionChangeComplete={onRegionChangeComplete}
+        onLongPress={deselectTerry}
         region={region}>
-        {isSaveBatterryMode || !currentLocation ? null : (
-          <UserMarker userPosition={currentLocation!} centerMap={onCenter} />
+        {isSaveBatterryMode || isEmpty(userLocation) ? null : (
+          <UserMarker userLocation={userLocation} centerMap={centerToCurrentUserLocation} />
         )}
         {publicTerries?.map(treasure => (
           <TreasureMarker
             key={treasure.id}
             treasure={treasure}
             isSelect={treasure.id === selectedTerryId}
-            setSelectedTerry={setSelectedTerryId}
-            centerToRegion={centerToRegion}
+            selectTerry={selectTerry}
+            deselectTerry={deselectTerry}
           />
         ))}
       </MapView>
@@ -261,7 +268,7 @@ const MapScreen = () => {
             )}
           </View>
           <CustomButtonIcon
-            onPress={onCenter}
+            onPress={centerToCurrentUserLocation}
             buttonColor={EColor.color_171717}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}

@@ -83,11 +83,11 @@ const CustomDropdownInput = (props: Props) => {
     return isUndefined(props.setOpen) ? setOpen : props.setOpen;
   }, [props.setOpen, setOpen]);
   return (
-    <View style={[styles.container, { zIndex: props.zIndex, elevation: props.zIndex }]}>
+    <View style={[styles.container]}>
       {props.title && <CustomText style={styles.title}>{props.title}</CustomText>}
       <DropDownPicker
         listMode="SCROLLVIEW"
-        zIndex={props.zIndex}
+        zIndex={isDropdownOpen ? 9999 : props.zIndex}
         zIndexInverse={props.zIndexInverse}
         disableBorderRadius={false}
         dropDownContainerStyle={styles.dropDownContainer}

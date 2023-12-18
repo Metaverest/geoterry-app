@@ -15,8 +15,8 @@ export const DEFAULT_LOCATION = {
   altitude: 0,
   heading: 0,
   speed: 0,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
+  latitudeDelta: 0.008,
+  longitudeDelta: 0.008,
   isDefault: true,
 };
 
@@ -27,3 +27,7 @@ export const THRESHOLD_DISTANCE_TO_UPDATE_PATH = 50; // 50 meters
 export const PREFIX_LINK = 'geoterry';
 
 export const THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY = 50; // 50 meters
+
+export const DEFAULT_LATITUTE_DELTA = 0.008;
+
+export const DEFAULT_LONGITUDE_DELTA = 0.008;
