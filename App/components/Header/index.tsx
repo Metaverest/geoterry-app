@@ -53,9 +53,7 @@ const Header = ({
               {!shouldHideBackButton && <BackIcon />}
             </TouchableOpacity>
             <CustomText style={styles.title}>{title}</CustomText>
-            <TouchableOpacity style={styles.rightButtonContainer} onPress={handlePressBackButton}>
-              {rightButton && rightButton}
-            </TouchableOpacity>
+            <View style={styles.rightButtonContainer}>{rightButton && rightButton}</View>
           </View>
         ) : (
           <View style={[styles.chatViewContainer, insets.top > 0 && { top: insets.top }]}>
