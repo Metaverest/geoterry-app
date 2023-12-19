@@ -11,6 +11,7 @@ import { useAnimatedRegion, AnimatedMarker } from 'App/hooks/useAnimatedRegion';
 import { Easing } from 'react-native-reanimated';
 import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
 import { LatLng } from 'react-native-maps';
+import { responsiveByWidth as rw } from 'App/helpers/common';
 
 const UserMarker = ({ userLocation, centerMap }: { userLocation: LatLng; centerMap: () => void }) => {
   const user = useSelector(reduxSelector.getUser);
@@ -41,7 +42,7 @@ const UserMarker = ({ userLocation, centerMap }: { userLocation: LatLng; centerM
             <Image source={{ uri: userAvatar }} style={styles.image} />
           ) : (
             <View style={styles.image}>
-              <MapMarkerUserDefault />
+              <MapMarkerUserDefault width={rw(44)} height={rw(44)} />
             </View>
           )}
         </LinearGradient>
