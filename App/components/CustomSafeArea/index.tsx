@@ -63,7 +63,7 @@ export const CustomSafeArea = (props: IProps) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: props.isModal ? 'transparent' : EColor.black,
+        backgroundColor: props.isModal ? 'transparent' : EColor.color_171717,
       }}>
       <StatusBar
         backgroundColor={props.statusBarColor || EColor.transparent}
