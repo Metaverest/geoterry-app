@@ -63,12 +63,16 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
       id: terry.id,
       findBy: FindTerryCheckinBy.TERRY_ID,
       includeTerryData: true,
+      includeUserPath: true,
     })
       .then(res => {
         navigation.dispatch(StackActions.pop());
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, res));
       })
-      .catch(err => console.log(err, 'terryDetail'));
+      .catch(err => {
+        navigation.dispatch(StackActions.pop());
+        console.log(err, 'terryDetail');
+      });
   };
 
   const handleViewReviews = () => {

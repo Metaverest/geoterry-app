@@ -51,3 +51,9 @@ export enum EPublicReadProfileBy {
   ID = 'id',
   SLUG = 'slug',
 }
+
+export enum EMediaType {
+  PHOTO = 'photo',
+  VIDEO = 'video',
+  MIXED = 'mixed',
+}

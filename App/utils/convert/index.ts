@@ -8,8 +8,8 @@ import { Address } from 'react-native-maps';
 export const calculateMidpoint = (point1: IRealtimeLocation, point2: IRealtimeLocation) => {
   const midLatitude = (point1.latitude + point2.latitude) / 2;
   const midLongitude = (point1.longitude + point2.longitude) / 2;
-  const latitudeDelta = Math.abs(point1.latitude - point2.latitude) + 0.05;
-  const longitudeDelta = Math.abs(point1.longitude - point2.longitude) + 0.05;
+  const latitudeDelta = Math.abs(point1.latitude - point2.latitude) + 0.001;
+  const longitudeDelta = Math.abs(point1.longitude - point2.longitude) + 0.001;
 
   return { latitude: midLatitude, longitude: midLongitude, latitudeDelta, longitudeDelta };
 };

@@ -7,7 +7,7 @@ import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import CustomInputInformation from 'App/components/CustomInput/CustomInputInformation';
 import CustomButton from 'App/components/Button';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { validateEmail } from 'App/helpers/validate';
 import { useDispatch, useSelector } from 'react-redux';
@@ -61,7 +61,7 @@ const EditProfileScreen = () => {
     phone: user.phoneNumber,
   };
   const openLibrary = useCallback(async () => {
-    const response: ImagePickerResponse = await launchImageLibrary({ mediaType: 'photo' });
+    const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
     if (response.assets) {
       dispatch(sagaUserAction.uploadAvatarProfileAsync(head(response.assets), navigation));
     }

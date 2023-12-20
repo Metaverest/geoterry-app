@@ -199,6 +199,17 @@ export const requestHunterFilterTerryCheckins = async (
     res => res.data,
   );
 };
+
+export const requestHunterFilterTerryCheckinById = async (
+  id: string,
+  params: ITerryCheckinsParams,
+  profileId: string,
+) => {
+  return AXIOS.post<IResponseTerryCheckins[]>(`/hunter/${profileId}/terry-checkin/${id}`, { params }).then(
+    res => res.data,
+  );
+};
+
 export const requestBuilderCreateTerry = async (data: ITerryInputDto, userID: string) => {
   return AXIOS.post(`/builder/${userID}/terry`, data).then(result => result.data);
 };

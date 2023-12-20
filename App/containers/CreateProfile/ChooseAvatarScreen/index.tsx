@@ -3,7 +3,7 @@ import CustomButton from 'App/components/Button';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import AvatarIcon from 'App/media/AvatarIcon';
 import { sagaUserAction } from 'App/redux/actions/userAction';
@@ -39,14 +39,14 @@ const ChooseAvatarScreen = () => {
     );
   }, [t, handlePressSkip, userAvatar]);
   const openCamera = useCallback(async () => {
-    const response: ImagePickerResponse = await launchCamera({});
+    const response: ImagePickerResponse = await launchCamera({ mediaType: EMediaType.PHOTO });
     if (response.assets) {
       dispatch(sagaUserAction.uploadAvatarProfileAsync(head(response.assets), navigation));
     }
   }, [dispatch, navigation]);
 
   const openLibrary = useCallback(async () => {
-    const response: ImagePickerResponse = await launchImageLibrary({});
+    const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
     if (response.assets) {
       dispatch(sagaUserAction.uploadAvatarProfileAsync(head(response.assets), navigation));
     }
