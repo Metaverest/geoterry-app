@@ -6,7 +6,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { AppBackgroundImage, CannotFindTerryImage, CheckInTerryCongratImage } from 'App/components/image';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen } from 'App/enums/navigation';
 import { responsiveByHeight as rh } from 'App/helpers/common';
@@ -49,10 +49,16 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation();
   const onSubmit = useCallback(
     (values: IFormValues) => {
-      dispatch(reduxAppAction.setCheckinTerryData({ reviewText: values.reviewText, photoUrls: values.photoUrls }));
+      dispatch(
+        reduxAppAction.setCheckinTerryData({
+          reviewText: values.reviewText,
+          photoUrls: values.photoUrls,
+          isFound: !isCannotFindTerry,
+        }),
+      );
       navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHECKIN_TERRY_VOTE_SCREEN));
     },
-    [navigation, dispatch],
+    [dispatch, isCannotFindTerry, navigation],
   );
 
   const getShouldDisableButton = useCallback((formValues: IFormValues) => {
@@ -75,7 +81,7 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
       ) => Promise<void | FormikErrors<IFormValues>>,
       currentValue?: string[],
     ) => {
-      const response: ImagePickerResponse = await launchImageLibrary({});
+      const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
       if (response.assets) {
         try {
           const res: IUploadProfileResDto = await requestUploadProfileImage(head(response.assets));

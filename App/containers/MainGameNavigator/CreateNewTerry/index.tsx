@@ -9,7 +9,7 @@ import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
 import { DEFAULT_LOCATION } from 'App/constants/common';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { responsiveByHeight as rh } from 'App/helpers/common';
 import useClearError from 'App/hooks/useClearError';
@@ -165,7 +165,7 @@ const CreateNewTerryScreen = () => {
       ) => Promise<void | FormikErrors<IFormValues>>,
       currentValue?: string[],
     ) => {
-      const response: ImagePickerResponse = await launchImageLibrary({});
+      const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
       if (response.assets) {
         try {
           const res: IUploadProfileResDto = await requestUploadProfileImage(head(response.assets));

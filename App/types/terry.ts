@@ -100,6 +100,7 @@ export interface IResponseTerryCheckins {
   id: string;
   terry: ITerryResponseDto;
   isFound: boolean;
+  path?: string;
 }
 
 export interface Location {
@@ -156,6 +157,7 @@ export interface ITerryCheckinInputDto {
   reviewText?: string;
   photoUrls?: string[];
   rate?: number;
+  isFound: boolean;
   location: ITerryLocationDto;
 }
 
@@ -166,6 +168,7 @@ export interface IHunterGetTerryCheckinParams {
   id: string;
   findBy?: FindTerryCheckinBy;
   includeTerryData?: boolean;
+  includeUserPath?: boolean;
 }
 
 export interface ITerryUserPathResDto {

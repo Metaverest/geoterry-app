@@ -23,6 +23,7 @@ import MapView, { Marker, Polyline } from 'react-native-maps';
 import TreasureMarker from '../MainGameNavigator/Map/TreasureMarker';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
+import { IRealtimeLocation } from 'App/types';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
@@ -32,11 +33,14 @@ export default function DetailHistory() {
   const allCoordinatesPath = useSelector(reduxSelector.getAppCoordinatesPath);
 
   const coordinatesPathOfTerry = useMemo(() => {
+    if (params.path) {
+      return JSON.parse(params.path) as IRealtimeLocation[];
+    }
     if (isEmpty(params.terry?.id) || isEmpty(allCoordinatesPath)) {
       return [];
     }
     return allCoordinatesPath[params.terry?.id as string] || [];
-  }, [allCoordinatesPath, params.terry?.id]);
+  }, [allCoordinatesPath, params.path, params.terry?.id]);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -46,7 +50,11 @@ export default function DetailHistory() {
         showsCompass={false}
         style={styles.mapContainer}>
         {params.terry && (
-          <TreasureMarker key={params.terry.id} treasure={{ ...params.terry, isAvailable: true, checkedIn: true }} />
+          <TreasureMarker
+            isSelect
+            key={params.terry.id}
+            treasure={{ ...params.terry, isAvailable: true, checkedIn: true }}
+          />
         )}
         {!isEmpty(coordinatesPathOfTerry) && (
           <Marker
