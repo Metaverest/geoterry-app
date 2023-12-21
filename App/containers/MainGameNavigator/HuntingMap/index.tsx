@@ -21,21 +21,24 @@ import { IRealtimeLocation } from 'App/types';
 import { ITerryResponseDto } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
 import { first, isEmpty, isEqual, last } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Linking, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import TreasureMarker from '../Map/TreasureMarker';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CompassIcon from 'App/media/CompassIcon';
 import MapTypeIcon from 'App/media/MapTypeIcon';
-import { getCurrentLocation } from 'App/utils/map';
+import { createGoogleMapsUrl, getCurrentLocation } from 'App/utils/map';
 
 const HuntingMapScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.HUNTING_MAP_SCREEN>>();
+  const mapViewRef = useRef<MapView | null>(null);
   const [terry, setTerry] = useState<ITerryResponseDto | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
+
   const allCoordinatesPath = useSelector(reduxSelector.getAppCoordinatesPath);
   const coordinatesPathOfTerry = useMemo(() => {
     if (isEmpty(terry?.id) || isEmpty(allCoordinatesPath)) {
@@ -44,20 +47,42 @@ const HuntingMapScreen = () => {
     return allCoordinatesPath[terry?.id as string] || [];
   }, [allCoordinatesPath, terry?.id]);
 
+  const openGoogleMaps = useCallback(() => {
+    const url = createGoogleMapsUrl(terry?.location.latitude || 0, terry?.location.longitude || 0);
+
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.log('Cannot open Google Maps URL');
+      }
+    });
+  }, [terry?.location]);
+
+  const centerMapToCurrentLocation = useCallback(() => {
+    if (mapViewRef.current && currentLocation && !currentLocation.isDefault) {
+      mapViewRef.current.animateToRegion({
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      });
+    }
+  }, [currentLocation]);
+
   const RightButton = useCallback(() => {
     return (
       <View style={styles.rightButtonContainer}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={centerMapToCurrentLocation}>
           <CompassIcon />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={openGoogleMaps}>
           <MapTypeIcon />
         </TouchableOpacity>
       </View>
     );
-  }, []);
+  }, [centerMapToCurrentLocation, openGoogleMaps]);
 
-  const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
   useEffect(() => {
     const fetchLocation = async () => {
       const location = await getCurrentLocation();
@@ -69,6 +94,7 @@ const HuntingMapScreen = () => {
   const onUserLocationChange = useCallback(
     (location: IRealtimeLocation) => {
       if (
+        location &&
         !isEqual(
           { latitude: location.latitude, longitude: location.longitude },
           { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
@@ -165,6 +191,7 @@ const HuntingMapScreen = () => {
         rightButton={<RightButton />}
       />
       <MapView
+        ref={mapViewRef}
         onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
         region={{
           ...DEFAULT_LOCATION,
@@ -188,14 +215,16 @@ const HuntingMapScreen = () => {
           strokeColor={EColor.color_00FF00} // fallback for when `strokeColors` is not supported by the map-provider
           strokeWidth={3}
         />
-        <Polyline
-          coordinates={[
-            { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
-            { latitude: terry?.location.latitude as number, longitude: terry?.location.longitude as number },
-          ]}
-          strokeColor={EColor.color_127FFE} // fallback for when `strokeColors` is not supported by the map-provider
-          strokeWidth={3}
-        />
+        {!currentLocation.isDefault && (
+          <Polyline
+            coordinates={[
+              { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
+              { latitude: terry?.location.latitude as number, longitude: terry?.location.longitude as number },
+            ]}
+            strokeColor={EColor.color_127FFE} // fallback for when `strokeColors` is not supported by the map-provider
+            strokeWidth={3}
+          />
+        )}
       </MapView>
 
       <View style={styles.footerButtonContainer}>

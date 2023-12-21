@@ -1,50 +1,36 @@
+import { TerryHeartIcon, TerrySavedIcon } from 'App/components/image';
+import { EColor } from 'App/enums/color';
 import ActiveTreasureIcon from 'App/media/ActiveTreasureIcon';
 import DisableTreasureIcon from 'App/media/DisableTreasureIcon';
-import { ITerryResponseDto } from 'App/types/terry';
-import React from 'react';
-import { Image, View } from 'react-native';
-import { styles } from './styles';
-import { Marker } from 'react-native-maps';
-import { TerryHeartIcon, TerrySavedIcon } from 'App/components/image';
-import LinearGradient from 'react-native-linear-gradient';
 import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
-import { EColor } from 'App/enums/color';
-import { IRealtimeLocation } from 'App/types';
+import { ITerryResponseDto } from 'App/types/terry';
+import React, { useCallback } from 'react';
+import { Image, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { LatLng, Marker } from 'react-native-maps';
+import { styles } from './styles';
 
 const TreasureMarker = ({
   treasure,
   isSelect,
-  setSelectedTerry,
-  centerToRegion,
+  selectTerry,
+  deselectTerry,
 }: {
   treasure: ITerryResponseDto;
   isSelect?: boolean;
-  setSelectedTerry?: React.Dispatch<React.SetStateAction<string | null>>;
-  centerToRegion?: (targetLocation: IRealtimeLocation) => void;
+  deselectTerry: () => void;
+  selectTerry: (terryId: string, coordinate: LatLng) => void;
 }) => {
+  const handleSelectTerry = useCallback(() => {
+    selectTerry(treasure.id, treasure.location);
+  }, [selectTerry, treasure.id, treasure.location]);
   if (!treasure.isAvailable) {
     return null;
   }
 
-  const handleSelectTerry = () => {
-    centerToRegion &&
-      centerToRegion({
-        latitude: treasure.location.latitude,
-        longitude: treasure.location.longitude,
-        latitudeDelta: 0.008,
-        longitudeDelta: 0.008,
-      });
-    setSelectedTerry && setSelectedTerry(treasure.id);
-  };
-
   if (isSelect) {
     return (
-      <Marker
-        style={styles.markerContainer}
-        coordinate={treasure.location}
-        onPress={() => {
-          setSelectedTerry && setSelectedTerry(null);
-        }}>
+      <Marker style={styles.markerContainer} coordinate={treasure.location} onPress={deselectTerry}>
         <View style={styles.markerContainer}>
           <LinearGradient
             style={styles.imageContainer}

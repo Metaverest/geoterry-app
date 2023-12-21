@@ -25,9 +25,9 @@ import Header from 'App/components/Header';
 import { responsiveByHeight as rh } from 'App/helpers/common';
 import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
 import { reduxAppAction } from 'App/redux/actions/appAction';
-import useCurrentLocation from 'App/hooks/useCurrentLocation';
 import { THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY } from 'App/constants/common';
 import { shortenString } from 'App/helpers/text';
+import useUserLocation from 'App/hooks/useUserLocation';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -42,7 +42,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const [indexImg, setIndexImg] = useState(0);
-  const currentLocation = useCurrentLocation();
+  const { userLocation } = useUserLocation();
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
@@ -133,13 +133,13 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
 
   const [nearToTerry, setNearToTerry] = useState(false);
   useEffect(() => {
-    if (currentLocation) {
-      const deltaDistance = calculateDistance(terry.location, currentLocation);
+    if (userLocation) {
+      const deltaDistance = calculateDistance(terry.location, userLocation);
       if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
         setNearToTerry(true);
       }
     }
-  }, [currentLocation, terry.location]);
+  }, [terry, userLocation]);
 
   return (
     <ImageBackground source={AppBackgroundImage}>
@@ -254,7 +254,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                     dispatch(
                       reduxAppAction.setCheckinTerryData({
                         terryId: terry?.id,
-                        location: { latitude: currentLocation!.latitude, longitude: currentLocation!.longitude },
+                        location: { latitude: userLocation!.latitude, longitude: userLocation!.longitude },
                       }),
                     );
                     navigation.dispatch(

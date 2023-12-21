@@ -21,8 +21,9 @@ import { Linking } from 'react-native';
 import { getStoredProperty } from 'App/utils/storage/storage';
 import { ROUTES } from './linkingConfig';
 import { PREFIX_LINK } from 'App/constants/common';
+import { CommonActions, createNavigationContainerRef } from '@react-navigation/native';
 
-export const navigationRef = React.createRef<any>();
+export const navigationRef = createNavigationContainerRef();
 
 const Stack = createStackNavigator();
 const Navigation = () => {
@@ -41,7 +42,7 @@ const Navigation = () => {
       if (!initURL || accessToken || Object.values(ROUTES.AUTH_ROUTES).includes(initURL.replace(PREFIX_LINK, ''))) {
         return;
       }
-      navigationRef.current?.navigate(ENavigationScreen.ONBOARDING_SCREEN);
+      navigationRef.dispatch(CommonActions.navigate(ENavigationScreen.ONBOARDING_SCREEN));
     })();
   }, []);
 

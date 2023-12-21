@@ -22,3 +22,7 @@ export const getCurrentLocation = () => {
     );
   });
 };
+
+export const createGoogleMapsUrl = (latitude: number, longitude: number) => {
+  return `https://www.google.com/maps?q=${latitude},${longitude}`;
+};
