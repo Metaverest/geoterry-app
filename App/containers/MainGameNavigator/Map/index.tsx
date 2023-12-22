@@ -71,6 +71,8 @@ const MapScreen = () => {
     }
     centerToRegion({
       ...region,
+      longitudeDelta: DEFAULT_LONGITUDE_DELTA,
+      latitudeDelta: DEFAULT_LATITUTE_DELTA,
       latitude: userLocation.latitude,
       longitude: userLocation.longitude,
     });
