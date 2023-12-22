@@ -137,9 +137,11 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
       const deltaDistance = calculateDistance(terry.location, userLocation);
       if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
         setNearToTerry(true);
+      } else if (nearToTerry) {
+        setNearToTerry(false);
       }
     }
-  }, [terry, userLocation]);
+  }, [nearToTerry, terry, userLocation]);
 
   return (
     <ImageBackground source={AppBackgroundImage}>

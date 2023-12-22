@@ -1,9 +1,10 @@
 import { isEmpty, isEqual, isUndefined } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { LatLng, Location, UserLocationChangeEvent } from 'react-native-maps';
+import { LatLng, UserLocationChangeEvent } from 'react-native-maps';
 import useIsSaveBatterryMode from './useIsSaveBatterryMode';
 import useRequestLocationPermission from './useRequestLocationPermission';
 import Geolocation from '@react-native-community/geolocation';
+import { Location } from 'App/types/terry';
 
 const useUserLocation = () => {
   const [userLocation, setUserLocation] = useState<Location>();

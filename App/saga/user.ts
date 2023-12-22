@@ -435,7 +435,9 @@ export function* watchUpdateProfile() {
 function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, IGetTerryByIdParams>) {
   const navigation = action?.payload?.navigation;
   try {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    if (!action.payload?.data?.isBackgroundAction) {
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    }
     const terryParams = action?.payload?.data;
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
@@ -461,13 +463,17 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
       yield put(reduxAppAction.setPublicTerries(updatedTerries));
     }
     yield put(reduxAppAction.setPublicTerry(terryData));
-    navigation.dispatch(StackActions.pop());
+    if (!action.payload?.data?.isBackgroundAction) {
+      navigation.dispatch(StackActions.pop());
+    }
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
-    navigation.dispatch(StackActions.pop());
+    if (!action.payload?.data?.isBackgroundAction) {
+      navigation.dispatch(StackActions.pop());
+    }
   }
 }
 
@@ -538,8 +544,10 @@ function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryI
     const user: IUser = yield select(reduxSelector.getUser);
     const userID = user.id;
     //skip this called because of BE issue. Will be updated later
-    yield call(requestBuilderCreateTerry, data, userID);
-
+    const res: ITerryResponseDto = yield call(requestBuilderCreateTerry, data, userID);
+    const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+    // since this is new terry so by default the rate is 5 and total rating is 0
+    yield put(reduxAppAction.setPublicTerries([...terries, { ...res, rating: { rate: 5, total: 0 } }]));
     navigation.dispatch(StackActions.pop(2));
     navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CREATE_TERRY_SUCCESS]);
   } catch (error) {

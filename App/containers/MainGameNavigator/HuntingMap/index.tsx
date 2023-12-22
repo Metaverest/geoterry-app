@@ -179,9 +179,11 @@ const HuntingMapScreen = () => {
       const deltaDistance = calculateDistance(terry.location, currentLocation);
       if (deltaDistance <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY) {
         setNearToTerry(true);
+      } else if (nearToTerry) {
+        setNearToTerry(false);
       }
     }
-  }, [currentLocation, terry]);
+  }, [currentLocation, nearToTerry, terry]);
 
   return (
     <CustomSafeArea statusBarColor={EColor.black} style={styles.container}>

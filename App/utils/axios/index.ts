@@ -211,7 +211,7 @@ export const requestHunterFilterTerryCheckinById = async (
 };
 
 export const requestBuilderCreateTerry = async (data: ITerryInputDto, userID: string) => {
-  return AXIOS.post(`/builder/${userID}/terry`, data).then(result => result.data);
+  return AXIOS.post<ITerryResponseDto>(`/builder/${userID}/terry`, data).then(result => result.data);
 };
 
 export const requestPublicGetCheckinsOfTerry = async (params: IGetCheckinsOfTerryParams, terryId: string) => {
