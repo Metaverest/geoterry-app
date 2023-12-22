@@ -61,6 +61,9 @@ const initialValues: IFormValues = {
 const getValidateSchema = (t: (e: string) => string) => {
   return Yup.object().shape({
     name: Yup.string().required(t('Tên kho báu không được để trống')),
+    size: Yup.object().required(t('Kích thước kho báu không được để trống')),
+    difficulty: Yup.object().required(t('Độ khó kho báu không được để trống')),
+    terrain: Yup.object().required(t('Địa hình kho báu không được để trống')),
   });
 };
 
@@ -115,7 +118,12 @@ const CreateNewTerryScreen = () => {
     [navigation, dispatch, t, address, terryLocation],
   );
   const getShouldDisableButton = useCallback((formValues: IFormValues) => {
-    return isEmpty(formValues.name);
+    return (
+      isEmpty(formValues.name) ||
+      isEmpty(formValues.terrain) ||
+      isEmpty(formValues.difficulty) ||
+      isEmpty(formValues.size)
+    );
   }, []);
 
   const clearError = useClearError();

@@ -1,22 +1,34 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import CustomText from 'App/components/CustomText';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { shortenString } from 'App/helpers/text';
 import useCoordinateToAddress from 'App/hooks/useCoordinateToAddress';
 import DifficultyIcon from 'App/media/DifficultyIcon';
 import LocationIcon from 'App/media/LocationIcon';
 import NextIcon from 'App/media/NextIcon';
 import SizingIcon from 'App/media/SizingIcon';
-import { ITerryResponseDto } from 'App/types/terry';
+import { ITerryResponseDto, Location } from 'App/types/terry';
 import { meterToKilometer } from 'App/utils/convert';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
 import MapView from 'react-native-maps';
 import { styles } from './styles';
+import { useSelector } from 'react-redux';
+import { requestHunterGetTerryById } from 'App/utils/axios';
+import { reduxSelector } from 'App/redux/selectors';
 
-const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef: React.RefObject<MapView> }) => {
+const TerryPreviewBoard = ({
+  terry,
+  mapRef,
+  userLocation,
+}: {
+  terry: ITerryResponseDto;
+  userLocation?: Location;
+  mapRef: React.RefObject<MapView>;
+}) => {
   const { t } = useTranslation();
+  const user = useSelector(reduxSelector.getUser);
   const navigation = useNavigation();
   const address = useCoordinateToAddress(
     mapRef,
@@ -26,14 +38,27 @@ const TerryPreviewBoard = ({ terry, mapRef }: { terry: ITerryResponseDto; mapRef
     },
     true,
   );
-  const openTerryDetail = useCallback(() => {
+  const openTerryDetail = useCallback(async () => {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const resTerry = await requestHunterGetTerryById(
+      {
+        latitude: userLocation?.latitude,
+        longitude: userLocation?.longitude,
+        includeProfileData: true,
+        includeCategoryData: true,
+        includeUserPath: true,
+        terryId: terry.id,
+      },
+      user.id,
+    );
+    navigation.dispatch(StackActions.pop());
     navigation.dispatch(
       CommonActions.navigate({
         name: EMainGameScreen.TERRY_DETAIL_SCREEN,
-        params: { terry: terry },
+        params: { terry: resTerry },
       }),
     );
-  }, [navigation, terry]);
+  }, [navigation, terry.id, user.id, userLocation?.latitude, userLocation?.longitude]);
   return (
     <TouchableOpacity style={styles.container} onPress={openTerryDetail}>
       <View style={styles.subContainer}>

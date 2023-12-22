@@ -26,7 +26,7 @@ import TypeMapIcon from 'App/media/TypeMapIcon';
 import UserProfileIcon from 'App/media/UserProfileIcon';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
-import { ITerryFilterParams } from 'App/types/terry';
+import { ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -59,8 +59,7 @@ const MapScreen = () => {
   const { centerToRegion } = useMap(mapRef);
   const mapType = useSelector(reduxSelector.getAppMapType);
   const publicTerries = useSelector(reduxSelector.getAppPublicTerries);
-  const [selectedTerryId, setSelectedTerryId] = useState<string | null>(null);
-  const selectedTerry = useSelector(reduxSelector.getAppPublicTerry);
+  const [selectedTerry, setSelectedTerry] = useState<ITerryResponseDto | undefined>(undefined);
   const isSaveBatterryMode = useIsSaveBatterryMode();
   const isBuilderNamespace = useIsBuilderNamespace();
   const insets = useSafeAreaInsets();
@@ -94,14 +93,24 @@ const MapScreen = () => {
   const selectTerry = useCallback(
     (terryId: string, coordinate: LatLng) => {
       centerToRegion({ ...coordinate, latitudeDelta: DEFAULT_LATITUTE_DELTA, longitudeDelta: DEFAULT_LONGITUDE_DELTA });
-      setSelectedTerryId(terryId);
+      setSelectedTerry(() => {
+        const appropriateTerry = publicTerries?.find(terry => terry.id === terryId);
+        // calc distance from user location to terry location
+        if (appropriateTerry) {
+          return {
+            ...appropriateTerry,
+            distance: userLocation ? calculateDistance(appropriateTerry.location, userLocation) : undefined,
+          };
+        }
+        return undefined;
+      });
       fetchTerries(coordinate);
     },
-    [centerToRegion, fetchTerries],
+    [centerToRegion, fetchTerries, publicTerries, userLocation],
   );
 
   const deselectTerry = useCallback(() => {
-    setSelectedTerryId(null);
+    setSelectedTerry(undefined);
   }, []);
 
   const handlePressTypeMap = useCallback(() => {
@@ -118,22 +127,33 @@ const MapScreen = () => {
 
   const updateTerryUserCustomData = useCallback(
     (payload: { markAsFavourited?: boolean; markAsSaved?: boolean }) => {
-      if (selectedTerryId && userLocation) {
+      if (selectedTerry && userLocation) {
         dispatch(
           sagaUserAction.getPublicTerryByIdAsync(
             {
-              terryId: selectedTerryId,
+              terryId: selectedTerry.id,
               latitude: userLocation.latitude,
               longitude: userLocation.longitude,
               markAsSaved: payload.markAsSaved,
               markAsFavourited: payload.markAsFavourited,
+              isBackgroundAction: true,
             },
             navigation,
           ),
         );
+        setSelectedTerry(prevTerry => {
+          if (prevTerry) {
+            return {
+              ...prevTerry,
+              saved: payload.markAsSaved,
+              favourite: payload.markAsFavourited,
+            };
+          }
+          return undefined;
+        });
       }
     },
-    [dispatch, navigation, selectedTerryId, userLocation],
+    [dispatch, navigation, selectedTerry, userLocation],
   );
 
   useEffect(() => {
@@ -190,25 +210,6 @@ const MapScreen = () => {
     return unsubscribe;
   }, [navigation, params, selectTerry]);
 
-  useEffect(() => {
-    if (selectedTerryId && selectedTerryId !== selectedTerry?.id && userLocation) {
-      dispatch(
-        sagaUserAction.getPublicTerryByIdAsync(
-          {
-            terryId: selectedTerryId,
-            latitude: userLocation.latitude,
-            longitude: userLocation.longitude,
-            includeProfileData: true,
-            includeCategoryData: true,
-            includeUserPath: true,
-          },
-          navigation,
-        ),
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTerryId]);
-
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <MapView
@@ -228,14 +229,14 @@ const MapScreen = () => {
           <TreasureMarker
             key={treasure.id}
             treasure={treasure}
-            isSelect={treasure.id === selectedTerryId}
+            isSelect={treasure.id === selectedTerry?.id}
             selectTerry={selectTerry}
             deselectTerry={deselectTerry}
           />
         ))}
       </MapView>
 
-      {!(selectedTerry && selectedTerryId) ? (
+      {!selectedTerry ? (
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
             onPress={handlePressTypeMap}
@@ -279,7 +280,7 @@ const MapScreen = () => {
 
       {region && <CityNameBoard region={region} mapRef={mapRef} />}
 
-      {selectedTerry && selectedTerryId ? (
+      {selectedTerry ? (
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
             onPress={() =>
@@ -300,7 +301,7 @@ const MapScreen = () => {
         </View>
       ) : null}
 
-      {selectedTerry && selectedTerryId ? <TerryPreviewBoard terry={selectedTerry} mapRef={mapRef} /> : null}
+      {selectedTerry ? <TerryPreviewBoard terry={selectedTerry} userLocation={userLocation} mapRef={mapRef} /> : null}
 
       <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon

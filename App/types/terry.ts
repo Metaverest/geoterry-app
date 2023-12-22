@@ -80,6 +80,7 @@ export interface IGetTerryByIdParams {
   markAsFavourited?: boolean;
   markAsSaved?: boolean;
   includeUserPath?: boolean;
+  isBackgroundAction?: boolean;
 }
 export interface ITerryCheckinsParams {
   page?: number;
