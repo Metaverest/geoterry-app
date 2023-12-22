@@ -87,6 +87,7 @@ const CustomDropdownInput = (props: Props) => {
       {props.title && <CustomText style={styles.title}>{props.title}</CustomText>}
       <DropDownPicker
         listMode="SCROLLVIEW"
+        dropDownDirection="BOTTOM"
         zIndex={props.zIndex}
         zIndexInverse={props.zIndexInverse}
         disableBorderRadius={false}
