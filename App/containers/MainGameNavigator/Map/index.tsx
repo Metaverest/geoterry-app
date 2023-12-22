@@ -4,7 +4,9 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import {
   DEFAULT_LATITUTE_DELTA,
+  DEFAULT_LATITUTE_DELTA_THRESHOLD_TO_FETCH_TERRY,
   DEFAULT_LONGITUDE_DELTA,
+  DEFAULT_LONGITUDE_DELTA_THRESHOLD_TO_FETCH_TERRY,
   DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY,
 } from 'App/constants/common';
 import { EButtonType } from 'App/enums';
@@ -65,16 +67,27 @@ const MapScreen = () => {
   const insets = useSafeAreaInsets();
   useRequestNotificationPermission();
 
+  const [canFetchTerries, setCanFetchTerries] = useState(true);
+  useEffect(() => {
+    if (
+      region.latitudeDelta > DEFAULT_LATITUTE_DELTA_THRESHOLD_TO_FETCH_TERRY ||
+      region.longitudeDelta > DEFAULT_LONGITUDE_DELTA_THRESHOLD_TO_FETCH_TERRY
+    ) {
+      setCanFetchTerries(false);
+    } else if (!canFetchTerries) {
+      setCanFetchTerries(true);
+    }
+  }, [canFetchTerries, region]);
+
   const centerToCurrentUserLocation = useCallback(() => {
     if (isEmpty(userLocation)) {
       return;
     }
     centerToRegion({
-      ...region,
       longitudeDelta: DEFAULT_LONGITUDE_DELTA,
       latitudeDelta: DEFAULT_LATITUTE_DELTA,
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude,
+      latitude: userLocation.latitude || region.latitude,
+      longitude: userLocation.longitude || region.longitude,
     });
   }, [centerToRegion, userLocation, region]);
 
@@ -192,14 +205,16 @@ const MapScreen = () => {
   // If the region is changed, we need to fetch the terry again.
   // But we only fetch the terry if the distance between the current region and the previous region that we got the terry from
   // is greater than a threshold.
+  // And the long/lat delta of the region is smaller than a threshold.
   useEffect(() => {
     if (
       !isEmpty(regionToGetTerryRef.current) &&
-      calculateDistance(regionToGetTerryRef.current, region) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY
+      calculateDistance(regionToGetTerryRef.current, region) > DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY &&
+      canFetchTerries
     ) {
       fetchTerries({ latitude: region.latitude, longitude: region.longitude });
     }
-  }, [fetchTerries, region]);
+  }, [canFetchTerries, fetchTerries, region]);
 
   // If the screen is focused, we need to check if the user is coming from the history screen
   // based on the params props. If true, call the selectTerry function.

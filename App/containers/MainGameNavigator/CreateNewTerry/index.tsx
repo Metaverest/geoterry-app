@@ -385,12 +385,7 @@ const CreateNewTerryScreen = () => {
                       showsUserLocation={true}
                       onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
                       style={styles.map}
-                      initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                      }}>
+                      initialRegion={DEFAULT_LOCATION}>
                       <Marker
                         draggable={true}
                         onDragEnd={event => onDragMarkerEnd(event.nativeEvent.coordinate)}
