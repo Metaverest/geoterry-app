@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   image: {
     width: rw(44),
     height: rw(44),
-    borderRadius: rh(11),
+    borderRadius: rh(15),
   },
   markerContainer: {
     padding: rh(12),
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   imageContainer: {
     width: rw(50),
     height: rw(50),
-    borderRadius: rh(11),
+    borderRadius: rh(15),
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',

@@ -45,6 +45,7 @@ import usePrevious from 'App/hooks/usePrevious';
 import { navigationRef } from 'App/navigation';
 import useIsSaveBatterryMode from 'App/hooks/useIsSaveBatterryMode';
 import UserMarker from './UserMarker';
+import useNearbyPlayers from 'App/hooks/useNearbyPlayers';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -226,6 +227,10 @@ const MapScreen = () => {
     });
     return unsubscribe;
   }, [navigation, params, selectTerry]);
+
+  // handle to view nearby players
+  const playerLocationList = useNearbyPlayers(['650484ce6b231c404d74fb8a']);
+  console.log(playerLocationList);
 
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
