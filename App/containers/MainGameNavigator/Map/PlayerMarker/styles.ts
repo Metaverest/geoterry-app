@@ -4,9 +4,9 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 
 export const styles = StyleSheet.create({
   image: {
-    width: rw(44),
-    height: rw(44),
-    borderRadius: rh(15),
+    width: rw(25),
+    height: rw(25),
+    borderRadius: rh(10),
   },
   markerContainer: {
     padding: rh(12),
@@ -16,9 +16,9 @@ export const styles = StyleSheet.create({
     marginBottom: isIOSDevice() ? rw(55) : 0,
   },
   imageContainer: {
-    width: rw(50),
-    height: rw(50),
-    borderRadius: rh(15),
+    width: rw(30),
+    height: rw(30),
+    borderRadius: rh(10),
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',

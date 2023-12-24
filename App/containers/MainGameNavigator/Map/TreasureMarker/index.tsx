@@ -30,7 +30,7 @@ const TreasureMarker = ({
 
   if (isSelect) {
     return (
-      <Marker style={styles.markerContainer} coordinate={treasure.location} onPress={deselectTerry}>
+      <Marker key={treasure.id} style={styles.markerContainer} coordinate={treasure.location} onPress={deselectTerry}>
         <View style={styles.markerContainer}>
           <LinearGradient
             style={styles.imageContainer}

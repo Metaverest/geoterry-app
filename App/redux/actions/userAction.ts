@@ -9,6 +9,7 @@ import {
   ITerryFilterInputDto,
   ITerryFilterParams,
   ITerryInputDto,
+  Location,
 } from 'App/types/terry';
 
 import {
@@ -153,6 +154,12 @@ const sagaUserAction = {
     return {
       type: ESagaUserAction.SWITCH_ROLE,
       payload: { data: { role, reason }, navigation },
+    };
+  },
+  getUserNearbyPlayers: (location: Location, navigation: any) => {
+    return {
+      type: ESagaUserAction.GET_USER_NEARBY_PLAYERS,
+      payload: { data: { location }, navigation },
     };
   },
 };

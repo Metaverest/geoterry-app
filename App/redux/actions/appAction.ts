@@ -4,7 +4,12 @@ import { EReduxAppAction } from 'App/enums/redux';
 import { IRealtimeLocation } from 'App/types';
 import { IError } from 'App/types/error';
 
-import { IResponseTerryCheckins, ITerryCheckinInputDto, ITerryFilterInputDto } from 'App/types/terry';
+import {
+  IPlayerNearbyResDto,
+  IResponseTerryCheckins,
+  ITerryCheckinInputDto,
+  ITerryFilterInputDto,
+} from 'App/types/terry';
 import { ICreateAccountDto, IUser } from 'App/types/user';
 
 const reduxAppAction = {
@@ -97,6 +102,13 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_OTHER_USER_PROFILE_TO_DISPLAY,
       payload: { otherUserProfileToDisplay },
+    };
+  },
+
+  setNearbyPlayers: (nearbyPlayers: IPlayerNearbyResDto[]) => {
+    return {
+      type: EReduxAppAction.SET_USER_NEARBY_PLAYERS,
+      payload: { nearbyPlayers },
     };
   },
 };

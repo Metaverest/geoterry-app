@@ -180,3 +180,7 @@ export interface ITerryUserPathResDto {
   profileId: string;
   path?: string;
 }
+
+export interface IPlayerNearbyResDto {
+  profileId: string;
+}

@@ -3,7 +3,13 @@ import { EMapType } from 'App/enums/map';
 import { IError } from './error';
 import { ICreateAccountDto, IUser } from './user';
 import { ITerryCategoryResDto } from './category';
-import { IResponseTerryCheckins, ITerryCheckinInputDto, ITerryFilterInputDto, ITerryResponseDto } from './terry';
+import {
+  IPlayerNearbyResDto,
+  IResponseTerryCheckins,
+  ITerryCheckinInputDto,
+  ITerryFilterInputDto,
+  ITerryResponseDto,
+} from './terry';
 import { IRealtimeLocation } from '.';
 
 export interface IReduxAction<T, P = undefined> {
@@ -50,6 +56,7 @@ export interface IAppState {
   coordinatesPath?: { [key: string]: IRealtimeLocation[] };
   // This is used to display the public profile of other users when user scan the QR code
   otherUserProfileToDisplay?: IUser;
+  nearbyPlayers?: IPlayerNearbyResDto[];
 }
 
 export interface IRootState {
