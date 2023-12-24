@@ -10,6 +10,7 @@ import {
   IGetCheckinsOfTerryParams,
   IGetTerryByIdParams,
   IHunterGetTerryCheckinParams,
+  IPlayerNearbyResDto,
   IResponseGetCheckinsOfTerry,
   IResponseTerryCheckins,
   ITerryCheckinInputDto,
@@ -18,6 +19,7 @@ import {
   ITerryFilterInputDto,
   ITerryFilterParams,
   ITerryInputDto,
+  ITerryLocationDto,
   ITerryResponseDto,
   ITerryUserPathResDto,
 } from 'App/types/terry';
@@ -249,6 +251,20 @@ export const requestPublicReadProfile = async (profileID: string, findBy: EPubli
       findBy: findBy,
     },
   }).then(result => result.data);
+};
+
+export const requestGetNearbyPlayers = async (input?: ITerryLocationDto) => {
+  return AXIOS.post<IPlayerNearbyResDto[]>('/profile/profile-nearby', {
+    latitude: input?.latitude,
+    longitude: input?.longitude,
+  }).then(result => result.data);
+};
+
+export const requestUpdateUserCurrentLocation = async (input: ITerryLocationDto) => {
+  return AXIOS.put('/profile/location', {
+    latitude: input.latitude,
+    longitude: input.longitude,
+  });
 };
 
 export default AXIOS;

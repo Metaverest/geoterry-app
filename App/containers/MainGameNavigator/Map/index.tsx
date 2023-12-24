@@ -46,6 +46,7 @@ import { navigationRef } from 'App/navigation';
 import useIsSaveBatterryMode from 'App/hooks/useIsSaveBatterryMode';
 import UserMarker from './UserMarker';
 import useNearbyPlayers from 'App/hooks/useNearbyPlayers';
+import PlayerMarker from './PlayerMarker';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -54,6 +55,7 @@ const MapScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const user = useSelector(reduxSelector.getUser);
+  const nearbyPlayers = useSelector(reduxSelector.getNearbyPlayers);
   const mapRef = useRef<MapView>(null);
   const regionToGetTerryRef = useRef<LatLng>();
   const { onUserLocationChange, userLocation } = useUserLocation();
@@ -228,9 +230,13 @@ const MapScreen = () => {
     return unsubscribe;
   }, [navigation, params, selectTerry]);
 
-  // handle to view nearby players
-  const playerLocationList = useNearbyPlayers(['650484ce6b231c404d74fb8a']);
-  console.log(playerLocationList);
+  // TODO need to reduce re-rendering in this screen, it caused useNearbyPlayers re-trigger RTDB changes listeners
+  useEffect(() => {
+    if (userLocation) {
+      dispatch(sagaUserAction.getUserNearbyPlayers(userLocation, navigation));
+    }
+  }, [dispatch, navigation, userLocation]);
+  const playerLocationList = useNearbyPlayers(nearbyPlayers?.map(nearbyPlayer => nearbyPlayer.profileId) || []);
 
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
@@ -255,6 +261,9 @@ const MapScreen = () => {
             selectTerry={selectTerry}
             deselectTerry={deselectTerry}
           />
+        ))}
+        {Object.keys(playerLocationList)?.map(profileId => (
+          <PlayerMarker userLocation={playerLocationList[profileId]} />
         ))}
       </MapView>
 

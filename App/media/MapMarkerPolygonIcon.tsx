@@ -1,8 +1,8 @@
-import { Defs, LinearGradient, Path, Stop, Svg } from 'react-native-svg';
+import { Defs, LinearGradient, Path, Stop, Svg, SvgProps } from 'react-native-svg';
 import React from 'react';
-const MapMarkerPolygonIcon = () => {
+const MapMarkerPolygonIcon = (props: SvgProps) => {
   return (
-    <Svg width="18" height="16" viewBox="0 0 18 16" fill="none">
+    <Svg width={props.width || '16'} height={props.height || '16'} viewBox="0 0 18 16" fill="none">
       <Path
         d="M10.7321 15C9.96225 16.3333 8.03775 16.3333 7.26795 15L0.339746 3C-0.430054 1.66667 0.532198 0 2.0718 0L15.9282 0C17.4678 0 18.4301 1.66667 17.6603 3L10.7321 15Z"
         fill="url(#paint0_linear_344_4119)"

@@ -71,6 +71,7 @@ const UserMarker = ({ userLocation, centerMap }: { userLocation: LatLng; centerM
 
   return (
     <AnimatedMarker
+      key={user.id}
       style={animatedStyle}
       animatedProps={animatedRegion.props}
       coordinate={userLocation}

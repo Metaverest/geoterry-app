@@ -30,6 +30,7 @@ import { IReduxActionWithNavigation } from 'App/types/redux';
 import {
   IFilterTerryCheckins,
   IGetTerryByIdParams,
+  IPlayerNearbyResDto,
   IResponseTerryCheckins,
   ITerryCheckinInputDto,
   ITerryCheckinsParams,
@@ -37,6 +38,7 @@ import {
   ITerryFilterParams,
   ITerryInputDto,
   ITerryResponseDto,
+  Location,
 } from 'App/types/terry';
 
 import {
@@ -57,6 +59,7 @@ import AXIOS, {
   requestBuilderCreateTerry,
   requestCreateAccount,
   requestCreateProfile,
+  requestGetNearbyPlayers,
   requestGetOTP,
   requestHunterCheckinTerry,
   requestHunterFilterTerryCheckins,
@@ -671,6 +674,21 @@ export function* watchSwitchRoleUser() {
   yield takeLatest(ESagaUserAction.SWITCH_ROLE, switchRole);
 }
 
+function* getNearbyPlayers(action: IReduxActionWithNavigation<ESagaAppAction, { location?: Location }>) {
+  const navigation = action.payload?.navigation;
+  try {
+    const location = action.payload?.data?.location;
+    const response: IPlayerNearbyResDto[] = yield call(requestGetNearbyPlayers, location);
+    yield put(reduxAppAction.setNearbyPlayers(response));
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchGetNearbyPlayers() {
+  yield takeLatest(ESagaUserAction.GET_USER_NEARBY_PLAYERS, getNearbyPlayers);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -693,5 +711,6 @@ export default function* userSaga() {
     watchHunterUpdateTerrypath(),
     watchGetPublicProfile(),
     watchSwitchRoleUser(),
+    watchGetNearbyPlayers(),
   ]);
 }
