@@ -39,6 +39,7 @@ const useNearbyPlayers = (profileIds: string[]) => {
         locationRef.child(profileId).off('value', onDataChange);
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileIds]);
 
   return playerLocations;
