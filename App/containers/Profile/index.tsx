@@ -88,7 +88,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
             />
             <CustomInputInformation
               title={t('Đã tìm được')}
-              value={`${profileToDisplay?.totalCheckedinTerry}`}
+              value={`${profileToDisplay?.totalCheckedinTerry} ${t('kho báu')}`}
               editable={false}
             />
           </View>
