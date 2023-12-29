@@ -5,13 +5,14 @@ import useIsSaveBatterryMode from './useIsSaveBatterryMode';
 import useRequestLocationPermission from './useRequestLocationPermission';
 import Geolocation from '@react-native-community/geolocation';
 import { Location } from 'App/types/terry';
+import { IRealtimeLocation } from 'App/types';
 
 const useUserLocation = () => {
   const [userLocation, setUserLocation] = useState<Location>();
   const { hasLocationPermission } = useRequestLocationPermission();
   const isSaveBatterryMode = useIsSaveBatterryMode();
   const updateUserLocation = useCallback(
-    (location: Location) => {
+    (location: IRealtimeLocation) => {
       // Stop the function if the save battery mode is undefined
       if (isUndefined(isSaveBatterryMode)) {
         return;
@@ -57,11 +58,8 @@ const useUserLocation = () => {
             updateUserLocation({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-              altitudeAccuracy: position.coords.altitudeAccuracy as number,
-              accuracy: position.coords.accuracy as number,
               altitude: position.coords.altitude as number,
               speed: position.coords.speed as number,
-              timestamp: position.timestamp as number,
             }),
           error => {
             console.log(error);

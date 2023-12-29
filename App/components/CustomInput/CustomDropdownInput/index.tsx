@@ -56,7 +56,7 @@ const CustomDropdownInput = (props: Props) => {
 
   const displaySelectedLabel = useMemo(() => {
     const selectedOptions = props.selectedOption?.map(o => o.label);
-    return shortenString(selectedOptions?.join(', '), rw(50));
+    return shortenString(selectedOptions?.join(', '), rw(35));
   }, [props.selectedOption]);
 
   const onSelectOption = useCallback(

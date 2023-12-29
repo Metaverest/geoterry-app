@@ -18,6 +18,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     paddingHorizontal: rw(16),
+    borderWidth: 1,
+    borderColor: EColor.color_666666,
   },
   popupImage: {
     height: rh(94),
