@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     width: rw(72),
     height: rw(72),
     borderRadius: rh(11),
+    backgroundColor: EColor.color_00000080,
   },
   nameUser: {
     color: EColor.color_FAFAFA,
