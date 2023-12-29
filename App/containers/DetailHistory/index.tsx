@@ -89,8 +89,8 @@ export default function DetailHistory() {
       <MultipleImagesOnLine
         images={params.photoUrls}
         containerImageStyle={styles.containerImage}
+        containerItemImageStyle={styles.image}
         numColumns={6}
-        containerItemImageStyle={styles.mr10}
         showIconMaximize
       />
       <CustomButton

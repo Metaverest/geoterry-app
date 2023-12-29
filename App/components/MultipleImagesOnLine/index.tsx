@@ -1,4 +1,4 @@
-import { View, Image, ViewStyle } from 'react-native';
+import { View, Image, ViewStyle, ScrollView } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native';
@@ -11,7 +11,7 @@ import DismissCircleIcon from 'App/media/DismissCircleIcon';
 
 interface Props {
   images: string[];
-  numColumns: number;
+  numColumns?: number;
   showIconMaximize?: boolean;
   containerImageStyle?: ViewStyle;
   containerItemImageStyle: ViewStyle;
@@ -25,26 +25,30 @@ const MultipleImagesOnLine = (props: Props) => {
 
   const renderItem = useCallback(
     ({ item, index }: { item: string; index: number }) => {
+      if (!props.numColumns) {
+        return <></>;
+      }
       return (
         <>
           {index < props.numColumns - 1 ? (
             <TouchableOpacity
-              style={props.images.length <= props.numColumns - 1 ? props.containerItemImageStyle : null}
+              style={props.containerItemImageStyle}
               onPress={() => {
                 setIndexImage(index);
                 setIsVisible(true);
               }}>
-              <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
+              <Image source={{ uri: item }} style={styles.image} resizeMode="contain" />
               {props.showIconMaximize && <ArrowMaximize style={styles.iconArrowMaximize} />}
             </TouchableOpacity>
           ) : index === props.numColumns - 1 ? (
             <TouchableOpacity
+              style={props.containerItemImageStyle}
               onPress={() => {
                 setIndexImage(index);
                 setIsVisible(true);
               }}>
-              <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
-              {props.images.length > 6 && (
+              <Image source={{ uri: item }} style={styles.image} resizeMode="contain" />
+              {props.images.length > props.numColumns && (
                 <View style={styles.lastImage}>
                   <CustomText style={styles.textLastImage}>+{props.images.length - (props.numColumns - 1)}</CustomText>
                 </View>
@@ -77,13 +81,38 @@ const MultipleImagesOnLine = (props: Props) => {
   }, [props.images]);
   return (
     <View style={props.containerImageStyle}>
-      <FlatList
-        numColumns={props.numColumns}
-        data={props.images}
-        renderItem={props.canRemoveImage ? renderItemWithRemoveButton : renderItem}
-        scrollEnabled={false}
-        columnWrapperStyle={props.images.length > 5 ? styles.columnWrapperStyle : null}
-      />
+      {props.numColumns ? (
+        <FlatList
+          numColumns={props.numColumns}
+          data={props.images}
+          renderItem={props.canRemoveImage ? renderItemWithRemoveButton : renderItem}
+          scrollEnabled={false}
+          columnWrapperStyle={props.images.length > 5 ? styles.columnWrapperStyle : null}
+        />
+      ) : (
+        <ScrollView horizontal>
+          {props.images?.map((url, index) => {
+            return (
+              <View key={index}>
+                <TouchableOpacity
+                  style={props.containerItemImageStyle}
+                  onPress={() => {
+                    setIndexImage(index);
+                    setIsVisible(true);
+                  }}>
+                  <Image source={{ uri: url }} style={styles.image} resizeMode="contain" />
+                  {props.showIconMaximize && <ArrowMaximize style={styles.iconArrowMaximize} />}
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.dismissCircleIconButton}
+                  onPress={() => props.removeImage && props.removeImage(url)}>
+                  <DismissCircleIcon />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </ScrollView>
+      )}
       <ImageView
         images={listImagesView}
         keyExtractor={(_, index) => index.toString()}

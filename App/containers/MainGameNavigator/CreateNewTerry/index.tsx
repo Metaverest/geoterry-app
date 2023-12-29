@@ -1,5 +1,5 @@
 /* eslint-disable max-lines */
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import CustomInput from 'App/components/CustomInput';
@@ -33,6 +33,7 @@ import MapView, { LatLng, Marker } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import { ENavigationScreen } from 'App/enums/navigation';
 
 interface IFormValues {
   name: string;
@@ -176,14 +177,17 @@ const CreateNewTerryScreen = () => {
       const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
       if (response.assets) {
         try {
+          navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
           const res: IUploadProfileResDto = await requestUploadProfileImage(head(response.assets));
           setFieldValue('photoUrls', [...(currentValue || []), res.photoUrl], true);
+          navigation.dispatch(StackActions.pop());
         } catch (error) {
           console.log(error);
+          navigation.dispatch(StackActions.pop());
         }
       }
     },
-    [],
+    [navigation],
   );
 
   const removeImage = useCallback(
@@ -405,18 +409,20 @@ const CreateNewTerryScreen = () => {
                       buttonType={EButtonType.SOLID}
                       renderIcon={<ImageAddIcon />}
                     />
-                    {values.photoUrls?.map((url, index) => {
-                      return (
-                        <View key={index} style={styles.photoItemContainer}>
-                          <Image resizeMode="contain" source={{ uri: url }} style={styles.image} />
-                          <TouchableOpacity
-                            style={styles.dismissCircleIconButton}
-                            onPress={() => removeImage(setFieldValue, values.photoUrls, url)}>
-                            <DismissCircleIcon />
-                          </TouchableOpacity>
-                        </View>
-                      );
-                    })}
+                    <ScrollView horizontal>
+                      {values.photoUrls?.map((url, index) => {
+                        return (
+                          <View key={index} style={styles.photoItemContainer}>
+                            <Image resizeMode="contain" source={{ uri: url }} style={styles.image} />
+                            <TouchableOpacity
+                              style={styles.dismissCircleIconButton}
+                              onPress={() => removeImage(setFieldValue, values.photoUrls, url)}>
+                              <DismissCircleIcon />
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      })}
+                    </ScrollView>
                   </View>
                 </ScrollView>
               </View>

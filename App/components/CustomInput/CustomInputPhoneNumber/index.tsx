@@ -48,6 +48,9 @@ const CustomInputPhoneNumber = (props: IInputProps) => {
           keyboardType="number-pad"
           onChangeText={text => {
             setPhone(text);
+            if (text[0] === '0') {
+              text = text.substring(1);
+            }
             props.onChangeText && props.onChangeText(`${prefix}${text}`);
           }}
         />

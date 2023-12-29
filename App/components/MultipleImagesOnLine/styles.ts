@@ -6,12 +6,12 @@ export const styles = StyleSheet.create({
   iconArrowMaximize: {
     position: 'absolute',
     right: rw(4),
-    bottom: rh(4),
+    bottom: rh(6),
   },
   image: {
     width: rw(48),
     height: rw(48),
-    borderRadius: rh(4),
+    borderRadius: rw(5),
   },
   lastImage: {
     position: 'absolute',
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: rh(4),
+    borderRadius: rw(5),
   },
   textLastImage: {
     fontSize: rh(12),
