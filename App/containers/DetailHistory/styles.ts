@@ -52,6 +52,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginTop: rh(16),
   },
+  image: {
+    borderWidth: 1,
+    borderRadius: rw(5),
+    borderColor: EColor.color_333333,
+    backgroundColor: EColor.color_00000080,
+  },
   btn: {
     marginTop: rh(32),
   },

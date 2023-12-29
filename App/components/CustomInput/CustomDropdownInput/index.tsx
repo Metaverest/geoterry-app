@@ -11,6 +11,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { styles } from './styles';
+import { shortenString } from 'App/helpers/text';
+import { responsiveByWidth as rw } from 'App/helpers/common';
 
 export interface ICustomDropdownOption {
   label: string;
@@ -54,7 +56,7 @@ const CustomDropdownInput = (props: Props) => {
 
   const displaySelectedLabel = useMemo(() => {
     const selectedOptions = props.selectedOption?.map(o => o.label);
-    return selectedOptions?.join(', ');
+    return shortenString(selectedOptions?.join(', '), rw(50));
   }, [props.selectedOption]);
 
   const onSelectOption = useCallback(

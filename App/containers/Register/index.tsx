@@ -82,7 +82,7 @@ const RegisterScreen = () => {
     <CustomSafeArea shouldUseKeyboardAwareScrollView style={styles.container}>
       <View style={styles.mainContainer}>
         <Image style={styles.image} source={EarthIcon} />
-        <CustomText style={styles.createAccountTitle}>Tạo tài khoản</CustomText>
+        <CustomText style={styles.createAccountTitle}>{t('Tạo tài khoản')}</CustomText>
         <CustomText style={styles.createAccountSubTitle}>
           {t('Gia nhập cộng đồng Terriana để khám phá và thu thập kho báu của riêng bạn!')}
         </CustomText>

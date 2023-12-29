@@ -31,8 +31,8 @@ export const styles = StyleSheet.create({
     bottom: 0,
   },
   addImagebuttonContainer: {
-    paddingHorizontal: rh(12),
-    paddingVertical: rh(12),
+    paddingHorizontal: rh(16),
+    paddingVertical: rh(16),
     borderRadius: rh(8),
   },
   terryAddImageContainer: {
@@ -47,7 +47,16 @@ export const styles = StyleSheet.create({
     marginTop: rh(16),
     flex: 1,
   },
-  photoItemContainer: {},
+  photoItemContainer: {
+    borderWidth: 1,
+    borderRadius: rw(5),
+    borderColor: EColor.color_333333,
+    backgroundColor: EColor.color_00000080,
+    marginHorizontal: rw(4),
+    width: rw(48),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   image: {
     height: rh(48),
     width: rh(48),

@@ -1,4 +1,4 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import CustomButton from 'App/components/Button';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import CustomInput from 'App/components/CustomInput';
@@ -8,7 +8,7 @@ import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { AppBackgroundImage, CannotFindTerryImage, CheckInTerryCongratImage } from 'App/components/image';
 import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameScreen } from 'App/enums/navigation';
+import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { responsiveByHeight as rh } from 'App/helpers/common';
 import useClearError from 'App/hooks/useClearError';
 import ImageAddIcon from 'App/media/ImageAddIcon';
@@ -84,14 +84,17 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
       const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
       if (response.assets) {
         try {
+          navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
           const res: IUploadProfileResDto = await requestUploadProfileImage(head(response.assets));
           setFieldValue('photoUrls', [...(currentValue || []), res.photoUrl], true);
+          navigation.dispatch(StackActions.pop());
         } catch (error) {
           console.log(error);
+          navigation.dispatch(StackActions.pop());
         }
       }
     },
-    [],
+    [navigation],
   );
 
   const removeImage = useCallback(
@@ -161,7 +164,6 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
                   {!isEmpty(values.photoUrls) && (
                     <MultipleImagesOnLine
                       images={values.photoUrls as string[]}
-                      numColumns={4}
                       containerItemImageStyle={styles.containerItemImageStyle}
                       containerImageStyle={styles.containerImageStyle}
                       canRemoveImage

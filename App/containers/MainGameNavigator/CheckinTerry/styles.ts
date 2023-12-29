@@ -48,10 +48,10 @@ export const styles = StyleSheet.create({
   terryAddImageContainer: {
     marginTop: rh(16),
     flexDirection: 'row',
-
     columnGap: rw(4),
     alignItems: 'center',
     alignSelf: 'flex-start',
+    maxWidth: '85%',
   },
   inputContainer: {
     flexDirection: 'column',
@@ -75,5 +75,9 @@ export const styles = StyleSheet.create({
   },
   containerItemImageStyle: {
     marginHorizontal: rw(4),
+    borderWidth: 1,
+    borderRadius: rw(5),
+    borderColor: EColor.color_333333,
+    backgroundColor: EColor.color_00000080,
   },
 });
