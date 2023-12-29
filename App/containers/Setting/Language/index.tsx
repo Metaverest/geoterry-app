@@ -33,14 +33,15 @@ const LanguageScreen = () => {
     );
   }, [dispatch, languageCode, navigation]);
   const RightButton = useCallback(() => {
+    const isSelectedNewLang = languageCode !== userLanguageCode;
     return (
-      <TouchableOpacity onPress={handleSave}>
-        <CustomText numberOfLines={1} style={styles.saveText}>
+      <TouchableOpacity disabled={!isSelectedNewLang} onPress={handleSave}>
+        <CustomText numberOfLines={1} style={[styles.saveText, isSelectedNewLang && styles.saveTextHighlight]}>
           {t('Lưu')}
         </CustomText>
       </TouchableOpacity>
     );
-  }, [t, handleSave]);
+  }, [languageCode, userLanguageCode, handleSave, t]);
 
   const options: IItemSelectorSettingProps[] = useMemo(() => {
     return [

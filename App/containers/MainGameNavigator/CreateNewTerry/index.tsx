@@ -268,7 +268,10 @@ const CreateNewTerryScreen = () => {
                 {t('Điền các thông tin về kho báu của bạn')}
               </CustomText>
               <View style={styles.inputContainer}>
-                <ScrollView nestedScrollEnabled contentContainerStyle={{ rowGap: rh(20) }}>
+                <ScrollView
+                  nestedScrollEnabled
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{ rowGap: rh(20) }}>
                   <View style={styles.terryInputContainer}>
                     <CustomInput
                       title={t('Tên kho báu')}

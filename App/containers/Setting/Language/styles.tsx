@@ -11,11 +11,14 @@ export const styles = StyleSheet.create({
   },
 
   saveText: {
-    color: EColor.white,
+    color: EColor.color_666666,
     fontSize: rh(16),
     fontWeight: '600',
     textAlign: 'center',
     alignSelf: 'center',
+  },
+  saveTextHighlight: {
+    color: EColor.white,
   },
   listItemContainer: {
     marginTop: rh(68),

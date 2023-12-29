@@ -36,6 +36,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: rw(16),
     paddingTop: rh(32),
+    paddingBottom: rh(16),
   },
   buttonContainer: {
     width: '48%',

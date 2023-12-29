@@ -186,7 +186,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           <View style={styles.containerLocation}>
             <WhiteLocationIcon />
             <CustomText style={styles.terryDistanceAndCategoryText}>
-              {shortenString(terry.address || t('Không rõ'), 30)}
+              {shortenString(terry.address || t('Không rõ'), 40)}
             </CustomText>
             <Rating rate={terry.rating.rate} />
             <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>

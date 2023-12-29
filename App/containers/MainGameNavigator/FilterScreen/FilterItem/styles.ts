@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
   marker: {
     backgroundColor: EColor.color_FAFAFA,
     borderRadius: rh(12),
-    width: rw(12),
+    width: rh(12),
     height: rh(12),
   },
   selectedStyle: {

@@ -1,7 +1,7 @@
 import { EColor } from 'App/enums/color';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { styles } from './styles';
 import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
@@ -33,6 +33,7 @@ const PlayerMarker = ({ userLocation }: { userLocation: LatLng }) => {
           colors={[EColor.color_51D5FF, EColor.color_C072FD]}>
           <View style={styles.image}>
             <MapMarkerUserDefault width={rw(25)} height={rw(25)} />
+            <Text style={styles.unknownText}>?</Text>
           </View>
         </LinearGradient>
         <View style={styles.polygonContainer}>

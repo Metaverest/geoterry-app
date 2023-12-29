@@ -14,6 +14,7 @@ interface IProps {
   shouldHideStatusBar?: boolean;
   shouldUseKeyboardAwareScrollView?: boolean;
   keyboardAwareScrollProps?: KeyboardAwareProps;
+  backgroundColor?: EColor;
 }
 
 export const CustomSafeArea = (props: IProps) => {
@@ -63,7 +64,7 @@ export const CustomSafeArea = (props: IProps) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: props.isModal ? 'transparent' : EColor.color_171717,
+        backgroundColor: props.isModal ? 'transparent' : props.backgroundColor || EColor.color_171717,
       }}>
       <StatusBar
         backgroundColor={props.statusBarColor || EColor.transparent}

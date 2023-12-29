@@ -3,13 +3,13 @@ import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import ItemSelectorSetting, { IItemSelectorSettingProps } from 'App/components/ItemSelectorSetting';
 import { AppBackgroundImage } from 'App/components/image';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
-import { EUserRole, ETitleUserRole } from 'App/enums';
+import { EUserRole, ETitleUserRole, EUseRoleRequestStatus } from 'App/enums';
 import ModalReasonRequestRole from './ModalReasonRequestRole';
 import { useNavigation } from '@react-navigation/native';
 import { EMainGameNavigatorParams, ESettingNavigator } from 'App/enums/navigation';
@@ -22,30 +22,55 @@ const RuleScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
   const [showModal, setShowModal] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(user.role);
   const [reason, setReason] = useState('');
 
   const options: IItemSelectorSettingProps[] = useMemo(() => {
     return [
       {
         title: t(ETitleUserRole.HUNTER),
-        isSelected: user.role === EUserRole.hunter,
+        isSelected: selectedRole === EUserRole.hunter,
         onPress: () => {
-          dispatch(sagaUserAction.switchRoleUserAsync(EUserRole.hunter, reason, navigation));
+          if (selectedRole !== EUserRole.hunter) {
+            setSelectedRole(EUserRole.hunter);
+          }
         },
       },
       {
         title: t(ETitleUserRole.BUILDER),
-        isSelected: user.role === EUserRole.builder,
+        isSelected: selectedRole === EUserRole.builder,
         onPress: () => {
-          setShowModal(true);
+          if (selectedRole !== EUserRole.builder) {
+            setSelectedRole(EUserRole.builder);
+          }
         },
       },
     ] as IItemSelectorSettingProps[];
-  }, [dispatch, navigation, reason, t, user.role]);
+  }, [t, selectedRole]);
+
+  const hanldeSubmitRole = useCallback(() => {
+    if (selectedRole === EUserRole.builder) {
+      setShowModal(true);
+    } else {
+      dispatch(sagaUserAction.switchRoleUserAsync(EUserRole.hunter, reason, navigation));
+    }
+  }, [dispatch, navigation, reason, selectedRole]);
+
+  const RightButton = useCallback(() => {
+    const isSelectedNewRole =
+      selectedRole === user.role && user.roleRequestingStatus === EUseRoleRequestStatus.ACCEPTED;
+    return (
+      <TouchableOpacity disabled={isSelectedNewRole} onPress={hanldeSubmitRole}>
+        <CustomText numberOfLines={1} style={[styles.saveText, isSelectedNewRole && styles.saveTextHighlight]}>
+          {t('Lưu')}
+        </CustomText>
+      </TouchableOpacity>
+    );
+  }, [hanldeSubmitRole, selectedRole, t, user.role, user.roleRequestingStatus]);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header title={t('Vai trò')} />
+      <Header rightButton={<RightButton />} title={t('Vai trò')} />
       <CustomText style={styles.chooseRuleTitle}>{t('Lựa chọn vai trò người chơi')}</CustomText>
       <View style={styles.listItemContainer}>
         {options?.map((item, index) => (

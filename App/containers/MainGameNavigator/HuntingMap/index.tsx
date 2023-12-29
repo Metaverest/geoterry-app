@@ -186,7 +186,7 @@ const HuntingMapScreen = () => {
   }, [currentLocation, nearToTerry, terry]);
 
   return (
-    <CustomSafeArea statusBarColor={EColor.black} style={styles.container}>
+    <CustomSafeArea backgroundColor={EColor.black} statusBarColor={EColor.black} style={styles.container}>
       <Header
         headerContainerStyle={{ backgroundColor: EColor.black }}
         title={t('Chỉ đường')}
