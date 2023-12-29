@@ -1,6 +1,7 @@
 import { isIOSDevice } from 'App/helpers/common';
 import { StyleSheet } from 'react-native';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { EColor } from 'App/enums/color';
 
 export const styles = StyleSheet.create({
   image: {
@@ -25,8 +26,19 @@ export const styles = StyleSheet.create({
   },
   polygonContainer: {
     position: 'absolute',
-    bottom: rh(5),
+    bottom: rh(7),
     elevation: -1,
     zIndex: -1,
+  },
+  unknownText: {
+    color: EColor.black,
+    fontSize: rh(16),
+    fontWeight: 'bold',
+    position: 'absolute',
+    textAlign: 'center',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
   },
 });

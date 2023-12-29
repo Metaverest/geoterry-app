@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   },
   popupContainer: {
     width: '100%',
-    backgroundColor: EColor.color_666666,
+    backgroundColor: EColor.color_171717,
     borderRadius: rw(8),
     paddingVertical: rh(32),
     flexDirection: 'column',

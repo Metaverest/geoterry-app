@@ -1,5 +1,5 @@
 import { View, Image } from 'react-native';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { styles } from './styles';
 import { AppBackgroundImage } from 'App/components/image';
@@ -23,6 +23,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 import { convertDateFormatOnlyDate } from 'App/utils/convert';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
+import { IUser } from 'App/types/user';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -36,10 +37,19 @@ const ProfileScreen = ({ route }: { route: any }) => {
   }, [profileID, user.id]);
 
   useEffect(() => {
-    if (profileID) {
+    if (profileID && !isCurrentUserProfile) {
       dispatch(sagaUserAction.getPublicProfileAsync(profileID, EPublicReadProfileBy.ID, navigation));
     }
-  }, [profileID, dispatch, navigation]);
+  }, [profileID, dispatch, navigation, isCurrentUserProfile]);
+
+  const [profileToDisplay, setProfileToDisplay] = useState<IUser | undefined>();
+  useEffect(() => {
+    if (isCurrentUserProfile) {
+      setProfileToDisplay(user);
+    } else {
+      setProfileToDisplay(profile);
+    }
+  }, [user, profile, isCurrentUserProfile]);
 
   const handleLogOut = useCallback(async () => {
     await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
@@ -51,18 +61,18 @@ const ProfileScreen = ({ route }: { route: any }) => {
       <Header title={t('Trang cá nhân')} />
       <View style={styles.content}>
         <View style={styles.row}>
-          {profile?.logoUrl ? (
-            <Image source={{ uri: profile.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
+          {profileToDisplay?.logoUrl ? (
+            <Image source={{ uri: profileToDisplay.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
           ) : (
             <MapMarkerUserDefault width={rw(72)} height={rh(72)} />
           )}
           <View style={styles.ml16}>
-            <CustomText style={styles.nameUser}>{profile?.displayName}</CustomText>
-            <CustomText style={styles.biography}>{profile?.bio || t('Bio')}</CustomText>
+            <CustomText style={styles.nameUser}>{profileToDisplay?.displayName}</CustomText>
+            <CustomText style={styles.biography}>{profileToDisplay?.bio || t('Bio')}</CustomText>
             <View style={styles.contentRewardPoints}>
               <RewardPointsIcon />
               <CustomText style={styles.textRewardPoints}>{t('Điểm tích luỹ')}:</CustomText>
-              <CustomText style={styles.points}>{profile?.rewardPoints}</CustomText>
+              <CustomText style={styles.points}>{profileToDisplay?.rewardPoints}</CustomText>
             </View>
           </View>
         </View>
@@ -72,13 +82,13 @@ const ProfileScreen = ({ route }: { route: any }) => {
 
             <CustomInputInformation
               title={t('Ngày tham gia')}
-              value={convertDateFormatOnlyDate(profile?.createdAt as string)}
+              value={convertDateFormatOnlyDate(profileToDisplay?.createdAt as string)}
               editable={false}
               underline
             />
             <CustomInputInformation
               title={t('Đã tìm được')}
-              value={`${profile?.totalCheckedinTerry}`}
+              value={`${profileToDisplay?.totalCheckedinTerry}`}
               editable={false}
             />
           </View>
@@ -89,14 +99,14 @@ const ProfileScreen = ({ route }: { route: any }) => {
               <CustomInputInformation
                 title={t('Số điện thoại')}
                 placeholder={t('Thêm số điện thoại')}
-                value={profile?.phoneNumber}
+                value={profileToDisplay?.phoneNumber}
                 editable={false}
                 underline
               />
               <CustomInputInformation
                 title={t('Email')}
                 placeholder={t('Thêm email')}
-                value={profile?.email}
+                value={profileToDisplay?.email}
                 editable={false}
               />
             </View>

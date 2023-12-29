@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, Image } from 'react-native';
 import React, { useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { EarthIcon } from 'App/components/image';
+import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
 import CloseIcon from 'App/media/CloseIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
@@ -17,11 +17,9 @@ import Share from 'react-native-share';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { reduxSelector } from 'App/redux/selectors';
 import { useSelector } from 'react-redux';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PREFIX_LINK } from 'App/constants/common';
 
 const QRScreen = () => {
-  const { top } = useSafeAreaInsets();
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -63,8 +61,7 @@ const QRScreen = () => {
   }, []);
 
   return (
-    <CustomSafeArea style={styles.container}>
-      <Image style={[styles.image, { marginTop: -(top + 10) }]} source={EarthIcon} />
+    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => {

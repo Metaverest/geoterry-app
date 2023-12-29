@@ -92,7 +92,7 @@ export const convertAddressObjectToString = (addressObject: Address) => {
 
   // Create an array of address parts, excluding null or undefined values
   const addressParts = [name, thoroughfare, locality, administrativeArea, postalCode, country].filter(
-    part => part !== null && part !== undefined,
+    part => part !== null && part !== undefined && part !== '(null)',
   );
 
   // Join the address parts into a formatted string

@@ -263,7 +263,7 @@ const MapScreen = () => {
           />
         ))}
         {Object.keys(playerLocationList)?.map(profileId => (
-          <PlayerMarker userLocation={playerLocationList[profileId]} />
+          <PlayerMarker key={profileId} userLocation={playerLocationList[profileId]} />
         ))}
       </MapView>
 
