@@ -58,7 +58,10 @@ const RuleScreen = () => {
 
   const RightButton = useCallback(() => {
     const isSelectedNewRole =
-      selectedRole === user.role && user.roleRequestingStatus === EUseRoleRequestStatus.ACCEPTED;
+      selectedRole !== user.role ||
+      (selectedRole === user.role &&
+        user.roleRequestingStatus &&
+        user.roleRequestingStatus !== EUseRoleRequestStatus.ACCEPTED);
     return (
       <TouchableOpacity disabled={isSelectedNewRole} onPress={hanldeSubmitRole}>
         <CustomText numberOfLines={1} style={[styles.saveText, isSelectedNewRole && styles.saveTextHighlight]}>
