@@ -74,6 +74,33 @@ const useUserLocation = () => {
     };
   }, [hasLocationPermission, updateUserLocation]);
 
+  useEffect(() => {
+    // Stop the function if the save battery mode is undefined, true or user location is not empty
+    if (isUndefined(isSaveBatterryMode) || isSaveBatterryMode || !isEmpty(userLocation)) {
+      return;
+    }
+    const getCurrentLocation = async () => {
+      if (hasLocationPermission) {
+        Geolocation.getCurrentPosition(
+          position =>
+            updateUserLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              altitude: position.coords.altitude as number,
+              speed: position.coords.speed as number,
+            }),
+          error => {
+            console.log(error);
+          },
+          {
+            enableHighAccuracy: true, // to use GPS location, if false it will be use WIFI based location
+          },
+        );
+      }
+    };
+    getCurrentLocation();
+  }, [hasLocationPermission, updateUserLocation, isSaveBatterryMode, userLocation]);
+
   return { userLocation, onUserLocationChange };
 };
 
