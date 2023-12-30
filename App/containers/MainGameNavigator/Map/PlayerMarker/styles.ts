@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   image: {
     width: rw(25),
     height: rw(25),
-    borderRadius: rh(10),
+    borderRadius: rh(8),
   },
   markerContainer: {
     padding: rh(12),

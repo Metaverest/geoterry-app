@@ -10,6 +10,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: rh(105),
+    marginVertical: rh(12),
+  },
   timeHistory: {
     color: EColor.color_CCCCCC,
     fontSize: rh(10),

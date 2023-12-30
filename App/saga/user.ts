@@ -385,6 +385,7 @@ function* getPublicTerries(
 ) {
   const navigation = action?.payload?.navigation;
   try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.GET_PUBLIC_TERRIES]: true }));
     if (last(navigation.getState().routes)?.name === EMainGameScreen.FILTER_SCREEN) {
       navigation.dispatch(CommonActions.goBack());
     }
@@ -402,8 +403,10 @@ function* getPublicTerries(
       profileId,
     );
     yield put(reduxAppAction.setPublicTerries(response));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.GET_PUBLIC_TERRIES]: false }));
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.GET_PUBLIC_TERRIES]: false }));
   }
 }
 
@@ -518,20 +521,20 @@ function* getTerryCheckins(
 ) {
   const navigation = action?.payload?.navigation;
   try {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.GET_TERRY_CHECKINS]: true }));
     const data = action.payload?.data?.filterData as IFilterTerryCheckins;
     const params = action.payload?.data?.filterParams as ITerryCheckinsParams;
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
     const response: IResponseTerryCheckins[] = yield call(requestHunterFilterTerryCheckins, data, params, profileId);
     yield put(reduxAppAction.setTerryCheckins(response));
-    navigation.dispatch(StackActions.pop());
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.GET_TERRY_CHECKINS]: false }));
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
-    navigation.dispatch(StackActions.pop());
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.GET_TERRY_CHECKINS]: false }));
   }
 }
 

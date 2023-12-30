@@ -13,8 +13,10 @@ import { convertDateFormatHistory } from 'App/utils/convert';
 import Rating from '../Rating';
 import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { FindTerryCheckinBy } from 'App/enums';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { EColor } from 'App/enums/color';
 
-const ItemHistory = (props: IResponseTerryCheckins) => {
+const ItemHistory = (props: IResponseTerryCheckins & { isLoading?: boolean }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -37,6 +39,17 @@ const ItemHistory = (props: IResponseTerryCheckins) => {
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, props));
       });
   };
+
+  if (props.isLoading) {
+    return (
+      <SkeletonPlaceholder
+        backgroundColor={EColor.color_00000050}
+        highlightColor={EColor.color_00000080}
+        borderRadius={4}>
+        <View style={styles.loadingContainer} />
+      </SkeletonPlaceholder>
+    );
+  }
 
   return (
     <TouchableOpacity style={styles.container} onPress={handlePressOnViewDetails}>
