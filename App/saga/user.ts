@@ -569,6 +569,7 @@ export function* watchCreateTerry() {
 function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryCheckinInputDto>) {
   const navigation = action.payload?.navigation;
   try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_CHECKIN_TERRY]: true }));
     const data: ITerryCheckinInputDto = yield select(reduxSelector.getAppTerryCheckinInput);
     const user: IUser = yield select(reduxSelector.getUser);
     const profileID = user.id;
@@ -577,11 +578,13 @@ function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, 
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();
     }
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_CHECKIN_TERRY]: false }));
   } catch (error) {
     if (action.payload?.options?.onError) {
       action.payload?.options?.onError();
     }
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_CHECKIN_TERRY]: false }));
   }
 }
 

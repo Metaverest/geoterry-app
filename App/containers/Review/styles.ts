@@ -32,6 +32,13 @@ export const styles = StyleSheet.create({
     borderColor: EColor.color_666666,
     paddingRight: rw(2),
   },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: rh(105),
+    marginVertical: rh(12),
+  },
   name: {
     fontSize: rh(14),
     fontWeight: '500',

@@ -6,8 +6,8 @@ import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import { useTranslation } from 'react-i18next';
-import { CommonActions, RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
-import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { CommonActions, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { requestPublicGetCheckinsOfTerry } from 'App/utils/axios';
 import { IResponseGetCheckinsOfTerry } from 'App/types/terry';
 import { convertDateRelativeToNow } from 'App/utils/convert';
@@ -16,18 +16,38 @@ import { reduxSelector } from 'App/redux/selectors';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
+import { EColor } from 'App/enums/color';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
+const NUMBER_OF_SKELETONS = 5;
 
 const Review = () => {
   const { t } = useTranslation();
   const user = useSelector(reduxSelector.getUser);
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.REVIEW_SCREEN>>();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [listReview, setListReview] = useState<IResponseGetCheckinsOfTerry[]>([]);
 
-  const ListEmptyComponent = useCallback(() => {
-    return <CustomText style={styles.textEmpty}>{t('Chưa có đánh giá nào!')}</CustomText>;
-  }, [t]);
+  const CardSkeleton = useCallback(() => {
+    return (
+      <SkeletonPlaceholder
+        backgroundColor={EColor.color_00000050}
+        highlightColor={EColor.color_00000080}
+        borderRadius={4}>
+        <View style={styles.loadingContainer} />
+      </SkeletonPlaceholder>
+    );
+  }, []);
+
+  const LoadingSkeleton = (
+    <View style={styles.containList}>
+      {Array.from({ length: NUMBER_OF_SKELETONS }).map((_, index) => (
+        <CardSkeleton key={`loading_${index}`} />
+      ))}
+    </View>
+  );
+
   const renderItem = useCallback(
     ({ item }: { item: IResponseGetCheckinsOfTerry }) => {
       return (
@@ -57,26 +77,21 @@ const Review = () => {
     [navigation, t, user.languageCode],
   );
   useEffect(() => {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    setIsLoading(true);
     requestPublicGetCheckinsOfTerry({ includeProfileData: true }, params.terryId)
       .then(res => {
         setListReview(res);
-        navigation.dispatch(StackActions.pop());
+        setIsLoading(false);
       })
       .catch(err => {
         console.log(err.message);
-        navigation.dispatch(StackActions.pop());
+        setIsLoading(false);
       });
   }, [navigation, params.terryId]);
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Đánh giá')} />
-      <FlatList
-        data={listReview}
-        renderItem={renderItem}
-        style={styles.containList}
-        ListEmptyComponent={ListEmptyComponent}
-      />
+      {isLoading ? LoadingSkeleton : <FlatList data={listReview} renderItem={renderItem} style={styles.containList} />}
     </CustomSafeArea>
   );
 };
