@@ -12,6 +12,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { IResponseTerryCheckins } from 'App/types/terry';
 import { ESagaUserAction } from 'App/enums/redux';
+import CustomText from 'App/components/CustomText';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -27,7 +28,12 @@ const HistoryScreen = () => {
   const ItemSeparatorComponent = useCallback(() => {
     return <View style={styles.separator} />;
   }, []);
-  const loadingSkeleton = (
+
+  const ListEmptyComponent = useCallback(() => {
+    return <CustomText style={styles.textEmpty}>{t('Bạn chưa tìm thấy kho báu nào cả!')}</CustomText>;
+  }, [t]);
+
+  const LoadingSkeleton = (
     <View style={styles.containHistory}>
       {Array.from({ length: NUMBER_OF_SKELETONS }).map((_, index) => (
         <ItemHistory key={`loading_${index}`} isLoading />
@@ -50,13 +56,14 @@ const HistoryScreen = () => {
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Lịch sử')} />
       {loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] ? (
-        loadingSkeleton
+        LoadingSkeleton
       ) : (
         <FlatList
           data={terryCheckins}
           renderItem={renderItem}
           style={styles.containHistory}
           ItemSeparatorComponent={ItemSeparatorComponent}
+          ListEmptyComponent={ListEmptyComponent}
         />
       )}
     </CustomSafeArea>

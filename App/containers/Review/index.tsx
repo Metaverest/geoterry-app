@@ -29,6 +29,10 @@ const Review = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [listReview, setListReview] = useState<IResponseGetCheckinsOfTerry[]>([]);
 
+  const ListEmptyComponent = useCallback(() => {
+    return <CustomText style={styles.textEmpty}>{t('Chưa có đánh giá nào!')}</CustomText>;
+  }, [t]);
+
   const CardSkeleton = useCallback(() => {
     return (
       <SkeletonPlaceholder
@@ -95,7 +99,16 @@ const Review = () => {
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Đánh giá')} />
-      {isLoading ? LoadingSkeleton : <FlatList data={listReview} renderItem={renderItem} style={styles.containList} />}
+      {isLoading ? (
+        LoadingSkeleton
+      ) : (
+        <FlatList
+          data={listReview}
+          renderItem={renderItem}
+          style={styles.containList}
+          ListEmptyComponent={ListEmptyComponent}
+        />
+      )}
     </CustomSafeArea>
   );
 };
