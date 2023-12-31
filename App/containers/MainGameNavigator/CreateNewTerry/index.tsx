@@ -413,7 +413,7 @@ const CreateNewTerryScreen = () => {
                       {values.photoUrls?.map((url, index) => {
                         return (
                           <View key={index} style={styles.photoItemContainer}>
-                            <Image resizeMode="contain" source={{ uri: url }} style={styles.image} />
+                            <Image resizeMode="cover" source={{ uri: url }} style={styles.image} />
                             <TouchableOpacity
                               style={styles.dismissCircleIconButton}
                               onPress={() => removeImage(setFieldValue, values.photoUrls, url)}>

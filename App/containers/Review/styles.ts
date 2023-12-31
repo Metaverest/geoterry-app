@@ -71,5 +71,10 @@ export const styles = StyleSheet.create({
   rating: {
     marginTop: rh(8),
   },
-  mr8: { marginRight: rw(8) },
+  containerItemImageStyle: {
+    marginRight: rw(8),
+    borderColor: EColor.color_333333,
+    borderWidth: 1,
+    borderRadius: rw(5),
+  },
 });

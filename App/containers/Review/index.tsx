@@ -69,7 +69,11 @@ const Review = () => {
             </CustomText>
             {item.rate && <Rating rate={item.rate} style={styles.rating} />}
             <CustomText style={styles.desc}>{item.reviewText}</CustomText>
-            <MultipleImagesOnLine images={item.photoUrls} numColumns={5} containerItemImageStyle={styles.mr8} />
+            <MultipleImagesOnLine
+              images={item.photoUrls}
+              numColumns={5}
+              containerItemImageStyle={styles.containerItemImageStyle}
+            />
           </View>
         </View>
       );

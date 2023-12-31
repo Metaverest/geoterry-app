@@ -57,6 +57,7 @@ export const styles = StyleSheet.create({
     borderRadius: rw(5),
     borderColor: EColor.color_333333,
     backgroundColor: EColor.color_00000080,
+    marginRight: rw(10),
   },
   btn: {
     marginTop: rh(32),
