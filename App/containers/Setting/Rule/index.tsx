@@ -63,7 +63,7 @@ const RuleScreen = () => {
         user.roleRequestingStatus &&
         user.roleRequestingStatus !== EUseRoleRequestStatus.ACCEPTED);
     return (
-      <TouchableOpacity disabled={isSelectedNewRole} onPress={hanldeSubmitRole}>
+      <TouchableOpacity disabled={!isSelectedNewRole} onPress={hanldeSubmitRole}>
         <CustomText numberOfLines={1} style={[styles.saveText, isSelectedNewRole && styles.saveTextHighlight]}>
           {t('Lưu')}
         </CustomText>

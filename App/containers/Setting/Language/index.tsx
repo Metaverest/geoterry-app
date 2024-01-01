@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { i18nChangeLanguage } from 'App/utils/i18n/localize';
 
 const LanguageScreen = () => {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ const LanguageScreen = () => {
         onSuccess: () => navigation.dispatch(CommonActions.goBack()),
       }),
     );
+    i18nChangeLanguage(languageCode);
   }, [dispatch, languageCode, navigation]);
   const RightButton = useCallback(() => {
     const isSelectedNewLang = languageCode !== userLanguageCode;

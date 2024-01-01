@@ -18,7 +18,7 @@ import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { EColor } from 'App/enums/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { isUndefined } from 'lodash';
+import { isNil } from 'lodash';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -28,7 +28,7 @@ const Review = () => {
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.REVIEW_SCREEN>>();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const [isLoading, setIsLoading] = useState(false);
-  const [listReview, setListReview] = useState<IResponseGetCheckinsOfTerry[]>([]);
+  const [listReview, setListReview] = useState<IResponseGetCheckinsOfTerry[] | null>(null);
 
   const ListEmptyComponent = useCallback(() => {
     return <CustomText style={styles.textEmpty}>{t('Chưa có đánh giá nào!')}</CustomText>;
@@ -99,7 +99,7 @@ const Review = () => {
       });
   }, [params.terryId]);
   useEffect(() => {
-    if (!isUndefined(listReview)) {
+    if (!isNil(listReview)) {
       return;
     }
     getCheckinOfTerry();

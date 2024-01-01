@@ -25,12 +25,6 @@ const reduxAppAction = {
       payload: { registerData: data },
     };
   },
-  setIsLoading: (isLoading: boolean) => {
-    return {
-      type: EReduxAppAction.SET_IS_LOADING,
-      payload: { isLoading },
-    };
-  },
   mergeError: (error: IError) => {
     return {
       type: EReduxAppAction.MERGE_ERROR,

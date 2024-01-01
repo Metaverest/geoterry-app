@@ -42,8 +42,6 @@ export interface IReduxRootState {
 export interface IAppState {
   language?: ELanguageCode;
   registerData?: Partial<ICreateAccountDto>;
-  // Indicate that whether the app is loading or not
-  isLoading?: boolean;
   error?: Partial<IError>[];
   // In case of recover password, verifyAccountRecoveryOTP will return a code that used to change password.
   recoveryCode?: string;
