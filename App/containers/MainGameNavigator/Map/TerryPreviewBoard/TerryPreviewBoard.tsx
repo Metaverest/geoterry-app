@@ -55,10 +55,10 @@ const TerryPreviewBoard = ({
     navigation.dispatch(
       CommonActions.navigate({
         name: EMainGameScreen.TERRY_DETAIL_SCREEN,
-        params: { terry: resTerry },
+        params: { terry: resTerry, userLocation },
       }),
     );
-  }, [navigation, terry.id, user.id, userLocation?.latitude, userLocation?.longitude]);
+  }, [navigation, terry.id, user.id, userLocation]);
   return (
     <TouchableOpacity style={styles.container} onPress={openTerryDetail}>
       <View style={styles.subContainer}>

@@ -1,7 +1,7 @@
 import CustomButton from 'App/components/Button';
 import { EButtonType, FindTerryCheckinBy } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { ITerryResponseDto } from 'App/types/terry';
+import { ITerryResponseDto, Location } from 'App/types/terry';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, ImageBackground, TouchableOpacity, View } from 'react-native';
@@ -45,6 +45,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const { userLocation } = useUserLocation();
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
+  }, [route]);
+
+  const initUserLocation: Location = useMemo(() => {
+    return route?.params?.userLocation;
   }, [route]);
 
   const handleViewSuggestion = () => {
@@ -131,7 +135,9 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const image = (index: number) => ({ image: terry.photoUrls![index % terry.photoUrls!.length] });
   const items = Array.from(Array(terry.photoUrls?.length)).map((_, index) => image(index));
 
-  const [nearToTerry, setNearToTerry] = useState(false);
+  const [nearToTerry, setNearToTerry] = useState(
+    (terry.distance || 0) <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY,
+  );
   useEffect(() => {
     if (userLocation) {
       const deltaDistance = calculateDistance(terry.location, userLocation);
@@ -256,7 +262,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                     dispatch(
                       reduxAppAction.setCheckinTerryData({
                         terryId: terry?.id,
-                        location: { latitude: userLocation!.latitude, longitude: userLocation!.longitude },
+                        location: {
+                          latitude: userLocation?.latitude || initUserLocation.latitude,
+                          longitude: userLocation?.longitude || initUserLocation.longitude,
+                        },
                       }),
                     );
                     navigation.dispatch(
@@ -275,7 +284,12 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               <View style={styles.buttonContainer}>
                 <CustomButton
                   onPress={() => {
-                    navigation.dispatch(StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, { terry }));
+                    navigation.dispatch(
+                      StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, {
+                        terry,
+                        userLocation: userLocation || initUserLocation,
+                      }),
+                    );
                   }}
                   title={t('Chỉ đường')}
                   buttonType={EButtonType.OUTLINE}

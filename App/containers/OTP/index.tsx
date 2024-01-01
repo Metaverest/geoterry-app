@@ -59,7 +59,7 @@ const OTPScreen = ({ route }: { route: any }) => {
   const clearError = useClearError();
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header title="Xác thực OTP" />
+      <Header title={t('Xác thực OTP')} />
       <CustomText style={styles.otpNotificationText}>{t('Mã OTP đã được gửi về số điện thoại của bạn')}</CustomText>
       <View style={styles.otpContainer}>
         <OTPTextInput
@@ -74,11 +74,11 @@ const OTPScreen = ({ route }: { route: any }) => {
       </View>
       {isEmpty(errorText) && seconds === 0 && (
         <TouchableOpacity style={styles.otpResendButtonContainer}>
-          <CustomText style={styles.otpResendButtonText}>Gửi lại mã OTP</CustomText>
+          <CustomText style={styles.otpResendButtonText}>{t('Gửi lại mã OTP')}</CustomText>
         </TouchableOpacity>
       )}
       {isEmpty(errorText) && seconds !== 0 && (
-        <CustomText style={styles.otpResendAfterButtonText}>{`Gửi lại sau ${seconds}s`}</CustomText>
+        <CustomText style={styles.otpResendAfterButtonText}>{`${t('Gửi lại sau')} ${seconds}s`}</CustomText>
       )}
       {!isEmpty(errorText) && <CustomText style={styles.otpErrorText}>{errorText}</CustomText>}
       <View style={styles.buttonContainer}>

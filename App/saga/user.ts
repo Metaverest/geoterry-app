@@ -566,6 +566,17 @@ function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, 
     const profileID = user.id;
     yield call(requestHunterCheckinTerry, data, profileID);
 
+    // update current terries state
+    if (data.isFound) {
+      const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+      const updatedTerries = terries.map(terry => {
+        if (terry?.id === data?.terryId) {
+          return { ...terry, checkedIn: true };
+        }
+        return terry;
+      });
+      yield put(reduxAppAction.setPublicTerries(updatedTerries));
+    }
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();
     }
