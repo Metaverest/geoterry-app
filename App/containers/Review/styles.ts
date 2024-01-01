@@ -32,6 +32,13 @@ export const styles = StyleSheet.create({
     borderColor: EColor.color_666666,
     paddingRight: rw(2),
   },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: rh(105),
+    marginVertical: rh(12),
+  },
   name: {
     fontSize: rh(14),
     fontWeight: '500',
@@ -64,5 +71,10 @@ export const styles = StyleSheet.create({
   rating: {
     marginTop: rh(8),
   },
-  mr8: { marginRight: rw(8) },
+  containerItemImageStyle: {
+    marginRight: rw(8),
+    borderColor: EColor.color_333333,
+    borderWidth: 1,
+    borderRadius: rw(5),
+  },
 });

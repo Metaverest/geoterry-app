@@ -90,7 +90,7 @@ export default function DetailHistory() {
         images={params.photoUrls}
         containerImageStyle={styles.containerImage}
         containerItemImageStyle={styles.image}
-        numColumns={6}
+        numColumns={5}
         showIconMaximize
       />
       <CustomButton

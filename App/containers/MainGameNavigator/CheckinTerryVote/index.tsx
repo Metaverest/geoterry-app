@@ -19,6 +19,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { range } from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
+import { ESagaAppAction } from 'App/enums/redux';
 
 const CheckinTerryVoteScreen = () => {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ const CheckinTerryVoteScreen = () => {
     [dispatch],
   );
   const rateValue = useSelector(reduxSelector.getAppTerryCheckinInputRate);
+  const loadingStates = useSelector(reduxSelector.getLoadingStates);
 
   const onSubmit = useCallback(() => {
     dispatch(
@@ -54,7 +56,7 @@ const CheckinTerryVoteScreen = () => {
           {range(1, 6).map(value => {
             return (
               <TouchableOpacity onPress={() => onChangeVote(value)} key={value}>
-                {value === rateValue ? <ActiveStartIcon /> : <StartIcon />}
+                {value <= rateValue! ? <ActiveStartIcon /> : <StartIcon />}
               </TouchableOpacity>
             );
           })}
@@ -64,7 +66,7 @@ const CheckinTerryVoteScreen = () => {
             onPress={onSubmit}
             linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
             buttonType={EButtonType.SOLID}
-            title={t('Xong')}
+            title={loadingStates?.[ESagaAppAction.HUNTER_CHECKIN_TERRY] ? t('Đang gửi') : t('Xong')}
           />
         </View>
       </View>

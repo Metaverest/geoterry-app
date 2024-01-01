@@ -11,6 +11,7 @@ import {
   ITerryResponseDto,
 } from './terry';
 import { IRealtimeLocation } from '.';
+import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -57,6 +58,9 @@ export interface IAppState {
   // This is used to display the public profile of other users when user scan the QR code
   otherUserProfileToDisplay?: IUser;
   nearbyPlayers?: IPlayerNearbyResDto[];
+  loadingStates?: {
+    [key in ESagaUserAction | ESagaAppAction]?: boolean;
+  };
 }
 
 export interface IRootState {

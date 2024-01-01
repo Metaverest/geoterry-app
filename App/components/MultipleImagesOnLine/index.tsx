@@ -37,7 +37,7 @@ const MultipleImagesOnLine = (props: Props) => {
                 setIndexImage(index);
                 setIsVisible(true);
               }}>
-              <Image source={{ uri: item }} style={styles.image} resizeMode="contain" />
+              <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
               {props.showIconMaximize && <ArrowMaximize style={styles.iconArrowMaximize} />}
             </TouchableOpacity>
           ) : index === props.numColumns - 1 ? (
@@ -47,7 +47,7 @@ const MultipleImagesOnLine = (props: Props) => {
                 setIndexImage(index);
                 setIsVisible(true);
               }}>
-              <Image source={{ uri: item }} style={styles.image} resizeMode="contain" />
+              <Image source={{ uri: item }} style={styles.image} resizeMode="cover" />
               {props.images.length > props.numColumns && (
                 <View style={styles.lastImage}>
                   <CustomText style={styles.textLastImage}>+{props.images.length - (props.numColumns - 1)}</CustomText>
@@ -87,7 +87,6 @@ const MultipleImagesOnLine = (props: Props) => {
           data={props.images}
           renderItem={props.canRemoveImage ? renderItemWithRemoveButton : renderItem}
           scrollEnabled={false}
-          columnWrapperStyle={props.images.length > 5 ? styles.columnWrapperStyle : null}
         />
       ) : (
         <ScrollView horizontal>

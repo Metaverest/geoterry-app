@@ -30,6 +30,7 @@ const defaultAppState: IAppState = {
   coordinatesPath: {},
   otherUserProfileToDisplay: undefined,
   nearbyPlayers: [],
+  loadingStates: {},
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -128,6 +129,14 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         nearbyPlayers: action.payload?.nearbyPlayers,
+      };
+    case EReduxAppAction.SET_LOADING_STATES:
+      return {
+        ...state,
+        loadingStates: {
+          ...state.loadingStates,
+          ...action.payload?.loadingStates,
+        },
       };
     default:
       return state;

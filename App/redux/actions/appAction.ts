@@ -1,6 +1,6 @@
 import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
-import { EReduxAppAction } from 'App/enums/redux';
+import { EReduxAppAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { IRealtimeLocation } from 'App/types';
 import { IError } from 'App/types/error';
 
@@ -109,6 +109,15 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_USER_NEARBY_PLAYERS,
       payload: { nearbyPlayers },
+    };
+  },
+
+  setLoadingStates: (loadingStates: {
+    [key in ESagaUserAction | ESagaAppAction]?: boolean;
+  }) => {
+    return {
+      type: EReduxAppAction.SET_LOADING_STATES,
+      payload: { loadingStates },
     };
   },
 };

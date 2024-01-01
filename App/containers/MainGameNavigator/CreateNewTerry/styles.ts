@@ -53,7 +53,6 @@ export const styles = StyleSheet.create({
     borderColor: EColor.color_333333,
     backgroundColor: EColor.color_00000080,
     marginHorizontal: rw(4),
-    width: rw(48),
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -11,7 +11,7 @@ import {
 } from 'App/constants/common';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import useCurrentRegion from 'App/hooks/useCurrentRegion';
 import useIsBuilderNamespace from 'App/hooks/useIsBuilderNamespace';
 import useMap from 'App/hooks/useMap';
@@ -32,7 +32,7 @@ import { ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import MapView, { LatLng } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,16 +42,17 @@ import TreasureMarker from './TreasureMarker';
 import { styles } from './styles';
 import useUserLocation from 'App/hooks/useUserLocation';
 import usePrevious from 'App/hooks/usePrevious';
-import { navigationRef } from 'App/navigation';
 import useIsSaveBatterryMode from 'App/hooks/useIsSaveBatterryMode';
 import UserMarker from './UserMarker';
 import useNearbyPlayers from 'App/hooks/useNearbyPlayers';
 import PlayerMarker from './PlayerMarker';
+import { ESagaAppAction } from 'App/enums/redux';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
+  const loadingStates = useSelector(reduxSelector.getLoadingStates);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const user = useSelector(reduxSelector.getUser);
@@ -68,6 +69,7 @@ const MapScreen = () => {
   const isSaveBatterryMode = useIsSaveBatterryMode();
   const isBuilderNamespace = useIsBuilderNamespace();
   const insets = useSafeAreaInsets();
+  const [loadedUserLocation, setLoadedUserLocation] = useState(false);
   useRequestNotificationPermission();
 
   const [canFetchTerries, setCanFetchTerries] = useState(true);
@@ -188,18 +190,12 @@ const MapScreen = () => {
     }
   }, [publicTerryFilter]);
 
-  // Once the screen did mount, we need to display the loading modal
-  // and wait for the user location to be available.
-  useEffect(() => {
-    navigationRef.dispatch(CommonActions.navigate(ENavigationScreen.LOADING_MODAL));
-  }, []);
-
   // Once the user location is available and is unavailable before, we need to fetch the terries
   // around the user location, center the map to the user location
-  // and hide the loading modal.
+  // and set loadedUserLocation = true, then remove the loading indicator
   useEffect(() => {
     if (isEmpty(prevUserLocation) && !isEmpty(userLocation)) {
-      navigation.dispatch(StackActions.pop());
+      setLoadedUserLocation(true);
       fetchTerries({ latitude: userLocation.latitude, longitude: userLocation.longitude });
       centerToCurrentUserLocation();
     }
@@ -371,6 +367,10 @@ const MapScreen = () => {
           buttonType={EButtonType.SOLID}
           renderIcon={<HistoryIcon />}
         />
+
+        {(loadingStates?.[ESagaAppAction.GET_PUBLIC_TERRIES] || !loadedUserLocation) && (
+          <ActivityIndicator style={styles.buttonRHNContainer} />
+        )}
       </View>
     </CustomSafeArea>
   );
