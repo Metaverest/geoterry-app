@@ -154,10 +154,7 @@ function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAcco
       isRecoverPassword: options?.isRecoverPassword as boolean,
       namespace: data?.namespace as ENamespace,
     });
-    const navigator = navigation.getParent();
-    if (navigator) {
-      navigator.dispatch(StackActions.pop());
-    }
+    navigation.dispatch(StackActions.pop());
     navigation.dispatch(
       CommonActions.navigate({
         name: ENavigationScreen.OTP_SCREEN,
@@ -167,10 +164,7 @@ function* getOTP(action: IReduxActionWithNavigation<ESagaUserAction, ICreateAcco
   } catch (error) {
     yield call(handleError, error?.response?.data as IError, navigation);
     yield put(reduxAppAction.mergeError(error?.response?.data as IError));
-    const navigator = navigation.getParent();
-    if (navigator) {
-      navigator.dispatch(StackActions.pop());
-    }
+    navigation.dispatch(StackActions.pop());
   }
 }
 
@@ -201,10 +195,7 @@ function* createProfile(action: IReduxActionWithNavigation<ESagaUserAction>) {
     }, 5000);
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
-    const navigator = navigation.getParent();
-    if (navigator) {
-      navigator.dispatch(StackActions.pop());
-    }
+    navigation.dispatch(StackActions.pop());
   }
 }
 

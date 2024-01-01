@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
+import { i18nChangeLanguage } from 'App/utils/i18n/localize';
 
 const OnboardingScreen = () => {
   const currentLanguageCode = useSelector(reduxSelector.getAppLanguage);
@@ -32,6 +33,7 @@ const OnboardingScreen = () => {
   const setLanguage = useCallback(
     (language: ELanguageCode) => {
       dispatch(reduxAppAction.setLanguage(language));
+      i18nChangeLanguage(language);
     },
     [dispatch],
   );

@@ -7,7 +7,6 @@ import { IAppState, IReduxAction } from 'App/types/redux';
 const defaultAppState: IAppState = {
   language: ELanguageCode.VN,
   registerData: {},
-  isLoading: false,
   error: [],
   recoveryCode: '',
   mapType: EMapType.STANDARD,
@@ -46,11 +45,6 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...state.registerData,
           ...action.payload?.registerData,
         },
-      };
-    case EReduxAppAction.SET_IS_LOADING:
-      return {
-        ...state,
-        isLoading: action.payload?.isLoading,
       };
     case EReduxAppAction.MERGE_ERROR:
       return {

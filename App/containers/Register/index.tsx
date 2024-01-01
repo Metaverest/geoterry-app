@@ -133,7 +133,7 @@ const RegisterScreen = () => {
         </Formik>
       </View>
       <View style={styles.footerContainer}>
-        <CustomText style={styles.hasAccountText}>Bạn đã có tài khoản?</CustomText>
+        <CustomText style={styles.hasAccountText}>{t('Đã có tài khoản?')}</CustomText>
         <CustomText style={styles.loginText} onPress={goToLogin}>
           {t('Đăng nhập.')}
         </CustomText>
