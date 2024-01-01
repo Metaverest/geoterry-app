@@ -99,7 +99,7 @@ const Review = () => {
       });
   }, [params.terryId]);
   useEffect(() => {
-    if (isUndefined(listReview)) {
+    if (!isUndefined(listReview)) {
       return;
     }
     getCheckinOfTerry();
