@@ -18,7 +18,7 @@ import { reduxAppAction } from 'App/redux/actions/appAction';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
-import { ITerryResponseDto } from 'App/types/terry';
+import { ITerryResponseDto, Location } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
 import { first, isEmpty, isEqual, last } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -47,6 +47,10 @@ const HuntingMapScreen = () => {
     return allCoordinatesPath[terry?.id as string] || [];
   }, [allCoordinatesPath, terry?.id]);
 
+  const initUserLocation: Location = useMemo(() => {
+    return params.userLocation;
+  }, [params]);
+
   const openGoogleMaps = useCallback(() => {
     const url = createGoogleMapsUrl(terry?.location.latitude || 0, terry?.location.longitude || 0);
 
@@ -60,15 +64,21 @@ const HuntingMapScreen = () => {
   }, [terry?.location]);
 
   const centerMapToCurrentLocation = useCallback(() => {
-    if (mapViewRef.current && currentLocation && !currentLocation.isDefault) {
+    if (mapViewRef.current) {
       mapViewRef.current.animateToRegion({
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-        latitudeDelta: 0.02,
-        longitudeDelta: 0.02,
+        latitude: !currentLocation.isDefault ? currentLocation.latitude : initUserLocation.latitude,
+        longitude: !currentLocation.isDefault ? currentLocation.longitude : initUserLocation.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
       });
     }
-  }, [currentLocation]);
+  }, [
+    currentLocation.isDefault,
+    currentLocation.latitude,
+    currentLocation.longitude,
+    initUserLocation.latitude,
+    initUserLocation.longitude,
+  ]);
 
   const RightButton = useCallback(() => {
     return (
@@ -118,6 +128,7 @@ const HuntingMapScreen = () => {
   useEffect(() => {
     setTerry(params.terry);
   }, [params]);
+
   useEffect(() => {
     if (
       isEmpty(initialUserLocation) ||
@@ -217,16 +228,17 @@ const HuntingMapScreen = () => {
           strokeColor={EColor.color_00FF00} // fallback for when `strokeColors` is not supported by the map-provider
           strokeWidth={3}
         />
-        {!currentLocation.isDefault && (
-          <Polyline
-            coordinates={[
-              { latitude: currentLocation.latitude, longitude: currentLocation.longitude },
-              { latitude: terry?.location.latitude as number, longitude: terry?.location.longitude as number },
-            ]}
-            strokeColor={EColor.color_127FFE} // fallback for when `strokeColors` is not supported by the map-provider
-            strokeWidth={3}
-          />
-        )}
+        <Polyline
+          coordinates={[
+            {
+              latitude: !currentLocation.isDefault ? currentLocation.latitude : initUserLocation.latitude,
+              longitude: !currentLocation.isDefault ? currentLocation.longitude : initUserLocation.longitude,
+            },
+            { latitude: terry?.location.latitude as number, longitude: terry?.location.longitude as number },
+          ]}
+          strokeColor={EColor.color_127FFE} // fallback for when `strokeColors` is not supported by the map-provider
+          strokeWidth={3}
+        />
       </MapView>
 
       <View style={styles.footerButtonContainer}>

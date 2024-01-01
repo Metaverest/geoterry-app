@@ -1,7 +1,7 @@
 import { ParamListBase } from '@react-navigation/native';
 import { IPopupModalProps } from 'App/containers/Modal/PopupModal';
 import { IRealtimeLocation } from 'App/types';
-import { IResponseTerryCheckins, ITerryResponseDto } from 'App/types/terry';
+import { IResponseTerryCheckins, ITerryResponseDto, Location } from 'App/types/terry';
 
 export enum ENavigationScreen {
   SPLASH_SCREEN = 'SPLASH_SCREEN',
@@ -78,6 +78,7 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   };
   [EMainGameScreen.HUNTING_MAP_SCREEN]: {
     terry: ITerryResponseDto;
+    userLocation: Location;
   };
   [ENavigationScreen.LOADING_MODAL]: undefined;
   [ENavigationScreen.POPUP_SCREEN]: IPopupModalProps;
