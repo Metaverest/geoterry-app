@@ -18,6 +18,7 @@ import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { EColor } from 'App/enums/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { isUndefined } from 'lodash';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -84,7 +85,8 @@ const Review = () => {
     },
     [navigation, t, user.languageCode],
   );
-  useEffect(() => {
+
+  const getCheckinOfTerry = useCallback(() => {
     setIsLoading(true);
     requestPublicGetCheckinsOfTerry({ includeProfileData: true }, params.terryId)
       .then(res => {
@@ -95,7 +97,14 @@ const Review = () => {
         console.log(err.message);
         setIsLoading(false);
       });
-  }, [navigation, params.terryId]);
+  }, [params.terryId]);
+  useEffect(() => {
+    if (isUndefined(listReview)) {
+      return;
+    }
+    getCheckinOfTerry();
+  }, [getCheckinOfTerry, listReview, navigation, params.terryId]);
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Đánh giá')} />
