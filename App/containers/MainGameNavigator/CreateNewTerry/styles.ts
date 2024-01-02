@@ -55,10 +55,12 @@ export const styles = StyleSheet.create({
     marginHorizontal: rw(4),
     justifyContent: 'center',
     alignItems: 'center',
+    height: rw(50),
+    width: rw(50),
   },
   image: {
-    height: rh(48),
-    width: rh(48),
+    height: rh(50),
+    width: rh(50),
     borderRadius: rw(4),
   },
   dismissCircleIconButton: {
