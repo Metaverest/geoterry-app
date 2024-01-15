@@ -26,7 +26,6 @@ import CheckinTerryVoteScreen from './CheckinTerryVote';
 import HuntingMapScreen from './HuntingMap';
 import Chat from '../Chat';
 import ChatView from '../Chat/ChatView';
-import NewMessagesListener from '../Chat/ChatView/EventListener/NewMessagesListener';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -39,116 +38,105 @@ const MainGameNavigator = () => {
     }
   }, [dispatch, publicFilterCategories]);
   return (
-    <>
-      <Stack.Navigator initialRouteName={EMainGameScreen.MAP_SCREEN}>
-        <Stack.Screen options={{ headerShown: false }} name={EMainGameScreen.MAP_SCREEN} component={MapScreen} />
-        <Stack.Screen
-          options={{
-            headerShown: false,
-            presentation: 'transparentModal',
-            transitionSpec: {
-              close: {
-                animation: 'timing',
-                config: {
-                  duration: 200,
-                },
-              },
-              open: {
-                animation: 'timing',
-                config: {
-                  duration: 200,
-                },
+    <Stack.Navigator initialRouteName={EMainGameScreen.MAP_SCREEN}>
+      <Stack.Screen options={{ headerShown: false }} name={EMainGameScreen.MAP_SCREEN} component={MapScreen} />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          transitionSpec: {
+            close: {
+              animation: 'timing',
+              config: {
+                duration: 200,
               },
             },
-          }}
-          name={EMainGameScreen.MAP_TYPE_SCREEN}
-          component={MapTypeScreen}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.FILTER_SCREEN}
-          component={FilterScreen}
-          options={{
-            headerShown: false,
-            presentation: 'transparentModal',
-            cardStyle: {
-              backgroundColor: EColor.color_00000080,
+            open: {
+              animation: 'timing',
+              config: {
+                duration: 200,
+              },
             },
-          }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.SETTING_NAVIGATOR}
-          component={SettingNavigator}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.HUNTING_MAP_SCREEN}
-          component={HuntingMapScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.TERRY_DETAIL_SCREEN}
-          component={TerryDetailScreen}
-          options={{
-            headerShown: false,
-            cardStyle: {
-              backgroundColor: EColor.color_00000080,
-            },
-          }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.PROFILE_SCREEN}
-          component={ProfileScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.EDIT_PROFILE_SCREEN}
-          component={EditProfileScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name={EMainGameScreen.QR_SCREEN} component={QRScreen} options={{ headerShown: false }} />
-        <Stack.Screen
-          name={ENavigationScreen.LOADING_MODAL}
-          component={LoadingModal}
-          options={{ headerShown: false, presentation: 'transparentModal' }}
-        />
-        <Stack.Screen
-          name={ENavigationScreen.POPUP_SCREEN}
-          component={PopupModal}
-          options={{ headerShown: false, presentation: 'transparentModal' }}
-        />
-        <Stack.Screen name={EMainGameScreen.HISTORY} component={HistoryScreen} options={{ headerShown: false }} />
-        <Stack.Screen
-          name={EMainGameScreen.DETAIL_HISTORY}
-          component={DetailHistory}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.CREATE_NEW_TERRY_SCREEN}
-          component={CreateNewTerryScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name={EMainGameScreen.REVIEW_SCREEN} component={Review} options={{ headerShown: false }} />
-        <Stack.Screen
-          name={EMainGameScreen.CHECKIN_TERRY_SCREEN}
-          component={CheckinTerryScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={EMainGameScreen.CHECKIN_TERRY_VOTE_SCREEN}
-          component={CheckinTerryVoteScreen}
-          options={{
-            headerShown: false,
-            presentation: 'transparentModal',
-            cardStyle: {
-              backgroundColor: EColor.color_00000080,
-            },
-          }}
-        />
-        <Stack.Screen name={EMainGameScreen.CHAT_SCREEN} component={Chat} options={{ headerShown: false }} />
-        <Stack.Screen name={EMainGameScreen.CHAT_VIEW_SCREEN} component={ChatView} options={{ headerShown: false }} />
-      </Stack.Navigator>
-      <NewMessagesListener />
-    </>
+          },
+        }}
+        name={EMainGameScreen.MAP_TYPE_SCREEN}
+        component={MapTypeScreen}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.FILTER_SCREEN}
+        component={FilterScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardStyle: {
+            backgroundColor: EColor.color_00000080,
+          },
+        }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.SETTING_NAVIGATOR}
+        component={SettingNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.HUNTING_MAP_SCREEN}
+        component={HuntingMapScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.TERRY_DETAIL_SCREEN}
+        component={TerryDetailScreen}
+        options={{
+          headerShown: false,
+          cardStyle: {
+            backgroundColor: EColor.color_00000080,
+          },
+        }}
+      />
+      <Stack.Screen name={EMainGameScreen.PROFILE_SCREEN} component={ProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.EDIT_PROFILE_SCREEN}
+        component={EditProfileScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name={EMainGameScreen.QR_SCREEN} component={QRScreen} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={ENavigationScreen.LOADING_MODAL}
+        component={LoadingModal}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
+      <Stack.Screen
+        name={ENavigationScreen.POPUP_SCREEN}
+        component={PopupModal}
+        options={{ headerShown: false, presentation: 'transparentModal' }}
+      />
+      <Stack.Screen name={EMainGameScreen.HISTORY} component={HistoryScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={EMainGameScreen.DETAIL_HISTORY} component={DetailHistory} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.CREATE_NEW_TERRY_SCREEN}
+        component={CreateNewTerryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name={EMainGameScreen.REVIEW_SCREEN} component={Review} options={{ headerShown: false }} />
+      <Stack.Screen
+        name={EMainGameScreen.CHECKIN_TERRY_SCREEN}
+        component={CheckinTerryScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name={EMainGameScreen.CHECKIN_TERRY_VOTE_SCREEN}
+        component={CheckinTerryVoteScreen}
+        options={{
+          headerShown: false,
+          presentation: 'transparentModal',
+          cardStyle: {
+            backgroundColor: EColor.color_00000080,
+          },
+        }}
+      />
+      <Stack.Screen name={EMainGameScreen.CHAT_SCREEN} component={Chat} options={{ headerShown: false }} />
+      <Stack.Screen name={EMainGameScreen.CHAT_VIEW_SCREEN} component={ChatView} options={{ headerShown: false }} />
+    </Stack.Navigator>
   );
 };
 

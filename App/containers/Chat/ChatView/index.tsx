@@ -33,11 +33,10 @@ const ChatView = () => {
   const userFriend = useMemo(() => conversation?.participants.find(e => e.profileId !== user.id), [conversation, user]);
   const messages = useSelector(reduxSelector.getMessagesFromConversationId(conversationId));
   useEffect(() => {
-    dispatch(reduxAppAction.setSelectedConversationId(conversationId));
     return () => {
       dispatch(reduxAppAction.setSelectedConversationId(undefined));
     };
-  }, [dispatch, conversationId]);
+  }, [dispatch]);
   useEffect(() => {
     if (isEmpty(conversationId)) {
       return;
@@ -123,7 +122,7 @@ const ChatView = () => {
         placeholder={t('Nhập tin nhắn')}
         renderBubble={props => <CustomBubble {...props} />}
       />
-      <Header avatar={''} name={'Test'} isChatView />
+      <Header avatar={userFriend?.logoUrl} name={userFriend?.displayName} isChatView />
     </CustomSafeArea>
   );
 };

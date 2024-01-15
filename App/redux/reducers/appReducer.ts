@@ -189,6 +189,7 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
         },
         {},
       );
+
       return {
         ...state,
         messages: {
@@ -199,7 +200,7 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
     case EReduxAppAction.SET_SELECTED_CONVERSATION_ID:
       return {
         ...state,
-        selectedConversationId: state.selectedConversationId,
+        selectedConversationId: action?.payload?.selectedConversationId,
       };
     default:
       return state;

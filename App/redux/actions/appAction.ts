@@ -134,9 +134,10 @@ const reduxAppAction = {
     };
   },
   mergeMessages: (data: Record<string, Record<string, IMessageResDto>>) => {
+    console.log('data', JSON.stringify(data));
     return {
       type: EReduxAppAction.MERGE_CONVERSATION_MESSAGES,
-      payload: { message: data },
+      payload: { messages: data },
     };
   },
   setSelectedConversationId: (data?: string) => {

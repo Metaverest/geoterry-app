@@ -1,4 +1,4 @@
-import { CommonActions, useNavigation } from '@react-navigation/native';
+import { CommonActions, useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
@@ -23,9 +23,10 @@ const Chat = () => {
   const user = useSelector(reduxSelector.getUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
   useEffect(() => {
     dispatch(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }));
-  }, [dispatch]);
+  }, [dispatch, isFocused]);
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const conversations = useSelector(reduxSelector.getConversations);
   const conversationsToDisplay = useMemo(() => {
@@ -37,8 +38,8 @@ const Chat = () => {
 
   const renderItem = useCallback(
     ({ item }: { item: IConversationResDto }) => {
-      const userFriend = item.participants.find(e => e.profileId !== user.id);
-      const me = item.participants.find(e => e.profileId === user.id);
+      const userFriend = item?.participants?.find(e => e.profileId !== user.id);
+      const me = item?.participants?.find(e => e.profileId === user.id);
       return (
         <TouchableOpacity
           style={styles.containerItem}

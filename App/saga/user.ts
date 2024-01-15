@@ -768,6 +768,7 @@ function* hunterReadConversationMessages(
       {},
     );
     yield put(reduxAppAction.setMessages({ [conversationId!]: messages }));
+    yield put(reduxAppAction.setSelectedConversationId(conversationId));
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }

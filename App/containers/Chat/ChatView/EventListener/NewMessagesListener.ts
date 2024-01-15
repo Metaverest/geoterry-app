@@ -72,9 +72,9 @@ const NewMessagesListener = () => {
             createdAt: message.sentAt,
             participants: [
               {
-                profileId: message.senderId,
-                displayName: message.sender.displayName,
-                logoUrl: message.sender.logoUrl,
+                profileId: message?.senderId,
+                displayName: message?.sender.displayName,
+                logoUrl: message?.sender?.logoUrl,
               },
               {
                 profileId: message.recipientId,
@@ -89,18 +89,35 @@ const NewMessagesListener = () => {
     [dispatch, user.displayName, user.logoUrl, t],
   );
 
+  const mergeConversationToConversations = useCallback(
+    (message: IMessageFirebase) => {
+      const existedConversation = conversations?.[message?.conversationId];
+      dispatch(
+        reduxAppAction.mergeConversations({
+          [message.conversationId]: {
+            ...existedConversation,
+            lastMsg: {
+              snippet: message.payload.type === EMessagePayloadType.TEXT ? message.payload.text : t('Sent an image'),
+              sentByProfileId: message.senderId,
+              sentAt: message.sentAt,
+            },
+          } as IConversationResDto,
+        }),
+      );
+    },
+    [dispatch, t, conversations],
+  );
+
   const onValueChange = useCallback(
     (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
       const messagesData = snapshot.val();
       forEach(messagesData, (message: IMessageFirebase) => {
         if (isNewConversation(message)) {
-          console.log('************* new conversation', message.payload.text);
           mergeNewConversationToConversations(message);
           mergeNewMessageToConversation(message);
         } else if (isNewMessage(message) && message.conversationId === selectedConversationId) {
-          console.log('************* new message', message.payload.text);
+          mergeConversationToConversations(message);
           mergeNewMessageToConversation(message);
-        } else {
         }
       });
     },
@@ -110,6 +127,7 @@ const NewMessagesListener = () => {
       mergeNewConversationToConversations,
       mergeNewMessageToConversation,
       selectedConversationId,
+      mergeConversationToConversations,
     ],
   );
   useEffect(() => {
