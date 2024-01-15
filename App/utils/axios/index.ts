@@ -6,6 +6,13 @@ import { ENavigationScreen } from 'App/enums/navigation';
 import { navigationRef } from 'App/navigation';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import {
+  IConversationResDto,
+  IRequestHunterReadConversationMessagesQueryParams,
+  IMessageResDto,
+  IRequestHunterFilterConversationsQueryParams,
+  ISendMessageInputDto,
+} from 'App/types/chat';
+import {
   IFilterTerryCheckins,
   IGetCheckinsOfTerryParams,
   IGetTerryByIdParams,
@@ -266,5 +273,26 @@ export const requestUpdateUserCurrentLocation = async (input: ITerryLocationDto)
     longitude: input.longitude,
   });
 };
+
+export const requestHunterFilterConversations = async (
+  profileId: string,
+  query: IRequestHunterFilterConversationsQueryParams,
+) => {
+  return AXIOS.post<IConversationResDto[]>(`/hunter/${profileId}/conversations/filter`, {}, { params: query }).then(
+    result => result.data,
+  );
+};
+
+export const requestHunterReadConversationMessages = async (
+  conversationId: string,
+  profileId: string,
+  query: IRequestHunterReadConversationMessagesQueryParams,
+) =>
+  AXIOS.get<IMessageResDto>(`/hunter/${profileId}/conversation/${conversationId}/messages`, { params: query }).then(
+    result => result.data,
+  );
+
+export const requestHunterSendMessage = async (profileId: string, data: ISendMessageInputDto) =>
+  AXIOS.post<IMessageResDto>(`/hunter/${profileId}/messages/send-message`, data).then(result => result.data);
 
 export default AXIOS;

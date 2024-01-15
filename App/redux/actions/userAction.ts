@@ -1,6 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { EPublicReadProfileBy, EUserRole } from 'App/enums';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
+import {
+  IRequestHunterFilterConversationsQueryParams,
+  IRequestHunterReadConversationMessagesQueryParams,
+  ISendMessageInputDto,
+} from 'App/types/chat';
 import { ISagaAsyncActionOptions } from 'App/types/redux';
 import {
   IFilterTerryCheckins,
@@ -160,6 +165,30 @@ const sagaUserAction = {
     return {
       type: ESagaUserAction.GET_USER_NEARBY_PLAYERS,
       payload: { data: { location }, navigation },
+    };
+  },
+  hunterFilterConversationsAsync: (data: IRequestHunterFilterConversationsQueryParams, navigation?: any) => {
+    return {
+      type: ESagaAppAction.HUNTER_FILTER_CONVERSATIONS,
+      payload: { data, navigation },
+    };
+  },
+  hunterReadConversationAsync: (
+    data: {
+      conversationId: string;
+      requestHunterReadConversationMessagesQueryParams: IRequestHunterReadConversationMessagesQueryParams;
+    },
+    navigation?: any,
+  ) => {
+    return {
+      type: ESagaAppAction.HUNTER_READ_CONVERSATION,
+      payload: { data, navigation },
+    };
+  },
+  hunterSendMessageAsync: (data: ISendMessageInputDto, navigation?: any) => {
+    return {
+      type: ESagaAppAction.HUNTER_SEND_MESSAGE,
+      payload: { data, navigation },
     };
   },
 };

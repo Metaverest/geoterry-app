@@ -83,7 +83,10 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   [ENavigationScreen.LOADING_MODAL]: undefined;
   [ENavigationScreen.POPUP_SCREEN]: IPopupModalProps;
   [EMainGameScreen.CHAT_SCREEN]: undefined;
-  [EMainGameScreen.CHAT_VIEW_SCREEN]: undefined;
+  [EMainGameScreen.CHAT_VIEW_SCREEN]: {
+    conversationId: string;
+    recipientId?: string;
+  };
 }
 
 export enum EPopUpModalType {

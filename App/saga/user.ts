@@ -19,11 +19,19 @@ import {
   EPopUpModalType,
 } from 'App/enums/navigation';
 import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
+import { generateLocalMessageId } from 'App/helpers/common';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { reduxUserAction, sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
+import {
+  IConversationResDto,
+  IMessageResDto,
+  IRequestHunterFilterConversationsQueryParams,
+  IRequestHunterReadConversationMessagesQueryParams,
+  ISendMessageInputDto,
+} from 'App/types/chat';
 import { IError } from 'App/types/error';
 import { IPopupModalParamsProps } from 'App/types/modal';
 import { IReduxActionWithNavigation } from 'App/types/redux';
@@ -62,8 +70,11 @@ import AXIOS, {
   requestGetNearbyPlayers,
   requestGetOTP,
   requestHunterCheckinTerry,
+  requestHunterFilterConversations,
   requestHunterFilterTerryCheckins,
   requestHunterGetTerryById,
+  requestHunterReadConversationMessages,
+  requestHunterSendMessage,
   requestHunterUpsertTerryUserPath,
   requestLogin,
   requestPublicFilterTerryCategories,
@@ -86,7 +97,7 @@ import {
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
-import { isEmpty, isNil, last, map } from 'lodash';
+import { isEmpty, isNil, last, map, reduce } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 function* handleError(error: IError, navigation: any, additionalPopupModalParams?: IPopupModalParamsProps) {
@@ -697,6 +708,116 @@ export function* watchGetNearbyPlayers() {
   yield takeLatest(ESagaUserAction.GET_USER_NEARBY_PLAYERS, getNearbyPlayers);
 }
 
+function* hunterFilterConversation(
+  action: IReduxActionWithNavigation<ESagaAppAction, IRequestHunterFilterConversationsQueryParams>,
+) {
+  const navigation = action.payload?.navigation;
+  const data = action.payload?.data;
+  try {
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const response: IConversationResDto[] = yield call(requestHunterFilterConversations, profileId, data);
+    const conversations: Record<string, IConversationResDto> = reduce(
+      response,
+      (result, conversation) => {
+        return { ...result, [conversation.id]: conversation };
+      },
+      {},
+    );
+    yield put(reduxAppAction.setConversations(conversations));
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchHunterFilterConversations() {
+  yield takeLatest(ESagaAppAction.HUNTER_FILTER_CONVERSATIONS, hunterFilterConversation);
+}
+
+function* hunterReadConversationMessages(
+  action: IReduxActionWithNavigation<
+    ESagaAppAction,
+    {
+      conversationId: string;
+      requestHunterReadConversationMessagesQueryParams: IRequestHunterReadConversationMessagesQueryParams;
+    }
+  >,
+) {
+  const data = action.payload?.data;
+  const navigation = action.payload?.navigation;
+  try {
+    const conversationId = data?.conversationId;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const requestHunterReadConversationMessagesQueryParams = data?.requestHunterReadConversationMessagesQueryParams;
+
+    const response: IMessageResDto[] = yield call(
+      requestHunterReadConversationMessages,
+      conversationId,
+      profileId,
+      requestHunterReadConversationMessagesQueryParams,
+    );
+    const messages: Record<string, IMessageResDto> = reduce(
+      response,
+      (result, message) => {
+        return {
+          ...result,
+          [message.id]: message,
+        };
+      },
+      {},
+    );
+    yield put(reduxAppAction.setMessages({ [conversationId!]: messages }));
+    yield put(reduxAppAction.setSelectedConversationId(conversationId));
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+export function* watchHunterReadConversationMessages() {
+  yield takeLatest(ESagaAppAction.HUNTER_READ_CONVERSATION, hunterReadConversationMessages);
+}
+
+function* hunterSendMessage(action: IReduxActionWithNavigation<ESagaAppAction, ISendMessageInputDto>) {
+  const navigation = action.payload?.navigation;
+  try {
+    const data = action.payload?.data;
+    if (isEmpty(data)) {
+      return;
+    }
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    // We need to update the conversation `s messages state before sending message to BE
+    // to make sure the message is displayed immediately
+    const randomMessageId = generateLocalMessageId();
+    yield put(
+      reduxAppAction.mergeMessages({
+        [data.conversationId]: {
+          [randomMessageId]: {
+            conversationId: data.conversationId,
+            createdAt: data.createdAt,
+            id: randomMessageId,
+            payload: {
+              type: data.payload.type,
+              text: data.payload.text,
+            },
+            senderId: profileId,
+            recipientId: data.recipientId,
+            sentAt: data.createdAt,
+            updatedAt: data.createdAt,
+          },
+        },
+      }),
+    );
+    yield call(requestHunterSendMessage, profileId, data);
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchHunterSendMessage() {
+  yield takeLatest(ESagaAppAction.HUNTER_SEND_MESSAGE, hunterSendMessage);
+}
+
 export default function* userSaga() {
   yield all([
     watchCreateAccountAsync(),
@@ -720,5 +841,8 @@ export default function* userSaga() {
     watchGetPublicProfile(),
     watchSwitchRoleUser(),
     watchGetNearbyPlayers(),
+    watchHunterFilterConversations(),
+    watchHunterReadConversationMessages(),
+    watchHunterSendMessage(),
   ]);
 }

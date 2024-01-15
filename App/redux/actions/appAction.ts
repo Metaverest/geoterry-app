@@ -2,6 +2,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { IRealtimeLocation } from 'App/types';
+import { IConversationResDto, IMessageResDto } from 'App/types/chat';
 import { IError } from 'App/types/error';
 
 import {
@@ -112,6 +113,37 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_LOADING_STATES,
       payload: { loadingStates },
+    };
+  },
+  setConversations: (data: Record<string, IConversationResDto>) => {
+    return {
+      type: EReduxAppAction.SET_CONVERSATIONS,
+      payload: { conversations: data },
+    };
+  },
+  mergeConversations: (data: Record<string, IConversationResDto>) => {
+    return {
+      type: EReduxAppAction.MERGE_CONVERSATIONS,
+      payload: { conversations: data },
+    };
+  },
+  setMessages: (data: Record<string, Record<string, IMessageResDto>>) => {
+    return {
+      type: EReduxAppAction.SET_CONVERSATION_MESSAGES,
+      payload: { messages: data },
+    };
+  },
+  mergeMessages: (data: Record<string, Record<string, IMessageResDto>>) => {
+    console.log('data', JSON.stringify(data));
+    return {
+      type: EReduxAppAction.MERGE_CONVERSATION_MESSAGES,
+      payload: { messages: data },
+    };
+  },
+  setSelectedConversationId: (data?: string) => {
+    return {
+      type: EReduxAppAction.SET_SELECTED_CONVERSATION_ID,
+      payload: { selectedConversationId: data },
     };
   },
 };
