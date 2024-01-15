@@ -3,6 +3,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IAppState, IReduxAction } from 'App/types/redux';
+import { reduce } from 'lodash';
 
 const defaultAppState: IAppState = {
   language: ELanguageCode.VN,
@@ -30,6 +31,9 @@ const defaultAppState: IAppState = {
   otherUserProfileToDisplay: undefined,
   nearbyPlayers: [],
   loadingStates: {},
+  conversations: {},
+  messages: {},
+  selectedConversationId: undefined,
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -131,6 +135,71 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...state.loadingStates,
           ...action.payload?.loadingStates,
         },
+      };
+    case EReduxAppAction.SET_CONVERSATIONS:
+      return {
+        ...state,
+        conversations: {
+          ...action.payload?.conversations,
+        },
+      };
+    case EReduxAppAction.MERGE_CONVERSATIONS:
+      return {
+        ...state,
+        conversations: {
+          ...state.conversations,
+          ...action.payload?.conversations,
+        },
+      };
+    case EReduxAppAction.SET_CONVERSATION_MESSAGES:
+      // List of conversation ids that have messages need to be merged
+      const conversationIdsNeedToBeSet = Object.keys(action.payload?.messages || {});
+      const newMessagesNeedToBeSet = reduce(
+        conversationIdsNeedToBeSet,
+        (result, conversationId) => {
+          return {
+            ...result,
+            [conversationId]: {
+              ...(action.payload?.messages || {})[conversationId],
+            },
+          };
+        },
+        {},
+      );
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          ...newMessagesNeedToBeSet,
+        },
+      };
+    case EReduxAppAction.MERGE_CONVERSATION_MESSAGES:
+      // List of conversation ids that have messages need to be set
+      const conversationIdsNeedToBeMerged = Object.keys(action.payload?.messages || {});
+      const newMessages = reduce(
+        conversationIdsNeedToBeMerged,
+        (result, conversationId) => {
+          return {
+            ...result,
+            [conversationId]: {
+              ...(state.messages[conversationId] || {}),
+              ...(action.payload?.messages || {})[conversationId],
+            },
+          };
+        },
+        {},
+      );
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          ...newMessages,
+        },
+      };
+    case EReduxAppAction.SET_SELECTED_CONVERSATION_ID:
+      return {
+        ...state,
+        selectedConversationId: state.selectedConversationId,
       };
     default:
       return state;

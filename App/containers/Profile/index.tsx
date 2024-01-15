@@ -143,6 +143,12 @@ const ProfileScreen = ({ route }: { route: any }) => {
             <CustomButton
               title={t('Nhắn tin')}
               onPress={() => {
+                navigation.dispatch(
+                  CommonActions.navigate({
+                    name: EMainGameScreen.CHAT_VIEW_SCREEN,
+                    params: { recipientId: profileID },
+                  }),
+                );
                 console.log('Should be redirected to messaging screen');
               }}
               buttonType={EButtonType.SOLID}

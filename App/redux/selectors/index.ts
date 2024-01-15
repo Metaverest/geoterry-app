@@ -1,3 +1,4 @@
+import { IMessageResDto } from 'App/types/chat';
 import { IAppState, IReduxRootState } from 'App/types/redux';
 import { IUser } from 'App/types/user';
 
@@ -23,4 +24,10 @@ export const reduxSelector = {
   getAppOtherUserProfileToDisplay: (state: IReduxRootState) => state.app.otherUserProfileToDisplay,
   getNearbyPlayers: (state: IReduxRootState) => state.app.nearbyPlayers,
   getLoadingStates: (state: IReduxRootState) => state.app.loadingStates,
+  getConversations: (state: IReduxRootState) => state.app.conversations,
+  getSelectedConversationId: (state: IReduxRootState) => state.app.selectedConversationId,
+  getMessages: (state: IReduxRootState) => state.app.messages,
+  // Usage example: const messages = useSelector(reduxSelector.getMessagesFromConversationId(conversationId));
+  getMessagesFromConversationId: (conversationId: string) => (state: IReduxRootState) =>
+    state.app?.messages?.[conversationId] as Record<string, IMessageResDto>,
 };
