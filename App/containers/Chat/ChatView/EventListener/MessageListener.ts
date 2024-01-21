@@ -27,7 +27,6 @@ const MessageListener = ({ conversationId }: { conversationId: string }) => {
 
   const mergeNewMessageToConversation = useCallback(
     (message: IMessageFirebase) => {
-      console.log('******************* merge new message: ', message.payload.text);
       dispatch(
         reduxAppAction.mergeMessages({
           [conversationId]: {
