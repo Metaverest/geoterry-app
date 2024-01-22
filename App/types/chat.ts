@@ -78,4 +78,5 @@ export interface IMessageFirebase {
   sender: IMessageFirebaseSender;
   senderId: string;
   sentAt: string;
+  chatServiceId: string;
 }

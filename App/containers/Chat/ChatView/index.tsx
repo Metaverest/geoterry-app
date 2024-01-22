@@ -1,4 +1,4 @@
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
@@ -8,7 +8,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
-import { EMessagePayloadType, ISendMessageInputDto } from 'App/types/chat';
+import { EMessagePayloadType, IParticipantResDto, ISendMessageInputDto } from 'App/types/chat';
 import { head, isEmpty, map, orderBy } from 'lodash';
 import { default as React, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,19 +19,42 @@ import CustomBubble from './CustomBubble';
 import CustomSend from './CustomSend';
 import { styles } from './styles';
 import { reduxAppAction } from 'App/redux/actions/appAction';
+import MessageListener from './EventListener/MessageListener';
+import { EPublicReadProfileBy } from 'App/enums';
 
 const ChatView = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
-
+  const navigation = useNavigation();
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.CHAT_VIEW_SCREEN>>();
+  // Use conversationId in case the conversation already existed
   const conversationId = useMemo(() => params?.conversationId, [params]);
+  // Use recipientId, profile in case the conversation did not exist yet
   const recipientId = useMemo(() => params.recipientId, [params]);
+  const profile = useSelector(reduxSelector.getAppOtherUserProfileToDisplay);
+
+  useEffect(() => {
+    if (recipientId && !profile) {
+      dispatch(sagaUserAction.getPublicProfileAsync(recipientId, EPublicReadProfileBy.ID));
+    }
+  }, [dispatch, recipientId, profile]);
+
   const conversations = useSelector(reduxSelector.getConversations);
   const conversation = useMemo(() => conversations?.[conversationId], [conversations, conversationId]);
-  const userFriend = useMemo(() => conversation?.participants.find(e => e.profileId !== user.id), [conversation, user]);
+  const userFriend = useMemo(() => {
+    if (conversationId) {
+      return conversation?.participants.find(e => e.profileId !== user.id);
+    } else if (recipientId) {
+      return {
+        profileId: profile?.id,
+        displayName: profile?.displayName,
+        logoUrl: profile?.logoUrl,
+      } as IParticipantResDto;
+    }
+  }, [conversation, conversationId, profile, recipientId, user.id]);
   const messages = useSelector(reduxSelector.getMessagesFromConversationId(conversationId));
+
   useEffect(() => {
     return () => {
       dispatch(reduxAppAction.setSelectedConversationId(undefined));
@@ -55,7 +78,7 @@ const ChatView = () => {
         ({
           _id: message.id,
           text: message.payload.text,
-          createdAt: new Date(message.createdAt),
+          createdAt: new Date(message.sentAt),
           user: {
             _id: message.senderId,
           },
@@ -82,9 +105,9 @@ const ChatView = () => {
         recipientId: userFriend?.profileId || recipientId,
         createdAt: giftedChatMessage.createdAt.toString(),
       } as ISendMessageInputDto;
-      dispatch(sagaUserAction.hunterSendMessageAsync(messageToSend));
+      dispatch(sagaUserAction.hunterSendMessageAsync(messageToSend, navigation));
     },
-    [conversationId, dispatch, userFriend?.profileId, recipientId],
+    [conversationId, dispatch, userFriend?.profileId, recipientId, navigation],
   );
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -123,6 +146,7 @@ const ChatView = () => {
         renderBubble={props => <CustomBubble {...props} />}
       />
       <Header avatar={userFriend?.logoUrl} name={userFriend?.displayName} isChatView />
+      {conversationId && <MessageListener conversationId={conversationId} />}
     </CustomSafeArea>
   );
 };

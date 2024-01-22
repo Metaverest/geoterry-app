@@ -97,7 +97,7 @@ import {
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
-import { isEmpty, isNil, last, map, reduce } from 'lodash';
+import { head, isEmpty, isNil, last, map, reduce } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 function* handleError(error: IError, navigation: any, additionalPopupModalParams?: IPopupModalParamsProps) {
@@ -631,14 +631,14 @@ function* getPublicProfile(
 ) {
   const navigation = action.payload?.navigation;
   try {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    navigation && navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
     const profileID = action.payload?.data?.profileID;
     const findBy = action.payload?.data?.findBy;
     const response: IProfileResDto = yield call(requestPublicReadProfile, profileID, findBy);
     yield put(reduxAppAction.setOtherUserProfileToDisplay(response));
-    navigation.dispatch(StackActions.pop());
+    navigation && navigation.dispatch(StackActions.pop());
   } catch (error) {
-    navigation.dispatch(StackActions.pop());
+    navigation && navigation.dispatch(StackActions.pop());
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
@@ -786,29 +786,39 @@ function* hunterSendMessage(action: IReduxActionWithNavigation<ESagaAppAction, I
     }
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
-    // We need to update the conversation `s messages state before sending message to BE
-    // to make sure the message is displayed immediately
+    // We need to update the conversation `s messages redux state before sending message to BE
+    // to make sure the message is displayed immediately.
     const randomMessageId = generateLocalMessageId();
-    yield put(
-      reduxAppAction.mergeMessages({
-        [data.conversationId]: {
-          [randomMessageId]: {
-            conversationId: data.conversationId,
-            createdAt: data.createdAt,
-            id: randomMessageId,
-            payload: {
-              type: data.payload.type,
-              text: data.payload.text,
+    if (data.conversationId) {
+      yield put(
+        reduxAppAction.mergeMessages({
+          [data.conversationId]: {
+            [randomMessageId]: {
+              conversationId: data.conversationId,
+              createdAt: data.createdAt,
+              id: randomMessageId,
+              payload: {
+                type: data.payload.type,
+                text: data.payload.text,
+              },
+              senderId: profileId,
+              recipientId: data.recipientId,
+              sentAt: data.createdAt,
+              updatedAt: data.createdAt,
             },
-            senderId: profileId,
-            recipientId: data.recipientId,
-            sentAt: data.createdAt,
-            updatedAt: data.createdAt,
           },
-        },
-      }),
-    );
-    yield call(requestHunterSendMessage, profileId, data);
+        }),
+      );
+    }
+    const responseMessage: IMessageResDto[] = yield call(requestHunterSendMessage, profileId, data);
+    const conversations: Record<string, IConversationResDto> = yield select(reduxSelector.getConversations);
+    // If the conversation is not existed in the state.
+    if (!!head(responseMessage)?.conversationId && !conversations?.[head(responseMessage)?.conversationId!]) {
+      // Refetch the conversations.
+      yield put(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }));
+      // Update the params of the conversation (ChatView) screen.
+      navigation.setParams({ conversationId: head(responseMessage)?.conversationId, recipientId: null });
+    }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
