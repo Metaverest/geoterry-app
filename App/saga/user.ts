@@ -97,7 +97,7 @@ import {
 } from 'App/utils/navigation';
 import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
-import { head, isEmpty, isNil, last, map, reduce } from 'lodash';
+import { isEmpty, isNil, last, map, reduce } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 function* handleError(error: IError, navigation: any, additionalPopupModalParams?: IPopupModalParamsProps) {
@@ -810,14 +810,14 @@ function* hunterSendMessage(action: IReduxActionWithNavigation<ESagaAppAction, I
         }),
       );
     }
-    const responseMessage: IMessageResDto[] = yield call(requestHunterSendMessage, profileId, data);
+    const responseMessage: IMessageResDto = yield call(requestHunterSendMessage, profileId, data);
     const conversations: Record<string, IConversationResDto> = yield select(reduxSelector.getConversations);
     // If the conversation is not existed in the state.
-    if (!!head(responseMessage)?.conversationId && !conversations?.[head(responseMessage)?.conversationId!]) {
+    if (!!responseMessage?.conversationId && !conversations?.[responseMessage?.conversationId!]) {
       // Refetch the conversations.
       yield put(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }));
       // Update the params of the conversation (ChatView) screen.
-      navigation.setParams({ conversationId: head(responseMessage)?.conversationId, recipientId: null });
+      navigation.setParams({ conversationId: responseMessage?.conversationId, recipientId: null });
     }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
