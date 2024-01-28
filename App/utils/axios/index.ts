@@ -288,7 +288,7 @@ export const requestHunterReadConversationMessages = async (
   profileId: string,
   query: IRequestHunterReadConversationMessagesQueryParams,
 ) =>
-  AXIOS.get<IMessageResDto>(`/hunter/${profileId}/conversation/${conversationId}/messages`, { params: query }).then(
+  AXIOS.get<IMessageResDto[]>(`/hunter/${profileId}/conversation/${conversationId}/messages`, { params: query }).then(
     result => result.data,
   );
 
