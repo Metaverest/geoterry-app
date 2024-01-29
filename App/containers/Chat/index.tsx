@@ -1,4 +1,4 @@
-import { CommonActions, useIsFocused, useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
@@ -18,16 +18,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import { IConversationResDto } from 'App/types/chat';
 import { sagaUserAction } from 'App/redux/actions/userAction';
+import { shortenString } from 'App/helpers/text';
+import { MAX_CONVERSATION_SNIPPET_LENGTH } from 'App/constants/common';
+import { ESagaAppAction } from 'App/enums/redux';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+
+const NUMBER_OF_SKELETONS = 5;
 
 const Chat = () => {
   const user = useSelector(reduxSelector.getUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    dispatch(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }));
-  }, [dispatch, isFocused]);
+  const loadingStates = useSelector(reduxSelector.getLoadingStates);
+
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
+  useEffect(() => {
+    dispatch(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }, navigation));
+  }, [dispatch, navigation]);
   const conversations = useSelector(reduxSelector.getConversations);
   const conversationsToDisplay = useMemo(() => {
     if (!conversations) {
@@ -92,7 +99,7 @@ const Chat = () => {
                   },
                   me?.unreadMsgCnt && styles.fontW500,
                 ]}>
-                {item.lastMsg.snippet}
+                {shortenString(item.lastMsg.snippet, MAX_CONVERSATION_SNIPPET_LENGTH)}
               </CustomText>
               <View style={styles.dot} />
               <CustomText style={styles.msg}>
@@ -105,15 +112,42 @@ const Chat = () => {
     },
     [navigation, t, user.id, user.languageCode],
   );
+
+  const CardSkeleton = useCallback(() => {
+    return (
+      <SkeletonPlaceholder
+        backgroundColor={EColor.color_00000050}
+        highlightColor={EColor.color_00000080}
+        borderRadius={4}>
+        <View style={styles.loadingContainer} />
+      </SkeletonPlaceholder>
+    );
+  }, []);
+
+  const LoadingSkeleton = useCallback(
+    () => (
+      <View style={styles.containList}>
+        {Array.from({ length: NUMBER_OF_SKELETONS }).map((_, index) => (
+          <CardSkeleton key={`loading_${index}`} />
+        ))}
+      </View>
+    ),
+    [CardSkeleton],
+  );
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trò chuyện')} />
-      <FlatList
-        keyExtractor={(_, index) => index.toString()}
-        data={conversationsToDisplay}
-        renderItem={renderItem}
-        style={styles.containList}
-      />
+      {loadingStates?.[ESagaAppAction.HUNTER_FILTER_CONVERSATIONS] ? (
+        <LoadingSkeleton />
+      ) : (
+        <FlatList
+          keyExtractor={(_, index) => index.toString()}
+          data={conversationsToDisplay}
+          renderItem={renderItem}
+          style={styles.containList}
+        />
+      )}
     </CustomSafeArea>
   );
 };

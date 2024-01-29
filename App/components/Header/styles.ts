@@ -59,4 +59,8 @@ export const styles = StyleSheet.create({
     lineHeight: rh(24),
     color: EColor.color_FAFAFA,
   },
+  flex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

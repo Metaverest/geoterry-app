@@ -20,6 +20,7 @@ const Header = ({
   isChatView,
   avatar,
   name,
+  profileId,
 }: {
   title?: string;
   rightButton?: any;
@@ -29,6 +30,7 @@ const Header = ({
   isChatView?: boolean;
   avatar?: string;
   name?: string;
+  profileId?: string;
 }) => {
   const navigation = useNavigation();
   const handlePressBackButton = useCallback(() => {
@@ -63,14 +65,21 @@ const Header = ({
               onPress={handlePressBackButton}>
               {!shouldHideBackButton && <BackIcon />}
             </TouchableOpacity>
-            {avatar ? (
-              <Image source={{ uri: avatar }} style={styles.avatar} />
-            ) : (
-              <View style={styles.avatar}>
-                <MapMarkerUserDefault width={rw(36)} height={rw(36)} />
-              </View>
-            )}
-            <CustomText style={styles.name}>{name}</CustomText>
+            <TouchableOpacity
+              style={styles.flex}
+              onPress={() => {
+                profileId &&
+                  navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: profileId }));
+              }}>
+              {avatar ? (
+                <Image source={{ uri: avatar }} style={styles.avatar} />
+              ) : (
+                <View style={styles.avatar}>
+                  <MapMarkerUserDefault width={rw(36)} height={rw(36)} />
+                </View>
+              )}
+              <CustomText style={styles.name}>{name}</CustomText>
+            </TouchableOpacity>
           </View>
         ),
     });
@@ -85,6 +94,7 @@ const Header = ({
     isChatView,
     avatar,
     name,
+    profileId,
   ]);
   return null;
 };

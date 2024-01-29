@@ -714,6 +714,7 @@ function* hunterFilterConversation(
   const navigation = action.payload?.navigation;
   const data = action.payload?.data;
   try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_FILTER_CONVERSATIONS]: true }));
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
     const response: IConversationResDto[] = yield call(requestHunterFilterConversations, profileId, data);
@@ -725,7 +726,9 @@ function* hunterFilterConversation(
       {},
     );
     yield put(reduxAppAction.setConversations(conversations));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_FILTER_CONVERSATIONS]: false }));
   } catch (error) {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_FILTER_CONVERSATIONS]: false }));
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
@@ -746,6 +749,7 @@ function* hunterReadConversationMessages(
   const data = action.payload?.data;
   const navigation = action.payload?.navigation;
   try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_READ_CONVERSATION]: true }));
     const conversationId = data?.conversationId;
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
@@ -769,7 +773,9 @@ function* hunterReadConversationMessages(
     );
     yield put(reduxAppAction.setMessages({ [conversationId!]: messages }));
     yield put(reduxAppAction.setSelectedConversationId(conversationId));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_READ_CONVERSATION]: false }));
   } catch (error) {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_READ_CONVERSATION]: false }));
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
@@ -815,7 +821,7 @@ function* hunterSendMessage(action: IReduxActionWithNavigation<ESagaAppAction, I
     // If the conversation is not existed in the state.
     if (!!responseMessage?.conversationId && !conversations?.[responseMessage?.conversationId!]) {
       // Refetch the conversations.
-      yield put(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }));
+      yield put(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }, navigation));
       // Update the params of the conversation (ChatView) screen.
       navigation.setParams({ conversationId: responseMessage?.conversationId, recipientId: null });
     }

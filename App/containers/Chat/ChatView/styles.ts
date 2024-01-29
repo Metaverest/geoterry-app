@@ -6,6 +6,18 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containList: {
+    marginTop: rh(80),
+    flex: 1,
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: rh(60),
+    marginVertical: rh(20),
+    marginHorizontal: rh(16),
+  },
   inputToolBarContainer: {
     paddingHorizontal: rw(16),
     justifyContent: 'flex-start',
