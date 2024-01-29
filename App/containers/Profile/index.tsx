@@ -143,13 +143,13 @@ const ProfileScreen = ({ route }: { route: any }) => {
             <CustomButton
               title={t('Nhắn tin')}
               onPress={() => {
+                // TODO: need to fix by passing conversation id as param here
                 navigation.dispatch(
                   CommonActions.navigate({
                     name: EMainGameScreen.CHAT_VIEW_SCREEN,
                     params: { recipientId: profileID },
                   }),
                 );
-                console.log('Should be redirected to messaging screen');
               }}
               buttonType={EButtonType.SOLID}
               linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}

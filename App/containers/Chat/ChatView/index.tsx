@@ -21,6 +21,10 @@ import { styles } from './styles';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import MessageListener from './EventListener/MessageListener';
 import { EPublicReadProfileBy } from 'App/enums';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { ESagaAppAction } from 'App/enums/redux';
+
+const NUMBER_OF_SKELETONS = 6;
 
 const ChatView = () => {
   const { t } = useTranslation();
@@ -33,6 +37,7 @@ const ChatView = () => {
   // Use recipientId, profile in case the conversation did not exist yet
   const recipientId = useMemo(() => params.recipientId, [params]);
   const profile = useSelector(reduxSelector.getAppOtherUserProfileToDisplay);
+  const loadingStates = useSelector(reduxSelector.getLoadingStates);
 
   useEffect(() => {
     if (recipientId && !profile) {
@@ -109,43 +114,74 @@ const ChatView = () => {
     },
     [conversationId, dispatch, userFriend?.profileId, recipientId, navigation],
   );
+
+  const CardSkeleton = useCallback(() => {
+    return (
+      <SkeletonPlaceholder
+        backgroundColor={EColor.color_00000050}
+        highlightColor={EColor.color_00000080}
+        borderRadius={4}>
+        <View style={styles.loadingContainer} />
+      </SkeletonPlaceholder>
+    );
+  }, []);
+
+  const LoadingSkeleton = useCallback(
+    () => (
+      <View style={styles.containList}>
+        {Array.from({ length: NUMBER_OF_SKELETONS }).map((_, index) => (
+          <CardSkeleton key={`loading_${index}`} />
+        ))}
+      </View>
+    ),
+    [CardSkeleton],
+  );
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <GiftedChat
-        inverted={false}
-        messages={messagesToDisplay}
-        onSend={onSend}
-        user={{
-          _id: user.id,
-        }}
-        renderSend={props => <CustomSend {...props} />}
-        listViewProps={{ showsVerticalScrollIndicator: false }}
-        alwaysShowSend
-        scrollToBottom
-        renderAvatar={props =>
-          props.currentMessage?.user.avatar ? (
-            <Avatar {...props} position="right" imageStyle={{ right: styles.avatar }} />
-          ) : (
-            <View style={[styles.avatar, { marginLeft: props.currentMessage?.user.avatar ? rw(0) : rw(7) }]}>
-              <MapMarkerUserDefault width={rw(24)} height={rw(24)} />
-            </View>
-          )
-        }
-        renderDay={props => <Day {...props} textStyle={styles.day} />}
-        showUserAvatar={false}
-        showAvatarForEveryMessage={false}
-        renderTime={() => null}
-        dateFormat={'hh:mm DD/MM/YYYY'}
-        messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68), paddingBottom: rh(24) }}
-        renderInputToolbar={props => {
-          const newProp = { placeholderTextColor: EColor.color_666666 };
-          return <InputToolbar {...newProp} {...props} containerStyle={styles.inputToolBarContainer} />;
-        }}
-        textInputProps={styles.textInputProps}
-        placeholder={t('Nhập tin nhắn')}
-        renderBubble={props => <CustomBubble {...props} />}
+      {loadingStates?.[ESagaAppAction.HUNTER_READ_CONVERSATION] ? (
+        <LoadingSkeleton />
+      ) : (
+        <GiftedChat
+          inverted={false}
+          messages={messagesToDisplay}
+          onSend={onSend}
+          user={{
+            _id: user.id,
+          }}
+          renderSend={props => <CustomSend {...props} />}
+          listViewProps={{ showsVerticalScrollIndicator: false }}
+          alwaysShowSend
+          renderAvatar={props =>
+            props.currentMessage?.user.avatar ? (
+              <Avatar {...props} position="right" imageStyle={{ right: styles.avatar }} />
+            ) : (
+              <View style={[styles.avatar, { marginLeft: props.currentMessage?.user.avatar ? rw(0) : rw(7) }]}>
+                <MapMarkerUserDefault width={rw(24)} height={rw(24)} />
+              </View>
+            )
+          }
+          renderDay={props => <Day {...props} textStyle={styles.day} />}
+          showUserAvatar={false}
+          showAvatarForEveryMessage={false}
+          renderTime={() => null}
+          dateFormat={'hh:mm - DD/MM/YYYY'}
+          messagesContainerStyle={{ marginRight: rw(12), paddingTop: rh(68), paddingBottom: rh(24) }}
+          renderInputToolbar={props => {
+            const newProp = { placeholderTextColor: EColor.color_666666 };
+            return <InputToolbar {...newProp} {...props} containerStyle={styles.inputToolBarContainer} />;
+          }}
+          textInputProps={styles.textInputProps}
+          placeholder={t('Nhập tin nhắn')}
+          renderBubble={props => <CustomBubble {...props} />}
+        />
+      )}
+      <Header
+        avatar={userFriend?.logoUrl}
+        name={userFriend?.displayName}
+        isChatView
+        profileId={userFriend?.profileId || recipientId}
       />
-      <Header avatar={userFriend?.logoUrl} name={userFriend?.displayName} isChatView />
       {conversationId && <MessageListener conversationId={conversationId} />}
     </CustomSafeArea>
   );

@@ -7,6 +7,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: rw(16),
   },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: rh(105),
+    marginVertical: rh(12),
+  },
   content: {
     flex: 1,
     borderBottomWidth: rh(0.5),
