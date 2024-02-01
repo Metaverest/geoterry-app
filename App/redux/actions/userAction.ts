@@ -155,6 +155,12 @@ const sagaUserAction = {
       payload: { data: { profileID, findBy }, navigation },
     };
   },
+  getOtherProfileAsync: (profileID: string, navigation?: any) => {
+    return {
+      type: ESagaAppAction.GET_OTHER_PROFILE,
+      payload: { data: { profileID }, navigation },
+    };
+  },
   switchRoleUserAsync: (role: EUserRole, reason: string, navigation: any) => {
     return {
       type: ESagaUserAction.SWITCH_ROLE,

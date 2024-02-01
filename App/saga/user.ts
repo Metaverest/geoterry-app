@@ -80,6 +80,7 @@ import AXIOS, {
   requestPublicFilterTerryCategories,
   requestPublicGetTerries,
   requestPublicReadProfile,
+  requestPublicReadOtherProfile,
   requestSwitchRole,
   requestUpdateCredentials,
   requestUploadProfileImage,
@@ -647,6 +648,24 @@ export function* watchGetPublicProfile() {
   yield takeLatest(ESagaAppAction.GET_PUBLIC_PROFILE, getPublicProfile);
 }
 
+function* getOtherProfile(action: IReduxActionWithNavigation<ESagaAppAction, { profileID: string }>) {
+  const navigation = action.payload?.navigation;
+  try {
+    navigation && navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const profileID = action.payload?.data?.profileID;
+    const response: IProfileResDto = yield call(requestPublicReadOtherProfile, profileID);
+    yield put(reduxAppAction.setOtherUserProfileToDisplay(response));
+    navigation && navigation.dispatch(StackActions.pop());
+  } catch (error) {
+    navigation && navigation.dispatch(StackActions.pop());
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchGetOtherProfile() {
+  yield takeLatest(ESagaAppAction.GET_OTHER_PROFILE, getOtherProfile);
+}
+
 function* switchRole(action: IReduxActionWithNavigation<ESagaUserAction, { role: EUserRole; reason: string }>) {
   const navigation = action.payload?.navigation;
   try {
@@ -860,5 +879,6 @@ export default function* userSaga() {
     watchHunterFilterConversations(),
     watchHunterReadConversationMessages(),
     watchHunterSendMessage(),
+    watchGetOtherProfile(),
   ]);
 }
