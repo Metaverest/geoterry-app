@@ -89,7 +89,7 @@ const ChatView = () => {
           },
         } as IMessage),
     );
-    const sortedMessages = orderBy(formattedMessages, ['createdAt'], ['asc']);
+    const sortedMessages = orderBy(formattedMessages, ['createdAt'], ['desc']);
     return sortedMessages;
   }, [messages]);
 
@@ -143,7 +143,7 @@ const ChatView = () => {
         <LoadingSkeleton />
       ) : (
         <GiftedChat
-          inverted={false}
+          inverted={true}
           messages={messagesToDisplay}
           onSend={onSend}
           user={{

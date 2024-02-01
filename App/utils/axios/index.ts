@@ -260,6 +260,10 @@ export const requestPublicReadProfile = async (profileID: string, findBy: EPubli
   }).then(result => result.data);
 };
 
+export const requestPublicReadOtherProfile = async (profileID: string) => {
+  return AXIOS.get<IProfileResDto>(`/profile/other/${profileID}`).then(result => result.data);
+};
+
 export const requestGetNearbyPlayers = async (input?: ITerryLocationDto) => {
   return AXIOS.post<IPlayerNearbyResDto[]>('/profile/profile-nearby', {
     latitude: input?.latitude,

@@ -9,7 +9,7 @@ import CustomText from 'App/components/CustomText';
 import RewardPointsIcon from 'App/media/RewardPointsIcon';
 import CustomInputInformation from 'App/components/CustomInput/CustomInputInformation';
 import CustomButton from 'App/components/Button';
-import { EButtonType, EDataStorageKey, EPublicReadProfileBy } from 'App/enums';
+import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import LogOutIcon from 'App/media/LogOutIcon';
@@ -38,7 +38,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
 
   useEffect(() => {
     if (profileID && !isCurrentUserProfile) {
-      dispatch(sagaUserAction.getPublicProfileAsync(profileID, EPublicReadProfileBy.ID, navigation));
+      dispatch(sagaUserAction.getOtherProfileAsync(profileID, navigation));
     }
   }, [profileID, dispatch, navigation, isCurrentUserProfile]);
 
@@ -147,7 +147,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
                 navigation.dispatch(
                   CommonActions.navigate({
                     name: EMainGameScreen.CHAT_VIEW_SCREEN,
-                    params: { recipientId: profileID },
+                    params: { recipientId: profileID, conversationId: profile?.conversationId },
                   }),
                 );
               }}

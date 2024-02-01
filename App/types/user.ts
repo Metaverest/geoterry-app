@@ -36,6 +36,7 @@ export interface IProfileResDto {
   roleRequestingStatus?: EUseRoleRequestStatus;
   roleRequesting?: EUserRole;
   totalCheckedinTerry?: number;
+  conversationId?: string; // only available on user api to get other profile
 }
 
 export interface ICreateProfileReqDto {
