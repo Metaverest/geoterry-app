@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   imageContainer: {
     width: rw(30),
     height: rw(30),
-    borderRadius: rh(10),
+    borderRadius: rh(8.5),
     backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',

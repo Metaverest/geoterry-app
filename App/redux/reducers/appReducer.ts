@@ -151,6 +151,29 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...action.payload?.conversations,
         },
       };
+    case EReduxAppAction.MARK_CONVERSATION_AS_READ:
+      const conversationToUpdate = state?.conversations?.[action.payload?.markConversationAsRead?.conversationId!];
+      if (!conversationToUpdate) {
+        return state;
+      }
+      return {
+        ...state,
+        conversations: {
+          ...state.conversations,
+          [conversationToUpdate.id]: {
+            ...conversationToUpdate,
+            participants: conversationToUpdate.participants.map(participant => {
+              return {
+                ...participant,
+                unreadMsgCnt:
+                  participant.profileId === action.payload?.markConversationAsRead?.profileId
+                    ? 0
+                    : participant.unreadMsgCnt,
+              };
+            }),
+          },
+        },
+      };
     case EReduxAppAction.SET_CONVERSATION_MESSAGES:
       // List of conversation ids that have messages need to be merged
       const conversationIdsNeedToBeSet = Object.keys(action.payload?.messages || {});

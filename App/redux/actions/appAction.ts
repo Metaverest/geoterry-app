@@ -2,7 +2,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { IRealtimeLocation } from 'App/types';
-import { IConversationResDto, IMessageResDto } from 'App/types/chat';
+import { IConversationResDto, IMarkConversationAsRead, IMessageResDto } from 'App/types/chat';
 import { IError } from 'App/types/error';
 
 import {
@@ -125,6 +125,12 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.MERGE_CONVERSATIONS,
       payload: { conversations: data },
+    };
+  },
+  markConversationAsRead: (data: IMarkConversationAsRead) => {
+    return {
+      type: EReduxAppAction.MARK_CONVERSATION_AS_READ,
+      payload: { markConversationAsRead: data },
     };
   },
   setMessages: (data: Record<string, Record<string, IMessageResDto>>) => {

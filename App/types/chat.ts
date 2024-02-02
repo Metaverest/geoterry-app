@@ -80,3 +80,8 @@ export interface IMessageFirebase {
   sentAt: string;
   chatServiceId: string;
 }
+
+export interface IMarkConversationAsRead {
+  conversationId: string;
+  profileId: string;
+}
