@@ -791,6 +791,9 @@ function* hunterReadConversationMessages(
       {},
     );
     yield put(reduxAppAction.setMessages({ [conversationId!]: messages }));
+    if (conversationId && data?.requestHunterReadConversationMessagesQueryParams.markAllAsRead) {
+      yield put(reduxAppAction.markConversationAsRead({ conversationId, profileId }));
+    }
     yield put(reduxAppAction.setSelectedConversationId(conversationId));
     yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_READ_CONVERSATION]: false }));
   } catch (error) {

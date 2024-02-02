@@ -86,12 +86,13 @@ const ChatView = () => {
           createdAt: new Date(message.sentAt),
           user: {
             _id: message.senderId,
+            avatar: userFriend?.logoUrl,
           },
         } as IMessage),
     );
     const sortedMessages = orderBy(formattedMessages, ['createdAt'], ['desc']);
     return sortedMessages;
-  }, [messages]);
+  }, [messages, userFriend?.logoUrl]);
 
   const onSend = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-shadow

@@ -1,14 +1,15 @@
-import { TerryHeartIcon, TerrySavedIcon } from 'App/components/image';
 import { EColor } from 'App/enums/color';
 import ActiveTreasureIcon from 'App/media/ActiveTreasureIcon';
 import DisableTreasureIcon from 'App/media/DisableTreasureIcon';
 import MapMarkerPolygonIcon from 'App/media/MapMarkerPolygonIcon';
 import { ITerryResponseDto } from 'App/types/terry';
 import React, { useCallback } from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { LatLng, Marker } from 'react-native-maps';
 import { styles } from './styles';
+import TerrySaved from 'App/media/TerrySaved';
+import TerryHeart from 'App/media/TerryHeart';
 
 const TreasureMarker = ({
   treasure,
@@ -41,8 +42,8 @@ const TreasureMarker = ({
               {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
               {!treasure.checkedIn ? (
                 <View style={styles.selectedSubIconContainer}>
-                  {treasure?.saved && <Image style={styles.subIcon} source={TerrySavedIcon} />}
-                  {treasure?.favourite && !treasure?.saved && <Image style={styles.subIcon} source={TerryHeartIcon} />}
+                  {treasure?.saved && <TerrySaved />}
+                  {treasure?.favourite && !treasure?.saved && <TerryHeart />}
                 </View>
               ) : null}
             </View>
@@ -65,8 +66,8 @@ const TreasureMarker = ({
         {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
         {!treasure.checkedIn ? (
           <View style={styles.subIconContainer}>
-            {treasure?.saved && <Image style={styles.subIcon} source={TerrySavedIcon} />}
-            {treasure?.favourite && !treasure?.saved && <Image style={styles.subIcon} source={TerryHeartIcon} />}
+            {treasure?.saved && <TerrySaved />}
+            {treasure?.favourite && !treasure?.saved && <TerryHeart />}
           </View>
         ) : null}
       </View>

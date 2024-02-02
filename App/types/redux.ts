@@ -12,7 +12,7 @@ import {
 } from './terry';
 import { IRealtimeLocation } from '.';
 import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
-import { IConversationResDto, IMessageResDto } from './chat';
+import { IConversationResDto, IMarkConversationAsRead, IMessageResDto } from './chat';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -63,6 +63,7 @@ export interface IAppState {
   conversations?: Record<string, IConversationResDto>;
   messages: Record<string, Record<string, IMessageResDto>>;
   selectedConversationId?: string;
+  markConversationAsRead?: IMarkConversationAsRead;
 }
 
 export interface IRootState {
