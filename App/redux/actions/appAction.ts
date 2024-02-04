@@ -2,7 +2,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { IRealtimeLocation } from 'App/types';
-import { IConversationResDto, IMarkConversationAsRead, IMessageResDto } from 'App/types/chat';
+import { IConversationResDto, IReduxUpdateConversation, IMessageResDto } from 'App/types/chat';
 import { IError } from 'App/types/error';
 
 import {
@@ -127,10 +127,11 @@ const reduxAppAction = {
       payload: { conversations: data },
     };
   },
-  markConversationAsRead: (data: IMarkConversationAsRead) => {
+  // to update conversation saved in redux store
+  updateConversation: (data: IReduxUpdateConversation) => {
     return {
-      type: EReduxAppAction.MARK_CONVERSATION_AS_READ,
-      payload: { markConversationAsRead: data },
+      type: EReduxAppAction.UPDATE_CONVERSATION,
+      payload: { conversationUpdateData: data },
     };
   },
   setMessages: (data: Record<string, Record<string, IMessageResDto>>) => {

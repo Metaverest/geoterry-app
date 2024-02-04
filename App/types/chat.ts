@@ -45,12 +45,14 @@ export interface IRequestHunterFilterConversationsQueryParams {
   pageSize?: number;
   includeProfileData?: boolean;
   prefetchMessage?: boolean;
+  isBackgroundAction?: boolean;
 }
 
 export interface IRequestHunterReadConversationMessagesQueryParams {
   markAllAsRead?: boolean;
   page?: number;
   pageSize?: number;
+  isBackgroundAction?: boolean;
 }
 
 export interface IMessagePayloadDto {
@@ -81,7 +83,14 @@ export interface IMessageFirebase {
   chatServiceId: string;
 }
 
-export interface IMarkConversationAsRead {
+export interface IReduxUpdateConversation {
   conversationId: string;
-  profileId: string;
+  markConversationAsRead?: {
+    profileId: string;
+  };
+  updateConversationSnippet?: {
+    snippet: string;
+    sentAt: string;
+    sentByProfileId: string;
+  };
 }
