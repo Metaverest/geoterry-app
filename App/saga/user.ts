@@ -27,6 +27,7 @@ import { IRealtimeLocation } from 'App/types';
 import { IFilterTerryCategoryInputDto, ITerryCategoryResDto } from 'App/types/category';
 import {
   IConversationResDto,
+  IFilterConversationStatRes,
   IMessageResDto,
   IRequestHunterFilterConversationsQueryParams,
   IRequestHunterReadConversationMessagesQueryParams,
@@ -89,6 +90,7 @@ import AXIOS, {
   requestUserUpdateProfile,
   requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
+  requestHunterFilterConversationStat,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -727,6 +729,22 @@ export function* watchGetNearbyPlayers() {
   yield takeLatest(ESagaUserAction.GET_USER_NEARBY_PLAYERS, getNearbyPlayers);
 }
 
+function* hunterFilterConversationStat(action: IReduxActionWithNavigation<ESagaAppAction, {}>) {
+  const navigation = action.payload?.navigation;
+  try {
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const conversationStat: IFilterConversationStatRes = yield call(requestHunterFilterConversationStat, profileId);
+    yield put(reduxAppAction.setConversationStat(conversationStat));
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchHunterFilterConversationStat() {
+  yield takeLatest(ESagaAppAction.HUNTER_FILTER_CONVERSATION_STAT, hunterFilterConversationStat);
+}
+
 function* hunterFilterConversation(
   action: IReduxActionWithNavigation<ESagaAppAction, IRequestHunterFilterConversationsQueryParams>,
 ) {
@@ -800,6 +818,20 @@ function* hunterReadConversationMessages(
     );
     yield put(reduxAppAction.setMessages({ [conversationId!]: messages }));
     if (conversationId && data?.requestHunterReadConversationMessagesQueryParams.markAllAsRead) {
+      const conversations: Record<string, IConversationResDto> = yield select(reduxSelector.getConversations);
+      const conversationStat: Partial<IFilterConversationStatRes> = yield select(reduxSelector.getConversationStat);
+      const currentParticipant = conversations[conversationId].participants.find(v => v.profileId === profileId);
+      if (currentParticipant?.unreadMsgCnt) {
+        yield put(
+          reduxAppAction.setConversationStat({
+            totalConversationCnt: 0,
+            ...conversationStat,
+            unreadConversationCnt: conversationStat.unreadConversationCnt
+              ? conversationStat.unreadConversationCnt - 1
+              : 0,
+          }),
+        );
+      }
       yield put(reduxAppAction.updateConversation({ conversationId, markConversationAsRead: { profileId } }));
     }
     yield put(reduxAppAction.setSelectedConversationId(conversationId));
@@ -915,5 +947,6 @@ export default function* userSaga() {
     watchHunterReadConversationMessages(),
     watchHunterSendMessage(),
     watchGetOtherProfile(),
+    watchHunterFilterConversationStat(),
   ]);
 }

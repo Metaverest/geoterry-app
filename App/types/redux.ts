@@ -12,7 +12,7 @@ import {
 } from './terry';
 import { IRealtimeLocation } from '.';
 import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
-import { IConversationResDto, IReduxUpdateConversation, IMessageResDto } from './chat';
+import { IConversationResDto, IReduxUpdateConversation, IMessageResDto, IFilterConversationStatRes } from './chat';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -64,6 +64,7 @@ export interface IAppState {
   messages: Record<string, Record<string, IMessageResDto>>;
   selectedConversationId?: string;
   conversationUpdateData?: IReduxUpdateConversation;
+  conversationStat?: Partial<IFilterConversationStatRes>;
 }
 
 export interface IRootState {

@@ -11,6 +11,7 @@ import {
   IMessageResDto,
   IRequestHunterFilterConversationsQueryParams,
   ISendMessageInputDto,
+  IFilterConversationStatRes,
 } from 'App/types/chat';
 import {
   IFilterTerryCheckins,
@@ -283,6 +284,12 @@ export const requestHunterFilterConversations = async (
   query: IRequestHunterFilterConversationsQueryParams,
 ) => {
   return AXIOS.post<IConversationResDto[]>(`/hunter/${profileId}/conversations/filter`, {}, { params: query }).then(
+    result => result.data,
+  );
+};
+
+export const requestHunterFilterConversationStat = async (profileId: string) => {
+  return AXIOS.post<IFilterConversationStatRes>(`/hunter/${profileId}/conversations/filter-stat`).then(
     result => result.data,
   );
 };

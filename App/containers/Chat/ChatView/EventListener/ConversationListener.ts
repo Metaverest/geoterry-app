@@ -14,6 +14,7 @@ const ConversationListener = () => {
   const conversations = useSelector(reduxSelector.getConversations);
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
+  const conversationStat = useSelector(reduxSelector.getConversationStat);
   const profileId = useMemo(() => user?.id, [user?.id]);
   const { t } = useTranslation();
   const conversationIds = useMemo(() => {
@@ -81,6 +82,16 @@ const ConversationListener = () => {
     [conversations, dispatch, t, user.displayName, user.logoUrl],
   );
 
+  const updateConversationStat = useCallback(() => {
+    dispatch(
+      reduxAppAction.setConversationStat({
+        totalConversationCnt: 0,
+        ...conversationStat,
+        unreadConversationCnt: (conversationStat?.unreadConversationCnt || 0) + 1,
+      }),
+    );
+  }, [conversationStat, dispatch]);
+
   const onValueChange = useCallback(
     (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
       const messagesData = snapshot.val();
@@ -88,6 +99,7 @@ const ConversationListener = () => {
         // If the message`s conversation is not existed in redux store
         if (isNewConversation(message)) {
           mergeConversationToConversations(message);
+          updateConversationStat();
         } else {
           if (shouldUpdateConversation(message)) {
             mergeConversationToConversations(message);
@@ -95,7 +107,7 @@ const ConversationListener = () => {
         }
       });
     },
-    [isNewConversation, mergeConversationToConversations, shouldUpdateConversation],
+    [isNewConversation, mergeConversationToConversations, shouldUpdateConversation, updateConversationStat],
   );
   useEffect(() => {
     let ref: any;
