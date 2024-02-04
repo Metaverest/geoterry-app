@@ -24,6 +24,7 @@ export const reduxSelector = {
   getAppOtherUserProfileToDisplay: (state: IReduxRootState) => state.app.otherUserProfileToDisplay,
   getNearbyPlayers: (state: IReduxRootState) => state.app.nearbyPlayers,
   getLoadingStates: (state: IReduxRootState) => state.app.loadingStates,
+  getConversationStat: (state: IReduxRootState) => state.app.conversationStat,
   getConversations: (state: IReduxRootState) => state.app.conversations,
   getSelectedConversationId: (state: IReduxRootState) => state.app.selectedConversationId,
   getMessages: (state: IReduxRootState) => state.app.messages,

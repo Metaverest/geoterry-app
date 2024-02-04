@@ -53,6 +53,7 @@ const MapScreen = () => {
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
+  const conversationStat = useSelector(reduxSelector.getConversationStat);
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const user = useSelector(reduxSelector.getUser);
@@ -83,6 +84,10 @@ const MapScreen = () => {
       setCanFetchTerries(true);
     }
   }, [canFetchTerries, region]);
+
+  useEffect(() => {
+    dispatch(sagaUserAction.hunterFilterConversationStatAsync(navigation));
+  }, [dispatch, navigation]);
 
   const centerToCurrentUserLocation = useCallback(() => {
     if (isEmpty(userLocation)) {
@@ -349,15 +354,22 @@ const MapScreen = () => {
           buttonType={EButtonType.SOLID}
           renderIcon={<SettingIcon />}
         />
-        <CustomButtonIcon
-          onPress={() => {
-            navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHAT_SCREEN));
-          }}
-          buttonColor={[EColor.color_51D5FF, EColor.color_C072FD]}
-          customStyleContainer={styles.buttonRHNContainer}
-          buttonType={EButtonType.SOLID}
-          renderIcon={<MessageIcon />}
-        />
+        <View>
+          <CustomButtonIcon
+            onPress={() => {
+              navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHAT_SCREEN));
+            }}
+            buttonColor={[EColor.color_51D5FF, EColor.color_C072FD]}
+            customStyleContainer={styles.buttonRHNContainer}
+            buttonType={EButtonType.SOLID}
+            renderIcon={<MessageIcon />}
+          />
+          {conversationStat?.unreadConversationCnt && conversationStat.unreadConversationCnt > 0 ? (
+            <View style={styles.containerNumberOfConv}>
+              <CustomText style={styles.textNumberOfConv}>{conversationStat.unreadConversationCnt}</CustomText>
+            </View>
+          ) : null}
+        </View>
         <CustomButtonIcon
           onPress={() => {
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.HISTORY));

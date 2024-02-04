@@ -179,6 +179,12 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
+  hunterFilterConversationStatAsync: (navigation?: any) => {
+    return {
+      type: ESagaAppAction.HUNTER_FILTER_CONVERSATION_STAT,
+      payload: { navigation },
+    };
+  },
   hunterReadConversationAsync: (
     data: {
       conversationId: string;

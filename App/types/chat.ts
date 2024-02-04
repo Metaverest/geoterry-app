@@ -40,6 +40,12 @@ export interface IConversationResDto {
   msgCount: number;
   messages: IMessageResDto[];
 }
+
+export interface IFilterConversationStatRes {
+  totalConversationCnt: number;
+  unreadConversationCnt: number;
+}
+
 export interface IRequestHunterFilterConversationsQueryParams {
   page?: number;
   pageSize?: number;

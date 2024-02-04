@@ -35,6 +35,7 @@ const defaultAppState: IAppState = {
   conversations: {},
   messages: {},
   selectedConversationId: undefined,
+  conversationStat: {},
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -136,6 +137,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           ...state.loadingStates,
           ...action.payload?.loadingStates,
         },
+      };
+    case EReduxAppAction.SET_CONVERSATION_STAT:
+      return {
+        ...state,
+        conversationStat: action.payload?.conversationStat,
       };
     case EReduxAppAction.SET_CONVERSATIONS:
       return {

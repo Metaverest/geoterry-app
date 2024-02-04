@@ -45,10 +45,28 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  containerNumberOfConv: {
+    position: 'absolute',
+    right: rw(-3),
+    backgroundColor: EColor.color_171717,
+    width: rw(18),
+    height: rw(18),
+    borderRadius: rw(18),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   textNumberOfFilter: {
     color: EColor.white,
     fontWeight: '600',
     lineHeight: rh(20),
     fontSize: rw(14),
+    textAlign: 'center',
+  },
+  textNumberOfConv: {
+    color: EColor.white,
+    fontWeight: '600',
+    lineHeight: rh(20),
+    fontSize: rw(12),
+    textAlign: 'center',
   },
 });

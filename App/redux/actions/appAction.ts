@@ -2,7 +2,12 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { IRealtimeLocation } from 'App/types';
-import { IConversationResDto, IReduxUpdateConversation, IMessageResDto } from 'App/types/chat';
+import {
+  IConversationResDto,
+  IReduxUpdateConversation,
+  IMessageResDto,
+  IFilterConversationStatRes,
+} from 'App/types/chat';
 import { IError } from 'App/types/error';
 
 import {
@@ -113,6 +118,12 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_LOADING_STATES,
       payload: { loadingStates },
+    };
+  },
+  setConversationStat: (data: IFilterConversationStatRes) => {
+    return {
+      type: EReduxAppAction.SET_CONVERSATION_STAT,
+      payload: { conversationStat: data },
     };
   },
   setConversations: (data: Record<string, IConversationResDto>) => {
