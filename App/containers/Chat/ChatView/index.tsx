@@ -57,7 +57,9 @@ const ChatView = () => {
         logoUrl: profile?.logoUrl,
       } as IParticipantResDto;
     }
-  }, [conversation, conversationId, profile, recipientId, user.id]);
+    // don't pass any values here since userFriend data won't be changed
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const messages = useSelector(reduxSelector.getMessagesFromConversationId(conversationId));
 
   useEffect(() => {
@@ -72,10 +74,12 @@ const ChatView = () => {
     dispatch(
       sagaUserAction.hunterReadConversationAsync({
         conversationId,
-        requestHunterReadConversationMessagesQueryParams: { markAllAsRead: true },
+        requestHunterReadConversationMessagesQueryParams: {
+          markAllAsRead: true,
+        },
       }),
     );
-  }, [dispatch, conversationId]);
+  }, [dispatch, conversationId, recipientId]);
   const messagesToDisplay = useMemo(() => {
     const formattedMessages = map(
       messages,

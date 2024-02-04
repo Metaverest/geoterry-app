@@ -3,6 +3,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IAppState, IReduxAction } from 'App/types/redux';
+import _ from 'lodash';
 import { reduce } from 'lodash';
 
 const defaultAppState: IAppState = {
@@ -144,36 +145,58 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
         },
       };
     case EReduxAppAction.MERGE_CONVERSATIONS:
+      const conversationIdListToBeMerged = Object.values(action.payload?.conversations || {})?.map(
+        conversation => conversation.id,
+      );
       return {
         ...state,
         conversations: {
-          ...state.conversations,
           ...action.payload?.conversations,
+          ..._.omit(state.conversations, conversationIdListToBeMerged),
         },
       };
-    case EReduxAppAction.MARK_CONVERSATION_AS_READ:
-      const conversationToUpdate = state?.conversations?.[action.payload?.markConversationAsRead?.conversationId!];
+    case EReduxAppAction.UPDATE_CONVERSATION:
+      const conversationToUpdate = state?.conversations?.[action.payload?.conversationUpdateData?.conversationId!];
       if (!conversationToUpdate) {
         return state;
       }
-      return {
-        ...state,
-        conversations: {
-          ...state.conversations,
-          [conversationToUpdate.id]: {
-            ...conversationToUpdate,
-            participants: conversationToUpdate.participants.map(participant => {
-              return {
-                ...participant,
-                unreadMsgCnt:
-                  participant.profileId === action.payload?.markConversationAsRead?.profileId
-                    ? 0
-                    : participant.unreadMsgCnt,
-              };
-            }),
+      if (action.payload?.conversationUpdateData?.markConversationAsRead) {
+        return {
+          ...state,
+          conversations: {
+            ...state.conversations,
+            [conversationToUpdate.id]: {
+              ...conversationToUpdate,
+              participants: conversationToUpdate.participants.map(participant => {
+                return {
+                  ...participant,
+                  unreadMsgCnt:
+                    participant.profileId === action.payload?.conversationUpdateData?.markConversationAsRead?.profileId
+                      ? 0
+                      : participant.unreadMsgCnt,
+                };
+              }),
+            },
           },
-        },
-      };
+        };
+      }
+      if (action.payload?.conversationUpdateData?.updateConversationSnippet) {
+        return {
+          ...state,
+          conversations: {
+            [conversationToUpdate.id]: {
+              ...conversationToUpdate,
+              lastMsg: {
+                ...conversationToUpdate.lastMsg,
+                ...action.payload?.conversationUpdateData?.updateConversationSnippet,
+              },
+            },
+            // to make sure that this conversation should be stand at the top of the conversation list
+            ..._.omit(state.conversations, conversationToUpdate.id),
+          },
+        };
+      }
+      return state;
     case EReduxAppAction.SET_CONVERSATION_MESSAGES:
       // List of conversation ids that have messages need to be merged
       const conversationIdsNeedToBeSet = Object.keys(action.payload?.messages || {});
