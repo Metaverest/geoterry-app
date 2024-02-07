@@ -127,6 +127,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: rw(16),
     paddingVertical: rh(8),
     rowGap: rh(4),
+    marginBottom: rh(8),
   },
 
   itemImageTitleContainer: {
