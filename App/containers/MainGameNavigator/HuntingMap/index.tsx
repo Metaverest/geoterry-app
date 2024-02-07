@@ -30,6 +30,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import CompassIcon from 'App/media/CompassIcon';
 import MapTypeIcon from 'App/media/MapTypeIcon';
 import { createGoogleMapsUrl, getCurrentLocation } from 'App/utils/map';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HuntingMapScreen = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const HuntingMapScreen = () => {
   const mapViewRef = useRef<MapView | null>(null);
   const [terry, setTerry] = useState<ITerryResponseDto | null>(null);
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
+  const insets = useSafeAreaInsets();
 
   const allCoordinatesPath = useSelector(reduxSelector.getAppCoordinatesPath);
   const coordinatesPathOfTerry = useMemo(() => {
@@ -197,7 +199,12 @@ const HuntingMapScreen = () => {
   }, [currentLocation, nearToTerry, terry]);
 
   return (
-    <CustomSafeArea backgroundColor={EColor.black} statusBarColor={EColor.black} style={styles.container}>
+    <CustomSafeArea
+      shouldUseFullScreenView
+      backgroundColor={EColor.black}
+      statusBarColor={EColor.black}
+      style={styles.container}>
+      <View style={{ height: insets.top, backgroundColor: EColor.black }} />
       <Header
         headerContainerStyle={{ backgroundColor: EColor.black }}
         title={t('Chỉ đường')}

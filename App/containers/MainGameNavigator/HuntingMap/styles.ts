@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: rw(16),
     bottom: rh(8),
     rowGap: rh(4),
+    marginBottom: rh(7),
   },
   buttonContainer: {
     width: '100%',
