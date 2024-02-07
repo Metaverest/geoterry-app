@@ -186,6 +186,30 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           },
         };
       }
+
+      if (action.payload?.conversationUpdateData?.markConversationAsUnRead) {
+        return {
+          ...state,
+          conversations: {
+            ...state.conversations,
+            [conversationToUpdate.id]: {
+              ...conversationToUpdate,
+              participants: conversationToUpdate.participants.map(participant => {
+                return {
+                  ...participant,
+                  unreadMsgCnt:
+                    participant.profileId ===
+                    action.payload?.conversationUpdateData?.markConversationAsUnRead?.profileId
+                      ? participant.unreadMsgCnt +
+                        action.payload?.conversationUpdateData?.markConversationAsUnRead.increaseUnreadMsgCntBy
+                      : participant.unreadMsgCnt,
+                };
+              }),
+            },
+          },
+        };
+      }
+
       if (action.payload?.conversationUpdateData?.updateConversationSnippet) {
         return {
           ...state,
