@@ -2,6 +2,7 @@ export interface IConversationLastMsgResDto {
   snippet: string;
   sentAt: string;
   sentByProfileId: string;
+  id: string;
 }
 
 export enum EMessagePayloadType {
@@ -93,6 +94,10 @@ export interface IReduxUpdateConversation {
   conversationId: string;
   markConversationAsRead?: {
     profileId: string;
+  };
+  markConversationAsUnRead?: {
+    profileId: string;
+    increaseUnreadMsgCntBy: number;
   };
   updateConversationSnippet?: {
     snippet: string;

@@ -14,7 +14,6 @@ const ConversationListener = () => {
   const conversations = useSelector(reduxSelector.getConversations);
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
-  const conversationStat = useSelector(reduxSelector.getConversationStat);
   const profileId = useMemo(() => user?.id, [user?.id]);
   const { t } = useTranslation();
   const conversationIds = useMemo(() => {
@@ -58,6 +57,7 @@ const ConversationListener = () => {
                   profileId: message.recipientId,
                   displayName: user.displayName,
                   logoUrl: user.logoUrl,
+                  unreadMsgCnt: 1,
                 },
               ],
             } as IConversationResDto,
@@ -75,22 +75,20 @@ const ConversationListener = () => {
               sentByProfileId: message.senderId,
               sentAt: message.sentAt,
             },
+            participants: existedConversation.participants.map(participant => ({
+              ...participant,
+              unreadMsgCnt:
+                existedConversation.lastMsg.id !== message.chatServiceId &&
+                participant.profileId === message.recipientId
+                  ? participant.unreadMsgCnt + 1
+                  : participant.unreadMsgCnt,
+            })),
           } as IConversationResDto,
         }),
       );
     },
     [conversations, dispatch, t, user.displayName, user.logoUrl],
   );
-
-  const updateConversationStat = useCallback(() => {
-    dispatch(
-      reduxAppAction.setConversationStat({
-        totalConversationCnt: 0,
-        ...conversationStat,
-        unreadConversationCnt: (conversationStat?.unreadConversationCnt || 0) + 1,
-      }),
-    );
-  }, [conversationStat, dispatch]);
 
   const onValueChange = useCallback(
     (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
@@ -99,7 +97,6 @@ const ConversationListener = () => {
         // If the message`s conversation is not existed in redux store
         if (isNewConversation(message)) {
           mergeConversationToConversations(message);
-          updateConversationStat();
         } else {
           if (shouldUpdateConversation(message)) {
             mergeConversationToConversations(message);
@@ -107,7 +104,7 @@ const ConversationListener = () => {
         }
       });
     },
-    [isNewConversation, mergeConversationToConversations, shouldUpdateConversation, updateConversationStat],
+    [isNewConversation, mergeConversationToConversations, shouldUpdateConversation],
   );
   useEffect(() => {
     let ref: any;
