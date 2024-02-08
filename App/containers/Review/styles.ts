@@ -73,8 +73,6 @@ export const styles = StyleSheet.create({
   },
   containerItemImageStyle: {
     marginRight: rw(8),
-    borderColor: EColor.color_333333,
-    borderWidth: 1,
     borderRadius: rw(5),
   },
 });

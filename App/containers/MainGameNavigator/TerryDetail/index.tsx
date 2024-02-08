@@ -9,7 +9,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
-import { calculateDistance, meterToKilometer } from 'App/utils/convert';
+import {
+  calculateDistance,
+  convertAddressObjectToProvincialReadableAddress,
+  meterToKilometer,
+} from 'App/utils/convert';
 import { CommonActions, StackActions, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
@@ -192,7 +196,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           <View style={styles.containerLocation}>
             <WhiteLocationIcon />
             <CustomText style={styles.terryDistanceAndCategoryText}>
-              {shortenString(terry.address || t('Không rõ'), 40)}
+              {shortenString(convertAddressObjectToProvincialReadableAddress(terry.address) || t('Không rõ'), 40)}
             </CustomText>
             <Rating rate={terry.rating.rate} />
             <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>

@@ -453,6 +453,21 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
 
+    // should directly update metadata if it is baackground job
+    if (
+      (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) &&
+      action.payload?.data?.isBackgroundAction
+    ) {
+      const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+      const updatedTerries = terries.map((terry: ITerryResponseDto) => {
+        if (terry?.id === terryParams.terryId) {
+          return { ...terry, favourite: terryParams.markAsFavourited, saved: terryParams.markAsSaved };
+        }
+        return terry;
+      });
+      yield put(reduxAppAction.setPublicTerries(updatedTerries));
+    }
+
     const terryData: ITerryResponseDto = yield call(
       requestHunterGetTerryById,
       terryParams as IGetTerryByIdParams,
@@ -463,7 +478,10 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
       const path: IRealtimeLocation[] = JSON.parse(terryData?.path as string);
       yield put(reduxAppAction.setCoordinatesPath({ [terryParams?.terryId as string]: path }));
     }
-    if (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) {
+    if (
+      (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) &&
+      !action.payload?.data?.isBackgroundAction
+    ) {
       const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
       const updatedTerries = terries.map((terry: ITerryResponseDto) => {
         if (terry?.id === terryData?.id) {

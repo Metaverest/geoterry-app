@@ -83,20 +83,51 @@ export const convertDateRelativeToNowMsg = (inputDate: string, language?: ELangu
   }
 };
 
+export const convertAddressObjectToProvincialReadableAddress = (addressObject?: {
+  name?: string;
+  subAdministrativeArea?: string;
+  administrativeArea?: string;
+  country?: string;
+}) => {
+  if (!addressObject) {
+    return undefined;
+  }
+  let { name, subAdministrativeArea, administrativeArea } = addressObject;
+  if (subAdministrativeArea === administrativeArea) {
+    subAdministrativeArea = undefined;
+  }
+  // Create an array of address parts, excluding null or undefined values
+  const addressParts = [name, subAdministrativeArea, administrativeArea].filter(
+    part => part !== null && part !== undefined && part !== '(null)',
+  );
+
+  // Join the address parts into a formatted string
+  const formattedAddress = addressParts.join(', ');
+  console.log(formattedAddress);
+
+  return formattedAddress;
+};
+
 export const convertAddressObjectToString = (addressObject: Address) => {
   if (!addressObject) {
-    return ''; // Return an empty string if the input is not provided or null
+    return { fullAddress: '' }; // Return an empty string if the input is not provided or null
   }
 
-  const { name, thoroughfare, locality, administrativeArea, postalCode, country } = addressObject;
+  const { name, subAdministrativeArea, administrativeArea, country } = addressObject;
 
   // Create an array of address parts, excluding null or undefined values
-  const addressParts = [name, thoroughfare, locality, administrativeArea, postalCode, country].filter(
+  const addressParts = [name, subAdministrativeArea, administrativeArea, country].filter(
     part => part !== null && part !== undefined && part !== '(null)',
   );
 
   // Join the address parts into a formatted string
   const formattedAddress = addressParts.join(', ');
 
-  return formattedAddress;
+  return {
+    name: name !== '(null)' ? name : undefined,
+    subAdministrativeArea: subAdministrativeArea !== '(null)' ? subAdministrativeArea : undefined,
+    administrativeArea: administrativeArea !== '(null)' ? administrativeArea : undefined,
+    country: country !== '(null)' ? country : undefined,
+    fullAddress: formattedAddress,
+  };
 };

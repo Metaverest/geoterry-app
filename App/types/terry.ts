@@ -31,7 +31,12 @@ export interface ITerryResponseDto {
   saved?: boolean;
   favourite?: boolean;
   distance?: number;
-  address?: string;
+  address?: {
+    name?: string;
+    subAdministrativeArea?: string;
+    administrativeArea?: string;
+    country?: string;
+  };
   categories?: ITerryCategoryResDto[];
   rating: {
     rate: number;
@@ -144,7 +149,12 @@ export interface ITerryInputDto {
   categoryIds?: string[];
   location: ITerryLocationDto;
   metadata: ITerryMetadataDto;
-  address?: string;
+  address?: {
+    name?: string;
+    subAdministrativeArea?: string;
+    administrativeArea?: string;
+    country?: string;
+  };
 }
 export interface IGetCheckinsOfTerryParams extends ITerryCheckinsParams {
   includeProfileData?: boolean;

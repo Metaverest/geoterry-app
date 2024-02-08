@@ -52,6 +52,8 @@ export default function DetailHistory() {
         {params.terry && (
           <TreasureMarker
             isSelect
+            deselectTerry={() => {}}
+            selectTerry={() => {}}
             key={params.terry.id}
             treasure={{ ...params.terry, isAvailable: true, checkedIn: true }}
           />
