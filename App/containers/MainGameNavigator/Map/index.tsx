@@ -333,7 +333,7 @@ const MapScreen = () => {
         </View>
       ) : null}
 
-      {selectedTerry ? <TerryPreviewBoard terry={selectedTerry} userLocation={userLocation} mapRef={mapRef} /> : null}
+      {selectedTerry ? <TerryPreviewBoard terry={selectedTerry} userLocation={userLocation} /> : null}
 
       <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon
