@@ -19,7 +19,7 @@ import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { ITerryResponseDto, Location } from 'App/types/terry';
-import { calculateDistance, calculateMidpoint } from 'App/utils/convert';
+import { calculateDistance } from 'App/utils/convert';
 import { first, isEmpty, isEqual, last } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -104,7 +104,7 @@ const HuntingMapScreen = () => {
   }, []);
 
   const onUserLocationChange = useCallback(
-    (location: IRealtimeLocation) => {
+    (location?: IRealtimeLocation) => {
       if (
         location &&
         !isEqual(
@@ -213,7 +213,11 @@ const HuntingMapScreen = () => {
       <MapView
         ref={mapViewRef}
         onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
-        region={calculateMidpoint(terry?.location || { latitude: 0, longitude: 0 }, currentLocation)}
+        region={{
+          ...DEFAULT_LOCATION,
+          latitude: terry?.location.latitude || 0,
+          longitude: terry?.location.longitude || 0,
+        }}
         showsCompass={false}
         style={styles.mapContainer}
         showsUserLocation={true}>
