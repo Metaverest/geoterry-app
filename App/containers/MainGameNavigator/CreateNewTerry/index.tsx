@@ -29,11 +29,12 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
-import MapView, { LatLng, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
 import { ENavigationScreen } from 'App/enums/navigation';
+import _ from 'lodash';
 
 interface IFormValues {
   name: string;
@@ -43,7 +44,12 @@ interface IFormValues {
   size?: ICustomDropdownOption;
   difficulty?: ICustomDropdownOption;
   photoUrls?: string[];
-  address?: string;
+  address?: {
+    name?: string;
+    subAdministrativeArea?: string;
+    administrativeArea?: string;
+    country?: string;
+  };
   description?: string;
 }
 
@@ -55,7 +61,7 @@ const initialValues: IFormValues = {
   size: undefined,
   difficulty: undefined,
   photoUrls: [],
-  address: '',
+  address: {},
   description: '',
 };
 
@@ -72,7 +78,13 @@ const CreateNewTerryScreen = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigation = useNavigation();
-  const [address, setAddress] = useState<string>('');
+  const [address, setAddress] = useState<{
+    name?: string;
+    subAdministrativeArea?: string;
+    administrativeArea?: string;
+    country?: string;
+    fullAddress: string;
+  }>({ fullAddress: '' });
   const [currentLocation, setCurrentLocation] = useState<IRealtimeLocation>(DEFAULT_LOCATION);
   const [terryLocation, setTerryLocation] = useState<ITerryLocationDto>(DEFAULT_LOCATION);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState<boolean>(false);
@@ -109,14 +121,14 @@ const CreateNewTerryScreen = () => {
             isAvailable: true,
             location: { latitude: terryLocation.latitude, longitude: terryLocation.longitude },
             metadata: metadata,
-            address: address,
+            address: _.omit(address, ['fullAddress']),
           },
           navigation,
           { t: t },
         ),
       );
     },
-    [navigation, dispatch, t, address, terryLocation],
+    [dispatch, terryLocation.latitude, terryLocation.longitude, address, navigation, t],
   );
   const getShouldDisableButton = useCallback((formValues: IFormValues) => {
     return (
@@ -215,6 +227,10 @@ const CreateNewTerryScreen = () => {
       if (!currentLocation.isDefault) {
         return;
       }
+      setTerryLocation({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
       if (
         !isEqual(
           { latitude: location.latitude, longitude: location.longitude },
@@ -252,13 +268,6 @@ const CreateNewTerryScreen = () => {
       } catch (error) {}
     })();
   }, [terryLocation]);
-
-  const onDragMarkerEnd = useCallback((coordinate: LatLng) => {
-    setTerryLocation({
-      latitude: coordinate.latitude,
-      longitude: coordinate.longitude,
-    });
-  }, []);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -378,7 +387,7 @@ const CreateNewTerryScreen = () => {
                       title={t('Địa chỉ')}
                       error={shouldDisplayError ? errors.hint : ''}
                       placeholder={t('Nhập địa chỉ kho báu')}
-                      value={address}
+                      value={address.fullAddress}
                     />
                   </View>
                   <View style={styles.mapContainer}>
@@ -391,12 +400,10 @@ const CreateNewTerryScreen = () => {
                       }}
                       showsUserLocation={true}
                       onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
+                      followsUserLocation={true}
                       style={styles.map}
                       initialRegion={DEFAULT_LOCATION}>
-                      <Marker
-                        draggable={true}
-                        onDragEnd={event => onDragMarkerEnd(event.nativeEvent.coordinate)}
-                        coordinate={{ latitude: terryLocation.latitude, longitude: terryLocation.longitude }}>
+                      <Marker coordinate={{ latitude: terryLocation.latitude, longitude: terryLocation.longitude }}>
                         <AddressSelectionMarkerIcon />
                       </Marker>
                     </MapView>

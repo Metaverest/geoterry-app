@@ -68,7 +68,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
           )}
           <View style={styles.ml16}>
             <CustomText style={styles.nameUser}>{profileToDisplay?.displayName}</CustomText>
-            <CustomText style={styles.biography}>{profileToDisplay?.bio || t('Người này chưa tạo Bio')}</CustomText>
+            {profileToDisplay?.bio ? <CustomText style={styles.biography}>{profileToDisplay?.bio}</CustomText> : null}
             <View style={styles.contentRewardPoints}>
               <RewardPointsIcon />
               <CustomText style={styles.textRewardPoints}>{t('Điểm tích luỹ')}:</CustomText>

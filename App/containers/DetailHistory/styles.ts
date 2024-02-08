@@ -53,9 +53,7 @@ export const styles = StyleSheet.create({
     marginTop: rh(16),
   },
   image: {
-    borderWidth: 1,
     borderRadius: rw(5),
-    borderColor: EColor.color_333333,
     backgroundColor: EColor.color_00000080,
     marginRight: rw(10),
   },

@@ -19,7 +19,7 @@ import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
 import { ITerryResponseDto, Location } from 'App/types/terry';
-import { calculateDistance } from 'App/utils/convert';
+import { calculateDistance, calculateMidpoint } from 'App/utils/convert';
 import { first, isEmpty, isEqual, last } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -213,15 +213,11 @@ const HuntingMapScreen = () => {
       <MapView
         ref={mapViewRef}
         onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
-        region={{
-          ...DEFAULT_LOCATION,
-          latitude: terry?.location.latitude || 0,
-          longitude: terry?.location.longitude || 0,
-        }}
+        region={calculateMidpoint(terry?.location || { latitude: 0, longitude: 0 }, currentLocation)}
         showsCompass={false}
         style={styles.mapContainer}
         showsUserLocation={true}>
-        {terry && <TreasureMarker key={terry.id} treasure={terry} />}
+        {terry && <TreasureMarker key={terry.id} treasure={terry} deselectTerry={() => {}} selectTerry={() => {}} />}
         {!isEmpty(coordinatesPathOfTerry) && (
           <Marker
             coordinate={{

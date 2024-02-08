@@ -36,6 +36,7 @@ export const styles = StyleSheet.create({
   textRewardPoints: {
     color: EColor.color_999999,
     fontSize: rh(12),
+    marginLeft: -rw(0.5),
     fontWeight: '500',
     marginHorizontal: rw(4),
     lineHeight: rh(18),
