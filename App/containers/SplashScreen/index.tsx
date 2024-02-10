@@ -9,16 +9,16 @@ import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { styles } from './styles';
-import { EarthIcon, OnboardingBackgroundImage } from 'App/components/image';
+import { ChecklyLine, OnboardingBackgroundImage } from 'App/components/image';
 import CustomText from 'App/components/CustomText';
-import LinearGradient from 'react-native-linear-gradient';
-import { EColor } from 'App/enums/color';
 import messaging from '@react-native-firebase/messaging';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
+import { useTranslation } from 'react-i18next';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -34,12 +34,9 @@ const SplashScreen = () => {
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={OnboardingBackgroundImage}>
       <View style={styles.content}>
-        <CustomText style={styles.title}>Terriana</CustomText>
-        <LinearGradient colors={[EColor.color_547AFF, EColor.color_4551DE]} style={styles.containerImage}>
-          <Image source={EarthIcon} style={styles.logo} resizeMode="contain" />
-        </LinearGradient>
+        <Image source={ChecklyLine} style={styles.logo} resizeMode="contain" />
       </View>
-      <CustomText style={styles.textFooter}>Powered by Metaverest</CustomText>
+      <CustomText style={styles.textFooter}>{t('Powered by Metaverest')}</CustomText>
     </CustomSafeArea>
   );
 };

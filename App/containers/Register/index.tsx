@@ -84,7 +84,7 @@ const RegisterScreen = () => {
         <Image style={styles.image} source={EarthIcon} />
         <CustomText style={styles.createAccountTitle}>{t('Tạo tài khoản')}</CustomText>
         <CustomText style={styles.createAccountSubTitle}>
-          {t('Gia nhập cộng đồng Terriana để khám phá và thu thập kho báu của riêng bạn!')}
+          {t('Gia nhập cộng đồng Checkly để khám phá và thu thập kho báu của riêng bạn!')}
         </CustomText>
         <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
           {({ handleSubmit, values, setFieldValue, errors, submitCount }) => {

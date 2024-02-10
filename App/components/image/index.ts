@@ -1,4 +1,6 @@
 export const EarthIcon = require('../../media/Earth.png');
+export const ChecklySolid = require('../../media/ChecklySolid.png');
+export const ChecklyLine = require('../../media/ChecklyLine.png');
 export const OnboardingBackgroundImage = require('../../media/OnboardingBackground.png');
 export const PermissionLocationIcon = require('../../media/PermissionLocationIcon.png');
 export const CreateProfileSuccessfullyAnimation = require('../../media/CreateProfileSuccessfully.json');

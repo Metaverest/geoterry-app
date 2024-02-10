@@ -42,7 +42,7 @@ const PermissionLocationScreen = () => {
       <Header shouldHideBackButton rightButton={<RightButton />} />
       <CustomText style={styles.title}>{`${user?.displayName},\n${t('bạn đang ở đâu?')}`}</CustomText>
       <CustomText style={styles.subTitle}>
-        {t('Cho phép Terriana truy cập vào vị trí của bạn để mang tới trải nghiệm tốt hơn nhé!')}
+        {t('Cho phép Checkly truy cập vào vị trí của bạn để mang tới trải nghiệm tốt hơn nhé!')}
       </CustomText>
       <Image style={styles.image} source={PermissionLocationIcon} />
       <CustomText style={styles.footerText}>

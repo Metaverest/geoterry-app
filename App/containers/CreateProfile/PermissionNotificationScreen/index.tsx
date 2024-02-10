@@ -51,7 +51,7 @@ const PermissionNotificationScreen = () => {
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header shouldHideBackButton rightButton={<RightButton />} />
       <CustomText style={styles.title}>{t('Cho phép bật thông báo')}</CustomText>
-      <CustomText style={styles.subTitle}>{t('Cho phép Terriana gửi thông báo ứng dụng về máy của bạn!')}</CustomText>
+      <CustomText style={styles.subTitle}>{t('Cho phép Checkly gửi thông báo ứng dụng về máy của bạn!')}</CustomText>
       <Image style={styles.image} source={PermissionNotificationImage} />
       <View style={styles.buttonContainer}>
         <CustomButton
