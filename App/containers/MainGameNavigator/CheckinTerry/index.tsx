@@ -139,8 +139,8 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
                 </CustomText>
                 <CustomText style={styles.checkInSubtitle}>
                   {isCannotFindTerry
-                    ? t('Terriana rất tiếc về trải nghiệm này, hãy để lại lời nhắn cho Builder để sớm khắc phục.')
-                    : t('Chia sẻ cảm nhận với Terriana cùng với cộng đồng của chúng tôi!')}
+                    ? t('Checkly rất tiếc về trải nghiệm này, hãy để lại lời nhắn cho Builder để sớm khắc phục.')
+                    : t('Chia sẻ cảm nhận với cùng với cộng đồng Checkly!')}
                 </CustomText>
                 <View style={styles.terryInputContainer}>
                   <CustomInput

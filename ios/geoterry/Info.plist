@@ -5,7 +5,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>en</string>
 		<key>CFBundleDisplayName</key>
-		<string>Terry</string>
+		<string>Checkly</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -38,13 +38,13 @@
 		<key>NSCameraUsageDescription</key>
 		<string>Your description for camera access</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>Geoterry uses this to show your current location on our map</string>
+		<string>Checkly uses this to show your current location on our map</string>
 		<key>NSLocationAlwaysUsageDescription</key>
-		<string>Geoterry uses this to show your current location on our map</string>
+		<string>Checkly uses this to show your current location on our map</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Geoterry uses this to show your current location on our map</string>
+		<string>Checkly uses this to show your current location on our map</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Your description for photo library access</string>
+		<string>Checkly uses this to access your photo library</string>
 		<key>UIAppFonts</key>
 		<array>
 			<string>Montserrat-Black.ttf</string>

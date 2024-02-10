@@ -134,7 +134,7 @@ const MenuScreen = () => {
         RenderIcon: () => <SecurityPolicyIcon />,
       },
       {
-        title: t('Về Terriana'),
+        title: t('Về Checkly'),
         onPress: () => {
           navigation.dispatch(CommonActions.navigate(ESettingNavigator.ABOUT_SCREEN));
         },

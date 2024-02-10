@@ -13,23 +13,9 @@ export const styles = StyleSheet.create({
   content: {
     alignItems: 'center',
   },
-  title: {
-    color: EColor.color_FAFAFA,
-    fontSize: rh(18),
-    fontWeight: '700',
-    lineHeight: rh(26),
-  },
   logo: {
-    width: rw(76),
-    height: rw(76),
-    borderRadius: rh(12),
-  },
-  containerImage: {
-    width: rw(76),
-    height: rw(76),
-    borderRadius: rh(12),
-    marginTop: rh(16),
-    justifyContent: 'center',
+    width: rw(150),
+    height: rw(150),
   },
   textFooter: {
     fontSize: rh(10),

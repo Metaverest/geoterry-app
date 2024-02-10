@@ -84,7 +84,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         <Image style={styles.image} source={EarthIcon} />
         <CustomText style={styles.createAccountTitle}>{t('Xin chào')}</CustomText>
         <CustomText style={styles.createAccountSubTitle}>
-          {t('Chào mừng bạn đã quay trở lại, Terriana đã nhớ bạn rất nhiều.')}
+          {t('Chào mừng bạn đã quay trở lại, Checkly đã nhớ bạn rất nhiều.')}
         </CustomText>
         <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
           {({ handleSubmit, values, submitCount, setFieldValue, errors }) => {

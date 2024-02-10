@@ -74,7 +74,7 @@ const QRScreen = () => {
         <View style={styles.boxImageQR}>
           {uriQR && <Image source={{ uri: uriQR }} style={styles.imgQR} resizeMode="contain" />}
         </View>
-        <CustomText style={styles.title}>{t('Terriana')}</CustomText>
+        <CustomText style={styles.title}>{t('Checkly')}</CustomText>
         <CustomText style={styles.nameUser}>{user.displayName}</CustomText>
         <View style={styles.buttonsContainer}>
           <CustomButtonIcon

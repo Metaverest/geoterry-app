@@ -45,7 +45,7 @@ const OnboardingScreen = () => {
       </View>
       <View style={styles.main}>
         <Image style={styles.image} source={EarthIcon} />
-        <CustomText style={styles.onBoardingTitle}>Terriana</CustomText>
+        <CustomText style={styles.onBoardingTitle}>Checkly</CustomText>
         <CustomText style={styles.onBoardingSubTitle}>
           {t('Ready to Explore? Hunt for Treasures in the \n Real World.')}
         </CustomText>

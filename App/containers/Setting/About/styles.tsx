@@ -6,17 +6,25 @@ export const styles = StyleSheet.create({
   container: {
     backgroundColor: 'transparent',
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: rw(16),
+    paddingHorizontal: rw(20),
   },
   aboutContent: {
     color: EColor.color_FAFAFA,
     fontWeight: '400',
     lineHeight: rh(18),
     fontSize: rh(12),
-    textAlign: 'justify',
+  },
+  aboutHeadline: {
+    marginVertical: rh(15),
+    color: EColor.color_FAFAFA,
+    fontWeight: '600',
+    lineHeight: rh(18),
+    fontSize: rh(14),
   },
   aboutContainer: {
     marginTop: rh(68),
+  },
+  mb50: {
+    marginBottom: rh(50),
   },
 });

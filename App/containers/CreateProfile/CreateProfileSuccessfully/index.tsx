@@ -20,7 +20,7 @@ const CreateProfileSuccessScreen = () => {
         loop={false} // Set to true if you want the animation to loop
       />
       <CustomText style={styles.title}>{t('Tạo hồ sơ thành công!')}</CustomText>
-      <CustomText style={styles.subTitle}>{t('Chào mừng bạn đã gia nhập cộng đồng của Terriana.')}</CustomText>
+      <CustomText style={styles.subTitle}>{t('Chào mừng bạn đã gia nhập cộng đồng Checkly.')}</CustomText>
     </CustomSafeArea>
   );
 };
