@@ -36,6 +36,7 @@ const defaultAppState: IAppState = {
   messages: {},
   selectedConversationId: undefined,
   conversationStat: {},
+  nearbyPlayerLocation: {},
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
@@ -277,6 +278,14 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         selectedConversationId: action?.payload?.selectedConversationId,
+      };
+    case EReduxAppAction.SET_NEARBY_PLAYER_LOCATION:
+      return {
+        ...state,
+        nearbyPlayerLocation: {
+          ...state?.nearbyPlayerLocation,
+          ...action?.payload?.nearbyPlayerLocation,
+        },
       };
     default:
       return state;
