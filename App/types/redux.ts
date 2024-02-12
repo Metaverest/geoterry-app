@@ -13,6 +13,7 @@ import {
 import { IRealtimeLocation } from '.';
 import { ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import { IConversationResDto, IReduxUpdateConversation, IMessageResDto, IFilterConversationStatRes } from './chat';
+import { LatLng } from 'react-native-maps';
 
 export interface IReduxAction<T, P = undefined> {
   type: T;
@@ -65,6 +66,7 @@ export interface IAppState {
   selectedConversationId?: string;
   conversationUpdateData?: IReduxUpdateConversation;
   conversationStat?: Partial<IFilterConversationStatRes>;
+  nearbyPlayerLocation?: Record<string, LatLng>;
 }
 
 export interface IRootState {

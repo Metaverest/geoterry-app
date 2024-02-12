@@ -44,9 +44,9 @@ import useUserLocation from 'App/hooks/useUserLocation';
 import usePrevious from 'App/hooks/usePrevious';
 import useIsSaveBatterryMode from 'App/hooks/useIsSaveBatterryMode';
 import UserMarker from './UserMarker';
-import useNearbyPlayers from 'App/hooks/useNearbyPlayers';
 import PlayerMarker from './PlayerMarker';
 import { ESagaAppAction } from 'App/enums/redux';
+import useBreakTimeEffect from 'App/hooks/useDelayedEffect';
 
 const MapScreen = () => {
   let numberOfFilters = useRef(0);
@@ -57,7 +57,7 @@ const MapScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const user = useSelector(reduxSelector.getUser);
-  const nearbyPlayers = useSelector(reduxSelector.getNearbyPlayers);
+  const playerLocationList = useSelector(reduxSelector.getNearbyPlayerLocation);
   const mapRef = useRef<MapView>(null);
   const regionToGetTerryRef = useRef<LatLng>();
   const { onUserLocationChange, userLocation } = useUserLocation();
@@ -71,6 +71,7 @@ const MapScreen = () => {
   const isBuilderNamespace = useIsBuilderNamespace();
   const insets = useSafeAreaInsets();
   const [loadedUserLocation, setLoadedUserLocation] = useState(false);
+  const [updatedUserLocation, setUpdatedUserLocation] = useState(false);
   useRequestNotificationPermission();
 
   const [canFetchTerries, setCanFetchTerries] = useState(true);
@@ -231,13 +232,17 @@ const MapScreen = () => {
     return unsubscribe;
   }, [navigation, params, selectTerry]);
 
-  // TODO need to reduce re-rendering in this screen, it caused useNearbyPlayers re-trigger RTDB changes listeners
-  useEffect(() => {
-    if (userLocation) {
-      dispatch(sagaUserAction.getUserNearbyPlayers(userLocation, navigation));
-    }
-  }, [dispatch, navigation, userLocation]);
-  const playerLocationList = useNearbyPlayers(nearbyPlayers?.map(nearbyPlayer => nearbyPlayer.profileId) || []);
+  // update user current location in backend every 5 mins
+  useBreakTimeEffect(
+    () => {
+      if (userLocation) {
+        dispatch(sagaUserAction.getUserNearbyPlayers(userLocation, navigation));
+        setUpdatedUserLocation(true);
+      }
+    },
+    [dispatch, navigation, userLocation],
+    { skipBreakTime: !updatedUserLocation, breakTime: 5 * 60 * 1000 },
+  );
 
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView>
@@ -263,9 +268,10 @@ const MapScreen = () => {
             deselectTerry={deselectTerry}
           />
         ))}
-        {Object.keys(playerLocationList)?.map(profileId => (
-          <PlayerMarker key={profileId} userLocation={playerLocationList[profileId]} />
-        ))}
+        {playerLocationList &&
+          Object.keys(playerLocationList)?.map(profileId => (
+            <PlayerMarker key={profileId} userLocation={playerLocationList[profileId]} />
+          ))}
       </MapView>
 
       {!selectedTerry ? (

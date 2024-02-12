@@ -27,6 +27,7 @@ import HuntingMapScreen from './HuntingMap';
 import Chat from '../Chat';
 import ChatView from '../Chat/ChatView';
 import ConversationListener from '../Chat/ChatView/EventListener/ConversationListener';
+import NearbyPlayerLocationListener from './EventListener/NearbyPlayerListener';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -148,6 +149,7 @@ const MainGameNavigator = () => {
         <Stack.Screen name={EMainGameScreen.CHAT_VIEW_SCREEN} component={ChatView} options={{ headerShown: false }} />
       </Stack.Navigator>
       <ConversationListener />
+      <NearbyPlayerLocationListener />
     </>
   );
 };

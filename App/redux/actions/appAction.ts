@@ -17,6 +17,7 @@ import {
   ITerryFilterInputDto,
 } from 'App/types/terry';
 import { ICreateAccountDto, IUser } from 'App/types/user';
+import { LatLng } from 'react-native-maps';
 
 const reduxAppAction = {
   setLanguage: (language: ELanguageCode) => {
@@ -161,6 +162,12 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_SELECTED_CONVERSATION_ID,
       payload: { selectedConversationId: data },
+    };
+  },
+  setNearbyPlayerLocation: (data: Record<string, LatLng>) => {
+    return {
+      type: EReduxAppAction.SET_NEARBY_PLAYER_LOCATION,
+      payload: { nearbyPlayerLocation: data },
     };
   },
 };
