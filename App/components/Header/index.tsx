@@ -10,8 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByWidth as rw } from 'App/helpers/common';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
-import { EImageSize, getResizedImageUrl } from 'App/utils/images';
-import FallbackImage from '../CustomImage';
+import CustomImage from '../CustomImage';
 
 const Header = ({
   title,
@@ -74,11 +73,7 @@ const Header = ({
                   navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: profileId }));
               }}>
               {avatar ? (
-                <FallbackImage
-                  imageUrl={getResizedImageUrl(avatar, EImageSize.SIZE_100)}
-                  fallbackUrl={avatar}
-                  style={styles.avatar}
-                />
+                <CustomImage imageUrl={avatar} style={styles.avatar} />
               ) : (
                 <View style={styles.avatar}>
                   <MapMarkerUserDefault width={rw(36)} height={rw(36)} />

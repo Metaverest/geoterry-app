@@ -9,7 +9,7 @@ import ImageView from 'react-native-image-viewing';
 import { ImageSource } from 'react-native-image-viewing/dist/@types';
 import DismissCircleIcon from 'App/media/DismissCircleIcon';
 import { EImageSize, getResizedImageUrl } from 'App/utils/images';
-import FallbackImage from '../CustomImage';
+import CustomImage from '../CustomImage';
 
 interface Props {
   images: string[];
@@ -39,12 +39,7 @@ const MultipleImagesOnLine = (props: Props) => {
                 setIndexImage(index);
                 setIsVisible(true);
               }}>
-              <FallbackImage
-                imageUrl={getResizedImageUrl(item, EImageSize.SIZE_100)}
-                fallbackUrl={item}
-                style={styles.image}
-                resizeMode="cover"
-              />
+              <CustomImage imageUrl={item} style={styles.image} resizeMode="cover" />
               {props.showIconMaximize && <ArrowMaximize style={styles.iconArrowMaximize} />}
             </TouchableOpacity>
           ) : index === props.numColumns - 1 ? (
@@ -54,12 +49,7 @@ const MultipleImagesOnLine = (props: Props) => {
                 setIndexImage(index);
                 setIsVisible(true);
               }}>
-              <FallbackImage
-                imageUrl={getResizedImageUrl(item, EImageSize.SIZE_100)}
-                fallbackUrl={item}
-                style={styles.image}
-                resizeMode="cover"
-              />
+              <CustomImage imageUrl={item} style={styles.image} resizeMode="cover" />
               {props.images.length > props.numColumns && (
                 <View style={styles.lastImage}>
                   <CustomText style={styles.textLastImage}>+{props.images.length - (props.numColumns - 1)}</CustomText>
@@ -111,12 +101,7 @@ const MultipleImagesOnLine = (props: Props) => {
                     setIndexImage(index);
                     setIsVisible(true);
                   }}>
-                  <FallbackImage
-                    imageUrl={getResizedImageUrl(url, EImageSize.SIZE_100)}
-                    fallbackUrl={url}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
+                  <CustomImage imageUrl={url} style={styles.image} resizeMode="contain" />
                   {props.showIconMaximize && <ArrowMaximize style={styles.iconArrowMaximize} />}
                 </TouchableOpacity>
                 <TouchableOpacity

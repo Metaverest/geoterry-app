@@ -17,8 +17,7 @@ import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-nat
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import { AppBackgroundImage } from 'App/components/image';
-import { getResizedImageUrl, EImageSize } from 'App/utils/images';
-import FallbackImage from 'App/components/CustomImage';
+import CustomImage from 'App/components/CustomImage';
 
 const ChooseAvatarScreen = () => {
   const { t } = useTranslation();
@@ -59,16 +58,7 @@ const ChooseAvatarScreen = () => {
       <Header rightButton={<RightButton />} />
       <CustomText style={styles.uploadAvatarTitle}>{t('Tải lên ảnh đại diện')}</CustomText>
       <View style={styles.avatarIconContainer}>
-        {userAvatar ? (
-          <FallbackImage
-            imageUrl={getResizedImageUrl(userAvatar, EImageSize.SIZE_100)}
-            fallbackUrl={userAvatar}
-            resizeMode="cover"
-            style={styles.image}
-          />
-        ) : (
-          <AvatarIcon />
-        )}
+        {userAvatar ? <CustomImage imageUrl={userAvatar} resizeMode="cover" style={styles.image} /> : <AvatarIcon />}
       </View>
       <View style={styles.groupButtonContainer}>
         <View style={styles.buttonContainer}>
