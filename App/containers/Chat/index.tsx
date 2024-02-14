@@ -22,8 +22,7 @@ import { shortenString } from 'App/helpers/text';
 import { MAX_CONVERSATION_SNIPPET_LENGTH } from 'App/constants/common';
 import { ESagaAppAction } from 'App/enums/redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { getResizedImageUrl, EImageSize } from 'App/utils/images';
-import FallbackImage from 'App/components/CustomImage';
+import CustomImage from 'App/components/CustomImage';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -60,12 +59,7 @@ const Chat = () => {
             );
           }}>
           {userFriend?.logoUrl ? (
-            <FallbackImage
-              imageUrl={getResizedImageUrl(userFriend.logoUrl, EImageSize.SIZE_100)}
-              fallbackUrl={userFriend.logoUrl}
-              style={styles.avatar}
-              resizeMode="cover"
-            />
+            <CustomImage imageUrl={userFriend.logoUrl} style={styles.avatar} resizeMode="cover" />
           ) : (
             <View style={styles.avatar}>
               <MapMarkerUserDefault width={rh(48)} height={rh(48)} />

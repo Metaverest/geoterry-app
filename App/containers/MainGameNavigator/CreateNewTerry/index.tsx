@@ -35,8 +35,7 @@ import * as Yup from 'yup';
 import { styles } from './styles';
 import { ENavigationScreen } from 'App/enums/navigation';
 import _ from 'lodash';
-import { getResizedImageUrl, EImageSize } from 'App/utils/images';
-import FallbackImage from 'App/components/CustomImage';
+import CustomImage from 'App/components/CustomImage';
 
 interface IFormValues {
   name: string;
@@ -422,12 +421,7 @@ const CreateNewTerryScreen = () => {
                       {values.photoUrls?.map((url, index) => {
                         return (
                           <View key={index} style={styles.photoItemContainer}>
-                            <FallbackImage
-                              imageUrl={getResizedImageUrl(url, EImageSize.SIZE_100)}
-                              fallbackUrl={url}
-                              resizeMode="cover"
-                              style={styles.image}
-                            />
+                            <CustomImage imageUrl={url} resizeMode="cover" style={styles.image} />
                             <TouchableOpacity
                               style={styles.dismissCircleIconButton}
                               onPress={() => removeImage(setFieldValue, values.photoUrls, url)}>

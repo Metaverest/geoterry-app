@@ -19,8 +19,7 @@ import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { EColor } from 'App/enums/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { isNil } from 'lodash';
-import { getResizedImageUrl, EImageSize } from 'App/utils/images';
-import FallbackImage from 'App/components/CustomImage';
+import CustomImage from 'App/components/CustomImage';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -59,12 +58,7 @@ const Review = () => {
     ({ item }: { item: IResponseGetCheckinsOfTerry }) => {
       return (
         <View style={styles.containerItem}>
-          <FallbackImage
-            imageUrl={getResizedImageUrl(item.profile.logoUrl || '', EImageSize.SIZE_100)}
-            fallbackUrl={item.profile.logoUrl || ''}
-            style={styles.avatar}
-            resizeMode="cover"
-          />
+          <CustomImage imageUrl={item.profile.logoUrl || ''} style={styles.avatar} resizeMode="cover" />
           <View style={styles.flex}>
             <TouchableOpacity
               onPress={() =>

@@ -24,8 +24,8 @@ import { convertDateFormatOnlyDate } from 'App/utils/convert';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
 import { IUser } from 'App/types/user';
-import { getResizedImageUrl, EImageSize } from 'App/utils/images';
-import FallbackImage from 'App/components/CustomImage';
+import { EImageSize } from 'App/utils/images';
+import CustomImage from 'App/components/CustomImage';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -64,9 +64,9 @@ const ProfileScreen = ({ route }: { route: any }) => {
       <View style={styles.content}>
         <View style={styles.row}>
           {profileToDisplay?.logoUrl ? (
-            <FallbackImage
-              imageUrl={getResizedImageUrl(profileToDisplay.logoUrl, EImageSize.SIZE_500)}
-              fallbackUrl={profileToDisplay.logoUrl}
+            <CustomImage
+              imageSize={EImageSize.SIZE_500}
+              imageUrl={profileToDisplay.logoUrl}
               style={styles.avatarUser}
               resizeMode="cover"
             />
