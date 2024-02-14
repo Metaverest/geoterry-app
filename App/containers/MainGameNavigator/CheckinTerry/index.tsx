@@ -163,7 +163,7 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
                   />
                   {!isEmpty(values.photoUrls) && (
                     <MultipleImagesOnLine
-                      images={values.photoUrls as string[]}
+                      images={values.photoUrls || []}
                       containerItemImageStyle={styles.containerItemImageStyle}
                       containerImageStyle={styles.containerImageStyle}
                       canRemoveImage

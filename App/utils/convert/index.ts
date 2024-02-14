@@ -103,7 +103,6 @@ export const convertAddressObjectToProvincialReadableAddress = (addressObject?: 
 
   // Join the address parts into a formatted string
   const formattedAddress = addressParts.join(', ');
-  console.log(formattedAddress);
 
   return formattedAddress;
 };

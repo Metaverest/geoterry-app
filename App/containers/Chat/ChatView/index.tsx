@@ -23,6 +23,7 @@ import MessageListener from './EventListener/MessageListener';
 import { EPublicReadProfileBy } from 'App/enums';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { ESagaAppAction } from 'App/enums/redux';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
 
 const NUMBER_OF_SKELETONS = 6;
 
@@ -90,7 +91,7 @@ const ChatView = () => {
           createdAt: new Date(message.sentAt),
           user: {
             _id: message.senderId,
-            avatar: userFriend?.logoUrl,
+            avatar: userFriend?.logoUrl ? getResizedImageUrl(userFriend.logoUrl, EImageSize.SIZE_100) : undefined,
           },
         } as IMessage),
     );

@@ -89,7 +89,7 @@ export default function DetailHistory() {
       </View>
 
       <MultipleImagesOnLine
-        images={params.photoUrls}
+        images={params.photoUrls || []}
         containerImageStyle={styles.containerImage}
         containerItemImageStyle={styles.image}
         numColumns={5}

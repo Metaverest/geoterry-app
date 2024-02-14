@@ -98,7 +98,7 @@ export interface IResponseTerryCheckins {
   profileId: string;
   checkinAt: string;
   reviewText: string;
-  photoUrls: string[];
+  photoUrls?: string[];
   rate: number;
   location: Location;
   createdAt: string;

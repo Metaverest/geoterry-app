@@ -1,4 +1,4 @@
-import { Image, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React, { useCallback } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
@@ -23,6 +23,8 @@ import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import useClearError from 'App/hooks/useClearError';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 interface IFormValues {
   name: string;
@@ -98,7 +100,12 @@ const EditProfileScreen = () => {
       <Header title={t('Chỉnh sửa thông tin')} />
       <View style={styles.content}>
         {user.logoUrl ? (
-          <Image source={{ uri: user.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
+          <FallbackImage
+            imageUrl={getResizedImageUrl(user.logoUrl, EImageSize.SIZE_100)}
+            fallbackUrl={user.logoUrl}
+            style={styles.avatarUser}
+            resizeMode="cover"
+          />
         ) : (
           <MapMarkerUserDefault width={rw(72)} height={rh(72)} />
         )}

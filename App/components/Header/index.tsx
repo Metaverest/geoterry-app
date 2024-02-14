@@ -3,13 +3,15 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EMainGameScreen } from 'App/enums/navigation';
 import BackIcon from 'App/media/BackIcon';
 import { useCallback, useLayoutEffect } from 'react';
-import { StyleProp, View, ViewStyle, TouchableOpacity, Image } from 'react-native';
+import { StyleProp, View, ViewStyle, TouchableOpacity } from 'react-native';
 import CustomText from '../CustomText';
 import { styles } from './styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByWidth as rw } from 'App/helpers/common';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
+import { EImageSize, getResizedImageUrl } from 'App/utils/images';
+import FallbackImage from '../CustomImage';
 
 const Header = ({
   title,
@@ -72,7 +74,11 @@ const Header = ({
                   navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: profileId }));
               }}>
               {avatar ? (
-                <Image source={{ uri: avatar }} style={styles.avatar} />
+                <FallbackImage
+                  imageUrl={getResizedImageUrl(avatar, EImageSize.SIZE_100)}
+                  fallbackUrl={avatar}
+                  style={styles.avatar}
+                />
               ) : (
                 <View style={styles.avatar}>
                   <MapMarkerUserDefault width={rw(36)} height={rw(36)} />

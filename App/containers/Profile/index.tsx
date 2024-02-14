@@ -1,4 +1,4 @@
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { styles } from './styles';
@@ -24,6 +24,8 @@ import { convertDateFormatOnlyDate } from 'App/utils/convert';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
 import { IUser } from 'App/types/user';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -62,7 +64,12 @@ const ProfileScreen = ({ route }: { route: any }) => {
       <View style={styles.content}>
         <View style={styles.row}>
           {profileToDisplay?.logoUrl ? (
-            <Image source={{ uri: profileToDisplay.logoUrl }} style={styles.avatarUser} resizeMode="cover" />
+            <FallbackImage
+              imageUrl={getResizedImageUrl(profileToDisplay.logoUrl, EImageSize.SIZE_500)}
+              fallbackUrl={profileToDisplay.logoUrl}
+              style={styles.avatarUser}
+              resizeMode="cover"
+            />
           ) : (
             <MapMarkerUserDefault width={rw(72)} height={rh(72)} />
           )}

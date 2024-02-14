@@ -32,6 +32,7 @@ import { reduxAppAction } from 'App/redux/actions/appAction';
 import { THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY } from 'App/constants/common';
 import { shortenString } from 'App/helpers/text';
 import useUserLocation from 'App/hooks/useUserLocation';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -137,7 +138,9 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
     [terryItem.length],
   );
   const image = (index: number) => ({ image: terry.photoUrls![index % terry.photoUrls!.length] });
-  const items = Array.from(Array(terry.photoUrls?.length)).map((_, index) => image(index));
+  const items = terry.photoUrls?.length
+    ? Array.from(Array(terry.photoUrls.length)).map((_, index) => image(index))
+    : [];
 
   const [nearToTerry, setNearToTerry] = useState(
     (terry.distance || 0) <= THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY,
@@ -156,7 +159,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   return (
     <ImageBackground source={AppBackgroundImage}>
       <ScrollView style={styles.container}>
-        {terry.photoUrls?.length === 0 ? (
+        {!terry.photoUrls || terry.photoUrls.length === 0 ? (
           <Image source={CheckInTerryCongratImage} style={styles.imageNullTerryCheckin} resizeMode="cover" />
         ) : (
           <View style={styles.imageSlider}>
@@ -172,7 +175,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                 return (
                   <ImageBackground
                     style={styles.imageSlider}
-                    source={{ uri: item.image }}
+                    source={{ uri: getResizedImageUrl(item.image, EImageSize.SIZE_500) }}
                     testID={`container_swiper_renderItem_screen_${index}`}
                     resizeMode="cover"
                   />
