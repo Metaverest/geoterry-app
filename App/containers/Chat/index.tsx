@@ -12,7 +12,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { convertDateRelativeToNowMsg } from 'App/utils/convert';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
@@ -22,6 +22,8 @@ import { shortenString } from 'App/helpers/text';
 import { MAX_CONVERSATION_SNIPPET_LENGTH } from 'App/constants/common';
 import { ESagaAppAction } from 'App/enums/redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -58,10 +60,9 @@ const Chat = () => {
             );
           }}>
           {userFriend?.logoUrl ? (
-            <Image
-              source={{
-                uri: userFriend.logoUrl,
-              }}
+            <FallbackImage
+              imageUrl={getResizedImageUrl(userFriend.logoUrl, EImageSize.SIZE_100)}
+              fallbackUrl={userFriend.logoUrl}
               style={styles.avatar}
               resizeMode="cover"
             />

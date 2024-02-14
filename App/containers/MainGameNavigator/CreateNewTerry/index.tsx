@@ -27,7 +27,7 @@ import { Formik, FormikErrors } from 'formik';
 import { head, isEmpty, isEqual } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,6 +35,8 @@ import * as Yup from 'yup';
 import { styles } from './styles';
 import { ENavigationScreen } from 'App/enums/navigation';
 import _ from 'lodash';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 interface IFormValues {
   name: string;
@@ -420,7 +422,12 @@ const CreateNewTerryScreen = () => {
                       {values.photoUrls?.map((url, index) => {
                         return (
                           <View key={index} style={styles.photoItemContainer}>
-                            <Image resizeMode="cover" source={{ uri: url }} style={styles.image} />
+                            <FallbackImage
+                              imageUrl={getResizedImageUrl(url, EImageSize.SIZE_100)}
+                              fallbackUrl={url}
+                              resizeMode="cover"
+                              style={styles.image}
+                            />
                             <TouchableOpacity
                               style={styles.dismissCircleIconButton}
                               onPress={() => removeImage(setFieldValue, values.photoUrls, url)}>

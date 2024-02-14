@@ -11,12 +11,14 @@ import { reduxSelector } from 'App/redux/selectors';
 import { head, isEmpty } from 'lodash';
 import React, { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import { AppBackgroundImage } from 'App/components/image';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 const ChooseAvatarScreen = () => {
   const { t } = useTranslation();
@@ -57,7 +59,16 @@ const ChooseAvatarScreen = () => {
       <Header rightButton={<RightButton />} />
       <CustomText style={styles.uploadAvatarTitle}>{t('Tải lên ảnh đại diện')}</CustomText>
       <View style={styles.avatarIconContainer}>
-        {userAvatar ? <Image resizeMode="cover" source={{ uri: userAvatar }} style={styles.image} /> : <AvatarIcon />}
+        {userAvatar ? (
+          <FallbackImage
+            imageUrl={getResizedImageUrl(userAvatar, EImageSize.SIZE_100)}
+            fallbackUrl={userAvatar}
+            resizeMode="cover"
+            style={styles.image}
+          />
+        ) : (
+          <AvatarIcon />
+        )}
       </View>
       <View style={styles.groupButtonContainer}>
         <View style={styles.buttonContainer}>

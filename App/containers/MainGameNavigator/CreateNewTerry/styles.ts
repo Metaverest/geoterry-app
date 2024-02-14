@@ -48,17 +48,18 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   photoItemContainer: {
-    borderRadius: rw(5),
+    borderRadius: rw(6),
     backgroundColor: EColor.color_00000080,
     marginHorizontal: rw(4),
     justifyContent: 'center',
     alignItems: 'center',
-    height: rw(55),
-    width: rw(55),
+    height: rw(50),
+    width: rw(50),
+    marginBottom: rh(10),
   },
   image: {
-    height: rh(55),
-    width: rh(55),
+    height: rh(60),
+    width: rh(60),
     borderRadius: rw(6),
   },
   dismissCircleIconButton: {

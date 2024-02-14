@@ -2,7 +2,7 @@ import { EColor } from 'App/enums/color';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { reduxSelector } from 'App/redux/selectors';
 import React, { useEffect, useMemo } from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
 import { styles } from './styles';
@@ -19,6 +19,8 @@ import {
 import { DEFAULT_USER_MARK_POINT_ANIMATION_DURATION } from 'App/constants/common';
 import { LatLng } from 'react-native-maps';
 import { responsiveByWidth as rw } from 'App/helpers/common';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 // configuration for user marker animation
 const ANGLE = 4;
@@ -83,7 +85,11 @@ const UserMarker = ({ userLocation, centerMap }: { userLocation: LatLng; centerM
           end={{ x: 1, y: 1 }}
           colors={[EColor.color_51D5FF, EColor.color_C072FD]}>
           {userAvatar ? (
-            <Image source={{ uri: userAvatar }} style={styles.image} />
+            <FallbackImage
+              imageUrl={getResizedImageUrl(userAvatar, EImageSize.SIZE_100)}
+              fallbackUrl={userAvatar}
+              style={styles.image}
+            />
           ) : (
             <View style={styles.image}>
               <MapMarkerUserDefault width={rw(44)} height={rw(44)} />

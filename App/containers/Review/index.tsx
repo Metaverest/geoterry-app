@@ -1,4 +1,4 @@
-import { View, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
@@ -19,6 +19,8 @@ import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { EColor } from 'App/enums/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { isNil } from 'lodash';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -57,7 +59,12 @@ const Review = () => {
     ({ item }: { item: IResponseGetCheckinsOfTerry }) => {
       return (
         <View style={styles.containerItem}>
-          <Image source={{ uri: item.profile.logoUrl }} style={styles.avatar} resizeMode="cover" />
+          <FallbackImage
+            imageUrl={getResizedImageUrl(item.profile.logoUrl || '', EImageSize.SIZE_100)}
+            fallbackUrl={item.profile.logoUrl || ''}
+            style={styles.avatar}
+            resizeMode="cover"
+          />
           <View style={styles.flex}>
             <TouchableOpacity
               onPress={() =>
@@ -75,7 +82,7 @@ const Review = () => {
             {item.rate && <Rating rate={item.rate} style={styles.rating} />}
             <CustomText style={styles.desc}>{item.reviewText}</CustomText>
             <MultipleImagesOnLine
-              images={item.photoUrls}
+              images={item.photoUrls || []}
               numColumns={5}
               containerItemImageStyle={styles.containerItemImageStyle}
             />

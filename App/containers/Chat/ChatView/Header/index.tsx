@@ -1,4 +1,4 @@
-import { View, TouchableOpacity, StyleProp, ViewStyle, Image } from 'react-native';
+import { View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import React, { useCallback } from 'react';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
@@ -6,6 +6,8 @@ import BackIcon from 'App/media/BackIcon';
 import CustomText from 'App/components/CustomText';
 import { responsiveByWidth as rw } from 'App/helpers/common';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
+import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import FallbackImage from 'App/components/CustomImage';
 
 const Header = ({
   shouldHideBackButton,
@@ -30,7 +32,11 @@ const Header = ({
         {!shouldHideBackButton && <BackIcon />}
       </TouchableOpacity>
       {avatar ? (
-        <Image source={{ uri: avatar }} style={styles.avatar} />
+        <FallbackImage
+          imageUrl={getResizedImageUrl(avatar, EImageSize.SIZE_100)}
+          fallbackUrl={avatar}
+          style={styles.avatar}
+        />
       ) : (
         <View style={styles.avatar}>
           <MapMarkerUserDefault width={rw(36)} height={rw(36)} />
