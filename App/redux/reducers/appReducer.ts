@@ -32,7 +32,7 @@ const defaultAppState: IAppState = {
   otherUserProfileToDisplay: undefined,
   nearbyPlayers: [],
   loadingStates: {},
-  conversations: {},
+  conversations: undefined,
   messages: {},
   selectedConversationId: undefined,
   conversationStat: {},

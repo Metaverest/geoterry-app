@@ -33,6 +33,10 @@ import { THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY } from 'App/constants/co
 import { shortenString } from 'App/helpers/text';
 import useUserLocation from 'App/hooks/useUserLocation';
 import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import Messenger from 'App/media/Messenger';
+import { sagaUserAction } from 'App/redux/actions/userAction';
+import { isNil } from 'lodash';
+
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
 }
@@ -48,6 +52,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const [indexImg, setIndexImg] = useState(0);
   const { userLocation } = useUserLocation();
+  const conversations = useSelector(reduxSelector.getConversations);
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
@@ -137,6 +142,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
     },
     [terryItem.length],
   );
+
   const image = (index: number) => ({ image: terry.photoUrls![index % terry.photoUrls!.length] });
   const items = terry.photoUrls?.length
     ? Array.from(Array(terry.photoUrls.length)).map((_, index) => image(index))
@@ -307,7 +313,29 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           )}
         </View>
       </ScrollView>
-      <Header />
+
+      {user.id === terry.profileId ? (
+        <Header />
+      ) : (
+        <Header
+          rightButton={
+            <TouchableOpacity
+              onPress={() => {
+                // If conversations haven't been fetched yet, fetch them
+                isNil(conversations) &&
+                  dispatch(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }, navigation));
+                navigation.dispatch(
+                  CommonActions.navigate(EMainGameScreen.CHAT_VIEW_SCREEN, {
+                    conversationId: terry.conversationId,
+                    recipientId: terry.conversationId ? undefined : terry.profileId,
+                  }),
+                );
+              }}>
+              <Messenger />
+            </TouchableOpacity>
+          }
+        />
+      )}
     </ImageBackground>
   );
 };

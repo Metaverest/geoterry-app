@@ -58,9 +58,15 @@ const ChatView = () => {
         logoUrl: profile?.logoUrl,
       } as IParticipantResDto;
     }
-    // don't pass any values here since userFriend data won't be changed
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    conversation?.participants,
+    conversationId,
+    profile?.displayName,
+    profile?.id,
+    profile?.logoUrl,
+    recipientId,
+    user.id,
+  ]);
   const messages = useSelector(reduxSelector.getMessagesFromConversationId(conversationId));
 
   useEffect(() => {

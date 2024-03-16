@@ -168,6 +168,7 @@ const MapScreen = () => {
               longitude: userLocation.longitude,
               markAsSaved: payload.markAsSaved,
               markAsFavourited: payload.markAsFavourited,
+              includeConversationId: true,
               isBackgroundAction: true,
             },
             navigation,
