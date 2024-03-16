@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     padding: rw(10),
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: rh(18),
   },
   qrCodeContainer: {
     alignContent: 'center',

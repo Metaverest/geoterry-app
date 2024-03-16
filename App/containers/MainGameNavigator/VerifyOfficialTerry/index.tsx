@@ -51,7 +51,7 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   const renderBottomContent = useCallback(() => {
     return (
       <LinearGradient
-        colors={flashOn ? [EColor.color_C072FD, EColor.color_51D5FF] : [EColor.black]}
+        colors={flashOn ? [EColor.color_C072FD, EColor.color_51D5FF] : [EColor.black, EColor.black]}
         style={styles.flashContainer}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}>
