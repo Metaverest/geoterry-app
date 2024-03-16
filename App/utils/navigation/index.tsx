@@ -108,7 +108,7 @@ export const getPopupModalParamsFromErrorCodeAndStatusCode = (
   } else if (errorCode === EErrorCode.OUT_OF_DISTANCE) {
     resultPopupModalParams = PopUpModalParams[EPopUpModalType.DISTANCE_ERROR];
   } else if (errorCode === EErrorCode.INCORRECT_TERRY_CODE) {
-    resultPopupModalParams = PopUpModalParams[EPopUpModalType.CANNOT_CREATE_QR_CODE];
+    resultPopupModalParams = PopUpModalParams[EPopUpModalType.VERIFY_OFFICIAL_TERRY_FAILED];
   }
   if (!resultPopupModalParams) {
     return;

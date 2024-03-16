@@ -30,14 +30,6 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
     (e: BarCodeReadEvent) => {
       if (!loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY]) {
         dispatch(sagaUserAction.verifyOfficialTerryAsync(terryId, e.data, navigation));
-        navigation.dispatch(
-          CommonActions.navigate({
-            name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
-            params: { isCannotFindTerry: false, terryId },
-          }),
-        );
-        // to make sure that it won't trigger another call right after we verify the official successfully
-        setTimeout(() => {}, 3000);
       }
     },
     [dispatch, loadingStates, navigation, terryId],
