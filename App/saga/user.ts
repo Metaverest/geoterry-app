@@ -760,8 +760,8 @@ function* verifyOfficialTerry(action: IReduxActionWithNavigation<ESagaAppAction,
     yield put(reduxAppAction.setTerryVerifyCode(terryId!, code!));
     yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: false }));
   } catch (error) {
-    yield call(handleError, (error as any)?.response?.data as IError, navigation);
     yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: false }));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
 }
 

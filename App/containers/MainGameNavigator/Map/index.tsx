@@ -91,7 +91,7 @@ const MapScreen = () => {
   }, [dispatch, navigation]);
 
   const centerToCurrentUserLocation = useCallback(() => {
-    Vibration.vibrate(50);
+    Vibration.vibrate(5);
     if (isEmpty(userLocation)) {
       return;
     }
@@ -141,17 +141,17 @@ const MapScreen = () => {
   }, []);
 
   const handlePressTypeMap = useCallback(() => {
-    Vibration.vibrate(50);
+    Vibration.vibrate(5);
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
 
   const handleCreateNewTerry = useCallback(() => {
-    Vibration.vibrate(50);
+    Vibration.vibrate(5);
     navigation.dispatch(StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN));
   }, [navigation]);
 
   const handlePressFilterMap = useCallback(() => {
-    Vibration.vibrate(50);
+    Vibration.vibrate(5);
     navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
   }, [navigation]);
 
@@ -327,7 +327,7 @@ const MapScreen = () => {
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
             onPress={() => {
-              Vibration.vibrate(50);
+              Vibration.vibrate(5);
               updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite, markAsSaved: false });
             }}
             buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
@@ -337,7 +337,7 @@ const MapScreen = () => {
           />
           <CustomButtonIcon
             onPress={() => {
-              Vibration.vibrate(50);
+              Vibration.vibrate(5);
               updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved, markAsFavourited: false });
             }}
             buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
@@ -353,7 +353,7 @@ const MapScreen = () => {
       <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon
           onPress={() => {
-            Vibration.vibrate(50);
+            Vibration.vibrate(5);
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: user.id }));
           }}
           buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
@@ -363,7 +363,7 @@ const MapScreen = () => {
         />
         <CustomButtonIcon
           onPress={() => {
-            Vibration.vibrate(50);
+            Vibration.vibrate(5);
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.SETTING_NAVIGATOR));
           }}
           buttonColor={EColor.color_171717}
@@ -374,7 +374,7 @@ const MapScreen = () => {
         <View>
           <CustomButtonIcon
             onPress={() => {
-              Vibration.vibrate(50);
+              Vibration.vibrate(5);
               navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHAT_SCREEN));
             }}
             buttonColor={[EColor.color_51D5FF, EColor.color_C072FD]}
@@ -390,7 +390,7 @@ const MapScreen = () => {
         </View>
         <CustomButtonIcon
           onPress={() => {
-            Vibration.vibrate(50);
+            Vibration.vibrate(5);
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.HISTORY));
           }}
           buttonColor={EColor.color_171717}
