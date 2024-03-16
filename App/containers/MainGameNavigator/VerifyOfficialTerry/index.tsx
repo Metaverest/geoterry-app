@@ -82,7 +82,7 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
         onRead={onSuccess}
         flashMode={flashOn ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
       />
-      {!loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && (
+      {loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && (
         <ActivityIndicator style={styles.loading} size="large" />
       )}
     </CustomSafeArea>
