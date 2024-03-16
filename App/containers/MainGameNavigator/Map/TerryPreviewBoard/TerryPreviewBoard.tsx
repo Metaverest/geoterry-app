@@ -29,6 +29,7 @@ const TerryPreviewBoard = ({ terry, userLocation }: { terry: ITerryResponseDto; 
         includeProfileData: true,
         includeCategoryData: true,
         includeUserPath: true,
+        includeConversationId: true,
         terryId: terry.id,
       },
       user.id,

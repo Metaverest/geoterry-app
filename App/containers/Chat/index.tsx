@@ -37,6 +37,7 @@ const Chat = () => {
     dispatch(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }, navigation));
   }, [dispatch, navigation]);
   const conversations = useSelector(reduxSelector.getConversations);
+  console.log(conversations);
   const conversationsToDisplay = useMemo(() => {
     if (!conversations) {
       return [];

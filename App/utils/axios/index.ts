@@ -190,6 +190,7 @@ export const requestHunterGetTerryById = async (params: IGetTerryByIdParams, pro
       includeUserPath: params.includeUserPath,
       includeProfileData: params.includeProfileData,
       markAsFavourited: params.markAsFavourited,
+      includeConversationId: params.includeConversationId,
       markAsSaved: params.markAsSaved,
     },
   });

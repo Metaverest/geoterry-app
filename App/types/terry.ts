@@ -20,6 +20,7 @@ export interface ITerryResponseDto {
   profileId: string;
   name: string;
   description?: string;
+  conversationId?: string;
   hint?: string;
   isAvailable: boolean;
   photoUrls?: string[];
@@ -83,6 +84,7 @@ export interface IGetTerryByIdParams {
   includeCategoryData?: boolean;
   includeProfileData?: boolean;
   markAsFavourited?: boolean;
+  includeConversationId?: boolean;
   markAsSaved?: boolean;
   includeUserPath?: boolean;
   isBackgroundAction?: boolean;
