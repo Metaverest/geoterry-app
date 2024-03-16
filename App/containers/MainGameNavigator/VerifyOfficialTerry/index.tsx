@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import Header from 'App/components/Header';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { TouchableOpacity } from 'react-native';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { RNCamera, BarCodeReadEvent } from 'react-native-camera';
 import { AppBackgroundImage } from 'App/components/image';
 import Flash from 'App/media/Flash';
@@ -15,6 +15,7 @@ import { EColor } from 'App/enums/color';
 import { EMainGameScreen } from 'App/enums/navigation';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
+import { ESagaUserAction } from 'App/enums/redux';
 
 const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
@@ -23,18 +24,23 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   const [flashOn, setFlashOn] = useState(false);
   const { terryId } = useMemo(() => route.params || {}, [route.params]);
   const verifyCodes = useSelector(reduxSelector.getTerryVerifyCodes);
+  const loadingStates = useSelector(reduxSelector.getLoadingStates);
 
   const onSuccess = useCallback(
     (e: BarCodeReadEvent) => {
-      dispatch(sagaUserAction.verifyOfficialTerryAsync(terryId, e.data, navigation));
-      navigation.dispatch(
-        CommonActions.navigate({
-          name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
-          params: { isCannotFindTerry: false, terryId },
-        }),
-      );
+      if (!loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY]) {
+        dispatch(sagaUserAction.verifyOfficialTerryAsync(terryId, e.data, navigation));
+        navigation.dispatch(
+          CommonActions.navigate({
+            name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
+            params: { isCannotFindTerry: false, terryId },
+          }),
+        );
+        // to make sure that it won't trigger another call right after we verify the official successfully
+        setTimeout(() => {}, 3000);
+      }
     },
-    [dispatch, navigation, terryId],
+    [dispatch, loadingStates, navigation, terryId],
   );
 
   useEffect(() => {
@@ -74,8 +80,11 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
         cameraStyle={styles.qrCodeCameraContainer}
         bottomContent={renderBottomContent()}
         onRead={onSuccess}
-        flashMode={flashOn ? RNCamera.Constants.FlashMode.on : RNCamera.Constants.FlashMode.off}
+        flashMode={flashOn ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
       />
+      {!loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && (
+        <ActivityIndicator style={styles.loading} size="large" />
+      )}
     </CustomSafeArea>
   );
 };

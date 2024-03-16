@@ -751,17 +751,17 @@ export function* watchGetNearbyPlayers() {
 function* verifyOfficialTerry(action: IReduxActionWithNavigation<ESagaAppAction, { terryId: string; code: string }>) {
   const navigation = action.payload?.navigation;
   try {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: true }));
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
     const code = action.payload?.data?.code;
     const terryId = action.payload?.data?.terryId;
     yield call(requestHunterVerifyTerry, code!, profileId, terryId!);
     yield put(reduxAppAction.setTerryVerifyCode(terryId!, code!));
-    navigation.dispatch(StackActions.pop());
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: false }));
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
-    navigation.dispatch(StackActions.pop());
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: false }));
   }
 }
 

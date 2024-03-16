@@ -27,4 +27,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: EColor.color_00000080,
   },
+  loading: {
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+    top: '48%',
+    position: 'absolute',
+  },
 });
