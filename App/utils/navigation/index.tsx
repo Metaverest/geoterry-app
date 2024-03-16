@@ -69,6 +69,12 @@ export const PopUpModalParams = {
     image: CannotCreateQRImage,
     confirmButtonTitle: t('Ok'),
   } as IPopupModalParamsProps,
+  [EPopUpModalType.VERIFY_OFFICIAL_TERRY_FAILED]: {
+    title: t('Xác minh kho báu không thành công'),
+    subtitle: t('Vui lòng thử lại'),
+    image: CannotCreateQRImage,
+    confirmButtonTitle: t('Ok'),
+  } as IPopupModalParamsProps,
   [EPopUpModalType.DISTANCE_ERROR]: {
     title: t('Lỗi ngoài khoảng cách'),
     subtitle: t('Vui lòng thử lại sau'),
@@ -101,6 +107,8 @@ export const getPopupModalParamsFromErrorCodeAndStatusCode = (
     resultPopupModalParams = PopUpModalParams[EPopUpModalType.CANNOT_FOUND_PROFILE];
   } else if (errorCode === EErrorCode.OUT_OF_DISTANCE) {
     resultPopupModalParams = PopUpModalParams[EPopUpModalType.DISTANCE_ERROR];
+  } else if (errorCode === EErrorCode.INCORRECT_TERRY_CODE) {
+    resultPopupModalParams = PopUpModalParams[EPopUpModalType.CANNOT_CREATE_QR_CODE];
   }
   if (!resultPopupModalParams) {
     return;

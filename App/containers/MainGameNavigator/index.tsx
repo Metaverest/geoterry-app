@@ -22,6 +22,7 @@ import CreateNewTerryScreen from './CreateNewTerry';
 import PopupModal from '../Modal/PopupModal';
 import Review from '../Review';
 import CheckinTerryScreen from './CheckinTerry';
+import VerifyOfficialTerryScreen from './VerifyOfficialTerry';
 import CheckinTerryVoteScreen from './CheckinTerryVote';
 import HuntingMapScreen from './HuntingMap';
 import Chat from '../Chat';
@@ -132,6 +133,11 @@ const MainGameNavigator = () => {
         <Stack.Screen
           name={EMainGameScreen.CHECKIN_TERRY_SCREEN}
           component={CheckinTerryScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={EMainGameScreen.VERIFY_OFFICIAL_TERRY_SCREEN}
+          component={VerifyOfficialTerryScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

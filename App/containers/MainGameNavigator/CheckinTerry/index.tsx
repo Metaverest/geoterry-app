@@ -44,7 +44,8 @@ const getValidateSchema = (t: (e: string) => string) => {
 
 const CheckinTerryScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
-  const { isCannotFindTerry } = useMemo(() => route.params || {}, [route.params]);
+  const { isCannotFindTerry, code } = useMemo(() => route.params || {}, [route.params]);
+
   const { t } = useTranslation();
   const navigation = useNavigation();
   const onSubmit = useCallback(
@@ -54,11 +55,12 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
           reviewText: values.reviewText,
           photoUrls: values.photoUrls,
           isFound: !isCannotFindTerry,
+          code,
         }),
       );
       navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHECKIN_TERRY_VOTE_SCREEN));
     },
-    [dispatch, isCannotFindTerry, navigation],
+    [code, dispatch, isCannotFindTerry, navigation],
   );
 
   const getShouldDisableButton = useCallback((formValues: IFormValues) => {

@@ -307,4 +307,7 @@ export const requestHunterReadConversationMessages = async (
 export const requestHunterSendMessage = async (profileId: string, data: ISendMessageInputDto) =>
   AXIOS.post<IMessageResDto>(`/hunter/${profileId}/messages/send-message`, data).then(result => result.data);
 
+export const requestHunterVerifyTerry = async (code: string, profileId: string, terryId: string) =>
+  AXIOS.post<IMessageResDto>(`/hunter/${profileId}/terry/${terryId}/verify`, { code }).then(result => result.data);
+
 export default AXIOS;

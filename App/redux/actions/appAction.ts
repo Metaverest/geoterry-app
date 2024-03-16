@@ -113,6 +113,13 @@ const reduxAppAction = {
     };
   },
 
+  setTerryVerifyCode: (terryId: string, code: string) => {
+    return {
+      type: EReduxAppAction.SET_TERRY_VERIFY_CODE,
+      payload: { terryVerifyCodes: { [terryId]: code } },
+    };
+  },
+
   setLoadingStates: (loadingStates: {
     [key in ESagaUserAction | ESagaAppAction]?: boolean;
   }) => {

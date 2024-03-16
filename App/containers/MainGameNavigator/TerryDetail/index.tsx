@@ -283,8 +283,10 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                     );
                     navigation.dispatch(
                       CommonActions.navigate({
-                        name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
-                        params: { isCannotFindTerry: false },
+                        name: terry.isOfficial
+                          ? EMainGameScreen.VERIFY_OFFICIAL_TERRY_SCREEN
+                          : EMainGameScreen.CHECKIN_TERRY_SCREEN,
+                        params: { isCannotFindTerry: false, terryId: terry.id },
                       }),
                     );
                   }}
