@@ -49,6 +49,11 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     marginRight: rw(5),
   },
+  avatarDefault: {
+    borderRadius: rw(24),
+    overflow: 'hidden',
+    marginRight: rw(5),
+  },
   day: {
     fontWeight: '400',
     fontSize: rh(10),

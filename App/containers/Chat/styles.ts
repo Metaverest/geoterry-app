@@ -35,6 +35,11 @@ export const styles = StyleSheet.create({
     marginRight: rw(16),
     overflow: 'hidden',
   },
+  avatarDefault: {
+    borderRadius: rh(48),
+    marginRight: rw(16),
+    overflow: 'hidden',
+  },
   name: {
     fontSize: rh(16),
     fontWeight: '600',
