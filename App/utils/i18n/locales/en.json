@@ -177,7 +177,6 @@
   "Xác thực OTP": "Verify OTP",
   "Gửi lại mã OTP": "Resend OTP",
   "Gửi lại sau": "Resend after",
-  "Powered by Metaverest": "Powered by Metaverest",
   "Chào mừng đến với Checkly!": "Welcome to Checkly!",
   "Bạn đã sẵn sàng tham gia vào một cuộc phiêu lưu đầy thú vị và kịch tính chưa? Hãy cùng khám phá thế giới đầy bí ẩn và hấp dẫn của Checkly - nơi mà bạn có thể trở thành một nhà kiểm tra tài năng hoặc một thám tử tài ba!": "Are you ready to embark on an adventure full of excitement and mystery? Let's explore the fascinating world of Checkly - where you can become a skilled checker or a cunning detective!",
   "Mục tiêu": "Our Goal",
@@ -192,5 +191,10 @@
   "\nBằng cách sử dụng ứng dụng Checkly, bạn đồng ý với việc thu thập và sử dụng thông tin của bạn như được mô tả trong Chính sách Bảo mật này. Nếu bạn có bất kỳ câu hỏi hoặc mối quan tâm nào về các thực hành bảo mật của chúng tôi, vui lòng liên hệ với chúng tôi qua email contact@checkly.vn.": "\nBy using the Checkly app, you consent to the collection and use of your information as outlined in this Privacy Policy. If you have any questions or concerns about our privacy practices, please contact us at contact@checkly.vn.",
   "Xác minh kho báu": "Verify official Terry",
   "Xác minh kho báu không thành công": "Verify official Terry failed",
-  "Vui lòng thử lại": "Please try again"
+  "Vui lòng thử lại": "Please try again",
+  "Ứng dụng không có quyền truy cập vào Camera": "App does not have access to Camera",
+  "Vui lòng cấp quyền truy cập Camera trong cài đặt ứng dụng": "Please go to app settings and grant access to Camera",
+  "Ứng dụng không có quyền truy cập vị trí của bạn": "App does not have access to Camera",
+  "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng": "Please go to app settings and grant access to your location",
+  "Mở": "Open"
 }

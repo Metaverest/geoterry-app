@@ -32,7 +32,6 @@ const defaultAppState: IAppState = {
   otherUserProfileToDisplay: undefined,
   nearbyPlayers: [],
   loadingStates: {},
-  terryVerifyCodes: {},
   conversations: undefined,
   messages: {},
   selectedConversationId: undefined,
@@ -131,14 +130,6 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         nearbyPlayers: action.payload?.nearbyPlayers,
-      };
-    case EReduxAppAction.SET_TERRY_VERIFY_CODE:
-      return {
-        ...state,
-        terryVerifyCodes: {
-          ...state.terryVerifyCodes,
-          ...action.payload?.terryVerifyCodes,
-        },
       };
     case EReduxAppAction.SET_LOADING_STATES:
       return {

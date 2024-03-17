@@ -1,25 +1,44 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import usePlatform from './usePlatform';
 import { PERMISSIONS, RESULTS, check, request } from 'react-native-permissions';
+import { Alert, Linking } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const useRequestLocationPermission = () => {
   const { isAndroid, isIOS } = usePlatform();
   const [hasAndroidPermission, setHasAndroidPermission] = useState(false);
   const [hasIOSPermission, setHasIOSPermission] = useState(false);
+  const { t } = useTranslation();
+
+  const openSettings = useCallback(() => {
+    Alert.alert(
+      t('Ứng dụng không có quyền truy cập vị trí của bạn'),
+      t('Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng'),
+      [
+        {
+          text: t('Mở'),
+          onPress: () => {
+            Linking.openSettings();
+          },
+        },
+      ],
+    );
+  }, [t]);
+
   useEffect(() => {
     (async () => {
       if (isAndroid) {
         const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
         if (result === RESULTS.GRANTED) {
           setHasAndroidPermission(true);
-          console.log('Permission granted');
         }
 
-        if (result === RESULTS.DENIED) {
+        if (result !== RESULTS.DENIED) {
           const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
           if (requestResult === RESULTS.GRANTED) {
             setHasAndroidPermission(true);
-            console.log('Permission granted');
+          } else {
+            openSettings();
           }
         }
       }
@@ -27,18 +46,20 @@ const useRequestLocationPermission = () => {
         const result = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
         if (result === RESULTS.GRANTED) {
           setHasIOSPermission(true);
-          console.log('Permission granted');
         }
-        if (result === RESULTS.DENIED) {
+
+        if (result !== RESULTS.DENIED) {
           const requestResult = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
           if (requestResult === RESULTS.GRANTED) {
             setHasIOSPermission(true);
-            console.log('Permission granted');
+          } else {
+            openSettings();
           }
         }
       }
     })();
-  }, [isAndroid, isIOS]);
+  }, [isAndroid, isIOS, openSettings, t]);
+
   const hasLocationPermission = useMemo(() => {
     return isAndroid ? hasAndroidPermission : hasIOSPermission;
   }, [hasAndroidPermission, hasIOSPermission, isAndroid]);

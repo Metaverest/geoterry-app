@@ -36,7 +36,7 @@ const SplashScreen = () => {
       <View style={styles.content}>
         <Image source={ChecklyLine} style={styles.logo} resizeMode="contain" />
       </View>
-      <CustomText style={styles.textFooter}>{t('Powered by Metaverest')}</CustomText>
+      <CustomText style={styles.textFooter}>{t('Metaverest')}</CustomText>
     </CustomSafeArea>
   );
 };

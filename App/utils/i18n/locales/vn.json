@@ -177,8 +177,12 @@
   "Xác thực OTP": "Xác thực OTP",
   "Gửi lại mã OTP": "Gửi lại mã OTP",
   "Gửi lại sau": "Gửi lại sau",
-  "Powered by Metaverest": "Một sản phẩm của Metaverest",
   "Xác minh kho báu": "Xác minh kho báu",
   "Xác minh kho báu không thành công": "Xác minh kho báu không thành công",
-  "Vui lòng thử lại": "Vui lòng thử lại"
+  "Vui lòng thử lại": "Vui lòng thử lại",
+  "Ứng dụng không có quyền truy cập vào Camera": "Ứng dụng không có quyền truy cập vào Camera",
+  "Vui lòng cấp quyền truy cập Camera trong cài đặt ứng dụng": "Vui lòng cấp quyền truy cập Camera trong cài đặt ứng dụng",
+  "Ứng dụng không có quyền truy cập vị trí của bạn": "Ứng dụng không có quyền truy cập vị trí của bạn",
+  "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng": "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng",
+  "Mở": "Mở"
 }

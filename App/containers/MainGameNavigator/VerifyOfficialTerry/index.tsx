@@ -5,9 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import Header from 'App/components/Header';
-import QRCodeScanner from 'react-native-qrcode-scanner';
-import { ActivityIndicator, TouchableOpacity } from 'react-native';
-import { RNCamera, BarCodeReadEvent } from 'react-native-camera';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { AppBackgroundImage } from 'App/components/image';
 import Flash from 'App/media/Flash';
 import { LinearGradient } from 'react-native-linear-gradient';
@@ -16,6 +14,8 @@ import { EMainGameScreen } from 'App/enums/navigation';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { ESagaUserAction } from 'App/enums/redux';
+import useCamera from 'App/hooks/useCamera';
+import { Camera, useCodeScanner } from 'react-native-vision-camera';
 
 const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
@@ -23,30 +23,22 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation();
   const [flashOn, setFlashOn] = useState(false);
   const { terryId } = useMemo(() => route.params || {}, [route.params]);
-  const verifyCodes = useSelector(reduxSelector.getTerryVerifyCodes);
+
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
-
-  const onSuccess = useCallback(
-    (e: BarCodeReadEvent) => {
-      if (!loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY]) {
-        dispatch(sagaUserAction.verifyOfficialTerryAsync(terryId, e.data, navigation));
-      }
-    },
-    [dispatch, loadingStates, navigation, terryId],
-  );
-
+  const { cameraDevice } = useCamera({ cameraPosition: 'back' });
+  const [code, setCode] = useState<undefined | string>(undefined);
   useEffect(() => {
-    if (verifyCodes && verifyCodes[terryId]) {
+    if (code) {
       navigation.dispatch(
         CommonActions.navigate({
           name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
-          params: { isCannotFindTerry: false, terryId, code: verifyCodes[terryId] },
+          params: { isCannotFindTerry: false, terryId, code },
         }),
       );
     }
-  }, [navigation, terryId, verifyCodes]);
+  }, [code, navigation, terryId]);
 
-  const renderBottomContent = useCallback(() => {
+  const renderFlashButton = useCallback(() => {
     return (
       <LinearGradient
         colors={flashOn ? [EColor.color_C072FD, EColor.color_51D5FF] : [EColor.black, EColor.black]}
@@ -60,20 +52,34 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
     );
   }, [flashOn]);
 
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr'],
+    onCodeScanned: codes => {
+      const value = codes[0]?.value;
+      const type = codes[0]?.type;
+
+      if (type === 'qr' && !loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && value) {
+        dispatch(sagaUserAction.verifyOfficialTerryAsync(terryId, value, navigation));
+        setCode(value);
+      }
+    },
+  });
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Xác minh kho báu')} />
-      <QRCodeScanner
-        cameraType="back"
-        vibrate={true}
-        showMarker={true}
-        containerStyle={styles.qrCodeContainer}
-        cameraContainerStyle={styles.qrCodeCameraContainer}
-        cameraStyle={styles.qrCodeCameraContainer}
-        bottomContent={renderBottomContent()}
-        onRead={onSuccess}
-        flashMode={flashOn ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
-      />
+      {cameraDevice && (
+        <View style={styles.cameraContainer}>
+          <Camera
+            codeScanner={codeScanner}
+            style={styles.camera}
+            device={cameraDevice}
+            isActive={true}
+            torch={flashOn ? 'on' : 'off'}
+          />
+          <View style={styles.cameraFocus} />
+          {renderFlashButton()}
+        </View>
+      )}
       {loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && (
         <ActivityIndicator style={styles.loading} size="large" />
       )}

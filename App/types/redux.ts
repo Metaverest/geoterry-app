@@ -67,7 +67,6 @@ export interface IAppState {
   conversationUpdateData?: IReduxUpdateConversation;
   conversationStat?: Partial<IFilterConversationStatRes>;
   nearbyPlayerLocation?: Record<string, LatLng>;
-  terryVerifyCodes?: Record<string, string>;
 }
 
 export interface IRootState {
