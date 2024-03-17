@@ -48,4 +48,13 @@ export const styles = StyleSheet.create({
     borderColor: EColor.color_00FF00,
     borderRadius: rw(6),
   },
+  notFoundText: {
+    fontSize: rh(12),
+    fontWeight: '500',
+    lineHeight: rh(24),
+    color: EColor.white,
+    textAlign: 'center',
+    width: '100%',
+    position: 'absolute',
+  },
 });

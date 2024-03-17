@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import Header from 'App/components/Header';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { AppBackgroundImage } from 'App/components/image';
 import Flash from 'App/media/Flash';
 import { LinearGradient } from 'react-native-linear-gradient';
@@ -66,7 +66,7 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Xác minh kho báu')} />
-      {cameraDevice && (
+      {cameraDevice ? (
         <View style={styles.cameraContainer}>
           <Camera
             codeScanner={codeScanner}
@@ -77,6 +77,10 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
           />
           <View style={styles.cameraFocus} />
           {renderFlashButton()}
+        </View>
+      ) : (
+        <View style={styles.cameraContainer}>
+          <Text style={styles.notFoundText}>{t('Không tìm thấy Camera')}</Text>
         </View>
       )}
       {loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && (
