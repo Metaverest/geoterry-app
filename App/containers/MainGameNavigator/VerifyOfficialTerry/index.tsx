@@ -23,20 +23,20 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   const navigation = useNavigation();
   const [flashOn, setFlashOn] = useState(false);
   const { terryId } = useMemo(() => route.params || {}, [route.params]);
+  const verifyCodes = useSelector(reduxSelector.getTerryVerifyCodes);
 
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
   const { cameraDevice } = useCamera({ cameraPosition: 'back' });
-  const [code, setCode] = useState<undefined | string>(undefined);
   useEffect(() => {
-    if (code) {
+    if (verifyCodes && verifyCodes[terryId]) {
       navigation.dispatch(
         CommonActions.navigate({
           name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
-          params: { isCannotFindTerry: false, terryId, code },
+          params: { isCannotFindTerry: false, terryId, code: verifyCodes[terryId] },
         }),
       );
     }
-  }, [code, navigation, terryId]);
+  }, [navigation, terryId, verifyCodes]);
 
   const renderFlashButton = useCallback(() => {
     return (
@@ -60,7 +60,6 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
 
       if (type === 'qr' && !loadingStates?.[ESagaUserAction.VERIFY_OFFICIAL_TERRY] && value) {
         dispatch(sagaUserAction.verifyOfficialTerryAsync(terryId, value, navigation));
-        setCode(value);
       }
     },
   });
