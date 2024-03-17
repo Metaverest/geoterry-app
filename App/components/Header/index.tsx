@@ -8,9 +8,9 @@ import CustomText from '../CustomText';
 import { styles } from './styles';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveByWidth as rw } from 'App/helpers/common';
-import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
 import CustomImage from '../CustomImage';
+import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
 
 const Header = ({
   title,
@@ -76,7 +76,7 @@ const Header = ({
                 <CustomImage imageUrl={avatar} style={styles.avatar} />
               ) : (
                 <View style={styles.avatar}>
-                  <MapMarkerUserDefault width={rw(36)} height={rw(36)} />
+                  <ConversationUserAvatarDefault />
                 </View>
               )}
               <CustomText style={styles.name}>{name}</CustomText>

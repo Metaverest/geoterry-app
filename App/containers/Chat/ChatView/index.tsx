@@ -5,7 +5,6 @@ import { AppBackgroundImage } from 'App/components/image';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
-import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
 import { EMessagePayloadType, IParticipantResDto, ISendMessageInputDto } from 'App/types/chat';
@@ -24,6 +23,7 @@ import { EPublicReadProfileBy } from 'App/enums';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { ESagaAppAction } from 'App/enums/redux';
 import { getResizedImageUrl, EImageSize } from 'App/utils/images';
+import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
 
 const NUMBER_OF_SKELETONS = 6;
 
@@ -168,8 +168,8 @@ const ChatView = () => {
             props.currentMessage?.user.avatar ? (
               <Avatar {...props} position="right" imageStyle={{ right: styles.avatar }} />
             ) : (
-              <View style={[styles.avatar, { marginLeft: props.currentMessage?.user.avatar ? rw(0) : rw(7) }]}>
-                <MapMarkerUserDefault width={rw(24)} height={rw(24)} />
+              <View style={[styles.avatarDefault, { marginLeft: props.currentMessage?.user.avatar ? rw(0) : rw(7) }]}>
+                <ConversationUserAvatarDefault width={rw(24)} height={rw(24)} />
               </View>
             )
           }

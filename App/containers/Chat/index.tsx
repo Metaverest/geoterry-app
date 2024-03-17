@@ -6,8 +6,6 @@ import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
-import { responsiveByHeight as rh } from 'App/helpers/common';
-import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
 import { reduxSelector } from 'App/redux/selectors';
 import { convertDateRelativeToNowMsg } from 'App/utils/convert';
 import React, { useCallback, useEffect, useMemo } from 'react';
@@ -23,6 +21,7 @@ import { MAX_CONVERSATION_SNIPPET_LENGTH } from 'App/constants/common';
 import { ESagaAppAction } from 'App/enums/redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import CustomImage from 'App/components/CustomImage';
+import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -62,8 +61,8 @@ const Chat = () => {
           {userFriend?.logoUrl ? (
             <CustomImage imageUrl={userFriend.logoUrl} style={styles.avatar} resizeMode="cover" />
           ) : (
-            <View style={styles.avatar}>
-              <MapMarkerUserDefault width={rh(48)} height={rh(48)} />
+            <View style={styles.avatarDefault}>
+              <ConversationUserAvatarDefault />
             </View>
           )}
           <View style={styles.content}>
