@@ -41,6 +41,8 @@ const defaultAppState: IAppState = {
 };
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
+    case EReduxAppAction.RESET_APP_STATES:
+      return defaultAppState;
     case EReduxAppAction.SET_LANGUAGE_CODE:
       return {
         ...state,

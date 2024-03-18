@@ -122,7 +122,7 @@
   "Thông tin chi tiết": "Thông tin chi tiết",
   "Nhắn tin": "Nhắn tin",
   "Mặc định": "Mặc định",
-  "Vệ tinh": "Vệ tịnh",
+  "Vệ tinh": "Vệ tinh",
   "Bản đồ": "Bản đồ",
   "Thêm số điện thoại": "Thêm số điện thoại",
   "Điểm tích luỹ": "Điểm tích luỹ",
@@ -186,5 +186,9 @@
   "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng": "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng",
   "Mở": "Mở",
   "Không tìm thấy Camera": "Không tìm thấy Camera",
-  "Scan mã QR xuất hiện kho báu để xác nhận": "Scan mã QR xuất hiện kho báu để xác nhận"
+  "Scan mã QR xuất hiện kho báu để xác nhận": "Scan mã QR xuất hiện kho báu để xác nhận",
+  "Xác nhận kho báu": "Xác nhận kho báu",
+  "Quét mã QR để xác nhận đã tìm thấy": "Quét mã QR để xác nhận đã tìm thấy",
+  "Có": "Có",
+  "Không": "Không"
 }

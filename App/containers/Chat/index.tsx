@@ -22,6 +22,7 @@ import { ESagaAppAction } from 'App/enums/redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import CustomImage from 'App/components/CustomImage';
 import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
+import { responsiveByHeight as rh } from 'App/helpers/common';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -61,11 +62,11 @@ const Chat = () => {
             <CustomImage imageUrl={userFriend.logoUrl} style={styles.avatar} resizeMode="cover" />
           ) : (
             <View style={styles.avatarDefault}>
-              <ConversationUserAvatarDefault />
+              <ConversationUserAvatarDefault height={rh(48)} width={rh(48)} />
             </View>
           )}
           <View style={styles.content}>
-            <CustomText style={styles.name}>{userFriend?.displayName}</CustomText>
+            <CustomText style={styles.name}>{shortenString(userFriend?.displayName || '', 25)}</CustomText>
             <View style={styles.containerLastMsg}>
               {me?.unreadMsgCnt ? (
                 <LinearGradient

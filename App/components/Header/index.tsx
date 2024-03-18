@@ -11,6 +11,7 @@ import { responsiveByWidth as rw } from 'App/helpers/common';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
 import CustomImage from '../CustomImage';
 import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
+import { shortenString } from 'App/helpers/text';
 
 const Header = ({
   title,
@@ -75,11 +76,11 @@ const Header = ({
               {avatar ? (
                 <CustomImage imageUrl={avatar} style={styles.avatar} />
               ) : (
-                <View style={styles.avatar}>
-                  <ConversationUserAvatarDefault />
+                <View style={styles.avatarDefault}>
+                  <ConversationUserAvatarDefault width={rw(36)} height={rw(36)} />
                 </View>
               )}
-              <CustomText style={styles.name}>{name}</CustomText>
+              <CustomText style={styles.name}>{shortenString(name || '', 25)}</CustomText>
             </TouchableOpacity>
           </View>
         ),

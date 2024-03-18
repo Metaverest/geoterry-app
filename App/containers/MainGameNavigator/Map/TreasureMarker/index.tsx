@@ -43,7 +43,13 @@ const TreasureMarker = ({
               {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
               {!treasure.checkedIn ? (
                 <View style={styles.selectedSubIconContainer}>
-                  {treasure?.saved ? <TerrySaved /> : treasure?.favourite ? <TerryHeart /> : <TerryOfficial />}
+                  {treasure?.saved ? (
+                    <TerrySaved />
+                  ) : treasure?.favourite ? (
+                    <TerryHeart />
+                  ) : treasure?.isOfficial ? (
+                    <TerryOfficial />
+                  ) : null}
                 </View>
               ) : null}
             </View>
@@ -66,7 +72,13 @@ const TreasureMarker = ({
         {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
         {!treasure.checkedIn ? (
           <View style={styles.subIconContainer}>
-            {treasure?.saved ? <TerrySaved /> : treasure?.favourite ? <TerryHeart /> : <TerryOfficial />}
+            {treasure?.saved ? (
+              <TerrySaved />
+            ) : treasure?.favourite ? (
+              <TerryHeart />
+            ) : treasure?.isOfficial ? (
+              <TerryOfficial />
+            ) : null}
           </View>
         ) : null}
       </View>

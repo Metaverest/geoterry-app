@@ -118,6 +118,13 @@ export const requestRefreshToken = async (token: string, refreshToken: string) =
   return AXIOS.put<IRequestRefreshTokenResDto>('/auth/refresh', { token, refreshToken }).then(result => result.data);
 };
 
+AXIOS.interceptors.request.use(async config => {
+  const latestAccessToken = await getStoredProperty<string>(EDataStorageKey.ACCESS_TOKEN);
+  config.headers!.Authorization = `Bearer ${latestAccessToken}`;
+
+  return config;
+});
+
 AXIOS.interceptors.response.use(
   response => response,
   async error => {
