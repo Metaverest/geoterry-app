@@ -24,6 +24,7 @@ import { useTranslation } from 'react-i18next';
 import useClearError from 'App/hooks/useClearError';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import CustomImage from 'App/components/CustomImage';
+import { EImageSize } from 'App/utils/images';
 
 interface IFormValues {
   name: string;
@@ -99,7 +100,12 @@ const EditProfileScreen = () => {
       <Header title={t('Chỉnh sửa thông tin')} />
       <View style={styles.content}>
         {user.logoUrl ? (
-          <CustomImage imageUrl={user.logoUrl} style={styles.avatarUser} resizeMode="cover" />
+          <CustomImage
+            imageUrl={user.logoUrl}
+            style={styles.avatarUser}
+            resizeMode="cover"
+            imageSize={EImageSize.SIZE_500}
+          />
         ) : (
           <MapMarkerUserDefault width={rw(72)} height={rh(72)} />
         )}

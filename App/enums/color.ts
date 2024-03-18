@@ -3,6 +3,7 @@ export enum EColor {
   white = '#FFFFFF',
   black = '#000000',
   color_CCCCCC = '#CCCCCC',
+  color_CCCCCC_40 = 'rgba(204, 204, 204, 0.2)',
   color_FAFAFA = '#FAFAFA',
   color_727BFD = '#727BFD',
   color_51F1FF = '#51F1FF',

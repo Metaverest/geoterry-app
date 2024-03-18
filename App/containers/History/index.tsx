@@ -1,7 +1,7 @@
-import { View, FlatList } from 'react-native';
-import React, { useCallback, useEffect } from 'react';
+import { View, FlatList, Text } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage } from 'App/components/image';
+import { AppBackgroundImage, UploadFileFailedImage } from 'App/components/image';
 import Header from 'App/components/Header';
 import { useTranslation } from 'react-i18next';
 import ItemHistory from 'App/components/ItemHistory';
@@ -13,6 +13,11 @@ import { sagaUserAction } from 'App/redux/actions/userAction';
 import { IResponseTerryCheckins } from 'App/types/terry';
 import { ESagaUserAction } from 'App/enums/redux';
 import CustomText from 'App/components/CustomText';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { EColor } from 'App/enums/color';
+import { EButtonType } from 'App/enums';
+import CustomButton from 'App/components/Button';
+import { navigateToPopUpModal } from 'App/utils/navigation';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -22,9 +27,28 @@ const HistoryScreen = () => {
   const navigation = useNavigation();
   const terryCheckins = useSelector(reduxSelector.getAppTerryCheckins);
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
-  const renderItem = useCallback(({ item }: { item: IResponseTerryCheckins }) => {
-    return <ItemHistory {...item} />;
-  }, []);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectItems, setSelectItems] = useState<Record<string, boolean>>({});
+
+  const renderItem = useCallback(
+    ({ item }: { item: IResponseTerryCheckins }) => {
+      return (
+        <ItemHistory
+          {...item}
+          isEditMode={isEdit}
+          isSelected={selectItems[item.id]}
+          onPress={
+            isEdit
+              ? () => {
+                  setSelectItems(prev => ({ ...prev, [item.id]: !prev[item.id] }));
+                }
+              : undefined
+          }
+        />
+      );
+    },
+    [isEdit, selectItems],
+  );
   const ItemSeparatorComponent = useCallback(() => {
     return <View style={styles.separator} />;
   }, []);
@@ -52,9 +76,37 @@ const HistoryScreen = () => {
       ),
     );
   }, [dispatch, navigation]);
+
+  const handlePressDeleteHistory = useCallback(() => {
+    const selectedIds = Object.keys(selectItems).filter(key => selectItems[key]);
+
+    navigateToPopUpModal(navigation, {
+      title: t('Xác nhận'),
+      subtitle: t('Bạn có chắn chắn muốn xoá lịch sử không?'),
+      image: UploadFileFailedImage,
+      confirmButtonTitle: t('Xoá'),
+      cancelButtonTitle: t('Huỷ'),
+      onConfirm: () => {
+        // TODO: call delete API here
+        console.log(selectedIds);
+      },
+    });
+  }, [navigation, selectItems, t]);
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header title={t('Lịch sử')} />
+      <Header
+        title={t('Lịch sử')}
+        rightButton={
+          <TouchableOpacity
+            onPress={() => {
+              setSelectItems({});
+              setIsEdit(prev => !prev);
+            }}>
+            <Text style={styles.headerRightBtn}>{isEdit ? t('Huỷ') : t('Sửa')}</Text>
+          </TouchableOpacity>
+        }
+      />
       {loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] ? (
         LoadingSkeleton
       ) : (
@@ -65,6 +117,19 @@ const HistoryScreen = () => {
           ItemSeparatorComponent={ItemSeparatorComponent}
           ListEmptyComponent={ListEmptyComponent}
         />
+      )}
+      {isEdit && (
+        <View style={styles.bottom}>
+          <View style={styles.buttonContainer}>
+            <CustomButton
+              onPress={handlePressDeleteHistory}
+              linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+              buttonType={EButtonType.SOLID}
+              title={t('Xoá')}
+              disabled={!Object.values(selectItems).some(val => val === true)}
+            />
+          </View>
+        </View>
       )}
     </CustomSafeArea>
   );
