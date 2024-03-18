@@ -202,5 +202,9 @@
   "Xác nhận kho báu": "Confirm treasure",
   "Quét mã QR để xác nhận đã tìm thấy": "Scan the QR code to confirm that you have Found it",
   "Có": "Yes",
-  "Không": "No"
+  "Không": "No",
+  "Sửa": "Edit",
+  "Bạn có chắn chắn muốn xoá lịch sử không?": "Are you sure you want to delete history?",
+  "Xoá": "Delete",
+  "Huỷ": "Cancel"
 }

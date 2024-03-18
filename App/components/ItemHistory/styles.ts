@@ -5,10 +5,18 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 export const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    paddingHorizontal: rw(12),
+    paddingHorizontal: rw(22),
     paddingVertical: rh(12),
     alignItems: 'center',
+  },
+  containerNonEditableMode: {
     justifyContent: 'space-between',
+  },
+  containerEditableMode: {
+    gap: rw(22),
+  },
+  selected: {
+    backgroundColor: EColor.color_CCCCCC_40,
   },
   loadingContainer: {
     flexDirection: 'row',

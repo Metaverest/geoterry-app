@@ -15,8 +15,17 @@ import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { FindTerryCheckinBy } from 'App/enums';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { EColor } from 'App/enums/color';
+import CheckedBoxCircleIcon from 'App/media/CheckedBoxCircleIcon';
+import UncheckCheckboxCircleIcon from 'App/media/UncheckCheckboxCircleIcon';
 
-const ItemHistory = (props: IResponseTerryCheckins & { isLoading?: boolean }) => {
+interface IItemHistoryProps {
+  isLoading?: boolean;
+  onPress?: () => void;
+  isEditMode?: boolean;
+  isSelected?: boolean;
+}
+
+const ItemHistory = (props: IResponseTerryCheckins & IItemHistoryProps) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -52,7 +61,14 @@ const ItemHistory = (props: IResponseTerryCheckins & { isLoading?: boolean }) =>
   }
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handlePressOnViewDetails}>
+    <TouchableOpacity
+      style={[
+        styles.container,
+        !props?.isEditMode ? styles.containerNonEditableMode : styles.containerEditableMode,
+        props?.isEditMode && props.isSelected && styles.selected,
+      ]}
+      onPress={props?.isEditMode ? props?.onPress : handlePressOnViewDetails}>
+      {props?.isEditMode ? props.isSelected ? <CheckedBoxCircleIcon /> : <UncheckCheckboxCircleIcon /> : null}
       <View>
         <CustomText style={styles.timeHistory}>
           {props.isFound ? t('Đã tìm thấy') : t('Không tìm thấy')} {'  |  '}
@@ -67,7 +83,7 @@ const ItemHistory = (props: IResponseTerryCheckins & { isLoading?: boolean }) =>
           <CustomText style={[styles.timeHistory, styles.ml4]}>{props.terry.metadata.size}</CustomText>
         </View>
       </View>
-      <BackIcon style={styles.chevronRight} />
+      {!props?.isEditMode && <BackIcon style={styles.chevronRight} />}
     </TouchableOpacity>
   );
 };
