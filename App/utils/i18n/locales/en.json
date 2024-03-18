@@ -197,5 +197,6 @@
   "Ứng dụng không có quyền truy cập vị trí của bạn": "App does not have access to Camera",
   "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng": "Please go to app settings and grant access to your location",
   "Mở": "Open",
-  "Không tìm thấy Camera": "Camera not found"
+  "Không tìm thấy Camera": "Camera not found",
+  "Scan mã QR xuất hiện kho báu để xác nhận": "Scan the QR code that appears on the treasure to confirm"
 }
