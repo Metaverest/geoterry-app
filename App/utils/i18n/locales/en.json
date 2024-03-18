@@ -198,5 +198,9 @@
   "Vui lòng cấp quyền truy cập vị trí của bạn trong cài đặt ứng dụng": "Please go to app settings and grant access to your location",
   "Mở": "Open",
   "Không tìm thấy Camera": "Camera not found",
-  "Scan mã QR xuất hiện kho báu để xác nhận": "Scan the QR code that appears on the treasure to confirm"
+  "Scan mã QR xuất hiện kho báu để xác nhận": "Scan the QR code that appears on the treasure to confirm",
+  "Xác nhận kho báu": "Confirm treasure",
+  "Quét mã QR để xác nhận đã tìm thấy": "Scan the QR code to confirm that you have Found it",
+  "Có": "Yes",
+  "Không": "No"
 }

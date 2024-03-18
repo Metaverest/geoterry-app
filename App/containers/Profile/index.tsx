@@ -9,7 +9,7 @@ import CustomText from 'App/components/CustomText';
 import RewardPointsIcon from 'App/media/RewardPointsIcon';
 import CustomInputInformation from 'App/components/CustomInput/CustomInputInformation';
 import CustomButton from 'App/components/Button';
-import { EButtonType, EDataStorageKey } from 'App/enums';
+import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import LogOutIcon from 'App/media/LogOutIcon';
@@ -18,7 +18,6 @@ import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import MapMarkerUserDefault from 'App/media/MapMarkerUserDefault';
-import { removePropertyInDevice } from 'App/utils/storage/storage';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import { convertDateFormatOnlyDate } from 'App/utils/convert';
 import { sagaUserAction } from 'App/redux/actions/userAction';
@@ -26,6 +25,7 @@ import { resetAndNavigateToScreen } from 'App/utils/navigation';
 import { IUser } from 'App/types/user';
 import { EImageSize } from 'App/utils/images';
 import CustomImage from 'App/components/CustomImage';
+import { reduxAppAction } from 'App/redux/actions/appAction';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -54,10 +54,9 @@ const ProfileScreen = ({ route }: { route: any }) => {
   }, [user, profile, isCurrentUserProfile]);
 
   const handleLogOut = useCallback(async () => {
-    await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
-    await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
+    dispatch(reduxAppAction.resetAppStates());
     resetAndNavigateToScreen(navigation, ENavigationScreen.LOGIN_SCREEN);
-  }, [navigation]);
+  }, [navigation, dispatch]);
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trang cá nhân')} />

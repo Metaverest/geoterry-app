@@ -20,6 +20,13 @@ import { ICreateAccountDto, IUser } from 'App/types/user';
 import { LatLng } from 'react-native-maps';
 
 const reduxAppAction = {
+  resetAppStates: () => {
+    return {
+      type: EReduxAppAction.RESET_APP_STATES,
+      payload: {},
+    };
+  },
+
   setLanguage: (language: ELanguageCode) => {
     return {
       type: EReduxAppAction.SET_LANGUAGE_CODE,

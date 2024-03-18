@@ -119,6 +119,11 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
         subTitle: t('Khả năng tìm thấy trong vòng 10 - 15 phút'),
         value: `${t('Mức')} ${terry.metadata.difficulty}`,
       },
+      {
+        title: t('Xác nhận kho báu'),
+        subTitle: t('Quét mã QR để xác nhận đã tìm thấy'),
+        value: `${terry.isOfficial ? t('Có') : t('Không')}`,
+      },
     ] as ITerryItem[];
   }, [t, terry]);
   const RenderTerryItem = useCallback(

@@ -99,7 +99,7 @@ import {
   navigateToPopUpModal,
   resetAndNavigateToScreen,
 } from 'App/utils/navigation';
-import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty, removePropertyInDevice, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
 import { isEmpty, isNil, last, map, reduce } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
@@ -767,6 +767,16 @@ function* verifyOfficialTerry(action: IReduxActionWithNavigation<ESagaAppAction,
 
 export function* watchVerifyOfficialTerry() {
   yield takeLatest(ESagaUserAction.VERIFY_OFFICIAL_TERRY, verifyOfficialTerry);
+}
+
+function* resetAppStates() {
+  yield call(removePropertyInDevice, EDataStorageKey.ACCESS_TOKEN);
+  yield call(removePropertyInDevice, EDataStorageKey.REFRESH_TOKEN);
+  yield put(reduxAppAction.resetAppStates());
+}
+
+export function* watchResetAppStates() {
+  yield takeLatest(ESagaUserAction.RESET_APP_STATES, resetAppStates);
 }
 
 function* hunterFilterConversationStat(action: IReduxActionWithNavigation<ESagaAppAction, {}>) {
