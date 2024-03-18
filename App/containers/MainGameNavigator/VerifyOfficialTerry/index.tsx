@@ -66,6 +66,11 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Xác minh kho báu')} />
+      {cameraDevice && (
+        <View style={styles.textContainer}>
+          <Text style={styles.notFoundText}>{t('Scan mã QR xuất hiện kho báu để xác nhận')}</Text>
+        </View>
+      )}
       {cameraDevice ? (
         <View style={styles.cameraContainer}>
           <Camera

@@ -57,4 +57,10 @@ export const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
   },
+  textContainer: {
+    position: 'absolute',
+    marginTop: '30%',
+    width: '90%',
+    alignItems: 'center',
+  },
 });
