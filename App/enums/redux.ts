@@ -19,6 +19,7 @@ export enum EReduxAppAction {
   SET_COORDINATES_PATH = 'SET_COORDINATES_PATH',
   SET_OTHER_USER_PROFILE_TO_DISPLAY = 'SET_OTHER_USER_PROFILE_TO_DISPLAY',
   SET_USER_NEARBY_PLAYERS = 'SET_USER_NEARBY_PLAYERS',
+  SET_TERRY_VERIFY_CODE = 'SET_TERRY_VERIFY_CODE',
   // Use MERGE_* when you want to merge the data with the existing one
   // Use SET_* when you want to replace the existing data
   SET_LOADING_STATES = 'SET_LOADING_STATES',
@@ -47,6 +48,7 @@ export enum ESagaUserAction {
   GET_TERRY_CHECKINS = 'GET_TERRY_CHECKINS',
   SWITCH_ROLE = 'SWITCH_ROLE',
   GET_USER_NEARBY_PLAYERS = 'GET_USER_NEARBY_PLAYERS',
+  VERIFY_OFFICIAL_TERRY = 'VERIFY_OFFICIAL_TERRY',
 }
 
 export enum ESagaAppAction {

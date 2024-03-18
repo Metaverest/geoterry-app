@@ -7,6 +7,7 @@ const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
+    paddingBottom: rh(32),
   },
   headerContainer: {
     marginTop: rh(40),

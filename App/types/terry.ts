@@ -23,6 +23,7 @@ export interface ITerryResponseDto {
   conversationId?: string;
   hint?: string;
   isAvailable: boolean;
+  isOfficial?: boolean;
   photoUrls?: string[];
   categoryIds?: string[];
   location: ITerryLocationresDto;
@@ -171,6 +172,7 @@ export interface ITerryCheckinInputDto {
   photoUrls?: string[];
   rate?: number;
   isFound: boolean;
+  code?: string;
   location: ITerryLocationDto;
 }
 

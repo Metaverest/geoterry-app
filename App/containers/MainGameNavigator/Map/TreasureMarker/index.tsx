@@ -10,6 +10,7 @@ import { LatLng, Marker } from 'react-native-maps';
 import { styles } from './styles';
 import TerrySaved from 'App/media/TerrySaved';
 import TerryHeart from 'App/media/TerryHeart';
+import TerryOfficial from 'App/media/TerryOfficial';
 
 const TreasureMarker = ({
   treasure,
@@ -31,7 +32,7 @@ const TreasureMarker = ({
 
   if (isSelect) {
     return (
-      <Marker key={treasure.id} style={styles.markerContainer} coordinate={treasure.location} onPress={deselectTerry}>
+      <Marker key={treasure.id} coordinate={treasure.location} onPress={deselectTerry}>
         <View style={styles.markerContainer}>
           <LinearGradient
             style={styles.imageContainer}
@@ -42,8 +43,7 @@ const TreasureMarker = ({
               {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
               {!treasure.checkedIn ? (
                 <View style={styles.selectedSubIconContainer}>
-                  {treasure?.saved && <TerrySaved />}
-                  {treasure?.favourite && !treasure?.saved && <TerryHeart />}
+                  {treasure?.saved ? <TerrySaved /> : treasure?.favourite ? <TerryHeart /> : <TerryOfficial />}
                 </View>
               ) : null}
             </View>
@@ -66,8 +66,7 @@ const TreasureMarker = ({
         {treasure.checkedIn ? <DisableTreasureIcon /> : <ActiveTreasureIcon />}
         {!treasure.checkedIn ? (
           <View style={styles.subIconContainer}>
-            {treasure?.saved && <TerrySaved />}
-            {treasure?.favourite && !treasure?.saved && <TerryHeart />}
+            {treasure?.saved ? <TerrySaved /> : treasure?.favourite ? <TerryHeart /> : <TerryOfficial />}
           </View>
         ) : null}
       </View>

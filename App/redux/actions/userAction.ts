@@ -203,6 +203,12 @@ const sagaUserAction = {
       payload: { data, navigation },
     };
   },
+  verifyOfficialTerryAsync: (terryId: string, code: string, navigation: any) => {
+    return {
+      type: ESagaUserAction.VERIFY_OFFICIAL_TERRY,
+      payload: { data: { terryId, code }, navigation },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };

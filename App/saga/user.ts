@@ -91,6 +91,7 @@ import AXIOS, {
   requestVerifyAccountRecoveryOTP,
   setAuthorizationRequestHeader,
   requestHunterFilterConversationStat,
+  requestHunterVerifyTerry,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -747,6 +748,27 @@ export function* watchGetNearbyPlayers() {
   yield takeLatest(ESagaUserAction.GET_USER_NEARBY_PLAYERS, getNearbyPlayers);
 }
 
+function* verifyOfficialTerry(action: IReduxActionWithNavigation<ESagaAppAction, { terryId: string; code: string }>) {
+  const navigation = action.payload?.navigation;
+  try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: true }));
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const code = action.payload?.data?.code;
+    const terryId = action.payload?.data?.terryId;
+    yield call(requestHunterVerifyTerry, code!, profileId, terryId!);
+    yield put(reduxAppAction.setTerryVerifyCode(terryId!, code!));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: false }));
+  } catch (error) {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.VERIFY_OFFICIAL_TERRY]: false }));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchVerifyOfficialTerry() {
+  yield takeLatest(ESagaUserAction.VERIFY_OFFICIAL_TERRY, verifyOfficialTerry);
+}
+
 function* hunterFilterConversationStat(action: IReduxActionWithNavigation<ESagaAppAction, {}>) {
   const navigation = action.payload?.navigation;
   try {
@@ -966,5 +988,6 @@ export default function* userSaga() {
     watchHunterSendMessage(),
     watchGetOtherProfile(),
     watchHunterFilterConversationStat(),
+    watchVerifyOfficialTerry(),
   ]);
 }

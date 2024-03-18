@@ -164,7 +164,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
 
   return (
     <ImageBackground source={AppBackgroundImage}>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {!terry.photoUrls || terry.photoUrls.length === 0 ? (
           <Image source={CheckInTerryCongratImage} style={styles.imageNullTerryCheckin} resizeMode="cover" />
         ) : (
@@ -255,63 +255,67 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             ))}
           </ScrollView>
         </View>
-        <View style={styles.terryFooterContainer}>
-          {terry?.checkedIn ? (
-            <>
-              <View style={styles.buttonContainer}>
-                <CustomButton
-                  onPress={handleViewHistory}
-                  title={t('Xem lịch sử')}
-                  buttonType={EButtonType.SOLID}
-                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-                />
-              </View>
-            </>
-          ) : (
-            <>
-              <View style={styles.buttonContainer}>
-                <CustomButton
-                  onPress={() => {
-                    dispatch(
-                      reduxAppAction.setCheckinTerryData({
-                        terryId: terry?.id,
-                        location: {
-                          latitude: userLocation?.latitude || initUserLocation.latitude,
-                          longitude: userLocation?.longitude || initUserLocation.longitude,
-                        },
-                      }),
-                    );
-                    navigation.dispatch(
-                      CommonActions.navigate({
-                        name: EMainGameScreen.CHECKIN_TERRY_SCREEN,
-                        params: { isCannotFindTerry: false },
-                      }),
-                    );
-                  }}
-                  title={t('Đã tìm thấy')}
-                  disabled={!nearToTerry}
-                  buttonType={EButtonType.SOLID}
-                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-                />
-              </View>
-              <View style={styles.buttonContainer}>
-                <CustomButton
-                  onPress={() => {
-                    navigation.dispatch(
-                      StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, {
-                        terry,
-                        userLocation: userLocation || initUserLocation,
-                      }),
-                    );
-                  }}
-                  title={t('Chỉ đường')}
-                  buttonType={EButtonType.OUTLINE}
-                  linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-                />
-              </View>
-            </>
-          )}
-        </View>
+        {terry.profileId !== user.id && (
+          <View style={styles.terryFooterContainer}>
+            {terry?.checkedIn ? (
+              <>
+                <View style={styles.buttonContainer}>
+                  <CustomButton
+                    onPress={handleViewHistory}
+                    title={t('Xem lịch sử')}
+                    buttonType={EButtonType.SOLID}
+                    linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                  />
+                </View>
+              </>
+            ) : (
+              <>
+                <View style={styles.buttonContainer}>
+                  <CustomButton
+                    onPress={() => {
+                      dispatch(
+                        reduxAppAction.setCheckinTerryData({
+                          terryId: terry?.id,
+                          location: {
+                            latitude: userLocation?.latitude || initUserLocation.latitude,
+                            longitude: userLocation?.longitude || initUserLocation.longitude,
+                          },
+                        }),
+                      );
+                      navigation.dispatch(
+                        CommonActions.navigate({
+                          name: terry.isOfficial
+                            ? EMainGameScreen.VERIFY_OFFICIAL_TERRY_SCREEN
+                            : EMainGameScreen.CHECKIN_TERRY_SCREEN,
+                          params: { isCannotFindTerry: false, terryId: terry.id },
+                        }),
+                      );
+                    }}
+                    title={t('Đã tìm thấy')}
+                    disabled={!nearToTerry}
+                    buttonType={EButtonType.SOLID}
+                    linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                  />
+                </View>
+                <View style={styles.buttonContainer}>
+                  <CustomButton
+                    onPress={() => {
+                      navigation.dispatch(
+                        StackActions.replace(EMainGameScreen.HUNTING_MAP_SCREEN, {
+                          terry,
+                          userLocation: userLocation || initUserLocation,
+                        }),
+                      );
+                    }}
+                    title={t('Chỉ đường')}
+                    buttonType={EButtonType.OUTLINE}
+                    linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
+                  />
+                </View>
+              </>
+            )}
+          </View>
+        )}
       </ScrollView>
 
       {user.id === terry.profileId ? (
