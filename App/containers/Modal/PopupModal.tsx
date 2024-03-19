@@ -54,9 +54,9 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
                   onPress={() => {
                     if (closeModalBeforeActiom) {
                       navigation.dispatch(CommonActions.goBack());
-                      onCancel && onCancel();
+                      onConfirm && onConfirm();
                     } else {
-                      onCancel && onCancel();
+                      onConfirm && onConfirm();
                       navigation.dispatch(CommonActions.goBack());
                     }
                   }}
@@ -72,9 +72,9 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
                   onPress={() => {
                     if (closeModalBeforeActiom) {
                       navigation.dispatch(CommonActions.goBack());
-                      onConfirm && onConfirm();
+                      onCancel && onCancel();
                     } else {
-                      onConfirm && onConfirm();
+                      onCancel && onCancel();
                       navigation.dispatch(CommonActions.goBack());
                     }
                   }}

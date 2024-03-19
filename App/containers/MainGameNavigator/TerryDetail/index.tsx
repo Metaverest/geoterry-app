@@ -93,7 +93,8 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
     navigateToPopUpModal(navigation, {
       ...PopUpModalParams[EPopUpModalType.TERRY_INFORMATION_CAN_BE_DISCLOSED],
       closeModalBeforeActiom: true,
-      onCancel: () => navigation.dispatch(CommonActions.navigate(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id })),
+      onConfirm: () =>
+        navigation.dispatch(CommonActions.navigate(EMainGameScreen.REVIEW_SCREEN, { terryId: terry.id })),
     });
   };
 

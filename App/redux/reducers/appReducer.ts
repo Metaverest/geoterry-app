@@ -102,6 +102,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
     case EReduxAppAction.SET_TERRY_CHECKINS:
       return {
         ...state,
+        terryCheckins: [...(action.payload?.terryCheckins || [])],
+      };
+    case EReduxAppAction.MERGE_TERRY_CHECKINS:
+      return {
+        ...state,
         terryCheckins: [
           ...(state.terryCheckins || []),
           ...(action.payload?.terryCheckins?.filter(item => !state.terryCheckins?.some(e => item.id === e.id)) || []),

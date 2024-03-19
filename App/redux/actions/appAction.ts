@@ -93,6 +93,12 @@ const reduxAppAction = {
       payload: { terryCheckins },
     };
   },
+  mergeTerryCheckins: (terryCheckins: IResponseTerryCheckins[]) => {
+    return {
+      type: EReduxAppAction.MERGE_TERRY_CHECKINS,
+      payload: { terryCheckins },
+    };
+  },
   setCheckinTerryData: (terryCheckinInput: Partial<ITerryCheckinInputDto>) => {
     return {
       type: EReduxAppAction.SET_CHECKIN_TERRY_DATA,

@@ -38,6 +38,7 @@ export const styles = StyleSheet.create({
     lineHeight: rh(18),
     color: EColor.color_666666,
     backgroundColor: 'transparent',
+    paddingHorizontal: rh(6),
   },
   dropDownContainer: {
     borderRadius: 0,
