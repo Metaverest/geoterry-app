@@ -253,7 +253,7 @@ export const requestHunterGetTerryCheckin = async (params: IHunterGetTerryChecki
 };
 
 export const requestHunterUpsertTerryUserPath = async (path: string, profileId: string, terryId: string) => {
-  return AXIOS.put<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-path`, { path }).then(
+  return AXIOS.put<ITerryUserPathResDto>(`/hunter/${profileId}/terry/${terryId}/terry-user-mapping`, { path }).then(
     result => result.data,
   );
 };
