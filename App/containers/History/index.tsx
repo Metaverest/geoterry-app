@@ -87,11 +87,11 @@ const HistoryScreen = () => {
       confirmButtonTitle: t('Xoá'),
       cancelButtonTitle: t('Huỷ'),
       onConfirm: () => {
-        // TODO: call delete API here
-        console.log(selectedIds);
+        dispatch(sagaUserAction.deleteTerryCheckinsAsync(selectedIds, navigation));
+        setIsEdit(false);
       },
     });
-  }, [navigation, selectItems, t]);
+  }, [dispatch, navigation, selectItems, t]);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -107,7 +107,7 @@ const HistoryScreen = () => {
           </TouchableOpacity>
         }
       />
-      {loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] ? (
+      {loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] || loadingStates?.[ESagaUserAction.DELETE_TERRY_CHECKINS] ? (
         LoadingSkeleton
       ) : (
         <FlatList

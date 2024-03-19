@@ -92,6 +92,7 @@ import AXIOS, {
   setAuthorizationRequestHeader,
   requestHunterFilterConversationStat,
   requestHunterVerifyTerry,
+  requestHunterDeleteCheckins,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -551,7 +552,7 @@ function* getTerryCheckins(
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
     const response: IResponseTerryCheckins[] = yield call(requestHunterFilterTerryCheckins, data, params, profileId);
-    yield put(reduxAppAction.setTerryCheckins(response));
+    yield put(reduxAppAction.mergeTerryCheckins(response));
     yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.GET_TERRY_CHECKINS]: false }));
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();
@@ -767,6 +768,27 @@ function* verifyOfficialTerry(action: IReduxActionWithNavigation<ESagaAppAction,
 
 export function* watchVerifyOfficialTerry() {
   yield takeLatest(ESagaUserAction.VERIFY_OFFICIAL_TERRY, verifyOfficialTerry);
+}
+
+function* deleteCheckins(action: IReduxActionWithNavigation<ESagaAppAction, { checkinIds: string[] }>) {
+  const navigation = action.payload?.navigation;
+  try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.DELETE_TERRY_CHECKINS]: true }));
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const checkinIds = action.payload?.data?.checkinIds;
+    yield call(requestHunterDeleteCheckins, checkinIds!, profileId);
+    const checkins: IResponseTerryCheckins[] = yield select(reduxSelector.getAppTerryCheckins);
+    yield put(reduxAppAction.setTerryCheckins(checkins.filter(checkin => !checkinIds?.includes(checkin.id))));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.DELETE_TERRY_CHECKINS]: false }));
+  } catch (error) {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.DELETE_TERRY_CHECKINS]: false }));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchDeleteCheckins() {
+  yield takeLatest(ESagaUserAction.DELETE_TERRY_CHECKINS, deleteCheckins);
 }
 
 function* resetAppStates() {
@@ -999,5 +1021,6 @@ export default function* userSaga() {
     watchGetOtherProfile(),
     watchHunterFilterConversationStat(),
     watchVerifyOfficialTerry(),
+    watchDeleteCheckins(),
   ]);
 }

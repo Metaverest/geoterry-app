@@ -317,4 +317,7 @@ export const requestHunterSendMessage = async (profileId: string, data: ISendMes
 export const requestHunterVerifyTerry = async (code: string, profileId: string, terryId: string) =>
   AXIOS.post<IMessageResDto>(`/hunter/${profileId}/terry/${terryId}/verify`, { code }).then(result => result.data);
 
+export const requestHunterDeleteCheckins = async (checkinIds: string[], profileId: string) =>
+  AXIOS.delete(`/hunter/${profileId}/terry-checkin`, { data: { checkinIds } }).then(result => result.data);
+
 export default AXIOS;

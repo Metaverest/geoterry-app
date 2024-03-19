@@ -209,6 +209,12 @@ const sagaUserAction = {
       payload: { data: { terryId, code }, navigation },
     };
   },
+  deleteTerryCheckinsAsync: (checkinIds: string[], navigation: any) => {
+    return {
+      type: ESagaUserAction.DELETE_TERRY_CHECKINS,
+      payload: { data: { checkinIds }, navigation },
+    };
+  },
 };
 
 export { reduxUserAction, sagaUserAction };
