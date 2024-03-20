@@ -174,8 +174,8 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         conversations: {
-          ...action.payload?.conversations,
           ..._.omit(state.conversations, conversationIdListToBeMerged),
+          ...action.payload?.conversations,
         },
       };
     case EReduxAppAction.UPDATE_CONVERSATION:
@@ -275,8 +275,8 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
           return {
             ...result,
             [conversationId]: {
-              ...(state.messages[conversationId] || {}),
               ...(action.payload?.messages || {})[conversationId],
+              ...(state.messages[conversationId] || {}),
             },
           };
         },
