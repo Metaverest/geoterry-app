@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   iconArrowMaximize: {
     position: 'absolute',
     right: rw(4),
-    bottom: rh(6),
+    bottom: rh(4),
   },
   image: {
     width: rw(48),

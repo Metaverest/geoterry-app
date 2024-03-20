@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
-    marginBottom: rh(2),
+    marginBottom: rh(6),
   },
   value: {
     fontSize: rh(14),
@@ -58,9 +58,10 @@ export const styles = StyleSheet.create({
   },
   marker: {
     backgroundColor: EColor.color_FAFAFA,
-    borderRadius: rh(12),
-    width: rh(12),
-    height: rh(12),
+    borderRadius: rw(12),
+    width: rw(12),
+    height: rw(12),
+    marginRight: rw(6),
   },
   selectedStyle: {
     backgroundColor: EColor.color_FAFAFA,

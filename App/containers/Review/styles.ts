@@ -24,13 +24,16 @@ export const styles = StyleSheet.create({
     backgroundColor: EColor.color_FAFAFA,
     borderRadius: rh(36),
     marginRight: rw(14),
+    marginBottom: rh(65),
   },
   containerItem: {
     flexDirection: 'row',
     borderBottomWidth: rh(0.5),
-    paddingVertical: rh(16),
+    paddingVertical: rh(8),
     borderColor: EColor.color_666666,
     paddingRight: rw(2),
+    paddingBottom: rh(18),
+    marginBottom: rh(8),
   },
   loadingContainer: {
     flexDirection: 'row',
@@ -74,5 +77,11 @@ export const styles = StyleSheet.create({
   containerItemImageStyle: {
     marginRight: rw(8),
     borderRadius: rw(5),
+  },
+  avatarDefault: {
+    borderRadius: rh(36),
+    marginBottom: rh(65),
+    marginRight: rw(14),
+    overflow: 'hidden',
   },
 });

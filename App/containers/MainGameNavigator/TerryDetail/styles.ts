@@ -86,6 +86,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginTop: rh(4),
     maxHeight: rh(400),
+    marginBottom: rh(8),
   },
 
   terryItemContainer: {

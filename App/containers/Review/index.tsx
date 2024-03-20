@@ -20,6 +20,8 @@ import { EColor } from 'App/enums/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { isNil } from 'lodash';
 import CustomImage from 'App/components/CustomImage';
+import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
+import { responsiveByHeight as rh } from 'App/helpers/common';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -58,7 +60,13 @@ const Review = () => {
     ({ item }: { item: IResponseGetCheckinsOfTerry }) => {
       return (
         <View style={styles.containerItem}>
-          <CustomImage imageUrl={item.profile.logoUrl || ''} style={styles.avatar} resizeMode="cover" />
+          {item.profile.logoUrl ? (
+            <CustomImage imageUrl={item.profile.logoUrl} style={styles.avatar} resizeMode="cover" />
+          ) : (
+            <View style={styles.avatarDefault}>
+              <ConversationUserAvatarDefault height={rh(36)} width={rh(36)} />
+            </View>
+          )}
           <View style={styles.flex}>
             <TouchableOpacity
               onPress={() =>
@@ -78,6 +86,7 @@ const Review = () => {
             <MultipleImagesOnLine
               images={item.photoUrls || []}
               numColumns={5}
+              showIconMaximize
               containerItemImageStyle={styles.containerItemImageStyle}
             />
           </View>

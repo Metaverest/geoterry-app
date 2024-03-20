@@ -36,6 +36,7 @@ import { getResizedImageUrl, EImageSize } from 'App/utils/images';
 import Messenger from 'App/media/Messenger';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { isNil } from 'lodash';
+import ImageView from 'react-native-image-viewing';
 
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
@@ -51,6 +52,8 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const [indexImg, setIndexImg] = useState(0);
+  const [visible, setIsVisible] = useState(false);
+
   const { userLocation } = useUserLocation();
   const conversations = useSelector(reduxSelector.getConversations);
   const terry: ITerryResponseDto = useMemo(() => {
@@ -182,7 +185,9 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
               index={0}
               showPagination
               data={items}
-              onChangeIndex={({ index }) => setIndexImg(index)}
+              scrollEnabled={false}
+              onChangeIndex={({ index }) => !visible && setIndexImg(index)}
+              onTouchStart={() => setIsVisible(true)}
               renderItem={({ item, index }) => {
                 return (
                   <ImageBackground
@@ -346,6 +351,14 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           }
         />
       )}
+
+      <ImageView
+        images={items.map(item => ({ uri: getResizedImageUrl(item.image, EImageSize.SIZE_500) }))}
+        keyExtractor={(_, index) => index.toString()}
+        imageIndex={indexImg}
+        visible={visible}
+        onRequestClose={() => setIsVisible(false)}
+      />
     </ImageBackground>
   );
 };
