@@ -7,11 +7,11 @@ import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation'
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { reduxSelector } from 'App/redux/selectors';
-import { EMessagePayloadType, IParticipantResDto, ISendMessageInputDto } from 'App/types/chat';
-import { head, isEmpty, map, orderBy } from 'lodash';
-import { default as React, useCallback, useEffect, useMemo } from 'react';
+import { EMessagePayloadType, IMessageResDto, IParticipantResDto, ISendMessageInputDto } from 'App/types/chat';
+import { head, isEmpty, map, orderBy, reduce } from 'lodash';
+import { default as React, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { Avatar, Day, GiftedChat, IMessage, InputToolbar } from 'react-native-gifted-chat';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomBubble from './CustomBubble';
@@ -24,6 +24,9 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { ESagaAppAction } from 'App/enums/redux';
 import { getResizedImageUrl, EImageSize } from 'App/utils/images';
 import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
+import useBoolean from 'App/hooks/useBoolean';
+import { CHAT_MESSAGES_PAGINATION_PAGE_SIZE } from 'App/constants/common';
+import { requestHunterReadConversationMessages } from 'App/utils/axios';
 
 const NUMBER_OF_SKELETONS = 6;
 
@@ -39,6 +42,8 @@ const ChatView = () => {
   const recipientId = useMemo(() => params.recipientId, [params]);
   const profile = useSelector(reduxSelector.getAppOtherUserProfileToDisplay);
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
+  const [loadEarlier, showLoadEarlier, hideLoadEarlier] = useBoolean(false);
+  const [pageIndex, setPageIndex] = useState(1);
 
   useEffect(() => {
     if (recipientId && !profile) {
@@ -83,9 +88,12 @@ const ChatView = () => {
         conversationId,
         requestHunterReadConversationMessagesQueryParams: {
           markAllAsRead: true,
+          page: pageIndex,
+          pageSize: CHAT_MESSAGES_PAGINATION_PAGE_SIZE,
         },
       }),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, conversationId, recipientId]);
   const messagesToDisplay = useMemo(() => {
     const formattedMessages = map(
@@ -126,6 +134,37 @@ const ChatView = () => {
     },
     [conversationId, dispatch, userFriend?.profileId, recipientId, navigation],
   );
+
+  const onLoadEarlierMessage = useCallback(async () => {
+    if (conversationId) {
+      try {
+        showLoadEarlier();
+        const earlierMessages = await requestHunterReadConversationMessages(conversationId || '', user.id, {
+          page: pageIndex + 1,
+          pageSize: CHAT_MESSAGES_PAGINATION_PAGE_SIZE,
+        });
+
+        if (earlierMessages) {
+          const formattedMessages: Record<string, IMessageResDto> = reduce(
+            earlierMessages,
+            (result, message) => {
+              return {
+                ...result,
+                [message.id]: message,
+              };
+            },
+            {},
+          );
+          dispatch(reduxAppAction.mergeMessages({ [conversationId!]: formattedMessages }));
+        }
+        setPageIndex(preIndex => preIndex + 1);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        hideLoadEarlier();
+      }
+    }
+  }, [conversationId, dispatch, hideLoadEarlier, pageIndex, showLoadEarlier, user.id]);
 
   const CardSkeleton = useCallback(() => {
     return (
@@ -186,6 +225,11 @@ const ChatView = () => {
           textInputProps={styles.textInputProps}
           placeholder={t('Nhập tin nhắn')}
           renderBubble={props => <CustomBubble {...props} />}
+          infiniteScroll
+          loadEarlier
+          isLoadingEarlier={loadEarlier}
+          onLoadEarlier={onLoadEarlierMessage}
+          renderLoadEarlier={() => <ActivityIndicator size={rw(50)} color={EColor.white} animating={loadEarlier} />}
         />
       )}
       <Header
