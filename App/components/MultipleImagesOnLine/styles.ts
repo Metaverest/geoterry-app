@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     width: rw(48),
     height: rw(48),
     borderRadius: rw(5),
+    backgroundColor: EColor.color_00000050,
   },
   lastImage: {
     position: 'absolute',

@@ -18,6 +18,7 @@ import QRScreen from '../QRScreen';
 import LoadingModal from '../Modal/LoadingModal';
 import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
+import EditDetailHistory from '../EditDetailHistory';
 import CreateNewTerryScreen from './CreateNewTerry';
 import PopupModal from '../Modal/PopupModal';
 import Review from '../Review';
@@ -122,6 +123,11 @@ const MainGameNavigator = () => {
         <Stack.Screen
           name={EMainGameScreen.DETAIL_HISTORY}
           component={DetailHistory}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={EMainGameScreen.EDIT_DETAIL_HISTORY}
+          component={EditDetailHistory}
           options={{ headerShown: false }}
         />
         <Stack.Screen

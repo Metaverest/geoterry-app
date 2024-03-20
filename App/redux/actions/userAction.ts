@@ -14,6 +14,7 @@ import {
   ITerryFilterInputDto,
   ITerryFilterParams,
   ITerryInputDto,
+  IUpdateTerryCheckinInput,
   Location,
 } from 'App/types/terry';
 
@@ -213,6 +214,12 @@ const sagaUserAction = {
     return {
       type: ESagaUserAction.DELETE_TERRY_CHECKINS,
       payload: { data: { checkinIds }, navigation },
+    };
+  },
+  updateTerryCheckinAsync: (data: IUpdateTerryCheckinInput, checkinId: string, navigation: any) => {
+    return {
+      type: ESagaUserAction.UPDATE_TERRY_CHECKIN,
+      payload: { data: { ...data, checkinId }, navigation },
     };
   },
 };
