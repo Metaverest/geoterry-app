@@ -125,7 +125,7 @@ const HistoryScreen = () => {
               onPress={handlePressDeleteHistory}
               linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
               buttonType={EButtonType.SOLID}
-              title={t('Xoá')}
+              title={`${t('Xoá')} (${Object.values(selectItems).filter(selected => selected).length})`}
               disabled={!Object.values(selectItems).some(val => val === true)}
             />
           </View>

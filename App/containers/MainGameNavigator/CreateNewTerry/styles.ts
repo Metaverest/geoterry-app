@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     rowGap: rw(8),
     columnGap: rw(8),
+    alignItems: 'center',
   },
   inputContainer: {
     zIndex: 1,
@@ -55,7 +56,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     height: rw(50),
     width: rw(50),
-    marginBottom: rh(10),
+    overflow: 'hidden',
   },
   image: {
     height: rh(60),

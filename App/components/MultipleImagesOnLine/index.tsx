@@ -68,11 +68,13 @@ const MultipleImagesOnLine = (props: Props) => {
       return (
         <View>
           {renderItem({ item, index })}
-          <TouchableOpacity
-            style={styles.dismissCircleIconButton}
-            onPress={() => props.removeImage && props.removeImage(item)}>
-            <DismissCircleIcon />
-          </TouchableOpacity>
+          {index !== (props.numColumns || 0) - 1 && (
+            <TouchableOpacity
+              style={styles.dismissCircleIconButton}
+              onPress={() => props.removeImage && props.removeImage(item)}>
+              <DismissCircleIcon />
+            </TouchableOpacity>
+          )}
         </View>
       );
     },
@@ -101,7 +103,7 @@ const MultipleImagesOnLine = (props: Props) => {
                     setIndexImage(index);
                     setIsVisible(true);
                   }}>
-                  <CustomImage imageUrl={url} style={styles.image} resizeMode="contain" />
+                  <CustomImage imageUrl={url} style={styles.image} resizeMode="cover" />
                   {props.showIconMaximize && <ArrowMaximize style={styles.iconArrowMaximize} />}
                 </TouchableOpacity>
                 <TouchableOpacity

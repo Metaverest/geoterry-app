@@ -41,8 +41,8 @@ export const styles = StyleSheet.create({
     marginVertical: rh(26),
   },
   addImagebuttonContainer: {
-    paddingHorizontal: rh(12),
-    paddingVertical: rh(12),
+    paddingHorizontal: rh(14),
+    paddingVertical: rh(14),
     borderRadius: rh(8),
   },
   terryAddImageContainer: {
