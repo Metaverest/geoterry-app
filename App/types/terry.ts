@@ -178,6 +178,12 @@ export interface ITerryCheckinInputDto {
 
 export interface ITerryCheckinResDto {}
 
+export interface IUpdateTerryCheckinInput {
+  reviewText?: string;
+  photoUrls?: string[];
+  rate?: number;
+}
+
 export interface IHunterGetTerryCheckinParams {
   profileId: string;
   id: string;

@@ -42,6 +42,7 @@ export enum EMainGameScreen {
   QR_SCREEN = 'QR_SCREEN',
   HISTORY = 'HISTORY',
   DETAIL_HISTORY = 'DETAIL_HISTORY',
+  EDIT_DETAIL_HISTORY = 'EDIT_DETAIL_HISTORY',
   ENLARGE_IMAGE = 'ENLARGE_IMAGE',
   CREATE_NEW_TERRY_SCREEN = 'CREATE_NEW_TERRY_SCREEN',
   REVIEW_SCREEN = 'REVIEW_SCREEN',
@@ -65,6 +66,7 @@ export enum ESettingNavigator {
 }
 export interface EMainGameNavigatorParams extends ParamListBase {
   [EMainGameScreen.MAP_SCREEN]: { locationTerry?: IRealtimeLocation; terryId: string };
+  [EMainGameScreen.EDIT_DETAIL_HISTORY]: IResponseTerryCheckins;
   [EMainGameScreen.MAP_TYPE_SCREEN]: undefined;
   [EMainGameScreen.FILTER_SCREEN]: undefined;
   [EMainGameScreen.SETTING_NAVIGATOR]: undefined;

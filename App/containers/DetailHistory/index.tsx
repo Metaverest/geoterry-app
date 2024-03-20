@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import React, { useMemo } from 'react';
 import { styles } from './styles';
 import CustomSafeArea from 'App/components/CustomSafeArea';
@@ -24,6 +24,7 @@ import TreasureMarker from '../MainGameNavigator/Map/TreasureMarker';
 import { useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { IRealtimeLocation } from 'App/types';
+import Edit from 'App/media/Edit';
 
 export default function DetailHistory() {
   const { t } = useTranslation();
@@ -44,7 +45,17 @@ export default function DetailHistory() {
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <Header title={t('Lịch sử')} />
+      <Header
+        title={t('Lịch sử')}
+        rightButton={
+          <TouchableOpacity
+            onPress={() => {
+              navigation.dispatch(CommonActions.navigate(EMainGameScreen.EDIT_DETAIL_HISTORY, params));
+            }}>
+            <Edit />
+          </TouchableOpacity>
+        }
+      />
       <MapView
         region={calculateMidpoint(params.terry?.location, first(coordinatesPathOfTerry) || params.terry?.location)}
         showsCompass={false}

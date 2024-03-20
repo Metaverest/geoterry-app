@@ -30,6 +30,7 @@ import {
   ITerryLocationDto,
   ITerryResponseDto,
   ITerryUserPathResDto,
+  IUpdateTerryCheckinInput,
 } from 'App/types/terry';
 
 import {
@@ -319,5 +320,11 @@ export const requestHunterVerifyTerry = async (code: string, profileId: string, 
 
 export const requestHunterDeleteCheckins = async (checkinIds: string[], profileId: string) =>
   AXIOS.delete(`/hunter/${profileId}/terry-checkin`, { data: { checkinIds } }).then(result => result.data);
+
+export const requestHunterUpdateCheckin = async (
+  payload: IUpdateTerryCheckinInput,
+  profileId: string,
+  terryId: string,
+) => AXIOS.put(`/hunter/${profileId}/terry-checkin/${terryId}`, payload).then(result => result.data);
 
 export default AXIOS;

@@ -93,6 +93,7 @@ import AXIOS, {
   requestHunterFilterConversationStat,
   requestHunterVerifyTerry,
   requestHunterDeleteCheckins,
+  requestHunterUpdateCheckin,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -791,6 +792,49 @@ export function* watchDeleteCheckins() {
   yield takeLatest(ESagaUserAction.DELETE_TERRY_CHECKINS, deleteCheckins);
 }
 
+function* updateCheckin(
+  action: IReduxActionWithNavigation<
+    ESagaAppAction,
+    { reviewText?: string; photoUrls?: string[]; rate?: number; checkinId: string }
+  >,
+) {
+  const navigation = action.payload?.navigation;
+  try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.UPDATE_TERRY_CHECKIN]: true }));
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const reviewText = action.payload?.data?.reviewText;
+    const photoUrls = action.payload?.data?.photoUrls;
+    const rate = action.payload?.data?.rate;
+    const checkinId = action.payload?.data?.checkinId;
+    yield call(requestHunterUpdateCheckin, { reviewText, photoUrls, rate }, profileId, checkinId!);
+    const terryCheckins: IResponseTerryCheckins[] = yield select(reduxSelector.getAppTerryCheckins);
+    yield put(
+      reduxAppAction.setTerryCheckins(
+        terryCheckins.map(checkin => {
+          if (checkin.id === checkinId) {
+            return {
+              ...checkin,
+              reviewText: reviewText || checkin.reviewText,
+              photoUrls,
+              rate: rate || checkin.rate,
+            };
+          }
+          return checkin;
+        }),
+      ),
+    );
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.UPDATE_TERRY_CHECKIN]: false }));
+  } catch (error) {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.UPDATE_TERRY_CHECKIN]: false }));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchUpdateCheckin() {
+  yield takeLatest(ESagaUserAction.UPDATE_TERRY_CHECKIN, updateCheckin);
+}
+
 function* resetAppStates() {
   yield call(removePropertyInDevice, EDataStorageKey.ACCESS_TOKEN);
   yield call(removePropertyInDevice, EDataStorageKey.REFRESH_TOKEN);
@@ -1022,5 +1066,6 @@ export default function* userSaga() {
     watchHunterFilterConversationStat(),
     watchVerifyOfficialTerry(),
     watchDeleteCheckins(),
+    watchUpdateCheckin(),
   ]);
 }
