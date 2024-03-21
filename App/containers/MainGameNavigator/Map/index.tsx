@@ -47,8 +47,10 @@ import UserMarker from './UserMarker';
 import PlayerMarker from './PlayerMarker';
 import { ESagaAppAction } from 'App/enums/redux';
 import useBreakTimeEffect from 'App/hooks/useDelayedEffect';
+import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission';
 
 const MapScreen = () => {
+  useRequestLocationPermission();
   let numberOfFilters = useRef(0);
   const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.MAP_SCREEN>>();
   const publicTerryFilter = useSelector(reduxSelector.getAppPublicTerryFilter);
