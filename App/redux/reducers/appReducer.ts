@@ -3,7 +3,7 @@ import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
 import { IAppState, IReduxAction } from 'App/types/redux';
-import _ from 'lodash';
+import _, { pick } from 'lodash';
 import { reduce } from 'lodash';
 
 const defaultAppState: IAppState = {
@@ -42,7 +42,10 @@ const defaultAppState: IAppState = {
 const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppAction, IAppState>): IAppState => {
   switch (action.type) {
     case EReduxAppAction.RESET_APP_STATES:
-      return defaultAppState;
+      return {
+        ...defaultAppState,
+        ...pick(state, 'currentLocation'),
+      };
     case EReduxAppAction.SET_LANGUAGE_CODE:
       return {
         ...state,
@@ -138,6 +141,11 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       return {
         ...state,
         nearbyPlayers: action.payload?.nearbyPlayers,
+      };
+    case EReduxAppAction.SET_USER_CURRENT_LOCATION:
+      return {
+        ...state,
+        currentLocation: action.payload?.currentLocation,
       };
     case EReduxAppAction.SET_TERRY_VERIFY_CODE:
       return {

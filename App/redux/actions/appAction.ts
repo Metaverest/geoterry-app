@@ -15,6 +15,7 @@ import {
   IResponseTerryCheckins,
   ITerryCheckinInputDto,
   ITerryFilterInputDto,
+  Location,
 } from 'App/types/terry';
 import { ICreateAccountDto, IUser } from 'App/types/user';
 import { LatLng } from 'react-native-maps';
@@ -123,6 +124,13 @@ const reduxAppAction = {
     return {
       type: EReduxAppAction.SET_USER_NEARBY_PLAYERS,
       payload: { nearbyPlayers },
+    };
+  },
+
+  setCurrentUserLocation: (location: Location) => {
+    return {
+      type: EReduxAppAction.SET_USER_CURRENT_LOCATION,
+      payload: { currentLocation: location },
     };
   },
 

@@ -6,11 +6,23 @@ import useRequestLocationPermission from './useRequestLocationPermission';
 import Geolocation from '@react-native-community/geolocation';
 import { Location } from 'App/types/terry';
 import { IRealtimeLocation } from 'App/types';
+import { reduxSelector } from 'App/redux/selectors';
+import { useSelector } from 'react-redux';
 
 const useUserLocation = () => {
+  const cachedUserLocation = useSelector(reduxSelector.getUserCurrentLocation);
   const [userLocation, setUserLocation] = useState<Location>();
   const { hasLocationPermission } = useRequestLocationPermission();
   const isSaveBatterryMode = useIsSaveBatterryMode();
+
+  // rewrite location
+  useEffect(() => {
+    if (isEmpty(cachedUserLocation)) {
+      return;
+    }
+    setUserLocation(cachedUserLocation);
+  }, [cachedUserLocation]);
+
   const updateUserLocation = useCallback(
     (location: IRealtimeLocation) => {
       // Stop the function if the save battery mode is undefined
