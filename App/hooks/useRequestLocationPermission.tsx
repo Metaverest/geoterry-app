@@ -31,9 +31,7 @@ const useRequestLocationPermission = () => {
         const result = await check(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
         if (result === RESULTS.GRANTED) {
           setHasAndroidPermission(true);
-        }
-
-        if (result !== RESULTS.DENIED) {
+        } else {
           const requestResult = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
           if (requestResult === RESULTS.GRANTED) {
             setHasAndroidPermission(true);
@@ -46,9 +44,7 @@ const useRequestLocationPermission = () => {
         const result = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
         if (result === RESULTS.GRANTED) {
           setHasIOSPermission(true);
-        }
-
-        if (result !== RESULTS.DENIED) {
+        } else {
           const requestResult = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
           if (requestResult === RESULTS.GRANTED) {
             setHasIOSPermission(true);
