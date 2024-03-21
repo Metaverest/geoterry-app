@@ -33,4 +33,5 @@ export const reduxSelector = {
   getMessagesFromConversationId: (conversationId: string) => (state: IReduxRootState) =>
     state.app?.messages?.[conversationId] as Record<string, IMessageResDto>,
   getNearbyPlayerLocation: (state: IReduxRootState) => state.app.nearbyPlayerLocation,
+  getUserCurrentLocation: (state: IReduxRootState) => state.app.currentLocation,
 };

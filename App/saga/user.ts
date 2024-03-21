@@ -741,6 +741,7 @@ function* getNearbyPlayers(action: IReduxActionWithNavigation<ESagaAppAction, { 
     const location = action.payload?.data?.location;
     const response: IPlayerNearbyResDto[] = yield call(requestGetNearbyPlayers, location);
     yield put(reduxAppAction.setNearbyPlayers(response));
+    yield put(reduxAppAction.setCurrentUserLocation(location!));
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
   }
