@@ -207,5 +207,8 @@
   "Bạn có chắn chắn muốn xoá lịch sử không?": "Are you sure you want to delete history?",
   "Xoá": "Delete",
   "Huỷ": "Cancel",
-  "Cập nhật": "Update"
+  "Cập nhật": "Update",
+  "Không có tin nhắn!": "No conversation found",
+  "Không thể đăng nhập tài khoản, vui lòng thử lại": "Cannot login with this account, please try again",
+  "Hoặc tiếp tục với": "Or continue with"
 }

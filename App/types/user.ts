@@ -74,6 +74,10 @@ export interface IAccountLoginDto {
   // required for login with google or apple id
   code?: string;
 
+  // better to have if login with apple id
+  displayName?: string | null;
+  nonce?: string;
+
   // other fields
   identifierType: EIdentifierType;
   languageCode?: ELanguageCode;
@@ -82,6 +86,14 @@ export interface IAccountLoginWithGoogleDto {
   code: string;
   languageCode?: ELanguageCode;
 }
+
+export interface IAccountLoginWithAppleDto {
+  code: string;
+  displayName?: string;
+  nonce?: string;
+  languageCode?: ELanguageCode;
+}
+
 export interface ISendVerificationDto {
   namespace: ENamespace;
   identifierType: EIdentifierType;

@@ -22,6 +22,7 @@ import { Image, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import LoginWithSocialApp from 'App/components/LoginWithSocialApp';
 
 interface IFormValues {
   password: string;
@@ -132,6 +133,7 @@ const RegisterScreen = () => {
           }}
         </Formik>
       </View>
+      <LoginWithSocialApp navigation={navigation} />
       <View style={styles.footerContainer}>
         <CustomText style={styles.hasAccountText}>{t('Đã có tài khoản?')}</CustomText>
         <CustomText style={styles.loginText} onPress={goToLogin}>

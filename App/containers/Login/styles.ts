@@ -79,8 +79,14 @@ export const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
+    gap: rw(10),
   },
   googleLogin: {
     borderRadius: rh(20),
+  },
+  appleButton: {
+    width: rh(36),
+    height: rh(36),
   },
 });

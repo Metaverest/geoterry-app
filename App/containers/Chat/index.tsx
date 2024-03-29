@@ -10,7 +10,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { convertDateRelativeToNowMsg } from 'App/utils/convert';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, RefreshControl, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
@@ -214,7 +214,7 @@ const Chat = () => {
           data={conversationsToDisplay}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyConversation}>{t('Không có tin nhắn!')}</Text>
+              <CustomText style={styles.emptyConversation}>{t('Không có tin nhắn!')}</CustomText>
             </View>
           )}
           renderItem={renderItem}
