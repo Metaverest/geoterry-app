@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     borderRadius: rh(39),
   },
   buttonText: {
-    fontSize: rh(16),
+    fontSize: rh(14),
     fontWeight: '600',
     color: EColor.color_FAFAFA,
     lineHeight: rh(24),

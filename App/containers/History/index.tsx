@@ -18,6 +18,7 @@ import { EColor } from 'App/enums/color';
 import { EButtonType } from 'App/enums';
 import CustomButton from 'App/components/Button';
 import { navigateToPopUpModal } from 'App/utils/navigation';
+import { isEmpty } from 'lodash';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -98,13 +99,15 @@ const HistoryScreen = () => {
       <Header
         title={t('Lịch sử')}
         rightButton={
-          <TouchableOpacity
-            onPress={() => {
-              setSelectItems({});
-              setIsEdit(prev => !prev);
-            }}>
-            <Text style={styles.headerRightBtn}>{isEdit ? t('Huỷ') : t('Sửa')}</Text>
-          </TouchableOpacity>
+          !isEmpty(terryCheckins) ? (
+            <TouchableOpacity
+              onPress={() => {
+                setSelectItems({});
+                setIsEdit(prev => !prev);
+              }}>
+              <Text style={styles.headerRightBtn}>{isEdit ? t('Huỷ') : t('Sửa')}</Text>
+            </TouchableOpacity>
+          ) : undefined
         }
       />
       {loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] || loadingStates?.[ESagaUserAction.DELETE_TERRY_CHECKINS] ? (
