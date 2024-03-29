@@ -35,6 +35,7 @@ import {
 
 import {
   IAccountLoginDto,
+  IAccountLoginWithGoogleDto,
   IAccountResponseDto,
   IAccountUpdateCredentialsDto,
   ICreateAccountDto,
@@ -67,6 +68,10 @@ export const requestCreateAccount = async (data: ICreateAccountDto) => {
 
 export const requestLogin = async (data: IAccountLoginDto) => {
   return AXIOS.post<IAccountResponseDto>('/auth/login', data).then(result => result.data);
+};
+
+export const requestLoginWithGoogle = async (data: IAccountLoginWithGoogleDto) => {
+  return AXIOS.post<IAccountResponseDto>('/auth/login/google', data).then(result => result.data);
 };
 
 export const requestGetOTP = async (data: ISendVerificationDto) => {

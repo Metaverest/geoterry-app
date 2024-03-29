@@ -92,6 +92,10 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   };
 }
 
+export interface ENavigatorParams extends ParamListBase {
+  [ENavigationScreen.POPUP_SCREEN]: IPopupModalProps;
+}
+
 export enum EPopUpModalType {
   UNDEFINED_ERROR = 'UNDEFINED_ERROR',
   INVALID_ACCESS = 'INVALID_ACCESS',
@@ -100,6 +104,7 @@ export enum EPopUpModalType {
   UPLOAD_FILE_FAILED = 'UPLOAD_FILE_FAILED',
   FILE_SIZE_NOT_VALID = 'FILE_SIZE_NOT_VALID',
   CANNOT_REFRESH_NOTIFICATION_TOKEN = 'CANNOT_REFRESH_NOTIFICATION_TOKEN',
+  CANNOT_LOGIN = 'CANNOT_LOGIN',
   PROFILE_EXISTED = 'PROFILE_EXISTED',
   CANNOT_CREATE_QR_CODE = 'CANNOT_CREATE_QR_CODE',
   DISTANCE_ERROR = 'DISTANCE_ERROR',

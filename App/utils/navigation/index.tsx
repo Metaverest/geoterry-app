@@ -57,6 +57,12 @@ export const PopUpModalParams = {
     image: CannotRefreshNotiTokenImage,
     confirmButtonTitle: t('Thử lại'),
   } as IPopupModalParamsProps,
+  [EPopUpModalType.CANNOT_LOGIN]: {
+    title: t('Lỗi'),
+    subtitle: t('Không thể đăng nhập tài khoản, vui lòng thử lại'),
+    image: CannotRefreshNotiTokenImage,
+    confirmButtonTitle: t('Ok'),
+  } as IPopupModalParamsProps,
   [EPopUpModalType.PROFILE_EXISTED]: {
     title: t('Hồ sơ đã tồn tại'),
     subtitle: t('Vui lòng sử dụng số điện thoại khác để đăng ký'),

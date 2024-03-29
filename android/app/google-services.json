@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "446523929728",
+    "firebase_url": "https://terriana-1336c-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "terriana-1336c",
     "storage_bucket": "terriana-1336c.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "446523929728-mts97dogegnd8msnpei3ts88kbu91mqs.apps.googleusercontent.com",
+          "client_id": "446523929728-183oh29rkvpmoa8nat0kfrtqgd90dqe3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.geoterry",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "446523929728-jkeeq440moqtq8shko8afiskg4djjnba.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +36,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "446523929728-mts97dogegnd8msnpei3ts88kbu91mqs.apps.googleusercontent.com",
+              "client_id": "446523929728-jkeeq440moqtq8shko8afiskg4djjnba.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "446523929728-si9mr9s51g42ttbkdhvadu6abkt7tik7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.geoterry"
+              }
             }
           ]
         }

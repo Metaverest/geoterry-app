@@ -20,7 +20,6 @@ import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
 import EditDetailHistory from '../EditDetailHistory';
 import CreateNewTerryScreen from './CreateNewTerry';
-import PopupModal from '../Modal/PopupModal';
 import Review from '../Review';
 import CheckinTerryScreen from './CheckinTerry';
 import VerifyOfficialTerryScreen from './VerifyOfficialTerry';
@@ -112,11 +111,6 @@ const MainGameNavigator = () => {
         <Stack.Screen
           name={ENavigationScreen.LOADING_MODAL}
           component={LoadingModal}
-          options={{ headerShown: false, presentation: 'transparentModal' }}
-        />
-        <Stack.Screen
-          name={ENavigationScreen.POPUP_SCREEN}
-          component={PopupModal}
           options={{ headerShown: false, presentation: 'transparentModal' }}
         />
         <Stack.Screen name={EMainGameScreen.HISTORY} component={HistoryScreen} options={{ headerShown: false }} />

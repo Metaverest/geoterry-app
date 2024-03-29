@@ -52,6 +52,7 @@ import {
 
 import {
   IAccountLoginDto,
+  IAccountLoginWithGoogleDto,
   IAccountResponseDto,
   IAccountUpdateCredentialsDto,
   ICreateAccountDto,
@@ -94,6 +95,7 @@ import AXIOS, {
   requestHunterVerifyTerry,
   requestHunterDeleteCheckins,
   requestHunterUpdateCheckin,
+  requestLoginWithGoogle,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -101,7 +103,7 @@ import {
   navigateToPopUpModal,
   resetAndNavigateToScreen,
 } from 'App/utils/navigation';
-import { getStoredProperty, removePropertyInDevice, setPropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
 import { isEmpty, isNil, last, map, reduce } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
@@ -142,7 +144,12 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
   const { data, navigation } = action.payload;
   try {
     navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
-    const response: IAccountResponseDto = yield call(requestLogin, data as IAccountLoginDto);
+    let response: IAccountResponseDto | undefined;
+    if ((data as IAccountLoginDto).identifierType === EIdentifierType.GOOGLE) {
+      response = yield call(requestLoginWithGoogle, data as IAccountLoginWithGoogleDto);
+    } else {
+      response = yield call(requestLogin, data as IAccountLoginDto);
+    }
     yield call(setPropertyInDevice, EDataStorageKey.ACCESS_TOKEN, response?.credentials?.token);
     yield call(setPropertyInDevice, EDataStorageKey.REFRESH_TOKEN, response?.credentials?.refreshToken);
     yield call(setPropertyInDevice, EDataStorageKey.NAMESPACE, response?.namespace);
@@ -837,8 +844,6 @@ export function* watchUpdateCheckin() {
 }
 
 function* resetAppStates() {
-  yield call(removePropertyInDevice, EDataStorageKey.ACCESS_TOKEN);
-  yield call(removePropertyInDevice, EDataStorageKey.REFRESH_TOKEN);
   yield put(reduxAppAction.resetAppStates());
 }
 

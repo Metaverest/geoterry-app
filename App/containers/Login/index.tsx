@@ -7,7 +7,7 @@ import CustomText from 'App/components/CustomText';
 import { EarthIcon } from 'App/components/image';
 import { EButtonType, EIdentifierType, ENamespace } from 'App/enums';
 import { EColor } from 'App/enums/color';
-import { ENavigationScreen } from 'App/enums/navigation';
+import { ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
 import useClearError from 'App/hooks/useClearError';
 import useGetErrorText from 'App/hooks/useGetErrorText';
 import useGetPrefixPhone from 'App/hooks/useGetPrefixPhone';
@@ -22,6 +22,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
+import { GoogleSigninButton, GoogleSignin } from '@react-native-google-signin/google-signin';
+import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
+
+GoogleSignin.configure();
 
 interface IFormValues {
   phone: string;
@@ -45,6 +49,7 @@ const getValidateSchema = (t: (e: string) => string) => {
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch();
   const errorText = useGetErrorText();
+
   const onSubmit = useCallback(
     async (values: IFormValues) => {
       if (isEmpty(values?.phone) || isEmpty(values?.password)) {
@@ -64,6 +69,29 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     },
     [dispatch, navigation],
   );
+
+  const signInWithGoogle = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      if (userInfo.idToken) {
+        dispatch(
+          sagaUserAction.loginAsync(
+            {
+              code: userInfo.idToken,
+              identifierType: EIdentifierType.GOOGLE,
+            },
+            navigation,
+          ),
+        );
+      } else {
+        navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CANNOT_LOGIN]);
+      }
+    } catch (error) {
+      console.error('Error when login with Google account', error);
+      navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CANNOT_LOGIN]);
+    }
+  };
 
   const goToRegister = useCallback(() => {
     navigation.navigate(ENavigationScreen.REGISTER_SCREEN);
@@ -127,6 +155,15 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
           }}
         </Formik>
       </View>
+      <View style={styles.oneTapLoginContainer}>
+        <GoogleSigninButton
+          size={GoogleSigninButton.Size.Icon}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={signInWithGoogle}
+          style={styles.googleLogin}
+        />
+      </View>
+
       <View style={styles.footerContainer}>
         <CustomText style={styles.hasAccountText}>{t('Bạn chưa có tài khoản?')}</CustomText>
         <CustomText style={styles.loginText} onPress={goToRegister}>
