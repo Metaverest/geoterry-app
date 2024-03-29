@@ -35,6 +35,7 @@ import {
 
 import {
   IAccountLoginDto,
+  IAccountLoginWithAppleDto,
   IAccountLoginWithGoogleDto,
   IAccountResponseDto,
   IAccountUpdateCredentialsDto,
@@ -72,6 +73,10 @@ export const requestLogin = async (data: IAccountLoginDto) => {
 
 export const requestLoginWithGoogle = async (data: IAccountLoginWithGoogleDto) => {
   return AXIOS.post<IAccountResponseDto>('/auth/login/google', data).then(result => result.data);
+};
+
+export const requestLoginWithApple = async (data: IAccountLoginWithAppleDto) => {
+  return AXIOS.post<IAccountResponseDto>('/auth/login/apple', data).then(result => result.data);
 };
 
 export const requestGetOTP = async (data: ISendVerificationDto) => {

@@ -52,6 +52,7 @@ import {
 
 import {
   IAccountLoginDto,
+  IAccountLoginWithAppleDto,
   IAccountLoginWithGoogleDto,
   IAccountResponseDto,
   IAccountUpdateCredentialsDto,
@@ -96,6 +97,7 @@ import AXIOS, {
   requestHunterDeleteCheckins,
   requestHunterUpdateCheckin,
   requestLoginWithGoogle,
+  requestLoginWithApple,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -147,6 +149,8 @@ function* login(action: IReduxActionWithNavigation<ESagaUserAction, IAccountLogi
     let response: IAccountResponseDto | undefined;
     if ((data as IAccountLoginDto).identifierType === EIdentifierType.GOOGLE) {
       response = yield call(requestLoginWithGoogle, data as IAccountLoginWithGoogleDto);
+    } else if ((data as IAccountLoginDto).identifierType === EIdentifierType.GOOGLE) {
+      response = yield call(requestLoginWithApple, data as IAccountLoginWithAppleDto);
     } else {
       response = yield call(requestLogin, data as IAccountLoginDto);
     }
