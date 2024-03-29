@@ -11,8 +11,11 @@ import { styles } from './styles';
 import usePlatform from 'App/hooks/usePlatform';
 import { useTranslation } from 'react-i18next';
 import CustomText from '../CustomText';
+import Config from 'react-native-config';
 
-GoogleSignin.configure();
+GoogleSignin.configure({
+  webClientId: Config.GOOGLE_AUTH_CLIENT_ID,
+});
 
 const LoginWithSocialApp = ({ navigation }: { navigation: any }) => {
   const { isIOS } = usePlatform();

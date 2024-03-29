@@ -73,7 +73,10 @@ export const styles = StyleSheet.create({
     marginHorizontal: rw(4),
   },
   emptyConversation: {
-    color: EColor.white,
+    alignSelf: 'center',
+    fontSize: rh(12),
+    lineHeight: rh(18),
+    color: EColor.color_F2F2F2,
   },
   emptyContainer: {
     justifyContent: 'center',
