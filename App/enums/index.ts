@@ -21,6 +21,8 @@ export enum ENamespace {
 export enum EIdentifierType {
   PHONE_NUMBER = 'phone_number',
   EMAIL = 'email',
+  GOOGLE = 'google',
+  APPLE = 'apple',
 }
 
 export enum EButtonType {

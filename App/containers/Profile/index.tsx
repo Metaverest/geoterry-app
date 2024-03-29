@@ -9,7 +9,7 @@ import CustomText from 'App/components/CustomText';
 import RewardPointsIcon from 'App/media/RewardPointsIcon';
 import CustomInputInformation from 'App/components/CustomInput/CustomInputInformation';
 import CustomButton from 'App/components/Button';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EDataStorageKey } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import CustomButtonIcon from 'App/components/ButtonIcon';
 import LogOutIcon from 'App/media/LogOutIcon';
@@ -26,6 +26,7 @@ import { IUser } from 'App/types/user';
 import { EImageSize } from 'App/utils/images';
 import CustomImage from 'App/components/CustomImage';
 import { reduxAppAction } from 'App/redux/actions/appAction';
+import { removePropertyInDevice } from 'App/utils/storage/storage';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -54,6 +55,8 @@ const ProfileScreen = ({ route }: { route: any }) => {
   }, [user, profile, isCurrentUserProfile]);
 
   const handleLogOut = useCallback(async () => {
+    await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
+    await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
     dispatch(reduxAppAction.resetAppStates());
     resetAndNavigateToScreen(navigation, ENavigationScreen.LOGIN_SCREEN);
   }, [navigation, dispatch]);

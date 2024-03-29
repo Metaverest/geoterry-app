@@ -10,7 +10,6 @@ interface CustomImageProps extends Omit<ImageProps, 'source'> {
 // CustomImage component to handle image resizing and error handling when resized image is not available
 const CustomImage: React.FC<CustomImageProps> = ({ imageUrl, imageSize, ...otherProps }) => {
   const [imageError, setImageError] = useState(false);
-
   const handleImageError = () => {
     setImageError(true);
   };

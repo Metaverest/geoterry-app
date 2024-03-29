@@ -72,4 +72,12 @@ export const styles = StyleSheet.create({
     backgroundColor: EColor.color_999999,
     marginHorizontal: rw(4),
   },
+  emptyConversation: {
+    color: EColor.white,
+  },
+  emptyContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '50%',
+  },
 });

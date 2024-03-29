@@ -31,7 +31,7 @@ const ModalReasonRequestRole = (props: Props) => {
         props.onClose();
         props.setReason('');
       }}>
-      <KeyboardAvoidingView keyboardVerticalOffset={150} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView keyboardVerticalOffset={rh(150)} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.container}>
           <CustomText style={styles.title}>{t('Bạn muốn trở thành Builder?')}</CustomText>
           <CustomText style={styles.subTitle}>{t('Hãy nêu lý do để Admin xét duyệt.')}</CustomText>

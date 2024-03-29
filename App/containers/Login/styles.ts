@@ -75,4 +75,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'right',
   },
+  oneTapLoginContainer: {
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  googleLogin: {
+    borderRadius: rh(20),
+  },
 });

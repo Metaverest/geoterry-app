@@ -10,7 +10,7 @@ import OnboardingScreen from 'App/containers/Onboarding';
 import RegisterScreen from 'App/containers/Register';
 import SplashScreen from 'App/containers/SplashScreen';
 import { EDataStorageKey, ELanguageCode } from 'App/enums';
-import { ENavigationScreen } from 'App/enums/navigation';
+import { ENavigationScreen, ENavigatorParams } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
 import AXIOS, { setLanguageRequestHeader } from 'App/utils/axios';
 import i18next from 'i18next';
@@ -22,10 +22,11 @@ import { getStoredProperty } from 'App/utils/storage/storage';
 import { ROUTES } from './linkingConfig';
 import { PREFIX_LINK } from 'App/constants/common';
 import { CommonActions, createNavigationContainerRef } from '@react-navigation/native';
+import PopupModal from 'App/containers/Modal/PopupModal';
 
 export const navigationRef = createNavigationContainerRef();
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<ENavigatorParams>();
 const Navigation = () => {
   const language = useSelector(reduxSelector.getUserLanguageCode);
   useEffect(() => {
@@ -84,6 +85,11 @@ const Navigation = () => {
         <Stack.Screen
           name={ENavigationScreen.LOADING_MODAL}
           component={LoadingModal}
+          options={{ headerShown: false, presentation: 'transparentModal' }}
+        />
+        <Stack.Screen
+          name={ENavigationScreen.POPUP_SCREEN}
+          component={PopupModal}
           options={{ headerShown: false, presentation: 'transparentModal' }}
         />
         <Stack.Screen name={ENavigationScreen.NETWORK_LOGGER_SCREEN} component={NetworkLogger} />

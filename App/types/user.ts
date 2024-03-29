@@ -66,10 +66,21 @@ export interface ICreateAccountDto {
 }
 
 export interface IAccountLoginDto {
-  password: string;
-  identifier: string;
+  // required for login with phone number or email
+  password?: string;
+  identifier?: string;
+  namespace?: ENamespace;
+
+  // required for login with google or apple id
+  code?: string;
+
+  // other fields
   identifierType: EIdentifierType;
-  namespace: ENamespace;
+  languageCode?: ELanguageCode;
+}
+export interface IAccountLoginWithGoogleDto {
+  code: string;
+  languageCode?: ELanguageCode;
 }
 export interface ISendVerificationDto {
   namespace: ENamespace;
