@@ -40,7 +40,7 @@ const LoginWithSocialApp = ({ navigation }: { navigation: any }) => {
         navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CANNOT_LOGIN]);
       }
     } catch (error) {
-      console.error('Error when login with Google account', error);
+      console.log('Error when login with Google account', error);
       navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CANNOT_LOGIN]);
     }
   }, [dispatch, navigation]);
@@ -69,7 +69,7 @@ const LoginWithSocialApp = ({ navigation }: { navigation: any }) => {
         navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CANNOT_LOGIN]);
       }
     } catch (error) {
-      console.error('Error when login with Apple Id account', error);
+      console.log('Error when login with Apple Id account', error);
       navigateToPopUpModal(navigation, PopUpModalParams[EPopUpModalType.CANNOT_LOGIN]);
     }
   }, [dispatch, navigation]);

@@ -48,6 +48,8 @@ import PlayerMarker from './PlayerMarker';
 import { ESagaAppAction } from 'App/enums/redux';
 import useBreakTimeEffect from 'App/hooks/useDelayedEffect';
 import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission';
+import messaging from '@react-native-firebase/messaging';
+import { onReceiveNotification } from 'App/utils/notification';
 
 const MapScreen = () => {
   useRequestLocationPermission();
@@ -104,6 +106,17 @@ const MapScreen = () => {
       longitude: userLocation.longitude || region.longitude,
     });
   }, [centerToRegion, userLocation, region]);
+
+  // Handle notification
+  useEffect(() => {
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage && !!remoteMessage?.messageId) {
+          onReceiveNotification(remoteMessage);
+        }
+      });
+  }, []);
 
   // Fetch the terry based on the current filter and region.
   // Also save the region that we get the terry from.

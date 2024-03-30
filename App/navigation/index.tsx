@@ -23,6 +23,8 @@ import { ROUTES } from './linkingConfig';
 import { PREFIX_LINK } from 'App/constants/common';
 import { CommonActions, createNavigationContainerRef } from '@react-navigation/native';
 import PopupModal from 'App/containers/Modal/PopupModal';
+import messaging from '@react-native-firebase/messaging';
+import { onReceiveNotification } from 'App/utils/notification';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -45,6 +47,10 @@ const Navigation = () => {
       }
       navigationRef.dispatch(CommonActions.navigate(ENavigationScreen.ONBOARDING_SCREEN));
     })();
+  }, []);
+
+  useEffect(() => {
+    messaging().onNotificationOpenedApp(onReceiveNotification);
   }, []);
 
   return (
