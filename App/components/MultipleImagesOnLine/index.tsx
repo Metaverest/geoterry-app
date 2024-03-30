@@ -81,7 +81,7 @@ const MultipleImagesOnLine = (props: Props) => {
     [renderItem, props],
   );
   useEffect(() => {
-    setListImagesView(props.images.map(e => ({ uri: getResizedImageUrl(e, EImageSize.SIZE_500) })));
+    setListImagesView(props.images.map(e => ({ uri: getResizedImageUrl(e, EImageSize.SIZE_1200) })));
   }, [props.images]);
   return (
     <View style={props.containerImageStyle}>

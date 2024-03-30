@@ -24,7 +24,6 @@ export const styles = StyleSheet.create({
     backgroundColor: EColor.color_FAFAFA,
     borderRadius: rh(36),
     marginRight: rw(14),
-    marginBottom: rh(65),
   },
   containerItem: {
     flexDirection: 'row',
@@ -32,8 +31,7 @@ export const styles = StyleSheet.create({
     paddingVertical: rh(8),
     borderColor: EColor.color_666666,
     paddingRight: rw(2),
-    paddingBottom: rh(18),
-    marginBottom: rh(8),
+    paddingBottom: rh(12),
   },
   loadingContainer: {
     flexDirection: 'row',
