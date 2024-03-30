@@ -467,7 +467,7 @@ function* getPublicTerryById(action: IReduxActionWithNavigation<ESagaAppAction, 
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user?.id;
 
-    // should directly update metadata if it is baackground job
+    // should directly update metadata if it is background job
     if (
       (!isNil(terryParams?.markAsFavourited) || !isNil(terryParams?.markAsSaved)) &&
       action.payload?.data?.isBackgroundAction
@@ -564,7 +564,7 @@ function* getTerryCheckins(
     const user: IUser = yield select(reduxSelector.getUser);
     const profileId = user.id;
     const response: IResponseTerryCheckins[] = yield call(requestHunterFilterTerryCheckins, data, params, profileId);
-    yield put(reduxAppAction.mergeTerryCheckins(response));
+    yield put(reduxAppAction.setTerryCheckins(response));
     yield put(reduxAppAction.setLoadingStates({ [ESagaUserAction.GET_TERRY_CHECKINS]: false }));
     if (action?.payload?.options?.onSuccess) {
       action?.payload?.options?.onSuccess();

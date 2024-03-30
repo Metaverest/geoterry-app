@@ -104,7 +104,6 @@ export default function DetailHistory() {
         containerImageStyle={styles.containerImage}
         containerItemImageStyle={styles.image}
         numColumns={5}
-        showIconMaximize
       />
       <CustomButton
         onPress={() => {

@@ -79,10 +79,10 @@ const EditProfileScreen = () => {
       dispatch(
         sagaUserAction.updateProfileAsync(
           {
-            displayName: values?.name as string,
-            bio: values?.bio as string,
-            phoneNumber: values.phone as string,
-            email: values.email as string,
+            displayName: !isEmpty(values?.name) ? values?.name : undefined,
+            bio: !isEmpty(values?.bio) ? values?.bio : undefined,
+            phoneNumber: !isEmpty(values.phone) ? values.phone : undefined,
+            email: !isEmpty(values.email) ? values.email : undefined,
             logoUrl: user.logoUrl,
           },
           navigation,

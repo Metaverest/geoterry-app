@@ -1,4 +1,4 @@
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, ActivityIndicator, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage, UploadFileFailedImage } from 'App/components/image';
@@ -19,6 +19,11 @@ import { EButtonType } from 'App/enums';
 import CustomButton from 'App/components/Button';
 import { navigateToPopUpModal } from 'App/utils/navigation';
 import { isEmpty } from 'lodash';
+import { requestHunterFilterTerryCheckins } from 'App/utils/axios';
+import { CHECKIN_HISTORY_PAGINATION_PAGE_SIZE } from 'App/constants/common';
+import { reduxAppAction } from 'App/redux/actions/appAction';
+import { responsiveByWidth as rw } from 'App/helpers/common';
+import useBoolean from 'App/hooks/useBoolean';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -28,8 +33,68 @@ const HistoryScreen = () => {
   const navigation = useNavigation();
   const terryCheckins = useSelector(reduxSelector.getAppTerryCheckins);
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
+  const user = useSelector(reduxSelector.getUser);
   const [isEdit, setIsEdit] = useState(false);
   const [selectItems, setSelectItems] = useState<Record<string, boolean>>({});
+  const [callOnScrollEnd, triggerCallOnScrollEnd, preventCallOnScrollEnd] = useBoolean(false);
+  const [loadMore, setLoadMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [refresh, setRefresh] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
+
+  const onRefresh = useCallback(() => {
+    preventCallOnScrollEnd();
+    setRefresh(true);
+    setPageNumber(1);
+    dispatch(
+      sagaUserAction.filterTerryCheckinsAsyns(
+        {},
+        {
+          page: 1,
+          pageSize: CHECKIN_HISTORY_PAGINATION_PAGE_SIZE,
+          includeTerryData: true,
+        },
+        navigation,
+      ),
+    );
+  }, [dispatch, navigation, preventCallOnScrollEnd]);
+
+  useEffect(() => {
+    if (refresh) {
+      setRefresh(false);
+    }
+    if (firstLoad && !isEmpty(terryCheckins)) {
+      setFirstLoad(false);
+    }
+    // set refresh to false when chats are updated
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [terryCheckins]);
+
+  const onEndReached = useCallback(async () => {
+    if (callOnScrollEnd) {
+      try {
+        setLoadMore(true);
+        const response = await requestHunterFilterTerryCheckins(
+          {},
+          {
+            page: pageNumber + 1,
+            pageSize: CHECKIN_HISTORY_PAGINATION_PAGE_SIZE,
+            includeTerryData: true,
+          },
+          user.id,
+        );
+        if (!isEmpty(response)) {
+          dispatch(reduxAppAction.mergeTerryCheckins(response));
+          setPageNumber(pageNumber + 1);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoadMore(false);
+        preventCallOnScrollEnd();
+      }
+    }
+  }, [callOnScrollEnd, dispatch, pageNumber, preventCallOnScrollEnd, user.id]);
 
   const renderItem = useCallback(
     ({ item }: { item: IResponseTerryCheckins }) => {
@@ -71,12 +136,16 @@ const HistoryScreen = () => {
       sagaUserAction.filterTerryCheckinsAsyns(
         {},
         {
+          page: pageNumber,
+          pageSize: CHECKIN_HISTORY_PAGINATION_PAGE_SIZE,
           includeTerryData: true,
         },
         navigation,
       ),
     );
-  }, [dispatch, navigation]);
+    // This hook only be executed when mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handlePressDeleteHistory = useCallback(() => {
     const selectedIds = Object.keys(selectItems).filter(key => selectItems[key]);
@@ -110,15 +179,28 @@ const HistoryScreen = () => {
           ) : undefined
         }
       />
-      {loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] || loadingStates?.[ESagaUserAction.DELETE_TERRY_CHECKINS] ? (
+      {(loadingStates?.[ESagaUserAction.GET_TERRY_CHECKINS] ||
+        loadingStates?.[ESagaUserAction.DELETE_TERRY_CHECKINS]) &&
+      firstLoad ? (
         LoadingSkeleton
       ) : (
         <FlatList
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refresh} size={rw(50)} colors={[EColor.white]} />
+          }
           data={terryCheckins}
           renderItem={renderItem}
           style={styles.containHistory}
           ItemSeparatorComponent={ItemSeparatorComponent}
           ListEmptyComponent={ListEmptyComponent}
+          showsVerticalScrollIndicator={false}
+          scrollEnabled
+          onMomentumScrollBegin={onEndReached}
+          onEndReached={triggerCallOnScrollEnd}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            loadMore ? <ActivityIndicator size={rw(50)} color={EColor.white} animating={loadMore} /> : null
+          }
         />
       )}
       {isEdit && (

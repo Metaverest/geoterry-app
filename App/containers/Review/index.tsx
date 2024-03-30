@@ -1,4 +1,4 @@
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
@@ -18,10 +18,12 @@ import Rating from 'App/components/Rating';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
 import { EColor } from 'App/enums/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import { isNil } from 'lodash';
+import { isEmpty } from 'lodash';
 import CustomImage from 'App/components/CustomImage';
 import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefault';
-import { responsiveByHeight as rh } from 'App/helpers/common';
+import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
+import useBoolean from 'App/hooks/useBoolean';
+import { REVIEWS_PAGINATION_PAGE_SIZE } from 'App/constants/common';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -32,6 +34,10 @@ const Review = () => {
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams>>();
   const [isLoading, setIsLoading] = useState(false);
   const [listReview, setListReview] = useState<IResponseGetCheckinsOfTerry[] | null>(null);
+  const [callOnScrollEnd, triggerCallOnScrollEnd, preventCallOnScrollEnd] = useBoolean(false);
+  const [refresh, setRefresh] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const ListEmptyComponent = useCallback(() => {
     return <CustomText style={styles.textEmpty}>{t('Chưa có đánh giá nào!')}</CustomText>;
@@ -86,7 +92,6 @@ const Review = () => {
             <MultipleImagesOnLine
               images={item.photoUrls || []}
               numColumns={5}
-              showIconMaximize
               containerItemImageStyle={styles.containerItemImageStyle}
             />
           </View>
@@ -96,24 +101,75 @@ const Review = () => {
     [navigation, t, user.languageCode],
   );
 
-  const getCheckinOfTerry = useCallback(() => {
-    setIsLoading(true);
-    requestPublicGetCheckinsOfTerry({ includeProfileData: true }, params.terryId)
-      .then(res => {
-        setListReview(res);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err.message);
-        setIsLoading(false);
-      });
-  }, [params.terryId]);
-  useEffect(() => {
-    if (!isNil(listReview)) {
-      return;
+  const onEndReached = useCallback(async () => {
+    if (callOnScrollEnd) {
+      try {
+        setLoadMore(true);
+        const response = await requestPublicGetCheckinsOfTerry(
+          {
+            page: pageNumber + 1,
+            pageSize: REVIEWS_PAGINATION_PAGE_SIZE,
+            includeProfileData: true,
+          },
+          params.terryId,
+        );
+        if (!isEmpty(response)) {
+          setListReview(prev => (prev ? [...prev, ...response] : response));
+          setPageNumber(pageNumber + 1);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoadMore(false);
+        preventCallOnScrollEnd();
+      }
     }
+  }, [callOnScrollEnd, pageNumber, params.terryId, preventCallOnScrollEnd]);
+
+  const getCheckinOfTerry = useCallback(
+    (isRefresh?: boolean) => {
+      if (!isRefresh) {
+        setIsLoading(true);
+      }
+      requestPublicGetCheckinsOfTerry(
+        {
+          page: 1,
+          pageSize: REVIEWS_PAGINATION_PAGE_SIZE,
+          includeProfileData: true,
+        },
+        params.terryId,
+      )
+        .then(res => {
+          setListReview(res);
+          if (isRefresh) {
+            setRefresh(false);
+          } else {
+            setIsLoading(false);
+          }
+        })
+        .catch(err => {
+          console.log(err.message);
+          if (isRefresh) {
+            setRefresh(false);
+          } else {
+            setIsLoading(false);
+          }
+        });
+    },
+    [params.terryId],
+  );
+
+  const onRefresh = useCallback(async () => {
+    preventCallOnScrollEnd();
+    getCheckinOfTerry(true);
+    setPageNumber(1);
+  }, [getCheckinOfTerry, preventCallOnScrollEnd]);
+
+  useEffect(() => {
     getCheckinOfTerry();
-  }, [getCheckinOfTerry, listReview, navigation, params.terryId]);
+    // only fetch one time when component mounted
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
@@ -122,10 +178,21 @@ const Review = () => {
         LoadingSkeleton
       ) : (
         <FlatList
+          refreshControl={
+            <RefreshControl onRefresh={onRefresh} refreshing={refresh} size={rw(50)} colors={[EColor.white]} />
+          }
           data={listReview}
           renderItem={renderItem}
           style={styles.containList}
           ListEmptyComponent={ListEmptyComponent}
+          scrollEnabled
+          showsVerticalScrollIndicator={false}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            loadMore ? <ActivityIndicator size={rw(50)} color={EColor.white} animating={loadMore} /> : null
+          }
+          onMomentumScrollBegin={onEndReached}
+          onEndReached={triggerCallOnScrollEnd}
         />
       )}
     </CustomSafeArea>
