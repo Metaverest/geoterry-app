@@ -273,6 +273,7 @@ const MapScreen = () => {
         style={styles.mapContainer}
         showsUserLocation={isSaveBatterryMode}
         showsCompass={false}
+        showsMyLocationButton={false}
         onRegionChangeComplete={onRegionChangeComplete}
         onLongPress={deselectTerry}
         region={region}>

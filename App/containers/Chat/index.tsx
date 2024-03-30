@@ -207,9 +207,7 @@ const Chat = () => {
         <LoadingSkeleton />
       ) : (
         <FlatList
-          refreshControl={
-            <RefreshControl onRefresh={onRefresh} refreshing={refresh} size={rw(50)} colors={[EColor.white]} />
-          }
+          refreshControl={<RefreshControl onRefresh={onRefresh} refreshing={refresh} />}
           keyExtractor={(_, index) => index.toString()}
           data={conversationsToDisplay}
           ListEmptyComponent={() => (
