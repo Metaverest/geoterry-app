@@ -27,7 +27,7 @@ import { Formik, FormikErrors } from 'formik';
 import { head, isEmpty, isEqual } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 import MapView, { Marker } from 'react-native-maps';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,6 +36,7 @@ import { styles } from './styles';
 import { ENavigationScreen } from 'App/enums/navigation';
 import _ from 'lodash';
 import CustomImage from 'App/components/CustomImage';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface IFormValues {
   name: string;
@@ -283,7 +284,7 @@ const CreateNewTerryScreen = () => {
               </CustomText>
               <View style={styles.inputContainer}>
                 <ScrollView
-                  nestedScrollEnabled
+                  nestedScrollEnabled={true}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{ rowGap: rh(20) }}>
                   <View style={styles.terryInputContainer}>
