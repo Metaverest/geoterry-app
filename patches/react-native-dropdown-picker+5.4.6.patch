@@ -11,10 +11,28 @@ index 338c9de..cf5d562 100644
  
    interface DropDownPickerSingleProps<T> {
 diff --git a/node_modules/react-native-dropdown-picker/src/components/Picker.js b/node_modules/react-native-dropdown-picker/src/components/Picker.js
-index e3fb93b..eb337a7 100644
+index e3fb93b..53dfa81 100644
 --- a/node_modules/react-native-dropdown-picker/src/components/Picker.js
 +++ b/node_modules/react-native-dropdown-picker/src/components/Picker.js
-@@ -162,7 +162,8 @@ function Picker({
+@@ -14,16 +14,15 @@ import {
+     TouchableOpacity,
+     Text,
+     Image,
+-    FlatList,
+     TextInput,
+     Dimensions,
+-    ScrollView,
+     Modal,
+     ActivityIndicator,
+     BackHandler,
+     Platform,
+     StyleSheet,
+ } from 'react-native';
++import { FlatList, ScrollView } from 'react-native-gesture-handler';
+ 
+ const { height: WINDOW_HEIGHT } = Dimensions.get('window');
+ 
+@@ -162,7 +161,8 @@ function Picker({
      testID,
      closeOnBackPressed = false,
      extendableBadgeContainer = false,
@@ -24,7 +42,7 @@ index e3fb93b..eb337a7 100644
  }) {
      const [necessaryItems, setNecessaryItems] = useState([]);
      const [searchText, setSearchText] = useState('');
-@@ -794,7 +795,7 @@ function Picker({
+@@ -794,7 +794,7 @@ function Picker({
              zIndex: _zIndex
          },
          ...[dropDownContainerStyle].flat(),
@@ -33,7 +51,7 @@ index e3fb93b..eb337a7 100644
      ]), [
          dropDownContainerStyle,
          pickerHeight,
-@@ -902,14 +903,17 @@ function Picker({
+@@ -902,14 +902,17 @@ function Picker({
       * The simple body component.
       * @returns {JSX.Element}
       */

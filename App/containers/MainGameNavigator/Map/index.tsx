@@ -50,6 +50,7 @@ import useBreakTimeEffect from 'App/hooks/useDelayedEffect';
 import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission';
 import messaging from '@react-native-firebase/messaging';
 import { onReceiveNotification } from 'App/utils/notification';
+import useRequestTurnOnGPSAndroid from 'App/hooks/useRequestTurnOnGPSAndroid';
 
 const MapScreen = () => {
   useRequestLocationPermission();
@@ -77,6 +78,7 @@ const MapScreen = () => {
   const [loadedUserLocation, setLoadedUserLocation] = useState(false);
   const [updatedUserLocation, setUpdatedUserLocation] = useState(false);
   useRequestNotificationPermission();
+  useRequestTurnOnGPSAndroid();
 
   const [canFetchTerries, setCanFetchTerries] = useState(true);
   useEffect(() => {
