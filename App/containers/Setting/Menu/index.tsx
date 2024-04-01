@@ -3,7 +3,7 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import { AppBackgroundImage } from 'App/components/image';
-import { EDataStorageKey } from 'App/enums';
+import { EDataStorageKey, EIdentifierType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ESettingNavigator } from 'App/enums/navigation';
 import AboutIcon from 'App/media/About';
@@ -21,6 +21,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 import { styles } from './styles';
+import useLoginMethod from 'App/hooks/useLoginMethod';
 interface IMenuItem {
   title: string;
   subtitle: string;
@@ -34,6 +35,7 @@ interface IMenuItem {
 const MenuScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const loginMethod = useLoginMethod();
 
   const MenuItem = useCallback(
     ({ RenderIcon, onPress, title, subtitle, shouldUseSwithButton, isSwitchEnable, setIsSwitchEnable }: IMenuItem) => {
@@ -106,14 +108,16 @@ const MenuScreen = () => {
         },
         RenderIcon: () => <LanguageIcon />,
       },
-      {
-        title: t('Mật khẩu'),
-        subtitle: t('Thay đổi mật khẩu'),
-        onPress: () => {
-          navigation.dispatch(CommonActions.navigate(ESettingNavigator.PASSWORD_SCREEN));
-        },
-        RenderIcon: () => <KeyIcon />,
-      },
+      loginMethod !== EIdentifierType.GOOGLE && loginMethod !== EIdentifierType.APPLE
+        ? {
+            title: t('Mật khẩu'),
+            subtitle: t('Thay đổi mật khẩu'),
+            onPress: () => {
+              navigation.dispatch(CommonActions.navigate(ESettingNavigator.PASSWORD_SCREEN));
+            },
+            RenderIcon: () => <KeyIcon />,
+          }
+        : undefined,
       {
         title: t('Tiết kiệm PIN'),
         subtitle: t('Tắt trình đồ hoạ nâng cao'),
@@ -121,7 +125,7 @@ const MenuScreen = () => {
         RenderIcon: () => <BatterySaverIcon />,
         shouldUseSwithButton: true,
         isSwitchEnable: isSwitchEnable,
-        setIsSwitchEnable: value => {
+        setIsSwitchEnable: (value: boolean) => {
           setIsSwitchEnable(value);
           setPropertyInDevice(EDataStorageKey.IS_SAVE_BATTERY_MODE, value);
         },
@@ -140,8 +144,8 @@ const MenuScreen = () => {
         },
         RenderIcon: () => <AboutIcon />,
       },
-    ] as IMenuItem[];
-  }, [t, isSwitchEnable, navigation]);
+    ].filter(e => !!e) as IMenuItem[];
+  }, [t, loginMethod, isSwitchEnable, navigation]);
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Cài đặt')} />
