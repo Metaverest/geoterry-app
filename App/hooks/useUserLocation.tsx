@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { LatLng, UserLocationChangeEvent } from 'react-native-maps';
 import useIsSaveBatterryMode from './useIsSaveBatterryMode';
 import useRequestLocationPermission from './useRequestLocationPermission';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import { Location } from 'App/types/terry';
 import { IRealtimeLocation } from 'App/types';
 import { reduxSelector } from 'App/redux/selectors';
