@@ -178,10 +178,6 @@ const HuntingMapScreen = () => {
       );
       navigation.dispatch(
         CommonActions.navigate({
-          // name: !isCannotFindTerry
-          //   ? EMainGameScreen.VERIFY_OFFICIAL_TERRY_SCREEN
-          //   : EMainGameScreen.CHECKIN_TERRY_SCREEN,
-          // params: { isCannotFindTerry: false, terryId: terry?.id },
           name:
             terry?.isOfficial && !isCannotFindTerry
               ? EMainGameScreen.VERIFY_OFFICIAL_TERRY_SCREEN
