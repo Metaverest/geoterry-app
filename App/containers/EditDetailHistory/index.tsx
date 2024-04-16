@@ -105,6 +105,7 @@ const EditDetailHistory = () => {
       currentValue?: string[],
     ) => {
       const response: ImagePickerResponse = await launchImageLibrary({ mediaType: EMediaType.PHOTO });
+
       if (response.assets) {
         try {
           navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
