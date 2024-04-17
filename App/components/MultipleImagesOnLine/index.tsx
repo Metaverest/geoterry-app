@@ -117,6 +117,7 @@ const MultipleImagesOnLine = (props: Props) => {
         </ScrollView>
       )}
       <ImageView
+        presentationStyle="overFullScreen"
         images={listImagesView}
         keyExtractor={(_, index) => index.toString()}
         imageIndex={indexImage}
