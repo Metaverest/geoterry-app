@@ -124,7 +124,7 @@ const HistoryScreen = () => {
   }, [t]);
 
   const LoadingSkeleton = (
-    <View style={styles.containHistory}>
+    <View style={[styles.containHistory, { marginHorizontal: rw(25) }]}>
       {Array.from({ length: NUMBER_OF_SKELETONS }).map((_, index) => (
         <ItemHistory key={`loading_${index}`} isLoading />
       ))}

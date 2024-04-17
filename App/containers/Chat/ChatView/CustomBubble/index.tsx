@@ -16,11 +16,15 @@ const CustomBubble = (props: BubbleProps<IMessage>) => {
           colors={[EColor.color_C072FD, EColor.color_51D5FF]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}>
-          <CustomText style={styles.textMsg}>{props.currentMessage?.text}</CustomText>
+          <CustomText selectable={true} style={styles.textMsg}>
+            {props.currentMessage?.text}
+          </CustomText>
         </LinearGradient>
       ) : (
         <View style={[styles.containerBubble, { backgroundColor: EColor.color_333333, marginRight: rw(100) }]}>
-          <CustomText style={styles.textMsg}>{props.currentMessage?.text}</CustomText>
+          <CustomText style={styles.textMsg} selectable={true}>
+            {props.currentMessage?.text}
+          </CustomText>
         </View>
       )}
     </>

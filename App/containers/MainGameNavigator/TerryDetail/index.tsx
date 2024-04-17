@@ -353,6 +353,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
       )}
 
       <ImageView
+        presentationStyle="overFullScreen"
         images={items.map(item => ({ uri: getResizedImageUrl(item.image, EImageSize.SIZE_500) }))}
         keyExtractor={(_, index) => index.toString()}
         imageIndex={indexImg}
