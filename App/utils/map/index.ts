@@ -1,4 +1,4 @@
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import { IRealtimeLocation } from 'App/types';
 
 export const getCurrentLocation = () => {
