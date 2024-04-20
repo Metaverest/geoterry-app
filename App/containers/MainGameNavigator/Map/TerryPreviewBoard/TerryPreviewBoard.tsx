@@ -49,7 +49,7 @@ const TerryPreviewBoard = ({ terry, userLocation }: { terry: ITerryResponseDto; 
         <View style={styles.terryDetailContainer}>
           <LocationIcon />
           <CustomText style={styles.terryDetailText}>{`${meterToKilometer(terry.distance || 0)} ${t('km')} ${
-            terry.address?.country || ''
+            terry.address?.subAdministrativeArea || terry.address?.administrativeArea || terry.address?.country || ''
           }`}</CustomText>
           <DifficultyIcon />
           <CustomText style={styles.terryDetailText}>{terry.metadata.difficulty}</CustomText>

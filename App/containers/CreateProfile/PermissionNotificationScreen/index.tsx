@@ -10,9 +10,8 @@ import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import useRequestNotificationPermission from 'App/hooks/useRequestNotificationPermission';
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const PermissionNotificationScreen = () => {
   const { t } = useTranslation();

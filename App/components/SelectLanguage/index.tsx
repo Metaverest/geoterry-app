@@ -3,8 +3,7 @@ import ArrowDown from 'App/media/ArrowDown';
 import UsaFlag from 'App/media/UsaFlag';
 import VietnamFlag from 'App/media/VietnamFlag';
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, View } from 'react-native';
 import CustomText from '../CustomText';
 import { styles } from './styles';
 
