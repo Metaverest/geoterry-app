@@ -64,7 +64,7 @@ const TreasureMarker = ({
 
   return (
     <Marker
-      anchor={{ x: 0.5, y: 0 }}
+      anchor={{ x: 0.5, y: 0.5 }}
       style={styles.container}
       coordinate={treasure.location}
       onPress={handleSelectTerry}>

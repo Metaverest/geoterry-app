@@ -1,4 +1,4 @@
-import { View, FlatList, Text, ActivityIndicator, RefreshControl } from 'react-native';
+import { View, FlatList, Text, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage, UploadFileFailedImage } from 'App/components/image';
@@ -13,7 +13,6 @@ import { sagaUserAction } from 'App/redux/actions/userAction';
 import { IResponseTerryCheckins } from 'App/types/terry';
 import { ESagaUserAction } from 'App/enums/redux';
 import CustomText from 'App/components/CustomText';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EColor } from 'App/enums/color';
 import { EButtonType } from 'App/enums';
 import CustomButton from 'App/components/Button';

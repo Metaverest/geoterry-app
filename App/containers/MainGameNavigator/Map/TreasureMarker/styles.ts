@@ -7,7 +7,11 @@ export const styles = StyleSheet.create({
     height: rw(26),
     width: rw(26),
   },
-  subIconContainer: { position: 'absolute', bottom: rh(2), right: rw(2) },
+  subIconContainer: {
+    position: 'absolute',
+    bottom: rh(2),
+    right: rw(2),
+  },
   subIcon: {},
   image: {
     width: rw(44),

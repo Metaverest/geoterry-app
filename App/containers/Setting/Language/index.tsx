@@ -5,8 +5,7 @@ import ItemSelectorSetting, { IItemSelectorSettingProps } from 'App/components/I
 import { AppBackgroundImage } from 'App/components/image';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, View } from 'react-native';
 import { styles } from './styles';
 import { ELanguageCode } from 'App/enums';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,7 +31,7 @@ const LanguageScreen = () => {
         onSuccess: () => navigation.dispatch(CommonActions.goBack()),
       }),
     );
-    i18nChangeLanguage(languageCode);
+    i18nChangeLanguage(languageCode || ELanguageCode.EN);
   }, [dispatch, languageCode, navigation]);
   const RightButton = useCallback(() => {
     const isSelectedNewLang = languageCode !== userLanguageCode;

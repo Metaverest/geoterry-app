@@ -2,10 +2,11 @@ import { EButtonType } from 'App/enums';
 import { IButtonIconProps } from 'App/types/button';
 import { isArray } from 'lodash';
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
 import LinearGradient from 'react-native-linear-gradient';
 import CustomText from '../CustomText';
 import { styles } from './styles';
+import { TouchableOpacity } from 'react-native';
 
 const CustomButtonIcon = (props: IButtonIconProps) => {
   const isLinearGradient = useMemo(() => {
