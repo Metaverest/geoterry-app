@@ -1,5 +1,5 @@
-import { View, TouchableOpacity, Image } from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import { View, Image, TouchableOpacity } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
@@ -18,6 +18,10 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { reduxSelector } from 'App/redux/selectors';
 import { useSelector } from 'react-redux';
 import { PREFIX_LINK } from 'App/constants/common';
+import Header from 'App/components/Header';
+import { responsiveByWidth as rw } from 'App/helpers/common';
+import QRIcon from 'App/media/QRIcon';
+import { EMainGameScreen } from 'App/enums/navigation';
 
 const QRScreen = () => {
   const { t } = useTranslation();
@@ -32,8 +36,8 @@ const QRScreen = () => {
   const generateQRCode = () => {
     RNQRGenerator.generate({
       value: shareLink,
-      height: 100,
-      width: 100,
+      height: rw(400),
+      width: rw(400),
       correctionLevel: 'H',
     })
       .then(response => {
@@ -60,16 +64,20 @@ const QRScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const onPressScanQRCode = useCallback(() => {
+    navigation.dispatch(CommonActions.navigate(EMainGameScreen.SCAN_PROFILE_QR_SCREEN));
+  }, [navigation]);
+
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.dispatch(CommonActions.goBack());
-          }}>
-          <CloseIcon />
-        </TouchableOpacity>
-      </View>
+      <Header
+        leftButton={<CloseIcon />}
+        rightButton={
+          <TouchableOpacity onPress={onPressScanQRCode}>
+            <QRIcon />
+          </TouchableOpacity>
+        }
+      />
       <View style={styles.content}>
         <View style={styles.boxImageQR}>
           {uriQR && <Image source={{ uri: uriQR }} style={styles.imgQR} resizeMode="contain" />}

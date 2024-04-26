@@ -15,6 +15,7 @@ import TerryDetailScreen from './TerryDetail';
 import ProfileScreen from '../Profile';
 import EditProfileScreen from '../EditProfile';
 import QRScreen from '../QRScreen';
+import ScanProfileQR from '../ScanProfileQR';
 import LoadingModal from '../Modal/LoadingModal';
 import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
@@ -108,6 +109,11 @@ const MainGameNavigator = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name={EMainGameScreen.QR_SCREEN} component={QRScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name={EMainGameScreen.SCAN_PROFILE_QR_SCREEN}
+          component={ScanProfileQR}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={ENavigationScreen.LOADING_MODAL}
           component={LoadingModal}
