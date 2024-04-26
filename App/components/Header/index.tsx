@@ -16,6 +16,7 @@ import { shortenString } from 'App/helpers/text';
 const Header = ({
   title,
   rightButton,
+  leftButton,
   shouldHideBackButton,
   headerContainerStyle,
   // Use for ChatView
@@ -26,6 +27,7 @@ const Header = ({
 }: {
   title?: string;
   rightButton?: any;
+  leftButton?: any;
   shouldHideBackButton?: boolean;
   headerContainerStyle?: StyleProp<ViewStyle>;
   // Use for ChatView
@@ -54,7 +56,7 @@ const Header = ({
               hitSlop={{ top: rw(10), bottom: rw(10), left: rw(10), right: rw(10) }}
               style={styles.backButtonContainer}
               onPress={handlePressBackButton}>
-              {!shouldHideBackButton && <BackIcon />}
+              {!shouldHideBackButton && (leftButton || <BackIcon />)}
             </TouchableOpacity>
             <CustomText style={styles.title}>{title}</CustomText>
             <View style={styles.rightButtonContainer}>{rightButton && rightButton}</View>
@@ -97,6 +99,7 @@ const Header = ({
     avatar,
     name,
     profileId,
+    leftButton,
   ]);
   return null;
 };
