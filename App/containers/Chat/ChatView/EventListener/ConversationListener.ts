@@ -39,52 +39,59 @@ const ConversationListener = () => {
       // If the conversation is not existed in redux store
       if (isEmpty(existedConversation)) {
         dispatch(
-          reduxAppAction.mergeConversations({
-            [message.conversationId]: {
-              id: message.conversationId,
-              lastMsg: {
-                snippet: message.payload.type === EMessagePayloadType.TEXT ? message.payload.text : t('Sent an image'),
-                sentByProfileId: message.senderId,
-                sentAt: message.sentAt,
-              },
-              participants: [
-                {
-                  profileId: message?.senderId,
-                  displayName: message?.sender.displayName,
-                  logoUrl: message?.sender?.logoUrl,
+          reduxAppAction.mergeConversations(
+            {
+              [message.conversationId]: {
+                id: message.conversationId,
+                lastMsg: {
+                  snippet:
+                    message.payload.type === EMessagePayloadType.TEXT ? message.payload.text : t('Sent an image'),
+                  sentByProfileId: message.senderId,
+                  sentAt: message.sentAt,
                 },
-                {
-                  profileId: message.recipientId,
-                  displayName: user.displayName,
-                  logoUrl: user.logoUrl,
-                  unreadMsgCnt: 1,
-                },
-              ],
-            } as IConversationResDto,
-          }),
+                participants: [
+                  {
+                    profileId: message?.senderId,
+                    displayName: message?.sender.displayName,
+                    logoUrl: message?.sender?.logoUrl,
+                  },
+                  {
+                    profileId: message.recipientId,
+                    displayName: user.displayName,
+                    logoUrl: user.logoUrl,
+                    unreadMsgCnt: 1,
+                  },
+                ],
+              } as IConversationResDto,
+            },
+            true,
+          ),
         );
         return;
       }
       // If the conversation is existed in redux store
       dispatch(
-        reduxAppAction.mergeConversations({
-          [message.conversationId]: {
-            ...existedConversation,
-            lastMsg: {
-              snippet: message.payload.type === EMessagePayloadType.TEXT ? message.payload.text : t('Sent an image'),
-              sentByProfileId: message.senderId,
-              sentAt: message.sentAt,
-            },
-            participants: existedConversation.participants.map(participant => ({
-              ...participant,
-              unreadMsgCnt:
-                existedConversation.lastMsg.id !== message.chatServiceId &&
-                participant.profileId === message.recipientId
-                  ? participant.unreadMsgCnt + 1
-                  : participant.unreadMsgCnt,
-            })),
-          } as IConversationResDto,
-        }),
+        reduxAppAction.mergeConversations(
+          {
+            [message.conversationId]: {
+              ...existedConversation,
+              lastMsg: {
+                snippet: message.payload.type === EMessagePayloadType.TEXT ? message.payload.text : t('Sent an image'),
+                sentByProfileId: message.senderId,
+                sentAt: message.sentAt,
+              },
+              participants: existedConversation.participants.map(participant => ({
+                ...participant,
+                unreadMsgCnt:
+                  existedConversation.lastMsg.id !== message.chatServiceId &&
+                  participant.profileId === message.recipientId
+                    ? participant.unreadMsgCnt + 1
+                    : participant.unreadMsgCnt,
+              })),
+            } as IConversationResDto,
+          },
+          true,
+        ),
       );
     },
     [conversations, dispatch, t, user.displayName, user.logoUrl],

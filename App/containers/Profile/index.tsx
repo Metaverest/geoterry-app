@@ -152,7 +152,6 @@ const ProfileScreen = ({ route }: { route: any }) => {
             <CustomButton
               title={t('Nhắn tin')}
               onPress={() => {
-                // TODO: need to fix by passing conversation id as param here
                 navigation.dispatch(
                   CommonActions.navigate({
                     name: EMainGameScreen.CHAT_VIEW_SCREEN,

@@ -254,7 +254,7 @@ const MapScreen = () => {
     return unsubscribe;
   }, [navigation, params, selectTerry]);
 
-  // update user current location in backend every 5 mins
+  // update user current location in every 60 seconds
   useBreakTimeEffect(
     () => {
       if (userLocation) {
@@ -263,7 +263,7 @@ const MapScreen = () => {
       }
     },
     [dispatch, navigation, userLocation],
-    { skipBreakTime: !updatedUserLocation, breakTime: 5 * 60 * 1000 },
+    { skipFirstBreakTime: !updatedUserLocation, breakTime: 60 },
   );
 
   return (
