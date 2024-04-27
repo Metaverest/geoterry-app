@@ -35,8 +35,8 @@ const Chat = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const conversations = useSelector(reduxSelector.getConversations);
   const [pageNumber, setPageNumber] = useState(1);
-  const [firstLoad, setFirstLoad] = useState(true);
   const loadingStates = useSelector(reduxSelector.getLoadingStates);
   const [callOnScrollEnd, triggerCallOnScrollEnd, preventCallOnScrollEnd] = useBoolean(false);
   const [refresh, setRefresh] = useState(false);
@@ -46,7 +46,11 @@ const Chat = () => {
   useEffect(() => {
     dispatch(
       sagaUserAction.hunterFilterConversationsAsync(
-        { includeProfileData: true, page: pageNumber, pageSize: CHATS_PAGINATION_PAGE_SIZE },
+        {
+          includeProfileData: true,
+          page: pageNumber,
+          pageSize: CHATS_PAGINATION_PAGE_SIZE,
+        },
         navigation,
       ),
     );
@@ -76,14 +80,14 @@ const Chat = () => {
           includeProfileData: true,
         });
         if (!isEmpty(response)) {
-          const conversations: Record<string, IConversationResDto> = reduce(
+          const fetchedConversations: Record<string, IConversationResDto> = reduce(
             response,
             (result, conversation) => {
               return { ...result, [conversation.id]: conversation };
             },
             {},
           );
-          dispatch(reduxAppAction.mergeConversations(conversations));
+          dispatch(reduxAppAction.mergeConversations(fetchedConversations));
           setPageNumber(pageNumber + 1);
         }
       } catch (error) {
@@ -95,7 +99,6 @@ const Chat = () => {
     }
   }, [callOnScrollEnd, dispatch, pageNumber, preventCallOnScrollEnd, user.id]);
 
-  const conversations = useSelector(reduxSelector.getConversations);
   const conversationsToDisplay = useMemo(() => {
     if (!conversations) {
       return [];
@@ -106,9 +109,6 @@ const Chat = () => {
   useEffect(() => {
     if (refresh) {
       setRefresh(false);
-    }
-    if (firstLoad && !isEmpty(conversationsToDisplay)) {
-      setFirstLoad(false);
     }
     // set refresh to false when chats are updated
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,7 +164,7 @@ const Chat = () => {
                   },
                   me?.unreadMsgCnt && styles.fontW500,
                 ]}>
-                {shortenString(item.lastMsg.snippet, MAX_CONVERSATION_SNIPPET_LENGTH)}
+                {shortenString(item.lastMsg.snippet.replace(/\n|\r/g, ''), MAX_CONVERSATION_SNIPPET_LENGTH)}
               </CustomText>
               <View style={styles.dot} />
               <CustomText style={styles.msg}>
@@ -203,7 +203,7 @@ const Chat = () => {
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
       <Header title={t('Trò chuyện')} />
-      {loadingStates?.[ESagaAppAction.HUNTER_FILTER_CONVERSATIONS] && firstLoad ? (
+      {loadingStates?.[ESagaAppAction.HUNTER_FILTER_CONVERSATIONS] ? (
         <LoadingSkeleton />
       ) : (
         <FlatList

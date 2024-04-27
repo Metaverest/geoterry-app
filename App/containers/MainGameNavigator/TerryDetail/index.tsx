@@ -34,8 +34,6 @@ import { shortenString } from 'App/helpers/text';
 import useUserLocation from 'App/hooks/useUserLocation';
 import { getResizedImageUrl, EImageSize } from 'App/utils/images';
 import Messenger from 'App/media/Messenger';
-import { sagaUserAction } from 'App/redux/actions/userAction';
-import { isNil } from 'lodash';
 import ImageView from 'react-native-image-viewing';
 
 export interface ITerryDetailProps {
@@ -55,7 +53,6 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   const [visible, setIsVisible] = useState(false);
 
   const { userLocation } = useUserLocation();
-  const conversations = useSelector(reduxSelector.getConversations);
   const terry: ITerryResponseDto = useMemo(() => {
     return route?.params?.terry;
   }, [route]);
@@ -336,9 +333,6 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
           rightButton={
             <TouchableOpacity
               onPress={() => {
-                // If conversations haven't been fetched yet, fetch them
-                isNil(conversations) &&
-                  dispatch(sagaUserAction.hunterFilterConversationsAsync({ includeProfileData: true }, navigation));
                 navigation.dispatch(
                   CommonActions.navigate(EMainGameScreen.CHAT_VIEW_SCREEN, {
                     conversationId: terry.conversationId,

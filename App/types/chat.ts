@@ -55,6 +55,13 @@ export interface IRequestHunterFilterConversationsQueryParams {
   isBackgroundAction?: boolean;
 }
 
+export interface IRequestHunterGetConversationsQueryParams {
+  includeProfileData?: boolean;
+  prefetchMessage?: boolean;
+  markAllAsRead?: boolean;
+  conversationId: string;
+}
+
 export interface IRequestHunterReadConversationMessagesQueryParams {
   markAllAsRead?: boolean;
   page?: number;

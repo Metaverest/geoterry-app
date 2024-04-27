@@ -30,6 +30,7 @@ import {
   IFilterConversationStatRes,
   IMessageResDto,
   IRequestHunterFilterConversationsQueryParams,
+  IRequestHunterGetConversationsQueryParams,
   IRequestHunterReadConversationMessagesQueryParams,
   ISendMessageInputDto,
 } from 'App/types/chat';
@@ -98,6 +99,7 @@ import AXIOS, {
   requestHunterUpdateCheckin,
   requestLoginWithGoogle,
   requestLoginWithApple,
+  requestHunterConversationById,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -927,6 +929,58 @@ export function* watchHunterFilterConversations() {
   yield takeLatest(ESagaAppAction.HUNTER_FILTER_CONVERSATIONS, hunterFilterConversation);
 }
 
+function* hunterGetConversationById(
+  action: IReduxActionWithNavigation<ESagaAppAction, IRequestHunterGetConversationsQueryParams>,
+) {
+  const navigation = action.payload?.navigation;
+  const data = action.payload?.data;
+
+  try {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: true }));
+    const user: IUser = yield select(reduxSelector.getUser);
+    const profileId = user.id;
+    const conversation: IConversationResDto = yield call(requestHunterConversationById, profileId, data);
+
+    let conversations: Record<string, IConversationResDto> = yield select(reduxSelector.getConversations);
+
+    if (!conversations) {
+      conversations = {
+        [conversation.id]: conversation,
+      };
+    } else {
+      if (conversations?.[conversation.id]) {
+        conversations[conversation.id] = conversation;
+      } else {
+        conversations = {
+          ...conversations,
+          [conversation.id]: conversation,
+        };
+      }
+    }
+
+    yield put(reduxAppAction.setConversations(conversations));
+    const messages: Record<string, IMessageResDto> = reduce(
+      conversation.messages,
+      (result, message) => {
+        return {
+          ...result,
+          [message.id]: message,
+        };
+      },
+      {},
+    );
+    yield put(reduxAppAction.setMessages({ [conversation.id!]: messages }));
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: false }));
+  } catch (error) {
+    yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: false }));
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+  }
+}
+
+export function* watchHunterGetConversationById() {
+  yield takeLatest(ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID, hunterGetConversationById);
+}
+
 function* hunterReadConversationMessages(
   action: IReduxActionWithNavigation<
     ESagaAppAction,
@@ -1099,5 +1153,6 @@ export default function* userSaga() {
     watchDeleteCheckins(),
     watchUpdateCheckin(),
     watchReadProfileAsync(),
+    watchHunterGetConversationById(),
   ]);
 }
