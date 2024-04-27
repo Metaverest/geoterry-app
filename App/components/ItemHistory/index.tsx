@@ -43,7 +43,7 @@ const ItemHistory = (props: IResponseTerryCheckins & IItemHistoryProps) => {
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, res));
       })
       .catch(err => {
-        console.log(err, 'terryDetail');
+        console.log(err);
         navigation.dispatch(StackActions.pop());
         navigation.dispatch(CommonActions.navigate(EMainGameScreen.DETAIL_HISTORY, props));
       });

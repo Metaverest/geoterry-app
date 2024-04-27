@@ -90,6 +90,12 @@ const sagaUserAction = {
       payload: { navigation, options },
     };
   },
+  getProfileAsync: (navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaUserAction.GET_PROFILE,
+      payload: { navigation, options },
+    };
+  },
   getPublicFilterCategoriesAsync: (categoryIds: string[]) => {
     return {
       type: ESagaAppAction.GET_PUBLIC_FILTER_CATEGORIES,

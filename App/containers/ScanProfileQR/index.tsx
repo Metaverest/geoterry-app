@@ -15,7 +15,7 @@ import { reduxSelector } from 'App/redux/selectors';
 import { ESagaUserAction } from 'App/enums/redux';
 import useCamera from 'App/hooks/useCamera';
 import { Camera, useCodeScanner } from 'react-native-vision-camera';
-import { PREFIX_LINK } from 'App/constants/common';
+import { APP_DOMAIN_URL } from 'App/constants/common';
 
 const ScanProfileQRScreen = () => {
   const { t } = useTranslation();
@@ -45,10 +45,10 @@ const ScanProfileQRScreen = () => {
       const value = codes[0]?.value;
       const type = codes[0]?.type;
 
-      if (type === 'qr' && value?.includes(`${PREFIX_LINK}://profile/`)) {
+      if (type === 'qr' && value?.includes(`https://www.${APP_DOMAIN_URL}/redirect/profile/`)) {
         navigation.dispatch(
           CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, {
-            profileID: value.replace(`${PREFIX_LINK}://profile/`, ''),
+            profileID: value.replace(`https://www.${APP_DOMAIN_URL}/redirect/profile/`, ''),
           }),
         );
       }

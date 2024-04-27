@@ -17,7 +17,7 @@ import Share from 'react-native-share';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { reduxSelector } from 'App/redux/selectors';
 import { useSelector } from 'react-redux';
-import { PREFIX_LINK } from 'App/constants/common';
+import { APP_DOMAIN_URL } from 'App/constants/common';
 import Header from 'App/components/Header';
 import { responsiveByWidth as rw } from 'App/helpers/common';
 import QRIcon from 'App/media/QRIcon';
@@ -31,7 +31,7 @@ const QRScreen = () => {
 
   const [uriQR, setUriQR] = useState('');
   const shareLink = useMemo(() => {
-    return `${PREFIX_LINK}://profile/${user.id}`;
+    return `https://www.${APP_DOMAIN_URL}/redirect/profile/${user.id}`;
   }, [user.id]);
   const generateQRCode = () => {
     RNQRGenerator.generate({
@@ -47,7 +47,7 @@ const QRScreen = () => {
       .catch(error => console.log('Cannot create QR code', error));
   };
   const handleShareQR = async () => {
-    Share.open({ message: shareLink })
+    Share.open({ message: t('Kết Checkly với tớ để cùng nhau đi săn kho báu nào!!! ') + shareLink })
       .then(res => {
         console.log(res);
       })

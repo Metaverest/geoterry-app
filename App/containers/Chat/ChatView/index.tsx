@@ -52,6 +52,7 @@ const ChatView = () => {
   }, [dispatch, recipientId, profile]);
 
   const conversations = useSelector(reduxSelector.getConversations);
+  // TODO: if conversations is empty, we need to call api to fetch it
   const conversation = useMemo(() => conversations?.[conversationId], [conversations, conversationId]);
   const userFriend = useMemo(() => {
     if (conversationId) {

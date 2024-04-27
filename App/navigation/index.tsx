@@ -15,21 +15,24 @@ import { reduxSelector } from 'App/redux/selectors';
 import AXIOS, { setLanguageRequestHeader } from 'App/utils/axios';
 import i18next from 'i18next';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import NetworkLoggerButton from './NetworkLoggerButton';
 import { Linking } from 'react-native';
 import { getStoredProperty } from 'App/utils/storage/storage';
 import { ROUTES } from './linkingConfig';
-import { PREFIX_LINK } from 'App/constants/common';
-import { CommonActions, createNavigationContainerRef } from '@react-navigation/native';
+import { CommonActions, createNavigationContainerRef, useNavigation } from '@react-navigation/native';
 import PopupModal from 'App/containers/Modal/PopupModal';
 import messaging from '@react-native-firebase/messaging';
 import { onReceiveNotification } from 'App/utils/notification';
+import { sagaUserAction } from 'App/redux/actions/userAction';
 
 export const navigationRef = createNavigationContainerRef();
 
 const Stack = createStackNavigator<ENavigatorParams>();
 const Navigation = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const user = useSelector(reduxSelector.getUser);
   const language = useSelector(reduxSelector.getUserLanguageCode);
   useEffect(() => {
     (async () => {
@@ -42,12 +45,16 @@ const Navigation = () => {
     (async () => {
       const initURL = await Linking.getInitialURL();
       const accessToken = await getStoredProperty(EDataStorageKey.ACCESS_TOKEN);
-      if (!initURL || accessToken || Object.values(ROUTES.AUTH_ROUTES).includes(initURL.replace(PREFIX_LINK, ''))) {
+      const isDeepLink = initURL && initURL.includes(ROUTES.AUTH_ROUTES.PROFILE_SCREEN.prefix);
+      if (!initURL || accessToken || isDeepLink) {
+        if (!user.id && isDeepLink) {
+          dispatch(sagaUserAction.getProfileAsync(navigation, {}));
+        }
         return;
       }
       navigationRef.dispatch(CommonActions.navigate(ENavigationScreen.ONBOARDING_SCREEN));
     })();
-  }, []);
+  }, [dispatch, navigation, user]);
 
   useEffect(() => {
     messaging().onNotificationOpenedApp(onReceiveNotification);

@@ -380,6 +380,26 @@ export function* watchReadProfileAndGoToMainAppAsync() {
   yield takeLatest(ESagaUserAction.GET_PROFILE_AND_GO_TO_MAIN_APP, readProfileAndGoToMainApp);
 }
 
+function* readProfile(action: IReduxActionWithNavigation<ESagaUserAction, any>) {
+  const navigation = action?.payload?.navigation;
+  try {
+    const profile: IProfileResDto = yield call(requestUserReadProfile);
+    yield put(reduxUserAction.setUser(profile as IUser));
+  } catch (error) {
+    if (
+      (error as any)?.response?.data?.errorCode === EErrorCode.PROFILE_NOT_FOUND &&
+      (error as any)?.response?.data?.statusCode === EStatusCode.BAD_REQUEST
+    ) {
+      resetAndNavigateToScreen(navigation, ENavigationScreen.CREATE_PROFILE_NAVIGATOR);
+    }
+    resetAndNavigateToScreen(navigation, ENavigationScreen.LOGIN_SCREEN);
+  }
+}
+
+export function* watchReadProfileAsync() {
+  yield takeLatest(ESagaUserAction.GET_PROFILE, readProfile);
+}
+
 function* getPublicFilterTerryCategories(
   action: IReduxActionWithNavigation<ESagaUserAction, IFilterTerryCategoryInputDto>,
 ) {
@@ -1078,5 +1098,6 @@ export default function* userSaga() {
     watchVerifyOfficialTerry(),
     watchDeleteCheckins(),
     watchUpdateCheckin(),
+    watchReadProfileAsync(),
   ]);
 }
