@@ -9,7 +9,10 @@ export const ROUTES = {
     REGISTER_SCREEN: 'register',
   },
   AUTH_ROUTES: {
-    PROFILE_SCREEN: 'profile/:profileID',
+    PROFILE_SCREEN: {
+      path: 'profile/:profileID',
+      prefix: `${PREFIX_LINK}://profile/`,
+    },
   },
 };
 
@@ -31,7 +34,7 @@ const config = {
     [ENavigationScreen.MAIN_GAME_NAVIGATOR]: {
       screens: {
         [EMainGameScreen.PROFILE_SCREEN]: {
-          path: ROUTES.AUTH_ROUTES.PROFILE_SCREEN,
+          path: ROUTES.AUTH_ROUTES.PROFILE_SCREEN.path,
         },
       },
     },
