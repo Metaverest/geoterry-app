@@ -4,12 +4,12 @@ import { DependencyList, useEffect, useState } from 'react';
 function useBreakTimeEffect(
   callback: () => void,
   deps: DependencyList,
-  options?: { breakTime?: number; skipBreakTime?: boolean },
+  options?: { breakTime?: number; skipFirstBreakTime?: boolean },
 ) {
   const [lastCallTime, setLastCallTime] = useState<number | null>(null);
   const delayedEffect = () => {
     const now = Date.now();
-    if (!lastCallTime || options?.skipBreakTime || now - lastCallTime > (options?.breakTime || 5 * 60 * 1000)) {
+    if (!lastCallTime || options?.skipFirstBreakTime || now - lastCallTime > (options?.breakTime || 5 * 60 * 1000)) {
       callback();
       setLastCallTime(now);
     }

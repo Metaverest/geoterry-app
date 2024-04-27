@@ -179,6 +179,17 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       const conversationIdListToBeMerged = Object.values(action.payload?.conversations || {})?.map(
         conversation => conversation.id,
       );
+
+      if (action.payload?.mergeToTop) {
+        return {
+          ...state,
+          conversations: {
+            ...action.payload?.conversations,
+            ..._.omit(state.conversations, conversationIdListToBeMerged),
+          },
+        };
+      }
+
       return {
         ...state,
         conversations: {
