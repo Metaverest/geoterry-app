@@ -3,6 +3,7 @@ import { EPublicReadProfileBy, EUserRole } from 'App/enums';
 import { EReduxUserAction, ESagaAppAction, ESagaUserAction } from 'App/enums/redux';
 import {
   IRequestHunterFilterConversationsQueryParams,
+  IRequestHunterGetConversationsQueryParams,
   IRequestHunterReadConversationMessagesQueryParams,
   ISendMessageInputDto,
 } from 'App/types/chat';
@@ -183,6 +184,12 @@ const sagaUserAction = {
   hunterFilterConversationsAsync: (data: IRequestHunterFilterConversationsQueryParams, navigation?: any) => {
     return {
       type: ESagaAppAction.HUNTER_FILTER_CONVERSATIONS,
+      payload: { data, navigation },
+    };
+  },
+  hunterGetConversationByIdAsync: (data: IRequestHunterGetConversationsQueryParams, navigation?: any) => {
+    return {
+      type: ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID,
       payload: { data, navigation },
     };
   },

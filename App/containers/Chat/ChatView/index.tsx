@@ -51,8 +51,23 @@ const ChatView = () => {
     }
   }, [dispatch, recipientId, profile]);
 
+  useEffect(() => {
+    if (conversationId) {
+      dispatch(
+        sagaUserAction.hunterGetConversationByIdAsync(
+          {
+            includeProfileData: true,
+            conversationId,
+            markAllAsRead: true,
+            prefetchMessage: true,
+          },
+          navigation,
+        ),
+      );
+    }
+  }, [conversationId, dispatch, navigation]);
+
   const conversations = useSelector(reduxSelector.getConversations);
-  // TODO: if conversations is empty, we need to call api to fetch it
   const conversation = useMemo(() => conversations?.[conversationId], [conversations, conversationId]);
   const userFriend = useMemo(() => {
     if (conversationId) {
@@ -80,22 +95,7 @@ const ChatView = () => {
       dispatch(reduxAppAction.setSelectedConversationId(undefined));
     };
   }, [dispatch]);
-  useEffect(() => {
-    if (isEmpty(conversationId)) {
-      return;
-    }
-    dispatch(
-      sagaUserAction.hunterReadConversationAsync({
-        conversationId,
-        requestHunterReadConversationMessagesQueryParams: {
-          markAllAsRead: true,
-          page: pageIndex,
-          pageSize: CHAT_MESSAGES_PAGINATION_PAGE_SIZE,
-        },
-      }),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, conversationId, recipientId]);
+
   const messagesToDisplay = useMemo(() => {
     const formattedMessages = map(
       messages,
@@ -191,7 +191,7 @@ const ChatView = () => {
 
   return (
     <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
-      {loadingStates?.[ESagaAppAction.HUNTER_READ_CONVERSATION] ? (
+      {loadingStates?.[ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID] ? (
         <LoadingSkeleton />
       ) : (
         <GiftedChat

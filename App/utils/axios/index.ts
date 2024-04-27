@@ -12,6 +12,7 @@ import {
   IRequestHunterFilterConversationsQueryParams,
   ISendMessageInputDto,
   IFilterConversationStatRes,
+  IRequestHunterGetConversationsQueryParams,
 } from 'App/types/chat';
 import {
   IFilterTerryCheckins,
@@ -52,6 +53,7 @@ import {
 } from 'App/types/user';
 import { getStoredProperty, removePropertyInDevice, setPropertyInDevice } from 'App/utils/storage/storage';
 import axios, { AxiosInstance } from 'axios';
+import { omit } from 'lodash';
 import { Platform } from 'react-native';
 import Config from 'react-native-config';
 
@@ -326,5 +328,13 @@ export const requestHunterUpdateCheckin = async (
   profileId: string,
   terryId: string,
 ) => AXIOS.put(`/hunter/${profileId}/terry-checkin/${terryId}`, payload).then(result => result.data);
+
+export const requestHunterConversationById = async (
+  profileId: string,
+  query: IRequestHunterGetConversationsQueryParams,
+) =>
+  AXIOS.get<IConversationResDto>(`/hunter/${profileId}/conversations/${query.conversationId}`, {
+    params: omit(query, 'conversationId'),
+  }).then(result => result.data);
 
 export default AXIOS;
