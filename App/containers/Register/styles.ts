@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   mainContainer: { flex: 1 },
   image: {
-    marginTop: -rh(171),
+    marginTop: -rh(230),
     alignSelf: 'center',
   },
   createAccountTitle: {
