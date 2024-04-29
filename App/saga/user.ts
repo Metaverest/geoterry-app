@@ -107,7 +107,7 @@ import {
   navigateToPopUpModal,
   resetAndNavigateToScreen,
 } from 'App/utils/navigation';
-import { getStoredProperty, setPropertyInDevice } from 'App/utils/storage/storage';
+import { getStoredProperty, removePropertyInDevice, setPropertyInDevice } from 'App/utils/storage/storage';
 import { t } from 'i18next';
 import { isEmpty, isNil, last, map, reduce } from 'lodash';
 import { all, call, put, select, takeLatest } from 'redux-saga/effects';
@@ -215,6 +215,8 @@ function* createProfile(action: IReduxActionWithNavigation<ESagaUserAction>) {
       logoUrl: avatarUrl,
     };
     const createProfileResponse: IProfileResDto = yield call(requestCreateProfile, data);
+    yield call(removePropertyInDevice, EDataStorageKey.DISPLAY_NAME_TO_CREATE_PROFILE);
+    yield call(removePropertyInDevice, EDataStorageKey.AVATAR_TO_CREATE_PROFILE);
     yield put(reduxUserAction.setUser(createProfileResponse as IUser));
     const navigator = navigation.getParent();
     if (navigator) {
