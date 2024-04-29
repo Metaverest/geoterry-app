@@ -184,7 +184,6 @@ const MapScreen = () => {
               markAsSaved: payload.markAsSaved,
               markAsFavourited: payload.markAsFavourited,
               includeConversationId: true,
-              isBackgroundAction: true,
             },
             navigation,
           ),
