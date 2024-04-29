@@ -15,16 +15,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: rw(10),
   },
-  googleLogin: {
-    borderRadius: rh(20),
-  },
-  appleButton: {
-    width: rh(36),
-    height: rh(36),
-  },
   text: {
     color: EColor.color_CCCCCC,
     marginBottom: rh(12),
+    fontSize: rh(14),
+    fontWeight: '400',
+    lineHeight: rh(18),
   },
   seperator: {
     width: '30%',
@@ -36,5 +32,13 @@ export const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     gap: rw(5),
+    marginTop: rh(16),
+  },
+  loginButtonContainer: {
+    backgroundColor: 'white',
+    padding: rw(6),
+    borderRadius: rw(4),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

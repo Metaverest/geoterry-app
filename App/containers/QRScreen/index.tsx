@@ -47,7 +47,7 @@ const QRScreen = () => {
       .catch(error => console.log('Cannot create QR code', error));
   };
   const handleShareQR = async () => {
-    Share.open({ message: t('Kết Checkly với tớ để cùng nhau đi săn kho báu nào!!! ') + shareLink })
+    Share.open({ message: t('Kết bạn Checkly với tớ để cùng nhau đi săn kho báu nào!!! ') + shareLink })
       .then(res => {
         console.log(res);
       })

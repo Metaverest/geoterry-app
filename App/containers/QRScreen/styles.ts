@@ -49,6 +49,7 @@ export const styles = StyleSheet.create({
   },
   iconBtn: {
     marginBottom: rh(10),
+    marginTop: rh(2),
   },
   buttonsContainer: {
     flexDirection: 'row',

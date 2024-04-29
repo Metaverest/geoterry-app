@@ -1,7 +1,7 @@
-import { GoogleSigninButton, GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
-import { AppleButton, appleAuth } from '@invertase/react-native-apple-authentication';
-import { View } from 'react-native';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import { TouchableOpacity, View } from 'react-native';
 import React, { useCallback } from 'react';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { EIdentifierType } from 'App/enums';
@@ -12,6 +12,8 @@ import usePlatform from 'App/hooks/usePlatform';
 import { useTranslation } from 'react-i18next';
 import CustomText from '../CustomText';
 import Config from 'react-native-config';
+import GoogleIcon from 'App/media/GoogleIcon';
+import AppleIcon from 'App/media/AppleIcon';
 
 GoogleSignin.configure({
   webClientId: Config.GOOGLE_AUTH_CLIENT_ID,
@@ -83,19 +85,14 @@ const LoginWithSocialApp = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={styles.oneTapLoginContainer}>
-        <GoogleSigninButton
-          size={GoogleSigninButton.Size.Icon}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={signInWithGoogle}
-          style={styles.googleLogin}
-        />
+        <TouchableOpacity style={styles.loginButtonContainer} onPress={signInWithGoogle}>
+          <GoogleIcon />
+        </TouchableOpacity>
+
         {isIOS && (
-          <AppleButton
-            buttonStyle={AppleButton.Style.WHITE}
-            buttonType={AppleButton.Type.SIGN_IN}
-            style={styles.appleButton}
-            onPress={signInWithApple}
-          />
+          <TouchableOpacity style={styles.loginButtonContainer} onPress={signInWithApple}>
+            <AppleIcon type="black" />
+          </TouchableOpacity>
         )}
       </View>
     </View>
