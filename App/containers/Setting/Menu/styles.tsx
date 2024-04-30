@@ -54,6 +54,7 @@ export const styles = StyleSheet.create({
     backgroundColor: 'red',
     borderRadius: rw(16),
     borderWidth: 1,
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
   swithButtonContainerEnable: {
     borderColor: EColor.color_FAFAFA,
