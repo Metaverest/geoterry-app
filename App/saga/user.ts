@@ -363,6 +363,7 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
   const fcmToken = action?.payload?.options?.fcmToken;
   try {
     const profile: IProfileResDto = yield call(requestUserReadProfile);
+    yield call(setPropertyInDevice, EDataStorageKey.PROFILE_ID, profile.id);
 
     yield put(reduxUserAction.setUser(profile as IUser));
     if (fcmToken) {
@@ -437,7 +438,10 @@ function* getPublicTerries(
       yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
     }
     const user: IUser = yield select(reduxSelector.getUser);
-    const profileId = user?.id;
+    let profileId = user.id;
+    if (!profileId) {
+      profileId = yield call(getStoredProperty, EDataStorageKey.PROFILE_ID);
+    }
     const terryFilterData: ITerryFilterInputDto = yield select(reduxSelector.getAppPublicTerryFilter);
     const terryFilterParams: ITerryFilterParams = action.payload?.data?.filterParams as ITerryFilterParams;
     const response: ITerryCategoryResDto = yield call(
@@ -884,7 +888,10 @@ function* hunterFilterConversationStat(action: IReduxActionWithNavigation<ESagaA
   const navigation = action.payload?.navigation;
   try {
     const user: IUser = yield select(reduxSelector.getUser);
-    const profileId = user.id;
+    let profileId = user.id;
+    if (!profileId) {
+      profileId = yield call(getStoredProperty, EDataStorageKey.PROFILE_ID);
+    }
     const conversationStat: IFilterConversationStatRes = yield call(requestHunterFilterConversationStat, profileId);
     yield put(reduxAppAction.setConversationStat(conversationStat));
   } catch (error) {
@@ -972,6 +979,27 @@ function* hunterGetConversationById(
       {},
     );
     yield put(reduxAppAction.setMessages({ [conversation.id!]: messages }));
+    if (data?.conversationId && data?.markAllAsRead) {
+      const conversationStat: Partial<IFilterConversationStatRes> = yield select(reduxSelector.getConversationStat);
+      const currentParticipant = conversations[data.conversationId].participants.find(v => v.profileId === profileId);
+      if (currentParticipant?.unreadMsgCnt) {
+        yield put(
+          reduxAppAction.setConversationStat({
+            totalConversationCnt: 0,
+            ...conversationStat,
+            unreadConversationCnt: conversationStat.unreadConversationCnt
+              ? conversationStat.unreadConversationCnt - 1
+              : 0,
+          }),
+        );
+      }
+      yield put(
+        reduxAppAction.updateConversation({
+          conversationId: data.conversationId,
+          markConversationAsRead: { profileId },
+        }),
+      );
+    }
     yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: false }));
   } catch (error) {
     yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: false }));
