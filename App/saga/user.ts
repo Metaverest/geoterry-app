@@ -363,6 +363,7 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
   const fcmToken = action?.payload?.options?.fcmToken;
   try {
     const profile: IProfileResDto = yield call(requestUserReadProfile);
+    yield call(setPropertyInDevice, EDataStorageKey.PROFILE_ID, profile.id);
 
     yield put(reduxUserAction.setUser(profile as IUser));
     if (fcmToken) {
@@ -437,7 +438,10 @@ function* getPublicTerries(
       yield put(reduxAppAction.setPublicFilterTerries(action?.payload?.data?.filterData as ITerryFilterInputDto));
     }
     const user: IUser = yield select(reduxSelector.getUser);
-    const profileId = user?.id;
+    let profileId = user.id;
+    if (!profileId) {
+      profileId = yield call(getStoredProperty, EDataStorageKey.PROFILE_ID);
+    }
     const terryFilterData: ITerryFilterInputDto = yield select(reduxSelector.getAppPublicTerryFilter);
     const terryFilterParams: ITerryFilterParams = action.payload?.data?.filterParams as ITerryFilterParams;
     const response: ITerryCategoryResDto = yield call(
@@ -884,7 +888,10 @@ function* hunterFilterConversationStat(action: IReduxActionWithNavigation<ESagaA
   const navigation = action.payload?.navigation;
   try {
     const user: IUser = yield select(reduxSelector.getUser);
-    const profileId = user.id;
+    let profileId = user.id;
+    if (!profileId) {
+      profileId = yield call(getStoredProperty, EDataStorageKey.PROFILE_ID);
+    }
     const conversationStat: IFilterConversationStatRes = yield call(requestHunterFilterConversationStat, profileId);
     yield put(reduxAppAction.setConversationStat(conversationStat));
   } catch (error) {

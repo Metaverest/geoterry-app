@@ -12,6 +12,7 @@ export enum EDataStorageKey {
   IS_SAVE_BATTERY_MODE = 'IS SAVE BATTERY MODE',
   NAMESPACE = 'NAMESPACE',
   IDENTIFIER_TYPE = 'IDENTIFIER TYPE',
+  PROFILE_ID = 'PROFILE ID',
 }
 
 export enum ENamespace {

@@ -57,6 +57,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
   const handleLogOut = useCallback(async () => {
     await removePropertyInDevice(EDataStorageKey.ACCESS_TOKEN);
     await removePropertyInDevice(EDataStorageKey.REFRESH_TOKEN);
+    await removePropertyInDevice(EDataStorageKey.PROFILE_ID);
     dispatch(reduxAppAction.resetAppStates());
     resetAndNavigateToScreen(navigation, ENavigationScreen.LOGIN_SCREEN);
   }, [navigation, dispatch]);
