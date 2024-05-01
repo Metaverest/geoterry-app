@@ -979,6 +979,27 @@ function* hunterGetConversationById(
       {},
     );
     yield put(reduxAppAction.setMessages({ [conversation.id!]: messages }));
+    if (data?.conversationId && data?.markAllAsRead) {
+      const conversationStat: Partial<IFilterConversationStatRes> = yield select(reduxSelector.getConversationStat);
+      const currentParticipant = conversations[data.conversationId].participants.find(v => v.profileId === profileId);
+      if (currentParticipant?.unreadMsgCnt) {
+        yield put(
+          reduxAppAction.setConversationStat({
+            totalConversationCnt: 0,
+            ...conversationStat,
+            unreadConversationCnt: conversationStat.unreadConversationCnt
+              ? conversationStat.unreadConversationCnt - 1
+              : 0,
+          }),
+        );
+      }
+      yield put(
+        reduxAppAction.updateConversation({
+          conversationId: data.conversationId,
+          markConversationAsRead: { profileId },
+        }),
+      );
+    }
     yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: false }));
   } catch (error) {
     yield put(reduxAppAction.setLoadingStates({ [ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID]: false }));
