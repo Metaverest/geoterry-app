@@ -100,6 +100,13 @@ export const PopUpModalParams = {
     confirmButtonTitle: t('Tiếp tục'),
     cancelButtonTitle: t('Thoát'),
   } as IPopupModalParamsProps,
+  [EPopUpModalType.CONFIRM_DELETE_TERRY]: {
+    title: t('Cảnh báo'),
+    subtitle: t('Kho báu sẽ bị xoá vĩnh viễn. Bạn có chắc chắn muốn xoá?'),
+    image: UndefinedErrorImage,
+    confirmButtonTitle: t('Xoá'),
+    cancelButtonTitle: t('Thoát'),
+  } as IPopupModalParamsProps,
 };
 export const getPopupModalParamsFromErrorCodeAndStatusCode = (
   errorCode: EErrorCode,
