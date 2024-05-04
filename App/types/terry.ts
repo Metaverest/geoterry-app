@@ -159,6 +159,23 @@ export interface ITerryInputDto {
     country?: string;
   };
 }
+
+export interface ITerryUpdateMetadataDto {
+  size?: number;
+  difficulty?: number;
+  terrain?: number;
+}
+
+export interface ITerryUpdateDto {
+  terryId: string;
+  name?: string;
+  description?: string;
+  hint?: string;
+  photoUrls?: string[];
+  categoryIds?: string[];
+  metadata?: ITerryUpdateMetadataDto;
+}
+
 export interface IGetCheckinsOfTerryParams extends ITerryCheckinsParams {
   includeProfileData?: boolean;
 }

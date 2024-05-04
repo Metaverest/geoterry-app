@@ -35,6 +35,7 @@ import useUserLocation from 'App/hooks/useUserLocation';
 import { getResizedImageUrl, EImageSize } from 'App/utils/images';
 import Messenger from 'App/media/Messenger';
 import ImageView from 'react-native-image-viewing';
+import Edit from 'App/media/Edit';
 
 export interface ITerryDetailProps {
   terry: ITerryResponseDto;
@@ -189,7 +190,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
                 return (
                   <ImageBackground
                     style={styles.imageSlider}
-                    source={{ uri: getResizedImageUrl(item.image, EImageSize.SIZE_500) }}
+                    source={{ uri: getResizedImageUrl(item.image, EImageSize.SIZE_1000) }}
                     testID={`container_swiper_renderItem_screen_${index}`}
                     resizeMode="cover"
                   />
@@ -327,7 +328,16 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
       </ScrollView>
 
       {user.id === terry.profileId ? (
-        <Header />
+        <Header
+          rightButton={
+            <TouchableOpacity
+              onPress={() => {
+                navigation.dispatch(CommonActions.navigate(EMainGameScreen.UPDATE_TERRY_SCREEN, { terry }));
+              }}>
+              <Edit />
+            </TouchableOpacity>
+          }
+        />
       ) : (
         <Header
           rightButton={
@@ -348,7 +358,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
 
       <ImageView
         presentationStyle="overFullScreen"
-        images={items.map(item => ({ uri: getResizedImageUrl(item.image, EImageSize.SIZE_500) }))}
+        images={items.map(item => ({ uri: getResizedImageUrl(item.image, EImageSize.SIZE_1000) }))}
         keyExtractor={(_, index) => index.toString()}
         imageIndex={indexImg}
         visible={visible}

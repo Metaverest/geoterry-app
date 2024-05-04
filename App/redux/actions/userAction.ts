@@ -15,6 +15,7 @@ import {
   ITerryFilterInputDto,
   ITerryFilterParams,
   ITerryInputDto,
+  ITerryUpdateDto,
   IUpdateTerryCheckinInput,
   Location,
 } from 'App/types/terry';
@@ -143,6 +144,18 @@ const sagaUserAction = {
     return {
       type: ESagaAppAction.BUILDER_CREATE_TERRY,
       payload: { data, navigation, options },
+    };
+  },
+  builderUpdateTerryAsync: (data: ITerryUpdateDto, navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaAppAction.BUILDER_UPDATE_TERRY,
+      payload: { data, navigation, options },
+    };
+  },
+  builderDeleteTerryAsync: (terryId: string, navigation: any, options?: ISagaAsyncActionOptions) => {
+    return {
+      type: ESagaAppAction.BUILDER_DELETE_TERRY,
+      payload: { data: terryId, navigation, options },
     };
   },
   hunterCheckinTerryAsync: (navigation: any, options?: ISagaAsyncActionOptions) => {

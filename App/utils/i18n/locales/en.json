@@ -212,5 +212,9 @@
   "Không thể đăng nhập tài khoản, vui lòng thử lại": "Cannot login with this account, please try again",
   "Hoặc tiếp tục với": "Or continue with",
   "Quét mã QR": "Scan QR code",
-  "Kết bạn Checkly với tớ để cùng nhau đi săn kho báu nào!!! ": "Add me on Checkly to go treasure hunting together!!! "
+  "Kết bạn Checkly với tớ để cùng nhau đi săn kho báu nào!!! ": "Add me on Checkly to go treasure hunting together!!! ",
+  "Cập nhật kho báu": "Update Terry",
+  "Bạn không thể thay đổi được vị trí của kho báu!": "You cannot change the location of the treasure!",
+  "Xoá kho báu": "Delete Terry",
+  "Kho báu sẽ bị xoá vĩnh viễn. Bạn có chắc chắn muốn xoá?": "Terry will be deleted forever, do you want to continue?"
 }

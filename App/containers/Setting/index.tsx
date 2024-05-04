@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ENavigationScreen, ESettingNavigator } from 'App/enums/navigation';
 import React from 'react';
 import MenuScreen from './Menu';
-import RuleScreen from './Rule';
+import RoleScreen from './Role';
 import LanguageScreen from './Language';
 import PolicyScreen from './Policy';
 import AboutScreen from './About';
@@ -14,7 +14,7 @@ const SettingNavigator = () => {
   return (
     <Stack.Navigator initialRouteName={ESettingNavigator.MENU_SCREEN}>
       <Stack.Screen options={{ headerShown: false }} name={ESettingNavigator.MENU_SCREEN} component={MenuScreen} />
-      <Stack.Screen options={{ headerShown: false }} name={ESettingNavigator.RULE_SCREEN} component={RuleScreen} />
+      <Stack.Screen options={{ headerShown: false }} name={ESettingNavigator.RULE_SCREEN} component={RoleScreen} />
       <Stack.Screen
         options={{ headerShown: false }}
         name={ESettingNavigator.LANGUAGE_SCREEN}

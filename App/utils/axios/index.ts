@@ -30,6 +30,7 @@ import {
   ITerryInputDto,
   ITerryLocationDto,
   ITerryResponseDto,
+  ITerryUpdateDto,
   ITerryUserPathResDto,
   IUpdateTerryCheckinInput,
 } from 'App/types/terry';
@@ -233,6 +234,16 @@ export const requestHunterFilterTerryCheckins = async (
 
 export const requestBuilderCreateTerry = async (data: ITerryInputDto, userID: string) => {
   return AXIOS.post<ITerryResponseDto>(`/builder/${userID}/terry`, data).then(result => result.data);
+};
+
+export const requestBuilderUpdateTerry = async (data: ITerryUpdateDto, userID: string) => {
+  return AXIOS.put<ITerryResponseDto>(`/builder/${userID}/terry/${data.terryId}`, omit(data, ['terryId'])).then(
+    result => result.data,
+  );
+};
+
+export const requestBuilderDeleteTerry = async (terryId: string, userID: string) => {
+  return AXIOS.delete(`/builder/${userID}/terry/${terryId}`).then(result => result.data);
 };
 
 export const requestPublicGetCheckinsOfTerry = async (params: IGetCheckinsOfTerryParams, terryId: string) => {

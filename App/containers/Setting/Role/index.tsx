@@ -6,7 +6,6 @@ import { AppBackgroundImage } from 'App/components/image';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
-import { styles } from './styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { EUserRole, ETitleUserRole, EUseRoleRequestStatus } from 'App/enums';
@@ -15,8 +14,9 @@ import { useNavigation } from '@react-navigation/native';
 import { EMainGameNavigatorParams, ESettingNavigator } from 'App/enums/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { sagaUserAction } from 'App/redux/actions/userAction';
+import { styles } from './styles';
 
-const RuleScreen = () => {
+const RoleScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation<StackNavigationProp<EMainGameNavigatorParams, ESettingNavigator.RULE_SCREEN>>();
   const dispatch = useDispatch();
@@ -102,4 +102,4 @@ const RuleScreen = () => {
   );
 };
 
-export default RuleScreen;
+export default RoleScreen;

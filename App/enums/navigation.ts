@@ -46,6 +46,7 @@ export enum EMainGameScreen {
   EDIT_DETAIL_HISTORY = 'EDIT_DETAIL_HISTORY',
   ENLARGE_IMAGE = 'ENLARGE_IMAGE',
   CREATE_NEW_TERRY_SCREEN = 'CREATE_NEW_TERRY_SCREEN',
+  UPDATE_TERRY_SCREEN = 'UPDATE_TERRY_SCREEN',
   REVIEW_SCREEN = 'REVIEW_SCREEN',
   CHECKIN_TERRY_SCREEN = 'CHECKIN_TERRY_SCREEN',
   VERIFY_OFFICIAL_TERRY_SCREEN = 'VERIFY_OFFICIAL_TERRY_SCREEN',
@@ -71,7 +72,10 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   [EMainGameScreen.MAP_TYPE_SCREEN]: undefined;
   [EMainGameScreen.FILTER_SCREEN]: undefined;
   [EMainGameScreen.SETTING_NAVIGATOR]: undefined;
-  [EMainGameScreen.TERRY_DETAIL_SCREEN]: undefined;
+  [EMainGameScreen.TERRY_DETAIL_SCREEN]: {
+    userLocation?: Location;
+    terry: ITerryResponseDto;
+  };
   [EMainGameScreen.PROFILE_SCREEN]: undefined;
   [EMainGameScreen.EDIT_PROFILE_SCREEN]: undefined;
   [EMainGameScreen.QR_SCREEN]: undefined;
@@ -90,6 +94,9 @@ export interface EMainGameNavigatorParams extends ParamListBase {
   [EMainGameScreen.CHAT_VIEW_SCREEN]: {
     conversationId: string;
     recipientId?: string;
+  };
+  [EMainGameScreen.UPDATE_TERRY_SCREEN]: {
+    terry: ITerryResponseDto;
   };
 }
 
@@ -112,4 +119,5 @@ export enum EPopUpModalType {
   CREATE_TERRY_SUCCESS = 'CREATE_TERRY_SUCCESS',
   TERRY_INFORMATION_CAN_BE_DISCLOSED = 'TERRY_INFORMATION_CAN_BE_DISCLOSED',
   VERIFY_OFFICIAL_TERRY_FAILED = 'VERIFY_OFFICIAL_TERRY_FAILED',
+  CONFIRM_DELETE_TERRY = 'CONFIRM_DELETE_TERRY',
 }

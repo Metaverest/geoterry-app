@@ -21,6 +21,7 @@ import HistoryScreen from '../History';
 import DetailHistory from '../DetailHistory';
 import EditDetailHistory from '../EditDetailHistory';
 import CreateNewTerryScreen from './CreateNewTerry';
+import UpdateTerryScreen from './UpdateTerry';
 import Review from '../Review';
 import CheckinTerryScreen from './CheckinTerry';
 import VerifyOfficialTerryScreen from './VerifyOfficialTerry';
@@ -133,6 +134,11 @@ const MainGameNavigator = () => {
         <Stack.Screen
           name={EMainGameScreen.CREATE_NEW_TERRY_SCREEN}
           component={CreateNewTerryScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={EMainGameScreen.UPDATE_TERRY_SCREEN}
+          component={UpdateTerryScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen name={EMainGameScreen.REVIEW_SCREEN} component={Review} options={{ headerShown: false }} />

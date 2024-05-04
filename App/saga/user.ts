@@ -48,6 +48,7 @@ import {
   ITerryFilterParams,
   ITerryInputDto,
   ITerryResponseDto,
+  ITerryUpdateDto,
   Location,
 } from 'App/types/terry';
 
@@ -100,6 +101,8 @@ import AXIOS, {
   requestLoginWithGoogle,
   requestLoginWithApple,
   requestHunterConversationById,
+  requestBuilderUpdateTerry,
+  requestBuilderDeleteTerry,
 } from 'App/utils/axios';
 import {
   PopUpModalParams,
@@ -615,7 +618,6 @@ function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryI
     const data = action.payload?.data as ITerryInputDto;
     const user: IUser = yield select(reduxSelector.getUser);
     const userID = user.id;
-    //skip this called because of BE issue. Will be updated later
     const res: ITerryResponseDto = yield call(requestBuilderCreateTerry, data, userID);
     const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
     // since this is new terry so by default the rate is 5 and total rating is 0
@@ -630,6 +632,48 @@ function* createTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryI
 
 export function* watchCreateTerry() {
   yield takeLatest(ESagaAppAction.BUILDER_CREATE_TERRY, createTerry);
+}
+
+function* updateTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryUpdateDto>) {
+  const navigation = action.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const data = action.payload?.data as ITerryUpdateDto;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const userID = user.id;
+    const res: ITerryResponseDto = yield call(requestBuilderUpdateTerry, data, userID);
+    const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+    yield put(reduxAppAction.setPublicTerries([...terries.filter(e => e.id !== res.id), res]));
+    navigation.dispatch(StackActions.pop(3));
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    navigation.dispatch(StackActions.pop());
+  }
+}
+
+export function* watchUpdateTerry() {
+  yield takeLatest(ESagaAppAction.BUILDER_UPDATE_TERRY, updateTerry);
+}
+
+function* deleteTerry(action: IReduxActionWithNavigation<ESagaAppAction, string>) {
+  const navigation = action.payload?.navigation;
+  try {
+    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    const terryId = action.payload?.data;
+    const user: IUser = yield select(reduxSelector.getUser);
+    const userID = user.id;
+    yield call(requestBuilderDeleteTerry, terryId, userID);
+    const terries: ITerryResponseDto[] = yield select(reduxSelector.getAppPublicTerries);
+    yield put(reduxAppAction.setPublicTerries([...terries.filter(e => e.id !== terryId)]));
+    navigation.dispatch(StackActions.pop(4));
+  } catch (error) {
+    yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    navigation.dispatch(StackActions.pop());
+  }
+}
+
+export function* watchDeleteTerry() {
+  yield takeLatest(ESagaAppAction.BUILDER_DELETE_TERRY, deleteTerry);
 }
 
 function* hunterCheckinTerry(action: IReduxActionWithNavigation<ESagaAppAction, ITerryCheckinInputDto>) {
@@ -1184,5 +1228,7 @@ export default function* userSaga() {
     watchUpdateCheckin(),
     watchReadProfileAsync(),
     watchHunterGetConversationById(),
+    watchUpdateTerry(),
+    watchDeleteTerry(),
   ]);
 }
