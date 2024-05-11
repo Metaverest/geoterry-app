@@ -161,10 +161,10 @@ const reduxAppAction = {
       payload: { conversations: data },
     };
   },
-  mergeConversations: (data: Record<string, IConversationResDto>, mergeToTop?: boolean) => {
+  mergeConversations: (data: Record<string, IConversationResDto>, sort?: boolean) => {
     return {
       type: EReduxAppAction.MERGE_CONVERSATIONS,
-      payload: { conversations: data, mergeToTop },
+      payload: { conversations: data, sort },
     };
   },
   // to update conversation saved in redux store

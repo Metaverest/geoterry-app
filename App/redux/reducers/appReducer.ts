@@ -2,6 +2,7 @@ import { RADIUS_TO_GET_NEARBY_TERRY } from 'App/constants/common';
 import { ELanguageCode } from 'App/enums';
 import { EMapType } from 'App/enums/map';
 import { EReduxAppAction } from 'App/enums/redux';
+import { IConversationResDto } from 'App/types/chat';
 import { IAppState, IReduxAction } from 'App/types/redux';
 import _, { pick } from 'lodash';
 import { reduce } from 'lodash';
@@ -179,14 +180,15 @@ const appReducer = (state = defaultAppState, action: IReduxAction<EReduxAppActio
       const conversationIdListToBeMerged = Object.values(action.payload?.conversations || {})?.map(
         conversation => conversation.id,
       );
+      if (action.payload?.sort) {
+        const pairs = _.toPairs({
+          ...action.payload?.conversations,
+          ..._.omit(state.conversations, conversationIdListToBeMerged),
+        }) as [string, IConversationResDto][];
 
-      if (action.payload?.mergeToTop) {
         return {
           ...state,
-          conversations: {
-            ...action.payload?.conversations,
-            ..._.omit(state.conversations, conversationIdListToBeMerged),
-          },
+          conversations: _.fromPairs(_.sortBy(pairs, pair => pair[1].lastMsg.sentAt).reverse()),
         };
       }
 

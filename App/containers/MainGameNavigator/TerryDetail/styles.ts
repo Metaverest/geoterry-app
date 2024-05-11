@@ -195,6 +195,10 @@ export const styles = StyleSheet.create({
   containerLocation: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  flex: {
+    flexDirection: 'row',
   },
   tag: {
     paddingVertical: rh(2),

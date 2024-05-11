@@ -212,12 +212,17 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
             },
           ]}>
           <View style={styles.containerLocation}>
-            <WhiteLocationIcon />
-            <CustomText style={styles.terryDistanceAndCategoryText}>
-              {shortenString(convertAddressObjectToProvincialReadableAddress(terry.address) || t('Không rõ'), 40)}
-            </CustomText>
-            <Rating rate={terry.rating.rate} />
-            <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>
+            <View style={styles.flex}>
+              <WhiteLocationIcon />
+              <CustomText style={styles.terryDistanceAndCategoryText}>
+                {shortenString(convertAddressObjectToProvincialReadableAddress(terry.address) || t('Không rõ'), 40)}
+              </CustomText>
+            </View>
+
+            <View style={styles.flex}>
+              <Rating rate={terry.rating.rate} />
+              <CustomText style={styles.quantityRate}> ({terry.rating.total})</CustomText>
+            </View>
           </View>
           <CustomText style={styles.terryNameText}>{terry?.name}</CustomText>
           <View style={styles.creatorNameContainer}>
