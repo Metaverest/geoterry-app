@@ -22,12 +22,12 @@ export const DEFAULT_LOCATION = {
 
 export const INTERVAL_TIME_CALL_UPDATE_PATH = 1000 * 60 * 2; // 2 minutes
 
-export const THRESHOLD_DISTANCE_TO_UPDATE_PATH = 50; // 50 meters
+export const THRESHOLD_DISTANCE_TO_UPDATE_PATH = 20; // 20 meters
 
 export const PREFIX_LINK = 'checkly';
 export const APP_DOMAIN_URL = 'checkly.vn';
 
-export const THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY = 50; // 50 meters
+export const THRESHOLD_DISTANCE_TO_BE_ABLE_TO_CHECKIN_TERRY = 100; // 100 meters
 
 export const DEFAULT_LATITUTE_DELTA = 0.008;
 

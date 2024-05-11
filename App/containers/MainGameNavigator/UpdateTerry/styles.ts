@@ -23,8 +23,6 @@ export const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: '100%',
-    paddingTop: rh(32),
-    paddingBottom: rh(30),
     position: 'absolute',
     zIndex: 999,
     elevation: 999,
