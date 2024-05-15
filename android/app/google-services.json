@@ -1,49 +1,41 @@
 {
   "project_info": {
-    "project_number": "446523929728",
-    "firebase_url": "https://terriana-1336c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "terriana-1336c",
-    "storage_bucket": "terriana-1336c.appspot.com"
+    "project_number": "555384420692",
+    "firebase_url": "https://checkly-418707-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "checkly-418707",
+    "storage_bucket": "checkly-418707.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:446523929728:android:14472aad564a16ba712265",
+        "mobilesdk_app_id": "1:555384420692:android:fe6996e10045dbd8fbb0c1",
         "android_client_info": {
           "package_name": "com.geoterry"
         }
       },
       "oauth_client": [
         {
-          "client_id": "446523929728-183oh29rkvpmoa8nat0kfrtqgd90dqe3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.geoterry",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "446523929728-jkeeq440moqtq8shko8afiskg4djjnba.apps.googleusercontent.com",
+          "client_id": "555384420692-flfd0hqs6pr6g7fmri49n854h2qnp6ov.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC5T5N-W5SCNKFIE5LB4zy9-vIXlngRF9Q"
+          "current_key": "AIzaSyBDj7Cf194zo8-LHb5x_64D6qNg9NbEBgE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "446523929728-jkeeq440moqtq8shko8afiskg4djjnba.apps.googleusercontent.com",
+              "client_id": "555384420692-flfd0hqs6pr6g7fmri49n854h2qnp6ov.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "446523929728-si9mr9s51g42ttbkdhvadu6abkt7tik7.apps.googleusercontent.com",
+              "client_id": "555384420692-59toc2m8n4k7cpqsad0ohjt7u455ocss.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "org.reactjs.native.example.geoterry"
+                "bundle_id": "vn.checkly.checkly"
               }
             }
           ]

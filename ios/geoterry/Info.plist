@@ -37,7 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.446523929728-si9mr9s51g42ttbkdhvadu6abkt7tik7</string>
+				<string>com.googleusercontent.apps.555384420692-59toc2m8n4k7cpqsad0ohjt7u455ocss</string>
 			</array>
 		</dict>
 	</array>
@@ -57,7 +57,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Your description for camera access</string>
+	<string>Checkly uses this for camera access</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Checkly uses this to show your current location on our map</string>
 	<key>NSLocationAlwaysUsageDescription</key>
