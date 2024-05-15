@@ -3,23 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>446523929728-si9mr9s51g42ttbkdhvadu6abkt7tik7.apps.googleusercontent.com</string>
+	<string>555384420692-59toc2m8n4k7cpqsad0ohjt7u455ocss.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.446523929728-si9mr9s51g42ttbkdhvadu6abkt7tik7</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>446523929728-183oh29rkvpmoa8nat0kfrtqgd90dqe3.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.555384420692-59toc2m8n4k7cpqsad0ohjt7u455ocss</string>
 	<key>API_KEY</key>
-	<string>AIzaSyA687PFmB5_-eyLGIaYhesZcFhYXvLajqc</string>
+	<string>AIzaSyC_49nXQ5z4eci6vrVVaYi2jxzEWJKfjIw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>446523929728</string>
+	<string>555384420692</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.geoterry</string>
+	<string>vn.checkly.checkly</string>
 	<key>PROJECT_ID</key>
-	<string>terriana-1336c</string>
+	<string>checkly-418707</string>
 	<key>STORAGE_BUCKET</key>
-	<string>terriana-1336c.appspot.com</string>
+	<string>checkly-418707.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:446523929728:ios:b74864057a59eab7712265</string>
+	<string>1:555384420692:ios:06290d6d182b8e16fbb0c1</string>
 	<key>DATABASE_URL</key>
-	<string>https://terriana-1336c-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+	<string>https://checkly-418707-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>
 </plist>

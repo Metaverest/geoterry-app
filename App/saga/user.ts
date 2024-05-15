@@ -381,6 +381,7 @@ function* readProfileAndGoToMainApp(action: IReduxActionWithNavigation<ESagaUser
       resetAndNavigateToScreen(navigation, ENavigationScreen.CREATE_PROFILE_NAVIGATOR);
     }
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
+    resetAndNavigateToScreen(navigation, ENavigationScreen.ONBOARDING_SCREEN);
   }
 }
 

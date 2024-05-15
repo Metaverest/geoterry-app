@@ -13,7 +13,7 @@ const defaultAppState: IAppState = {
   error: [],
   recoveryCode: '',
   mapType: EMapType.STANDARD,
-  publicCategories: [],
+  publicCategories: undefined,
   publicTerries: [],
   publicTerryFilter: {
     categoryIds: undefined,

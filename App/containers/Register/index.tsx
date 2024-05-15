@@ -41,7 +41,7 @@ const getValidateSchema = (t: (e: string) => string) => {
     phone: Yup.string()
       .required(t('Số điện thoại không được để trống'))
       .test('is-valid-phone', t('Số điện thoại không hợp lệ'), value => isValidPhoneNumber(value)),
-    password: Yup.string().required(t('Mật khẩu không được để trống')).min(8, 'Mật khẩu quá ngắn!'),
+    password: Yup.string().required(t('Mật khẩu không được để trống')).min(8, 'Mật khẩu quá ngắn'),
     confirmPassword: Yup.string()
       .required(t('Nhập lại mật khẩu không được để trống'))
       .oneOf([Yup.ref('password')], t('Mật khẩu không khớp')),

@@ -204,5 +204,9 @@
   "Cập nhật kho báu": "Cập nhật kho báu",
   "Bạn không thể thay đổi được vị trí của kho báu!": "Bạn không thể thay đổi được vị trí của kho báu!",
   "Xoá kho báu": "Xoá kho báu",
-  "Kho báu sẽ bị xoá vĩnh viễn. Bạn có chắc chắn muốn xoá?": "Kho báu sẽ bị xoá vĩnh viễn. Bạn có chắc chắn muốn xoá?"
+  "Kho báu sẽ bị xoá vĩnh viễn. Bạn có chắc chắn muốn xoá?": "Kho báu sẽ bị xoá vĩnh viễn. Bạn có chắc chắn muốn xoá?",
+  "Mật khẩu không được để trống": "Mật khẩu không được để trống",
+  "Mật khẩu quá ngắn": "Mật khẩu quá ngắn",
+  "Nhập lại mật khẩu không được để trống": "Nhập lại mật khẩu không được để trống",
+  "Mật khẩu không khớp": "Mật khẩu không khớp"
 }

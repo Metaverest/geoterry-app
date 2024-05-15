@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
-import { isEmpty } from 'lodash';
+import { isUndefined } from 'lodash';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterScreen from './FilterScreen';
@@ -38,7 +38,7 @@ const MainGameNavigator = () => {
   const dispatch = useDispatch();
   const publicFilterCategories = useSelector(reduxSelector.getAppPublicCategories);
   useEffect(() => {
-    if (isEmpty(publicFilterCategories)) {
+    if (isUndefined(publicFilterCategories)) {
       dispatch(sagaUserAction.getPublicFilterCategoriesAsync([]));
     }
   }, [dispatch, publicFilterCategories]);

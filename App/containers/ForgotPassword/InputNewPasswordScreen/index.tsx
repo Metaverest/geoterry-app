@@ -31,7 +31,7 @@ const initialValues: IFormValues = {
 
 const getValidateSchema = (t: (e: string) => string) => {
   return Yup.object().shape({
-    password: Yup.string().required(t('Mật khẩu không được để trống')).min(8, 'Mật khẩu quá ngắn!'),
+    password: Yup.string().required(t('Mật khẩu không được để trống')).min(8, 'Mật khẩu quá ngắn'),
     confirmPassword: Yup.string()
       .required(t('Nhập lại mật khẩu không được để trống'))
       .oneOf([Yup.ref('password')], t('Mật khẩu không khớp')),
