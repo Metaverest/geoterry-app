@@ -75,6 +75,9 @@ target 'geoterry' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'ViroReact', :path => '../node_modules/@viro-community/react-viro/ios/'
+  pod 'ViroKit', :path => '../node_modules/@viro-community/react-viro/ios/dist/ViroRenderer/'
+
   target 'geoterryTests' do
     inherit! :complete
     # Pods for testing
