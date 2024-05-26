@@ -1,5 +1,6 @@
 import { Defs, LinearGradient, Path, Stop, Svg, SvgProps } from 'react-native-svg';
 import React from 'react';
+import { EColor } from 'App/enums/color';
 const MapMarkerPolygonIcon = (props: SvgProps) => {
   return (
     <Svg width={props.width || '16'} height={props.height || '16'} viewBox="0 0 18 16" fill="none">
@@ -15,8 +16,8 @@ const MapMarkerPolygonIcon = (props: SvgProps) => {
           x2="20.5652"
           y2="9.20325"
           gradientUnits="userSpaceOnUse">
-          <Stop stopColor="#C072FD" />
-          <Stop offset="1" stopColor="#51D5FF" />
+          <Stop stopColor={EColor.color_C072FD} />
+          <Stop offset="1" stopColor={EColor.color_51D5FF} />
         </LinearGradient>
       </Defs>
     </Svg>

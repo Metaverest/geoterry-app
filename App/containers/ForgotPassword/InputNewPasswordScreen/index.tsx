@@ -17,7 +17,6 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
-import { AppBackgroundImage } from 'App/components/image';
 
 interface IFormValues {
   password: string;
@@ -57,7 +56,7 @@ const InputNewPasswordScreen = () => {
   const requestErrorText = useGetErrorText();
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Đặt lại mật khẩu')} />
       <CustomText style={styles.inputPhoneNumberSubTitle}>{t('Đặt lại mật khẩu mới của bạn')}</CustomText>
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>

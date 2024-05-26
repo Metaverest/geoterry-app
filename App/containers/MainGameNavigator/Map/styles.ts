@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: rh(-10),
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
     width: rw(24),
     height: rw(24),
     borderRadius: rw(24),
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
   containerNumberOfConv: {
     position: 'absolute',
     right: rw(-3),
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
     width: rw(18),
     height: rw(18),
     borderRadius: rw(18),

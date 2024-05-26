@@ -31,7 +31,7 @@ const PopupModal = ({ route }: { route: { params: IPopupModalProps } }) => {
   return (
     <CustomSafeArea style={styles.container} shouldUseFullScreenView isModal>
       <View style={styles.popupContainer}>
-        <Image style={styles.popupImage} resizeMode="contain" source={image} />
+        {image && <Image style={styles.popupImage} resizeMode="contain" source={image} />}
         <CustomText style={styles.popupTitle}>{title}</CustomText>
         <CustomText style={styles.popupSubtitle}>{subtitle}</CustomText>
         <View style={styles.footerContainer}>

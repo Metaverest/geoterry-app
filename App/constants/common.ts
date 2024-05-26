@@ -10,13 +10,13 @@ export const RADIUS_TO_GET_NEARBY_TERRY = 20000;
 export const DISTANCE_THRESHOLD_TO_RE_GET_NEARBY_TERRY = 5000;
 
 export const DEFAULT_LOCATION = {
-  latitude: 21.0479597522,
-  longitude: 105.85170291,
+  latitude: 21,
+  longitude: 105,
   altitude: 0,
   heading: 0,
   speed: 0,
-  latitudeDelta: 0.008,
-  longitudeDelta: 0.008,
+  latitudeDelta: 20,
+  longitudeDelta: 20,
   isDefault: true,
 };
 

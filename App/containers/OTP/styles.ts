@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: rw(16),
   },
   otpCell: {
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     borderRadius: rh(12),
     padding: 16,
     color: EColor.color_FAFAFA,

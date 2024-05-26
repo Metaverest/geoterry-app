@@ -2,9 +2,8 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import { EColor } from 'App/enums/color';
 import { ISwipeUpModalProps } from 'App/types/modal';
 import React, { useCallback, useState } from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 import Modal from 'react-native-modal';
-import { ModalSwipeUpBackgroundImage } from '../image';
 import { styles } from './styles';
 
 const CustomSwipeUpModal = (props: ISwipeUpModalProps) => {
@@ -24,10 +23,7 @@ const CustomSwipeUpModal = (props: ISwipeUpModalProps) => {
       swipeDirection={'down'}
       onBackdropPress={closeModal}
       isVisible={isModalVisible}>
-      <View style={styles.mainContainer}>
-        <Image source={ModalSwipeUpBackgroundImage} style={styles.imageBackground} />
-        {props.children}
-      </View>
+      <View style={styles.mainContainer}>{props.children}</View>
     </Modal>
   );
 };

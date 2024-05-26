@@ -2,7 +2,7 @@ import CustomButton from 'App/components/Button';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage, PermissionLocationIcon } from 'App/components/image';
+import { PermissionLocationIcon } from 'App/components/image';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission';
@@ -37,7 +37,7 @@ const PermissionLocationScreen = () => {
   const user = useSelector(reduxSelector.getUser);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header shouldHideBackButton rightButton={<RightButton />} />
       <CustomText style={styles.title}>{`${user?.displayName},\n${t('bạn đang ở đâu?')}`}</CustomText>
       <CustomText style={styles.subTitle}>

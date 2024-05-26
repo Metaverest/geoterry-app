@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     borderRadius: rh(12),
   },
   input: {

@@ -1,7 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import Header from 'App/components/Header';
-import { AppBackgroundImage } from 'App/components/image';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/common';
@@ -190,7 +189,7 @@ const ChatView = () => {
   );
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       {loadingStates?.[ESagaAppAction.HUNTER_GET_CONVERSATION_BY_ID] ? (
         <LoadingSkeleton />
       ) : (

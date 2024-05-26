@@ -1,4 +1,4 @@
-import { AppBackgroundImage, EarthIcon } from 'App/components/image';
+import { EarthIcon } from 'App/components/image';
 
 import CustomButton from 'App/components/Button';
 import CustomInput from 'App/components/CustomInput';
@@ -40,7 +40,7 @@ const EnterDisplayNameScreen = () => {
   );
   const clearError = useClearError();
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header />
       <CustomText style={styles.createProfileTitle}>{t('Tạo hồ sơ của bạn')}</CustomText>
       <CustomText style={styles.createProfileSubTitle}>

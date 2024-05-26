@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import Header from 'App/components/Header';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
-import { AppBackgroundImage } from 'App/components/image';
 import Flash from 'App/media/Flash';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { EColor } from 'App/enums/color';
@@ -64,7 +63,7 @@ const VerifyOfficialTerryScreen = ({ route }: { route: any }) => {
     },
   });
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Xác minh kho báu')} />
       {cameraDevice && (
         <View style={styles.textContainer}>

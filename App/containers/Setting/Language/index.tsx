@@ -2,7 +2,6 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import ItemSelectorSetting, { IItemSelectorSettingProps } from 'App/components/ItemSelectorSetting';
-import { AppBackgroundImage } from 'App/components/image';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
@@ -27,7 +26,7 @@ const LanguageScreen = () => {
   const navigation = useNavigation();
   const handleSave = useCallback(async () => {
     dispatch(
-      sagaUserAction.updateProfileAsync({ languageCode: languageCode }, navigation, {
+      sagaUserAction.updateProfileAsync({ languageCode: languageCode, isBackgroundAction: true }, navigation, {
         onSuccess: () => navigation.dispatch(CommonActions.goBack()),
       }),
     );
@@ -64,7 +63,7 @@ const LanguageScreen = () => {
   }, [t, languageCode]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header rightButton={<RightButton />} title={t('Ngôn ngữ')} />
       <View style={styles.listItemContainer}>
         {options?.map((item, index) => (

@@ -70,8 +70,8 @@ const useUserLocation = () => {
             updateUserLocation({
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-              altitude: position.coords.altitude as number,
-              speed: position.coords.speed as number,
+              altitude: position.coords.altitude || 0,
+              speed: position.coords.speed || 0,
             }),
           error => {
             console.log(error);

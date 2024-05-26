@@ -4,7 +4,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
     flex: 1,
     alignItems: 'center',
     paddingHorizontal: rw(16),

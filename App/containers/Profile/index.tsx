@@ -2,7 +2,6 @@ import { View } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import { styles } from './styles';
-import { AppBackgroundImage } from 'App/components/image';
 import Header from 'App/components/Header';
 import { useTranslation } from 'react-i18next';
 import CustomText from 'App/components/CustomText';
@@ -62,7 +61,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
     resetAndNavigateToScreen(navigation, ENavigationScreen.LOGIN_SCREEN);
   }, [navigation, dispatch]);
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Trang cá nhân')} />
       <View style={styles.content}>
         <View style={styles.row}>

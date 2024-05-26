@@ -15,7 +15,6 @@ import { TouchableOpacity, View } from 'react-native';
 import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
-import { AppBackgroundImage } from 'App/components/image';
 import CustomImage from 'App/components/CustomImage';
 import { EImageSize } from 'App/utils/images';
 
@@ -54,7 +53,7 @@ const ChooseAvatarScreen = () => {
   }, [dispatch, navigation]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header rightButton={<RightButton />} />
       <CustomText style={styles.uploadAvatarTitle}>{t('Tải lên ảnh đại diện')}</CustomText>
       <View style={styles.avatarIconContainer}>
