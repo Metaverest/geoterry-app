@@ -20,7 +20,6 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { styles } from './styles';
-import { AppBackgroundImage } from 'App/components/image';
 
 interface IFormValues {
   phone: string;
@@ -64,7 +63,7 @@ const InputPhoneNumberScreen = () => {
 
   const defaultPhonePrefix = useGetPrefixPhone();
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Quên mật khẩu')} />
       <CustomText style={styles.inputPhoneNumberSubTitle}>{t('Vui lòng nhập số điện thoại của bạn.')}</CustomText>
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>

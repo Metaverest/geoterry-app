@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   itemImage: {
     width: rw(68),
     height: rh(68),
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
   },
   separator: {
     backgroundColor: EColor.color_FAFAFA,

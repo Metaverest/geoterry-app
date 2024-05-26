@@ -1,7 +1,6 @@
 import { View, FlatList, Text, ActivityIndicator, RefreshControl, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage, UploadFileFailedImage } from 'App/components/image';
 import Header from 'App/components/Header';
 import { useTranslation } from 'react-i18next';
 import ItemHistory from 'App/components/ItemHistory';
@@ -152,7 +151,6 @@ const HistoryScreen = () => {
     navigateToPopUpModal(navigation, {
       title: t('Xác nhận'),
       subtitle: t('Bạn có chắn chắn muốn xoá lịch sử không?'),
-      image: UploadFileFailedImage,
       confirmButtonTitle: t('Xoá'),
       cancelButtonTitle: t('Huỷ'),
       onConfirm: () => {
@@ -163,7 +161,7 @@ const HistoryScreen = () => {
   }, [dispatch, navigation, selectItems, t]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header
         title={t('Lịch sử')}
         rightButton={

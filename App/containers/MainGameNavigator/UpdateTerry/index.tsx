@@ -6,7 +6,6 @@ import CustomDropdownInput, { ICustomDropdownOption } from 'App/components/Custo
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage } from 'App/components/image';
 import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { responsiveByHeight as rh } from 'App/helpers/common';
@@ -218,7 +217,7 @@ const UpdateTerryScreen = () => {
   );
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Formik initialValues={initialValues} validationSchema={getValidateSchema(t)} onSubmit={onSubmit}>
         {({ handleSubmit, values, setFieldValue, errors, submitCount }) => {
           const shouldDisplayError = submitCount > 0;
@@ -332,7 +331,7 @@ const UpdateTerryScreen = () => {
                   <View style={styles.terryAddImageContainer}>
                     <CustomButtonIcon
                       onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
-                      buttonColor={EColor.color_333333}
+                      buttonColor={EColor.color_141313}
                       customStyleContainer={styles.addImagebuttonContainer}
                       buttonType={EButtonType.SOLID}
                       renderIcon={<ImageAddIcon />}

@@ -2,7 +2,6 @@ import { TouchableOpacity, View } from 'react-native';
 import React, { useMemo } from 'react';
 import { styles } from './styles';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage } from 'App/components/image';
 import Header from 'App/components/Header';
 import CustomText from 'App/components/CustomText';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +43,7 @@ export default function DetailHistory() {
   }, [allCoordinatesPath, params.path, params.terry?.id]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header
         title={t('Lịch sử')}
         rightButton={

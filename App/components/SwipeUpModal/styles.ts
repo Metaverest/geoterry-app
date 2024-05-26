@@ -8,19 +8,11 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-
     margin: 0,
-  },
-  imageBackground: {
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-    borderTopLeftRadius: rw(32),
-    borderTopRightRadius: rw(32),
   },
   mainContainer: {
     position: 'absolute',
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
     bottom: 0,
     width: '100%',
     alignItems: 'center',

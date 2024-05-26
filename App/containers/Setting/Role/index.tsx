@@ -2,7 +2,6 @@ import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
 import ItemSelectorSetting, { IItemSelectorSettingProps } from 'App/components/ItemSelectorSetting';
-import { AppBackgroundImage } from 'App/components/image';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TouchableOpacity, View } from 'react-native';
@@ -11,10 +10,11 @@ import { reduxSelector } from 'App/redux/selectors';
 import { EUserRole, ETitleUserRole, EUseRoleRequestStatus } from 'App/enums';
 import ModalReasonRequestRole from './ModalReasonRequestRole';
 import { useNavigation } from '@react-navigation/native';
-import { EMainGameNavigatorParams, ESettingNavigator } from 'App/enums/navigation';
+import { EMainGameNavigatorParams, EPopUpModalType, ESettingNavigator } from 'App/enums/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { sagaUserAction } from 'App/redux/actions/userAction';
 import { styles } from './styles';
+import { PopUpModalParams, navigateToPopUpModal } from 'App/utils/navigation';
 
 const RoleScreen = () => {
   const { t } = useTranslation();
@@ -22,8 +22,16 @@ const RoleScreen = () => {
   const dispatch = useDispatch();
   const user = useSelector(reduxSelector.getUser);
   const [showModal, setShowModal] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(user.role);
+  const [selectedRole, setSelectedRole] = useState(user.roleRequesting || user.role);
   const [reason, setReason] = useState('');
+
+  const isRequesting = useMemo(() => {
+    return (
+      user.role === EUserRole.hunter &&
+      user.roleRequesting === EUserRole.builder &&
+      user.roleRequestingStatus !== EUseRoleRequestStatus.ACCEPTED
+    );
+  }, [user.role, user.roleRequesting, user.roleRequestingStatus]);
 
   const options: IItemSelectorSettingProps[] = useMemo(() => {
     return [
@@ -52,34 +60,34 @@ const RoleScreen = () => {
     if (selectedRole === EUserRole.builder) {
       setShowModal(true);
     } else {
-      dispatch(sagaUserAction.switchRoleUserAsync(EUserRole.hunter, reason, navigation));
+      navigateToPopUpModal(navigation, {
+        ...PopUpModalParams[EPopUpModalType.CONFIRM_SWITCH_ROLE],
+        closeModalBeforeActiom: true,
+        onConfirm: () => dispatch(sagaUserAction.switchRoleUserAsync(EUserRole.hunter, reason, navigation)),
+      });
     }
   }, [dispatch, navigation, reason, selectedRole]);
 
   const RightButton = useCallback(() => {
-    const isSelectedNewRole =
-      selectedRole !== user.role ||
-      (selectedRole === user.role &&
-        user.roleRequestingStatus &&
-        user.roleRequestingStatus !== EUseRoleRequestStatus.ACCEPTED);
+    const isSelectedNewRole = selectedRole !== user.role;
     return (
       <TouchableOpacity disabled={!isSelectedNewRole} onPress={hanldeSubmitRole}>
         <CustomText numberOfLines={1} style={[styles.saveText, isSelectedNewRole && styles.saveTextHighlight]}>
-          {t('Lưu')}
+          {isRequesting ? t('Sửa') : t('Lưu')}
         </CustomText>
       </TouchableOpacity>
     );
-  }, [hanldeSubmitRole, selectedRole, t, user.role, user.roleRequestingStatus]);
+  }, [hanldeSubmitRole, isRequesting, selectedRole, t, user.role]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header rightButton={<RightButton />} title={t('Vai trò')} />
       <CustomText style={styles.chooseRuleTitle}>{t('Lựa chọn vai trò người chơi')}</CustomText>
       <View style={styles.listItemContainer}>
         {options?.map((item, index) => (
           <View style={styles.itemSelectorContainer} key={index}>
             <ItemSelectorSetting
-              disabled={item.isSelected || user.roleRequesting === EUserRole.builder}
+              disabled={item.isSelected || isRequesting}
               title={item.title}
               isSelected={item.isSelected}
               onPress={item.onPress}

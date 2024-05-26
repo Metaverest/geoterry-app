@@ -147,7 +147,7 @@ export const styles = StyleSheet.create({
   itemImage: {
     width: rw(68),
     height: rh(68),
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
   },
   separator: {
     backgroundColor: EColor.color_FAFAFA,
@@ -205,7 +205,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: rw(8),
     marginRight: rw(4),
     borderRadius: rh(2),
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
   },
   textTag: {
     fontSize: rh(10),
@@ -232,4 +232,7 @@ export const styles = StyleSheet.create({
     right: 0,
   },
   imageNullTerryCheckin: { width: rw(146), height: rh(140), marginTop: rh(90), alignSelf: 'center' },
+  background: {
+    backgroundColor: EColor.color_0a0909,
+  },
 });

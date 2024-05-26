@@ -1,5 +1,6 @@
 import { Defs, LinearGradient, Path, Rect, Stop, Svg } from 'react-native-svg';
 import React from 'react';
+import { EColor } from 'App/enums/color';
 
 const RadioButtonChecked = () => {
   return (
@@ -17,8 +18,8 @@ const RadioButtonChecked = () => {
           x2="2.36231"
           y2="9.33063"
           gradientUnits="userSpaceOnUse">
-          <Stop stopColor="#C072FD" />
-          <Stop offset="1" stopColor="#51D5FF" />
+          <Stop stopColor={EColor.color_C072FD} />
+          <Stop offset="1" stopColor={EColor.color_51D5FF} />
         </LinearGradient>
       </Defs>
     </Svg>

@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
   containerDesc: {
     height: rh(191),
     width: '100%',
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     marginTop: rh(24),
     marginHorizontal: rw(16),
     paddingHorizontal: rw(16),

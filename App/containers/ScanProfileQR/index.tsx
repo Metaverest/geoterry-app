@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { styles } from './styles';
 import Header from 'App/components/Header';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
-import { AppBackgroundImage } from 'App/components/image';
 import Flash from 'App/media/Flash';
 import { LinearGradient } from 'react-native-linear-gradient';
 import { EColor } from 'App/enums/color';
@@ -55,7 +54,7 @@ const ScanProfileQRScreen = () => {
     },
   });
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Quét mã QR')} />
       {cameraDevice ? (
         <View style={styles.cameraContainer}>

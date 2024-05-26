@@ -51,6 +51,7 @@ import useRequestLocationPermission from 'App/hooks/useRequestLocationPermission
 import messaging from '@react-native-firebase/messaging';
 import { onReceiveNotification } from 'App/utils/notification';
 import useRequestTurnOnGPSAndroid from 'App/hooks/useRequestTurnOnGPSAndroid';
+import { EMapStyle } from 'App/enums/map';
 
 const MapScreen = () => {
   useRequestLocationPermission();
@@ -274,6 +275,7 @@ const MapScreen = () => {
         style={styles.mapContainer}
         showsUserLocation={isSaveBatterryMode}
         showsCompass={false}
+        userInterfaceStyle={EMapStyle.LIGHT}
         showsMyLocationButton={false}
         onRegionChangeComplete={onRegionChangeComplete}
         onLongPress={deselectTerry}
@@ -300,7 +302,7 @@ const MapScreen = () => {
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
             onPress={handlePressTypeMap}
-            buttonColor={EColor.color_171717}
+            buttonColor={EColor.color_0a0909}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<TypeMapIcon />}
@@ -317,7 +319,7 @@ const MapScreen = () => {
           <View>
             <CustomButtonIcon
               onPress={handlePressFilterMap}
-              buttonColor={numberOfFilters.current ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+              buttonColor={numberOfFilters.current ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_0a0909}
               customStyleContainer={styles.buttonContainer}
               buttonType={EButtonType.SOLID}
               renderIcon={<FilterMapIcon color={numberOfFilters.current ? EColor.black : EColor.color_FAFAFA} />}
@@ -330,7 +332,7 @@ const MapScreen = () => {
           </View>
           <CustomButtonIcon
             onPress={centerToCurrentUserLocation}
-            buttonColor={EColor.color_171717}
+            buttonColor={EColor.color_0a0909}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<TargetIcon />}
@@ -347,7 +349,7 @@ const MapScreen = () => {
               Vibration.vibrate(5);
               updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite, markAsSaved: false });
             }}
-            buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+            buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_0a0909}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<HeartIcon focus={selectedTerry.favourite} />}
@@ -357,7 +359,7 @@ const MapScreen = () => {
               Vibration.vibrate(5);
               updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved, markAsFavourited: false });
             }}
-            buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_171717}
+            buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_0a0909}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
             renderIcon={<SavedIcon focus={selectedTerry.saved} />}
@@ -383,7 +385,7 @@ const MapScreen = () => {
             Vibration.vibrate(5);
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.SETTING_NAVIGATOR));
           }}
-          buttonColor={EColor.color_171717}
+          buttonColor={EColor.color_0a0909}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}
           renderIcon={<SettingIcon />}
@@ -410,7 +412,7 @@ const MapScreen = () => {
             Vibration.vibrate(5);
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.HISTORY));
           }}
-          buttonColor={EColor.color_171717}
+          buttonColor={EColor.color_0a0909}
           customStyleContainer={styles.buttonRHNContainer}
           buttonType={EButtonType.SOLID}
           renderIcon={<HistoryIcon />}

@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     marginBottom: rh(24),
   },
   container: {
-    backgroundColor: EColor.color_666666,
+    backgroundColor: EColor.color_0a0909,
     borderRadius: rh(8),
     paddingHorizontal: rw(16),
     paddingVertical: rh(32),

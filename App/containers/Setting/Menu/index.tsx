@@ -2,7 +2,6 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage } from 'App/components/image';
 import { EDataStorageKey, EIdentifierType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { ESettingNavigator } from 'App/enums/navigation';
@@ -56,7 +55,7 @@ const MenuScreen = () => {
                       isSwitchEnable ? styles.swithButtonContainerEnable : styles.switchButtonContainerDisable,
                     ]}>
                     <Switch
-                      trackColor={{ false: EColor.color_333333, true: EColor.color_0BFF6C }}
+                      trackColor={{ false: EColor.color_141313, true: EColor.color_0BFF6C }}
                       thumbColor={isSwitchEnable ? EColor.color_FAFAFA : EColor.color_FAFAFA}
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={setIsSwitchEnable}
@@ -147,7 +146,7 @@ const MenuScreen = () => {
     ].filter(e => !!e) as IMenuItem[];
   }, [t, loginMethod, isSwitchEnable, navigation]);
   return (
-    <CustomSafeArea style={styles.container} shouldUseFullScreenView backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container} shouldUseFullScreenView>
       <Header title={t('Cài đặt')} />
       <View style={styles.listItemContainer}>
         {menuItems.map((item, index) => {

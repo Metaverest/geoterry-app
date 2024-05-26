@@ -5,7 +5,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 export const styles = StyleSheet.create({
   container: {},
   textInputContainer: {
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     borderRadius: rh(12),
     borderWidth: 0,
   },
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   itemContainer: {
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     paddingVertical: rh(16),
     paddingHorizontal: rw(16),
     borderBottomWidth: rh(1),
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     borderBottomRightRadius: rw(16),
     marginTop: rh(0),
     padding: rw(4),
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     borderBottomLeftRadius: rw(16),
     borderWidth: rw(1),
     borderTopWidth: 0,

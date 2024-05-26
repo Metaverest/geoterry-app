@@ -1,7 +1,6 @@
 import { View, Image, TouchableOpacity } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
 import CloseIcon from 'App/media/CloseIcon';
 import { CommonActions, useNavigation } from '@react-navigation/native';
@@ -69,7 +68,7 @@ const QRScreen = () => {
   }, [navigation]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header
         leftButton={<CloseIcon />}
         rightButton={
@@ -91,7 +90,7 @@ const QRScreen = () => {
             buttonType={EButtonType.OUTLINE}
             title={t('Chia sẻ')}
             customStyleContainer={styles.button}
-            buttonColor={EColor.color_333333}
+            buttonColor={EColor.color_141313}
           />
           <CustomButtonIcon
             renderIcon={<LinkIcon style={styles.iconBtn} />}
@@ -99,7 +98,7 @@ const QRScreen = () => {
             buttonType={EButtonType.OUTLINE}
             title={t('Sao chép liên kết')}
             customStyleContainer={styles.button}
-            buttonColor={EColor.color_333333}
+            buttonColor={EColor.color_141313}
           />
         </View>
       </View>

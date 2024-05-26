@@ -1,7 +1,6 @@
 /* eslint-disable max-lines */
 import { CommonActions } from '@react-navigation/native';
 import { StackActions } from '@react-navigation/routers';
-import { FoundProfileImage, NoteImage } from 'App/components/image';
 import {
   EDataStorageKey,
   EIdentifierType,
@@ -469,20 +468,30 @@ export function* watchGetPublicTerries() {
 function* userUpdateProfile(action: IReduxActionWithNavigation<ESagaUserAction, ICreateProfileReqDto>) {
   const navigation = action?.payload?.navigation;
   try {
-    navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    if (!action.payload?.data?.isBackgroundAction) {
+      navigation.dispatch(StackActions.push(ENavigationScreen.LOADING_MODAL));
+    } else if (action?.payload?.options?.onSuccess) {
+      const user: IUser = yield select(reduxSelector.getUser);
+      yield put(reduxUserAction.setUser({ ...user, ...action.payload?.data }));
+      action?.payload?.options?.onSuccess();
+    }
     const profileToUpdate = action?.payload?.data;
     const updatedProfile: IProfileResDto = yield call(
       requestUserUpdateProfile,
       profileToUpdate as ICreateProfileReqDto,
     );
     yield put(reduxUserAction.setUser(updatedProfile as IUser));
-    navigation.dispatch(StackActions.pop());
-    if (action?.payload?.options?.onSuccess) {
+    if (!action.payload?.data?.isBackgroundAction) {
+      navigation.dispatch(StackActions.pop());
+    }
+    if (action?.payload?.options?.onSuccess && !action.payload?.data?.isBackgroundAction) {
       action?.payload?.options?.onSuccess();
     }
   } catch (error) {
     yield call(handleError, (error as any)?.response?.data as IError, navigation);
-    navigation.dispatch(StackActions.pop());
+    if (!action.payload?.data?.isBackgroundAction) {
+      navigation.dispatch(StackActions.pop());
+    }
   }
 }
 
@@ -788,7 +797,6 @@ function* switchRole(action: IReduxActionWithNavigation<ESagaUserAction, { role:
       case EUseRoleRequestStatus.PENDING:
         navigation.dispatch(
           StackActions.push(ENavigationScreen.POPUP_SCREEN, {
-            image: NoteImage,
             title: t('Đang gửi xét duyệt'),
             subtitle: t('Admin đang xét duyệt hồ sơ của bạn'),
             confirmButtonTitle: t('Đã hiểu'),
@@ -798,7 +806,6 @@ function* switchRole(action: IReduxActionWithNavigation<ESagaUserAction, { role:
       case EUseRoleRequestStatus.ACCEPTED:
         navigation.dispatch(
           StackActions.push(ENavigationScreen.POPUP_SCREEN, {
-            image: FoundProfileImage,
             title: t('Xét duyệt thành công'),
             subtitle:
               action.payload?.data?.role === EUserRole.builder

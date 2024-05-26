@@ -5,7 +5,6 @@ import CustomInput from 'App/components/CustomInput';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import MultipleImagesOnLine from 'App/components/MultipleImagesOnLine';
-import { AppBackgroundImage } from 'App/components/image';
 import { EButtonType, EMediaType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -141,10 +140,7 @@ const EditDetailHistory = () => {
   );
 
   return (
-    <CustomSafeArea
-      shouldUseKeyboardAwareScrollView
-      style={styles.container}
-      backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea shouldUseKeyboardAwareScrollView style={styles.container}>
       <Header />
       <CustomText style={styles.title}>{t(params.terry.name)}</CustomText>
       <View style={[styles.row, styles.mv4]}>
@@ -186,7 +182,7 @@ const EditDetailHistory = () => {
                 <View style={styles.terryAddImageContainer}>
                   <CustomButtonIcon
                     onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
-                    buttonColor={EColor.color_333333}
+                    buttonColor={EColor.color_141313}
                     customStyleContainer={styles.addImagebuttonContainer}
                     buttonType={EButtonType.SOLID}
                     renderIcon={<ImageAddIcon />}

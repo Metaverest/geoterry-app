@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     bottom: rh(84),
     width: '90%',
     height: rh(64),
-    backgroundColor: EColor.color_171717,
+    backgroundColor: EColor.color_0a0909,
     padding: rw(12),
     borderRadius: rh(4),
     flexDirection: 'row',

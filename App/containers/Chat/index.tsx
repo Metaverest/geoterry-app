@@ -3,7 +3,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage } from 'App/components/image';
 import { EColor } from 'App/enums/color';
 import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 import { reduxSelector } from 'App/redux/selectors';
@@ -201,7 +200,7 @@ const Chat = () => {
   );
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Trò chuyện')} />
       {loadingStates?.[ESagaAppAction.HUNTER_FILTER_CONVERSATIONS] ? (
         <LoadingSkeleton />

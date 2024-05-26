@@ -22,7 +22,7 @@ import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
-import { AppBackgroundImage, CheckInTerryCongratImage, CreateTerrySuccessImage } from 'App/components/image';
+import { CheckInTerryCongratImage, CreateTerrySuccessImage } from 'App/components/image';
 import WhiteLocationIcon from 'App/media/WhiteLocationIcon';
 import PaginationSeperators from 'App/components/PaginationSeperators';
 import Header from 'App/components/Header';
@@ -170,7 +170,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
   }, [nearToTerry, terry, userLocation]);
 
   return (
-    <ImageBackground source={AppBackgroundImage}>
+    <View style={styles.background}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         {!terry.photoUrls || terry.photoUrls.length === 0 ? (
           <Image source={CheckInTerryCongratImage} style={styles.imageNullTerryCheckin} resizeMode="cover" />
@@ -369,7 +369,7 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
         visible={visible}
         onRequestClose={() => setIsVisible(false)}
       />
-    </ImageBackground>
+    </View>
   );
 };
 
