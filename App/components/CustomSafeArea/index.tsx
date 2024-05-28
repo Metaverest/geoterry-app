@@ -52,7 +52,7 @@ export const CustomSafeArea = (props: IProps) => {
       extraScrollHeight={0}
       // We need to set backgroundColor to the app`s background color
       // because when the keyboard is opened, the extra white space is appeared at the bottom of the screen - see android:windowSoftInputMode="adjustResize"
-      contentContainerStyle={{ flexGrow: 1, backgroundColor: EColor.color_171717 }}
+      contentContainerStyle={{ flexGrow: 1, backgroundColor: EColor.color_0a0909 }}
       showsVerticalScrollIndicator={false}
       {...props.keyboardAwareScrollProps}>
       {Content}
@@ -64,7 +64,7 @@ export const CustomSafeArea = (props: IProps) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: props.isModal ? 'transparent' : props.backgroundColor || EColor.color_171717,
+        backgroundColor: props.isModal ? 'transparent' : props.backgroundColor || EColor.color_0a0909,
       }}>
       <StatusBar
         backgroundColor={props.statusBarColor || EColor.transparent}

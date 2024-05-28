@@ -46,6 +46,7 @@ export interface ICreateProfileReqDto {
   bio?: string;
   logoUrl?: string;
   languageCode?: ELanguageCode;
+  isBackgroundAction?: boolean;
 }
 
 export interface IUploadProfileResDto {

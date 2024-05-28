@@ -2,7 +2,6 @@ import { TouchableOpacity, View } from 'react-native';
 import React, { useCallback } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import CustomInputInformation from 'App/components/CustomInput/CustomInputInformation';
@@ -96,7 +95,7 @@ const EditProfileScreen = () => {
   );
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Chỉnh sửa thông tin')} />
       <View style={styles.content}>
         {user.logoUrl ? (

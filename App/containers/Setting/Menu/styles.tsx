@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: rw(16),
   },
   listItemContainer: {
-    marginTop: rh(68),
+    marginTop: rh(105),
     flex: 1,
     width: '100%',
   },
@@ -62,6 +62,6 @@ export const styles = StyleSheet.create({
   },
   switchButtonContainerDisable: {
     borderColor: EColor.color_999999,
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
   },
 });

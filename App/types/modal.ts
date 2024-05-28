@@ -9,7 +9,7 @@ export interface ISwipeUpModalProps {
 }
 
 export interface IPopupModalParamsProps {
-  image: ImageSourcePropType;
+  image?: ImageSourcePropType;
   title?: string;
   subtitle?: string;
   confirmButtonTitle?: string;

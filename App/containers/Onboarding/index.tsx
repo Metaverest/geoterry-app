@@ -1,5 +1,5 @@
 import CustomButton from 'App/components/Button';
-import { EarthIcon, OnboardingBackgroundImage } from 'App/components/image';
+import { EarthIcon } from 'App/components/image';
 import { EButtonType, ELanguageCode } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { reduxAppAction } from 'App/redux/actions/appAction';
@@ -39,7 +39,7 @@ const OnboardingScreen = () => {
   );
   const { t } = useTranslation();
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={OnboardingBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <View style={styles.header}>
         <SelectLanguage language={currentLanguageCode as ELanguageCode} setLanguage={setLanguage} />
       </View>

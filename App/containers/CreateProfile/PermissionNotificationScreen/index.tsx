@@ -3,7 +3,7 @@ import CustomButton from 'App/components/Button';
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage, PermissionNotificationImage } from 'App/components/image';
+import { PermissionNotificationImage } from 'App/components/image';
 import { EButtonType } from 'App/enums';
 import { EColor } from 'App/enums/color';
 import { EMainGameScreen, ENavigationScreen } from 'App/enums/navigation';
@@ -47,7 +47,7 @@ const PermissionNotificationScreen = () => {
   }, [navigation]);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header shouldHideBackButton rightButton={<RightButton />} />
       <CustomText style={styles.title}>{t('Cho phép bật thông báo')}</CustomText>
       <CustomText style={styles.subTitle}>{t('Cho phép Checkly gửi thông báo ứng dụng về máy của bạn!')}</CustomText>

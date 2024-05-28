@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   textInputProps: {
     alignItems: 'center',
     minHeight: rh(34),
-    backgroundColor: EColor.color_333333,
+    backgroundColor: EColor.color_141313,
     borderRadius: rh(20),
     paddingHorizontal: rw(20),
     fontSize: rh(12),

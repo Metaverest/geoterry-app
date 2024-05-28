@@ -9,7 +9,7 @@ import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { styles } from './styles';
-import { ChecklyLine, OnboardingBackgroundImage } from 'App/components/image';
+import { ChecklyLine } from 'App/components/image';
 import CustomText from 'App/components/CustomText';
 import messaging from '@react-native-firebase/messaging';
 import { resetAndNavigateToScreen } from 'App/utils/navigation';
@@ -32,7 +32,7 @@ const SplashScreen = () => {
     })();
   }, [navigation, dispatch]);
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={OnboardingBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <View style={styles.content}>
         <Image source={ChecklyLine} style={styles.logo} resizeMode="contain" />
       </View>

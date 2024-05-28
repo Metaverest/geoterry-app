@@ -2,7 +2,6 @@ import { View, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } f
 import React, { useCallback, useEffect, useState } from 'react';
 import Header from 'App/components/Header';
 import CustomSafeArea from 'App/components/CustomSafeArea';
-import { AppBackgroundImage } from 'App/components/image';
 import { styles } from './styles';
 import CustomText from 'App/components/CustomText';
 import { useTranslation } from 'react-i18next';
@@ -172,7 +171,7 @@ const Review = () => {
   }, []);
 
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Đánh giá')} />
       {isLoading ? (
         LoadingSkeleton

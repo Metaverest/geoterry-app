@@ -1,7 +1,6 @@
 import CustomSafeArea from 'App/components/CustomSafeArea';
 import CustomText from 'App/components/CustomText';
 import Header from 'App/components/Header';
-import { AppBackgroundImage } from 'App/components/image';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { styles } from './styles';
@@ -14,7 +13,7 @@ const PolicyScreen = () => {
   const insets = useSafeAreaInsets();
   const contentHeight = useMemo(() => screenHeight - insets.top - rh(72), [insets.top]);
   return (
-    <CustomSafeArea style={styles.container} backgroundImageSource={AppBackgroundImage}>
+    <CustomSafeArea style={styles.container}>
       <Header title={t('Chính sách bảo mật')} />
       <View style={[styles.policyContainer, { height: contentHeight }]}>
         <ScrollView style={styles.mb50} showsVerticalScrollIndicator={false}>
