@@ -20,7 +20,7 @@ export enum EColor {
   color_D9D9D9 = '#D9D9D9',
   transparent = 'transparent',
   color_00000070 = 'rgba(0, 0, 0, 0.70)',
-  color_00000050 = 'rgba(0, 0, 0, 0.50)',
+  color_00000050 = 'rgb(20, 20, 20)',
   color_547AFF = '#df3841',
   color_4551DE = '#4551DE',
   color_127FFE = '#ec6125',
