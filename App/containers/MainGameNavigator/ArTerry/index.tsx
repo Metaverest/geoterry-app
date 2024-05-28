@@ -52,6 +52,7 @@ const MainScreen = () => {
   const navigation = useNavigation();
 
   return (
+    // eslint-disable-next-line react-native/no-inline-styles
     <View style={{ flex: 1 }}>
       <ViroARSceneNavigator
         autofocus={true}
