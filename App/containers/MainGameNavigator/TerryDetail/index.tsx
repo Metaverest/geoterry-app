@@ -22,7 +22,7 @@ import { requestHunterGetTerryCheckin } from 'App/utils/axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { reduxSelector } from 'App/redux/selectors';
 import { SwiperFlatListWithGestureHandler } from 'react-native-swiper-flatlist/WithGestureHandler';
-import { CheckInTerryCongratImage, CreateTerrySuccessImage } from 'App/components/image';
+import { CheckInTerryCongratImage } from 'App/components/image';
 import WhiteLocationIcon from 'App/media/WhiteLocationIcon';
 import PaginationSeperators from 'App/components/PaginationSeperators';
 import Header from 'App/components/Header';
@@ -66,7 +66,6 @@ const TerryDetailScreen = ({ route }: { route: any }) => {
     navigateToPopUpModal(navigation, {
       title: t('Gợi ý'),
       subtitle: terry.hint || t('Không có gợi ý'),
-      image: CreateTerrySuccessImage,
       confirmButtonTitle: t('Xong'),
     });
   };
