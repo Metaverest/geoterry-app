@@ -30,6 +30,7 @@ import CompassIcon from 'App/media/CompassIcon';
 import MapTypeIcon from 'App/media/MapTypeIcon';
 import { createGoogleMapsUrl, getCurrentLocation } from 'App/utils/map';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { isARSupportedOnDevice } from '@viro-community/react-viro';
 
 const HuntingMapScreen = () => {
   const dispatch = useDispatch();
@@ -208,6 +209,17 @@ const HuntingMapScreen = () => {
     }
   }, [currentLocation, nearToTerry, terry]);
 
+  const [supportedAr, setSupportedAr] = useState(false);
+  useEffect(() => {
+    isARSupportedOnDevice().then(res => setSupportedAr(res.isARSupported));
+  }, []);
+
+  const handleViewAr = useCallback(() => {
+    navigation.dispatch(
+      CommonActions.navigate(EMainGameScreen.TERRY_AR_SCREEN, { terry: params.terry, userLocation: currentLocation }),
+    );
+  }, [currentLocation, navigation, params.terry]);
+
   return (
     <CustomSafeArea
       shouldUseFullScreenView
@@ -225,6 +237,8 @@ const HuntingMapScreen = () => {
         onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
         region={{
           ...DEFAULT_LOCATION,
+          latitudeDelta: 0.008,
+          longitudeDelta: 0.008,
           latitude: terry?.location.latitude || 0,
           longitude: terry?.location.longitude || 0,
         }}
@@ -258,7 +272,26 @@ const HuntingMapScreen = () => {
         />
       </MapView>
 
+      {supportedAr && (
+        <View style={styles.arButtonContainer}>
+          <CustomButton
+            onPress={() => handleViewAr()}
+            title={t('Dò tìm kho báu')}
+            buttonType={EButtonType.SOLID}
+            linearGradient={[EColor.black, EColor.black]}
+          />
+        </View>
+      )}
+
       <View style={styles.footerButtonContainer}>
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            onPress={() => navigateToTerryCheckinScreen(true)}
+            title={t('Không tìm thấy')}
+            buttonType={EButtonType.SOLID}
+            linearGradient={[EColor.black, EColor.black]}
+          />
+        </View>
         <View style={styles.buttonContainer}>
           <CustomButton
             onPress={() => navigateToTerryCheckinScreen(false)}
@@ -266,14 +299,6 @@ const HuntingMapScreen = () => {
             disabled={!nearToTerry}
             buttonType={EButtonType.SOLID}
             linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <CustomButton
-            onPress={() => navigateToTerryCheckinScreen(true)}
-            title={t('Không tìm thấy')}
-            buttonType={EButtonType.SOLID}
-            linearGradient={[EColor.black, EColor.black]}
           />
         </View>
       </View>

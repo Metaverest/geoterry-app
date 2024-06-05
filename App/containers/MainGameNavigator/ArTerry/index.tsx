@@ -1,49 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ViroARScene,
-  ViroARSceneNavigator,
-  ViroText,
-  ViroTrackingReason,
-  ViroTrackingStateConstants,
-} from '@viro-community/react-viro';
+import { ViroARScene, ViroARSceneNavigator, ViroText, ViroTrackingStateConstants } from '@viro-community/react-viro';
 import { View, TouchableOpacity, Text } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; // Ensure you're using react-navigation
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'; // Ensure you're using react-navigation
 import { styles } from './styles';
 import useUserLocation from 'App/hooks/useUserLocation';
 import { convertGeoToAR } from 'App/helpers/cartesian';
+import { EMainGameNavigatorParams, EMainGameScreen } from 'App/enums/navigation';
 
 const ArTerryScreen = () => {
   const { userLocation } = useUserLocation();
-  const [text, setText] = useState('');
+  const [vrInitialized, setVrInitialized] = useState(false);
   const [arCoordinates, setArCoordinates] = useState({ x: 0, y: 0 });
+  const { params } = useRoute<RouteProp<EMainGameNavigatorParams, EMainGameScreen.TERRY_AR_SCREEN>>();
 
   useEffect(() => {
     if (userLocation) {
-      const arCoords = convertGeoToAR(userLocation, { latitude: 21.028511, longitude: 105.804817 });
+      const arCoords = convertGeoToAR(userLocation || params.userLocation, userLocation || params.userLocation);
       setArCoordinates(arCoords);
     }
-  }, [userLocation]);
+  }, [params.terry.location, params.userLocation, userLocation]);
 
-  function onInitialized(state: any, reason: ViroTrackingReason) {
-    console.log('onInitialized', state, reason);
+  function onInitialized(state: ViroTrackingStateConstants) {
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText('Go Ahead');
-    } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
-      // Handle loss of tracking
-      console.log('Loss of tracking', state, reason);
+      setVrInitialized(true);
     }
   }
 
   return (
     <ViroARScene onTrackingUpdated={onInitialized}>
-      <ViroText text={text} scale={[0.1, 0.1, 0.1]} position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+      {vrInitialized && (
+        <ViroText
+          text="Terry Here!"
+          position={[arCoordinates.x, arCoordinates.y, -1]}
+          style={styles.helloWorldTextStyle}
+        />
+      )}
 
-      <ViroText
-        text="Turn Left"
-        position={[arCoordinates.x, arCoordinates.y, -1]}
-        scale={[0.1, 0.1, 0.1]}
-        style={styles.helloWorldTextStyle}
-      />
+      <ViroText text="Go ahead" position={[0, 0, -1]} style={styles.helloWorldTextStyle} />
+
+      <ViroText text="Turn around" position={[0, 0, 3]} style={styles.helloWorldTextStyle} />
+
+      <ViroText text="Turn left" position={[-3, 0, -1]} style={styles.helloWorldTextStyle} />
+
+      <ViroText text="Turn right" position={[2, 0, -1]} style={styles.helloWorldTextStyle} />
     </ViroARScene>
   );
 };

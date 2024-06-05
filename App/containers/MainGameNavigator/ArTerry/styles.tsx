@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   },
   helloWorldTextStyle: {
     fontSize: rh(12),
-    color: EColor.white,
+    color: EColor.color_547AFF,
     textAlignVertical: 'center',
     textAlign: 'center',
   },

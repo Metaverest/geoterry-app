@@ -89,6 +89,10 @@ export interface EMainGameNavigatorParams extends ParamListBase {
     terry: ITerryResponseDto;
     userLocation: Location;
   };
+  [EMainGameScreen.TERRY_AR_SCREEN]: {
+    terry: ITerryResponseDto;
+    userLocation: Location;
+  };
   [ENavigationScreen.LOADING_MODAL]: undefined;
   [ENavigationScreen.POPUP_SCREEN]: IPopupModalProps;
   [EMainGameScreen.CHAT_SCREEN]: undefined;
