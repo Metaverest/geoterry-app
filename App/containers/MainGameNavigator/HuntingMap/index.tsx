@@ -225,6 +225,8 @@ const HuntingMapScreen = () => {
         onUserLocationChange={event => onUserLocationChange(event.nativeEvent.coordinate)}
         region={{
           ...DEFAULT_LOCATION,
+          latitudeDelta: 0.008,
+          longitudeDelta: 0.008,
           latitude: terry?.location.latitude || 0,
           longitude: terry?.location.longitude || 0,
         }}
