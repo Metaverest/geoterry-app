@@ -396,6 +396,8 @@ const CreateNewTerryScreen = () => {
                       ref={mapRef}
                       region={{
                         ...DEFAULT_LOCATION,
+                        latitudeDelta: 0.07,
+                        longitudeDelta: 0.07,
                         latitude: terryLocation?.latitude || 0,
                         longitude: terryLocation?.longitude || 0,
                       }}
