@@ -55,7 +55,7 @@ const MenuScreen = () => {
                       isSwitchEnable ? styles.swithButtonContainerEnable : styles.switchButtonContainerDisable,
                     ]}>
                     <Switch
-                      trackColor={{ false: EColor.color_141313, true: EColor.color_0BFF6C }}
+                      trackColor={{ false: EColor.color_1f1f1f, true: EColor.color_0BFF6C }}
                       thumbColor={isSwitchEnable ? EColor.color_FAFAFA : EColor.color_FAFAFA}
                       ios_backgroundColor="#3e3e3e"
                       onValueChange={setIsSwitchEnable}

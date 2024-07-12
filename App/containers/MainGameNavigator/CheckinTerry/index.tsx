@@ -155,7 +155,7 @@ const CheckinTerryScreen = ({ route }: { route: any }) => {
                 <View style={styles.terryAddImageContainer}>
                   <CustomButtonIcon
                     onPress={() => handleAddImage(setFieldValue, values.photoUrls)}
-                    buttonColor={EColor.color_141313}
+                    buttonColor={EColor.color_1f1f1f}
                     customStyleContainer={styles.addImagebuttonContainer}
                     buttonType={EButtonType.SOLID}
                     renderIcon={<ImageAddIcon />}

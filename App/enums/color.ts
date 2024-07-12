@@ -9,7 +9,7 @@ export enum EColor {
   color_51F1FF = '#ec6125',
   color_00000080 = '#00000080',
   color_F2F2F2 = '#F2F2F2',
-  color_141313 = '#1b1b1b',
+  color_1f1f1f = '#1f1f1f',
   color_FF0B0B = '#FF0B0B',
   color_FF5454 = '#ff5454',
   color_666666 = '#666666',
