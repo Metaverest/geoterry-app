@@ -26,6 +26,7 @@ import { EImageSize } from 'App/utils/images';
 import CustomImage from 'App/components/CustomImage';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { removePropertyInDevice } from 'App/utils/storage/storage';
+import { makeSoftVibration } from 'App/utils/utils';
 
 const ProfileScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation();
@@ -152,6 +153,7 @@ const ProfileScreen = ({ route }: { route: any }) => {
             <CustomButton
               title={t('Nhắn tin')}
               onPress={() => {
+                makeSoftVibration();
                 navigation.dispatch(
                   CommonActions.navigate({
                     name: EMainGameScreen.CHAT_VIEW_SCREEN,

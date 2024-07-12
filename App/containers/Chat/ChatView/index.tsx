@@ -26,6 +26,7 @@ import ConversationUserAvatarDefault from 'App/media/ConversationUserAvatarDefau
 import useBoolean from 'App/hooks/useBoolean';
 import { CHAT_MESSAGES_PAGINATION_PAGE_SIZE } from 'App/constants/common';
 import { requestHunterReadConversationMessages } from 'App/utils/axios';
+import { makeSoftVibration } from 'App/utils/utils';
 
 const NUMBER_OF_SKELETONS = 6;
 
@@ -116,6 +117,7 @@ const ChatView = () => {
   const onSend = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-shadow
     (messages: IMessage[]) => {
+      makeSoftVibration();
       const giftedChatMessage = head(messages);
       if (isEmpty(giftedChatMessage)) {
         return;

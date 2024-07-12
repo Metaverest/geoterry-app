@@ -65,7 +65,7 @@ export default function DetailHistory() {
             deselectTerry={() => {}}
             selectTerry={() => {}}
             key={params.terry.id}
-            treasure={{ ...params.terry, isAvailable: true, checkedIn: true }}
+            treasure={{ ...params.terry, isAvailable: true, checkedIn: false }}
           />
         )}
         {!isEmpty(coordinatesPathOfTerry) && (

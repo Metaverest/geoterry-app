@@ -32,7 +32,7 @@ import { ITerryFilterParams, ITerryResponseDto } from 'App/types/terry';
 import { calculateDistance } from 'App/utils/convert';
 import { isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Vibration, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import MapView, { LatLng } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,6 +52,7 @@ import messaging from '@react-native-firebase/messaging';
 import { onReceiveNotification } from 'App/utils/notification';
 import useRequestTurnOnGPSAndroid from 'App/hooks/useRequestTurnOnGPSAndroid';
 import { EMapStyle } from 'App/enums/map';
+import { makeSoftVibration } from 'App/utils/utils';
 
 const MapScreen = () => {
   useRequestLocationPermission();
@@ -98,7 +99,7 @@ const MapScreen = () => {
   }, [dispatch, navigation]);
 
   const centerToCurrentUserLocation = useCallback(() => {
-    Vibration.vibrate(5);
+    makeSoftVibration();
     if (isEmpty(userLocation)) {
       return;
     }
@@ -159,17 +160,17 @@ const MapScreen = () => {
   }, []);
 
   const handlePressTypeMap = useCallback(() => {
-    Vibration.vibrate(5);
+    makeSoftVibration();
     navigation.dispatch(StackActions.push(EMainGameScreen.MAP_TYPE_SCREEN));
   }, [navigation]);
 
   const handleCreateNewTerry = useCallback(() => {
-    Vibration.vibrate(5);
+    makeSoftVibration();
     navigation.dispatch(StackActions.push(EMainGameScreen.CREATE_NEW_TERRY_SCREEN));
   }, [navigation]);
 
   const handlePressFilterMap = useCallback(() => {
-    Vibration.vibrate(5);
+    makeSoftVibration();
     navigation.dispatch(StackActions.push(EMainGameScreen.FILTER_SCREEN));
   }, [navigation]);
 
@@ -301,7 +302,10 @@ const MapScreen = () => {
       {!selectedTerry ? (
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
-            onPress={handlePressTypeMap}
+            onPress={() => {
+              makeSoftVibration();
+              handlePressTypeMap();
+            }}
             buttonColor={EColor.color_0a0909}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
@@ -309,7 +313,10 @@ const MapScreen = () => {
           />
           {isBuilderNamespace && (
             <CustomButtonIcon
-              onPress={handleCreateNewTerry}
+              onPress={() => {
+                makeSoftVibration();
+                handleCreateNewTerry();
+              }}
               buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
               customStyleContainer={styles.buttonContainer}
               buttonType={EButtonType.SOLID}
@@ -318,7 +325,10 @@ const MapScreen = () => {
           )}
           <View>
             <CustomButtonIcon
-              onPress={handlePressFilterMap}
+              onPress={() => {
+                makeSoftVibration();
+                handlePressFilterMap();
+              }}
               buttonColor={numberOfFilters.current ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_0a0909}
               customStyleContainer={styles.buttonContainer}
               buttonType={EButtonType.SOLID}
@@ -331,7 +341,10 @@ const MapScreen = () => {
             )}
           </View>
           <CustomButtonIcon
-            onPress={centerToCurrentUserLocation}
+            onPress={() => {
+              makeSoftVibration();
+              centerToCurrentUserLocation();
+            }}
             buttonColor={EColor.color_0a0909}
             customStyleContainer={styles.buttonContainer}
             buttonType={EButtonType.SOLID}
@@ -346,7 +359,7 @@ const MapScreen = () => {
         <View style={styles.listButtonFooterContainer}>
           <CustomButtonIcon
             onPress={() => {
-              Vibration.vibrate(5);
+              makeSoftVibration();
               updateTerryUserCustomData({ markAsFavourited: !selectedTerry.favourite, markAsSaved: false });
             }}
             buttonColor={selectedTerry.favourite ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_0a0909}
@@ -356,7 +369,7 @@ const MapScreen = () => {
           />
           <CustomButtonIcon
             onPress={() => {
-              Vibration.vibrate(5);
+              makeSoftVibration();
               updateTerryUserCustomData({ markAsSaved: !selectedTerry.saved, markAsFavourited: false });
             }}
             buttonColor={selectedTerry.saved ? [EColor.color_C072FD, EColor.color_51D5FF] : EColor.color_0a0909}
@@ -372,7 +385,7 @@ const MapScreen = () => {
       <View style={[styles.listButtonRHNContainer, { top: styles.listButtonRHNContainer.top + insets.top }]}>
         <CustomButtonIcon
           onPress={() => {
-            Vibration.vibrate(5);
+            makeSoftVibration();
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.PROFILE_SCREEN, { profileID: user.id }));
           }}
           buttonColor={[EColor.color_C072FD, EColor.color_51D5FF]}
@@ -382,7 +395,7 @@ const MapScreen = () => {
         />
         <CustomButtonIcon
           onPress={() => {
-            Vibration.vibrate(5);
+            makeSoftVibration();
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.SETTING_NAVIGATOR));
           }}
           buttonColor={EColor.color_0a0909}
@@ -393,7 +406,7 @@ const MapScreen = () => {
         <View>
           <CustomButtonIcon
             onPress={() => {
-              Vibration.vibrate(5);
+              makeSoftVibration();
               navigation.dispatch(CommonActions.navigate(EMainGameScreen.CHAT_SCREEN));
             }}
             buttonColor={[EColor.color_51D5FF, EColor.color_C072FD]}
@@ -409,7 +422,7 @@ const MapScreen = () => {
         </View>
         <CustomButtonIcon
           onPress={() => {
-            Vibration.vibrate(5);
+            makeSoftVibration();
             navigation.dispatch(CommonActions.navigate(EMainGameScreen.HISTORY));
           }}
           buttonColor={EColor.color_0a0909}
