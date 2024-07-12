@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
     color: EColor.color_FAFAFA,
     marginTop: rh(25),
     textAlign: 'center',
+    marginBottom: rh(10),
   },
   popupSubtitle: {
     fontSize: rh(14),
