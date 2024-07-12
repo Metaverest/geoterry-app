@@ -21,7 +21,7 @@ const CustomBubble = (props: BubbleProps<IMessage>) => {
           </CustomText>
         </LinearGradient>
       ) : (
-        <View style={[styles.containerBubble, { backgroundColor: EColor.color_141313, marginRight: rw(100) }]}>
+        <View style={[styles.containerBubble, { backgroundColor: EColor.color_1f1f1f, marginRight: rw(100) }]}>
           <CustomText style={styles.textMsg} selectable={true}>
             {props.currentMessage?.text}
           </CustomText>

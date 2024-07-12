@@ -90,7 +90,7 @@ const QRScreen = () => {
             buttonType={EButtonType.OUTLINE}
             title={t('Chia sẻ')}
             customStyleContainer={styles.button}
-            buttonColor={EColor.color_141313}
+            buttonColor={EColor.color_1f1f1f}
           />
           <CustomButtonIcon
             renderIcon={<LinkIcon style={styles.iconBtn} />}
@@ -98,7 +98,7 @@ const QRScreen = () => {
             buttonType={EButtonType.OUTLINE}
             title={t('Sao chép liên kết')}
             customStyleContainer={styles.button}
-            buttonColor={EColor.color_141313}
+            buttonColor={EColor.color_1f1f1f}
           />
         </View>
       </View>

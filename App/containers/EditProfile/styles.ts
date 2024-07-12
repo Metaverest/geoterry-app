@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     width: rw(72),
     height: rw(72),
     borderRadius: rh(11),
-    backgroundColor: EColor.color_141313,
+    backgroundColor: EColor.color_1f1f1f,
   },
   textUploadAvatar: {
     marginTop: rh(8),

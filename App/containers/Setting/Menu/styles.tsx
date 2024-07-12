@@ -62,6 +62,6 @@ export const styles = StyleSheet.create({
   },
   switchButtonContainerDisable: {
     borderColor: EColor.color_999999,
-    backgroundColor: EColor.color_141313,
+    backgroundColor: EColor.color_1f1f1f,
   },
 });

@@ -205,7 +205,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: rw(8),
     marginRight: rw(4),
     borderRadius: rh(2),
-    backgroundColor: EColor.color_141313,
+    backgroundColor: EColor.color_1f1f1f,
   },
   textTag: {
     fontSize: rh(10),

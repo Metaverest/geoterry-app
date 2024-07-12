@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   textInputProps: {
     alignItems: 'center',
     minHeight: rh(34),
-    backgroundColor: EColor.color_141313,
+    backgroundColor: EColor.color_1f1f1f,
     borderRadius: rh(20),
     paddingHorizontal: rw(20),
     fontSize: rh(12),
@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
     borderRadius: rw(24),
     overflow: 'hidden',
     marginRight: rw(5),
+    backgroundColor: EColor.color_1f1f1f,
   },
   avatarDefault: {
     borderRadius: rw(24),
