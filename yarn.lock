@@ -8228,6 +8228,11 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
+react-native-background-fetch@^4.2.5:
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/react-native-background-fetch/-/react-native-background-fetch-4.2.5.tgz#d4fc59fb633e1e0143c0cefb6682582cdd330232"
+  integrity sha512-llOU+UWPd1fjOFGNGB4v4YrYaA0sMLn5hMk0aNx0Ok9+wQ2nQillVwj7G/XZEpIiD2vTVkntTNNXWycF5Ju0kQ==
+
 react-native-button@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-native-button/-/react-native-button-3.1.0.tgz#eead39fcd3656e475ef5bb0287e9b887295bae7e"
