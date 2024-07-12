@@ -85,6 +85,8 @@ const MapScreen = () => {
   useRequestNotificationPermission();
   useRequestTurnOnGPSAndroid();
 
+  // This function is for handling update user location in background
+  // It is called every 15 mins when the app is running in background or terminated (for android)
   useEffect(() => {
     // BackgroundFetch event handler.
     const onEvent = async (taskId: string) => {
