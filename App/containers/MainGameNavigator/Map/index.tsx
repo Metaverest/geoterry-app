@@ -52,10 +52,6 @@ import messaging from '@react-native-firebase/messaging';
 import { onReceiveNotification } from 'App/utils/notification';
 import useRequestTurnOnGPSAndroid from 'App/hooks/useRequestTurnOnGPSAndroid';
 import { EMapStyle } from 'App/enums/map';
-import BackgroundFetch from 'react-native-background-fetch';
-import { AppState } from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
-import { requestUpdateUserCurrentLocation } from 'App/utils/axios';
 
 const MapScreen = () => {
   useRequestLocationPermission();
@@ -84,45 +80,6 @@ const MapScreen = () => {
   const [updatedUserLocation, setUpdatedUserLocation] = useState(false);
   useRequestNotificationPermission();
   useRequestTurnOnGPSAndroid();
-
-  // This function is for handling update user location in background
-  // It is called every 15 mins when the app is running in background or terminated (for android)
-  useEffect(() => {
-    // BackgroundFetch event handler.
-    const onEvent = async (taskId: string) => {
-      console.log('[BackgroundFetch] Task: ', taskId);
-      if (AppState.currentState !== 'active') {
-        Geolocation.getCurrentPosition(
-          position => {
-            const location = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            requestUpdateUserCurrentLocation(location).then(() => {
-              BackgroundFetch.finish(taskId);
-            });
-          },
-          error => {
-            console.error('Geolocation Error:', error);
-            BackgroundFetch.finish(taskId);
-          },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-        );
-      } else {
-        BackgroundFetch.finish(taskId);
-      }
-    };
-
-    // Timeout callback is executed when your Task has exceeded its allowed running-time.
-    // You must stop what you're doing immediately BackgroundFetch.finish(taskId)
-    const onTimeout = async (taskId: string) => {
-      console.warn('[BackgroundFetch] TIMEOUT Task: ', taskId);
-      BackgroundFetch.finish(taskId);
-    };
-
-    BackgroundFetch.configure({ minimumFetchInterval: 15 }, onEvent, onTimeout);
-    // Initialize BackgroundFetch ONLY ONCE when component mounts.
-  }, []);
 
   const [canFetchTerries, setCanFetchTerries] = useState(true);
   useEffect(() => {
