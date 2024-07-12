@@ -26,6 +26,7 @@ import { responsiveByHeight as rh, responsiveByWidth as rw } from 'App/helpers/c
 import { requestHunterFilterConversations } from 'App/utils/axios';
 import { reduxAppAction } from 'App/redux/actions/appAction';
 import { isEmpty, reduce } from 'lodash';
+import { makeSoftVibration } from 'App/utils/utils';
 
 const NUMBER_OF_SKELETONS = 5;
 
@@ -121,6 +122,7 @@ const Chat = () => {
         <TouchableOpacity
           style={styles.containerItem}
           onPress={() => {
+            makeSoftVibration();
             navigation.dispatch(
               CommonActions.navigate(EMainGameScreen.CHAT_VIEW_SCREEN, {
                 conversationId: item.id,
