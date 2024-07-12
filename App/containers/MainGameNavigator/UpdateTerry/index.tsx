@@ -371,7 +371,7 @@ const UpdateTerryScreen = () => {
                     clearError();
                     handleRemoveTerry(terry.id);
                   }}
-                  linearGradient={[EColor.color_FF0B0B, EColor.color_FF5454]}
+                  linearGradient={[EColor.color_FF0B0B, EColor.color_547AFF]}
                   buttonType={EButtonType.SOLID}
                   title={t('Xoá kho báu')}
                   disabled={getShouldDisableButton(values)}

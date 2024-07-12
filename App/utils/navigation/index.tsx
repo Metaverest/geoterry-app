@@ -4,7 +4,9 @@ import { EErrorCode, EStatusCode } from 'App/enums/error';
 import { EMainGameScreen, ENavigationScreen, EPopUpModalType } from 'App/enums/navigation';
 import { IPopupModalParamsProps } from 'App/types/modal';
 import i18next from 'i18next';
+
 const t = i18next.t;
+
 export const PopUpModalParams = {
   [EPopUpModalType.UNDEFINED_ERROR]: {
     title: t('Lỗi không xác định'),
