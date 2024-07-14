@@ -101,6 +101,7 @@ const RoleScreen = () => {
         onClose={() => setShowModal(false)}
         reason={reason}
         setReason={setReason}
+        status={user.roleRequestingStatus}
         onSubmit={() => {
           setShowModal(false);
           dispatch(sagaUserAction.switchRoleUserAsync(EUserRole.builder, reason, navigation));
