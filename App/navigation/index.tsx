@@ -29,6 +29,7 @@ import { AppState } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import { requestUpdateUserCurrentLocation } from 'App/utils/axios';
 import BackgroundFetch from 'react-native-background-fetch';
+import Config from 'react-native-config';
 
 export const navigationRef = createNavigationContainerRef();
 
@@ -152,7 +153,7 @@ const Navigation = () => {
         />
         <Stack.Screen name={ENavigationScreen.NETWORK_LOGGER_SCREEN} component={NetworkLogger} />
       </Stack.Navigator>
-      <NetworkLoggerButton />
+      {Config.ENABLED_NETWORK_LOGGER === 'true' && <NetworkLoggerButton />}
     </>
   );
 };
