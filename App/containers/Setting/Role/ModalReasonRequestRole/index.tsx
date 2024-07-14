@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { EColor } from 'App/enums/color';
 import CustomInput from 'App/components/CustomInput';
 import { responsiveByHeight as rh } from 'App/helpers/common';
-import { EButtonType } from 'App/enums';
+import { EButtonType, EUseRoleRequestStatus } from 'App/enums';
 import CustomButton from 'App/components/Button';
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
   onClose: () => void;
   reason: string;
   setReason: Dispatch<SetStateAction<string>>;
+  status?: EUseRoleRequestStatus;
   onSubmit: () => void;
 }
 
@@ -34,7 +35,11 @@ const ModalReasonRequestRole = (props: Props) => {
       <KeyboardAvoidingView keyboardVerticalOffset={rh(150)} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.container}>
           <CustomText style={styles.title}>{t('Bạn muốn trở thành Builder?')}</CustomText>
-          <CustomText style={styles.subTitle}>{t('Hãy nêu lý do để Admin xét duyệt.')}</CustomText>
+          <CustomText style={styles.subTitle}>
+            {props.status !== EUseRoleRequestStatus.ACCEPTED
+              ? t('Cập nhật lý do để Admin xét duyệt.')
+              : t('Hãy nêu lý do để Admin xét duyệt.')}
+          </CustomText>
           <CustomInput
             minHeightInput={rh(191)}
             onChangeText={props.setReason}
@@ -48,6 +53,7 @@ const ModalReasonRequestRole = (props: Props) => {
             linearGradient={[EColor.color_727BFD, EColor.color_51F1FF]}
             buttonType={EButtonType.SOLID}
             title={t('Gửi')}
+            disabled={!props.reason || props.reason === ''}
             customStyleContainer={styles.btnSubmit}
           />
         </View>

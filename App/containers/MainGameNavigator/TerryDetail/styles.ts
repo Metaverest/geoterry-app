@@ -199,6 +199,7 @@ export const styles = StyleSheet.create({
   },
   flex: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   tag: {
     paddingVertical: rh(2),
