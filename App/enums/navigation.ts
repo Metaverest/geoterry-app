@@ -54,6 +54,7 @@ export enum EMainGameScreen {
   HUNTING_MAP_SCREEN = 'HUNTING_MAP_SCREEN',
   CHAT_SCREEN = 'CHAT_SCREEN',
   CHAT_VIEW_SCREEN = 'CHAT_VIEW_SCREEN',
+  TERRY_AR_SCREEN = 'TERRY_AR_SCREEN',
 }
 
 export enum ESettingNavigator {
@@ -85,6 +86,10 @@ export interface EMainGameNavigatorParams extends ParamListBase {
     terryId: string;
   };
   [EMainGameScreen.HUNTING_MAP_SCREEN]: {
+    terry: ITerryResponseDto;
+    userLocation: Location;
+  };
+  [EMainGameScreen.TERRY_AR_SCREEN]: {
     terry: ITerryResponseDto;
     userLocation: Location;
   };

@@ -31,6 +31,7 @@ import Chat from '../Chat';
 import ChatView from '../Chat/ChatView';
 import ConversationListener from '../Chat/ChatView/EventListener/ConversationListener';
 import NearbyPlayerLocationListener from './EventListener/NearbyPlayerListener';
+import ArTerryScreen from './ArTerry';
 
 const Stack = createStackNavigator<EMainGameNavigatorParams>();
 
@@ -102,6 +103,11 @@ const MainGameNavigator = () => {
         <Stack.Screen
           name={EMainGameScreen.PROFILE_SCREEN}
           component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={EMainGameScreen.TERRY_AR_SCREEN}
+          component={ArTerryScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
